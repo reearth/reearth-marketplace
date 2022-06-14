@@ -60,7 +60,6 @@
     "prettier": "^2.6.2",
     "storybook-react-i18next": "^1.1.1",
     "typescript": "^4.6.4",
-    "v": "^0.3.0",
     "vite": "^2.9.9",
     "vite-plugin-yaml": "^1.0.5",
     "vitest": "^0.14.2"

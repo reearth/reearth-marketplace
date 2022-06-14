@@ -20,7 +20,7 @@ module.exports = {
       envPrefix: "REEARTH_MARKETPLACE_",
       plugins: [yaml()],
       resolve: {
-        alias: [{ find: "@", replacement: resolve(__dirname, "src") }],
+        alias: [{ find: "@", replacement: resolve(__dirname, "..", "src") }],
       },
     });
   },
