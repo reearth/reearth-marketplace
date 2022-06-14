@@ -36,7 +36,7 @@ jobs:
       - name: Lint
         run: yarn run lint
       - name: Test
-        run: yarn test
+        run: yarn coverage
       - name: codecov
         uses: codecov/codecov-action@v2
         with:
