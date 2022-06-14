@@ -1,0 +1,11 @@
+node_modules
+*.log
+
+/.idea/
+
+/server/.env*
+
+/web/.env*
+/web/coverage
+/web/dist
+/web/storybook-static
