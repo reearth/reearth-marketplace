@@ -1,6 +1,6 @@
 {
   "name": "reearth-marketplace",
-  "description": "",
+  "description": "Re:Earth marketplace for publishing and sharing plugins",
   "version": "0.0.0",
   "private": true,
   "engines": {
