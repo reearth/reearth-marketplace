@@ -9,7 +9,7 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  envPrefix: "REEARTH_MARKETPLACE_",
+  envPrefix: "REEARTH_",
   plugins: [react(), yaml()],
   resolve: {
     alias: [{ find: "@", replacement: resolve(__dirname, "src") }],
