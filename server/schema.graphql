@@ -1,10 +1,295 @@
-type Query {
-  test: String!
+scalar Time
+scalar URL
+scalar Lang # e.g. "ja" "en" default is "und" (language.Tag)
+
+interface Node {
+  id: ID!
 }
 
-type Mutation {
-  test: String!
+enum PluginType {
+  REEARTH
+  REEARTH_CMS
 }
+
+interface Publisher {
+  id: ID!
+  # Used for a part of URLs
+  name: String!
+  displayName: String
+  description: String
+  plugins(first: Int, last: Int, before: Cursor, after: Cursor): PluginConnection!
+}
+
+type User implements Node & Publisher {
+  id: ID!
+  # Used for a part of URLs
+  name: String
+  displayName: String
+  description: String
+  plugins(first: Int, last: Int, before: Cursor, after: Cursor): PluginConnection!
+  # All organizations to which the user belongs
+  organizationIds: [ID!]!
+  organizations: [Organization!]!
+}
+
+type Organization implements Node & Publisher {
+  id: ID!
+  # Used for a part of URLs
+  name: String!
+  displayName: String
+  description: String
+  # Whether to display to users. 
+  active: Boolean!
+  plugins(first: Int, last: Int, before: Cursor, after: Cursor): PluginConnection!
+  memberIds: [ID!]!
+  members: [User!]!
+}
+
+type Plugin implements Node {
+  id: ID!
+  type: PluginType!
+  createdAt: Time!
+  updatedAt: Time!
+  # Name of the latest version. It is automatically loaded from the plugin's manifest file.
+  name: String!
+  # Author of the latest version. It is automatically loaded from the plugin's manifest file.
+  author: String
+  # Description of the latest version. It is automatically loaded from the plugin's manifest file.
+  description: String
+  # Icon URL (DataURI is OK) of the latest version. It is automatically loaded from the plugin's manifest file.
+  icon: String
+  # Repository of the latest version. It is automatically loaded from the plugin's manifest file.
+  repository: String
+  # Published date of the latest version
+  publishedAt: Time!
+  # Total number of plug-ins downloaded
+  downloads: Int!
+  # Whether the plugin is available for anyone to view and download
+  active: Boolean!
+  readme: String!
+  tags: [String!]!
+  latestVersion: Version
+  versions: [Version!]!
+  images: [URL!]!
+  publisherId: ID!
+  publisher: Publisher!
+
+  likerIds: [ID!]!
+  liker: [User!]!
+  # or
+  like: Int!
+}
+
+type Version {
+  # Version e.g.: v1.0.0
+  version: String!
+  # Describe the changes in that version
+  description: String!
+  # Number of downloads for this version of the plugin only
+  downloads: Int!
+  # Whether the version is available for anyone to view and download
+  active: Boolean!
+  createdAt: Time!
+  updatedAt: Time!
+  # Date when active is true
+  publishedAt: Time!
+  # If there is no valid access token, no value is returned. This is for business reasons.
+  url: String
+  checksum: String!
+}
+
+type Me implements Publisher {
+  id: ID!
+  lang: Lang
+  # Used for a part of URLs
+  name: String
+  displayName: String
+  description: String
+  tel: String # Pending
+  publishable: Boolean! # True once the developer profile has been filled
+}
+
+# --------------------------------------------------------------------
+
+# Queries except "me" do not require access tokens
+type Query {
+  me: Me!
+  node(id: ID!): Node
+  nodes(ids: [ID!]!): [Node!]!
+  plugins(input: PluginsInput!): PluginConnection!
+}
+
+scalar Cursor
+
+type PageInfo {
+  startCursor: Cursor
+  endCursor: Cursor
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+enum PluginSort {
+  NAME_ASC
+  NAME_DESC
+  PUBLISHER_ASC
+  PUBLISHER_DESC
+  PUBLISHEDAT_ASC
+  # Default sort
+  PUBLISHEDAT_DESC
+  DONWLOADS_ASC
+  DONWLOADS_DESC
+}
+
+input PluginsInput {
+  first: Int
+  last: Int
+  before: Cursor
+  after: Cursor
+  keyword: String
+  liked: Boolean
+  tags: [String!] # AND
+  types: [PluginType!] # OR
+  publisher: ID
+  # If not specified, PUBLISHEDAT_DESC will be used.
+  sort: PluginSort
+}
+
+type PluginConnection {
+  edges: [PluginEdge!]!
+  nodes: [Plugin]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type PluginEdge {
+  cursor: Cursor!
+  node: Plugin
+}
+
+# --------------------------------------------------------------------
+
+# All mutations require access tokens
+type Mutation {
+  updateMe(input: UpdateMeInput!): MePayload!
+  parsePlugin(input: CreatePluginInput!): PluginPayload!
+  createPlugin(input: CreatePluginInput!): PluginPayload!
+  updatePlugin(input: UpdatePluginInput!): PluginPayload!
+  deletePlugin(input: DeletePluginInput!): DeletePluginPayload!
+  updateVersion(input: UpdateVersionInput!): VersionPayload!
+  deleteVersion(input: DeleteVersionInput!): DeleteVersionPayload!
+  likePlugin(input: LikePluginInput!): PluginPayload!
+  unlikePlugin(input: UnlikePluginInput!): PluginPayload!
+
+  # not used immediately
+  createOrganization(input: CreateOrganizationInput!): OrganizationPayload!
+  updateOrganinzation(input: UpdateOrganizationInput!): OrganizationPayload!
+  deleteOrganinzation(input: DeleteOrganizationInput!): DeleteOrganizationPayload!
+}
+
+scalar Upload
+
+input UpdateMeInput {
+  name: String
+  lang: Lang
+  displayName: String
+  description: String
+  tel: String # Pending
+}
+
+input CreateOrganizationInput {
+  name: String!
+  description: String
+  # You do not have to specify anything to add yourself as a member.
+  members: [ID!]
+}
+
+input UpdateOrganizationInput {
+  organizationId: ID!
+  name: String
+  description: String
+  # If the organization has even one active plugin, you cannot set active to false.
+  active: Boolean
+  newMembers: [ID!]
+  # When there is only one member, it cannot be deleted.
+  deletedMembers: [ID!]
+}
+
+input DeleteOrganizationInput {
+  organizationId: ID!
+}
+
+# PluginId is automatically loaded and used as written in the manifest file.
+input CreatePluginInput {
+  # Specify if you want to upload zip files directly; exclusive with repo.
+  file: Upload
+  # Specify a github repository name and tag name or URL; exclusive with repo. e.g.: "reearth/plugin-example@v1"
+  repo: String
+}
+
+input UpdatePluginInput {
+  pluginId: ID!
+  active: Boolean
+  images: [Upload!]
+  newTags: [String!]
+  deletedTags: [String!]
+}
+
+input DeletePluginInput {
+  # If even one version of that plugin has been downloaded at least once, it cannot be deleted.
+  pluginId: ID!
+}
+
+input UpdateVersionInput {
+  pluginId: ID!
+  version: String!
+  description: String
+  active: Boolean
+}
+
+input DeleteVersionInput {
+  # If even the version has been ever downloaded, it cannot be deleted.
+  versionId: ID!
+}
+
+input LikePluginInput {
+  pluginId: ID!
+}
+
+input UnlikePluginInput {
+  pluginId: ID!
+}
+
+type MePayload {
+  me: Me!
+}
+
+type OrganizationPayload {
+  organization: Organization!
+}
+
+type DeleteOrganizationPayload {
+  # If the organization has even one plugin, you cannot delete it.
+  organizationId: ID!
+}
+
+type PluginPayload {
+  plugin: Plugin!
+}
+
+type DeletePluginPayload {
+  pluginId: ID!
+}
+
+type VersionPayload {
+  plugin: Plugin!
+  version: Version!
+}
+
+type DeleteVersionPayload {
+  versionId: ID!
+}
+
+# --------------------------------------------------------------------
 
 schema {
   query: Query
