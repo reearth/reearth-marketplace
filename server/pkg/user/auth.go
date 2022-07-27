@@ -9,11 +9,11 @@ type Auth struct {
 	Sub      string
 }
 
-func AuthFromOIDCSub(sub string) Auth {
-	provider, _, found := strings.Cut(sub, "|")
+func AuthFromOIDCSub(oidcSub string) Auth {
+	provider, _, found := strings.Cut(oidcSub, "|")
 	if found {
-		return Auth{Provider: provider, Sub: sub}
+		return Auth{Provider: provider, Sub: oidcSub}
 	} else {
-		return Auth{Provider: "", Sub: sub}
+		return Auth{Provider: "", Sub: oidcSub}
 	}
 }

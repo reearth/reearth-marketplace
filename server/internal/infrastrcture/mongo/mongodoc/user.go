@@ -6,12 +6,12 @@ import (
 )
 
 type UserDocument struct {
-	ID          string
+	ID          string `bson:"id"`
 	OIDCSub     string `bson:"oidcSub"`
-	Name        string
-	DisplayName string
-	Description string
-	Lang        string
+	Name        string `bson:"name"`
+	DisplayName string `bson:"displayName"`
+	Description string `bson:"description"`
+	Lang        string `bson:"lang"`
 }
 
 func NewUser(u *user.User) (*UserDocument, string) {
@@ -31,17 +31,12 @@ func (d *UserDocument) Model() (*user.User, error) {
 	if err != nil {
 		return nil, err
 	}
-	auth := user.AuthFromOIDCSub(d.OIDCSub)
-	u, err := user.New().
+	return user.New().
 		ID(uid).
-		Auth(auth).
+		Auth(user.AuthFromOIDCSub(d.OIDCSub)).
 		Name(d.Name).
 		DisplayName(d.DisplayName).
 		Description(d.Description).
 		LangFrom(d.Lang).
 		Build()
-	if err != nil {
-		return nil, err
-	}
-	return u, nil
 }
