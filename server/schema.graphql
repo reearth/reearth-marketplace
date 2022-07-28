@@ -137,8 +137,8 @@ enum PluginSort {
   PUBLISHEDAT_ASC
   # Default sort
   PUBLISHEDAT_DESC
-  DONWLOADS_ASC
-  DONWLOADS_DESC
+  DOWNLOADS_ASC
+  DOWNLOADS_DESC
 }
 
 input PluginsInput {
@@ -183,8 +183,8 @@ type Mutation {
 
   # not used immediately
   createOrganization(input: CreateOrganizationInput!): OrganizationPayload!
-  updateOrganinzation(input: UpdateOrganizationInput!): OrganizationPayload!
-  deleteOrganinzation(input: DeleteOrganizationInput!): DeleteOrganizationPayload!
+  updateOrganization(input: UpdateOrganizationInput!): OrganizationPayload!
+  deleteOrganization(input: DeleteOrganizationInput!): DeleteOrganizationPayload!
 }
 
 scalar Upload
