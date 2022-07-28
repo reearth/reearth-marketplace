@@ -23,7 +23,7 @@ interface Publisher {
 type User implements Node & Publisher {
   id: ID!
   # Used for a part of URLs
-  name: String
+  name: String!
   displayName: String
   description: String
   plugins(first: Int, last: Int, before: Cursor, after: Cursor): PluginConnection!
@@ -102,11 +102,12 @@ type Me implements Publisher {
   id: ID!
   lang: Lang
   # Used for a part of URLs
-  name: String
+  name: String!
   displayName: String
   description: String
   tel: String # Pending
   publishable: Boolean! # True once the developer profile has been filled
+  plugins(first: Int, last: Int, before: Cursor, after: Cursor): PluginConnection!
 }
 
 # --------------------------------------------------------------------
