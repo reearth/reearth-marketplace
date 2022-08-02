@@ -7,12 +7,7 @@ type Props = {
   audience?: string;
 };
 
-const Provider: React.FC<Props> = ({
-  children,
-  domain,
-  clientId,
-  audience,
-}) => {
+const Provider: React.FC<Props> = ({ children, domain, clientId, audience }) => {
   return domain && clientId ? (
     <Auth0Provider
       domain={domain}
@@ -21,8 +16,7 @@ const Provider: React.FC<Props> = ({
       useRefreshTokens
       scope="openid profile email"
       cacheLocation="localstorage"
-      redirectUri={window.location.origin}
-    >
+      redirectUri={window.location.origin}>
       {children}
     </Auth0Provider>
   ) : (

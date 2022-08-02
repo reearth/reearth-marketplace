@@ -22,7 +22,6 @@
     "i18n": "i18next"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.10",
     "@graphql-codegen/cli": "2.6.2",
     "@graphql-codegen/fragment-matcher": "^3.2.1",
     "@graphql-codegen/introspection": "2.1.1",
@@ -46,15 +45,8 @@
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "@vitejs/plugin-react": "^1.3.2",
-    "babel-loader": "^8.2.5",
     "eslint": "^8.15.0",
-    "eslint-config-prettier": "^8.4.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.28.0",
-    "eslint-plugin-react-hooks": "^4.5.0",
-    "eslint-plugin-testing-library": "^5.5.0",
+    "eslint-config-reearth": "^0.1.0",
     "i18next-parser": "^6.4.0",
     "jsdom": "^19.0.0",
     "msw": "^0.43.1",
@@ -62,7 +54,6 @@
     "storybook-react-i18next": "^1.1.1",
     "typescript": "^4.6.4",
     "vite": "^2.9.9",
-    "vite-plugin-yaml": "^1.0.5",
     "vitest": "^0.14.2"
   },
   "dependencies": {
@@ -79,6 +70,6 @@
     "react-router-dom": "^6.3.0"
   },
   "msw": {
-    "workerDirectory": "public"
+    "workerDirectory": "src/mocks"
   }
 }

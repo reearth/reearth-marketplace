@@ -5,11 +5,7 @@ const { mergeConfig } = require("vite");
 
 module.exports = {
   stories: ["../src/**/*.stories.@(js|jsx|ts|tsx|mdx)"],
-  addons: [
-    "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "storybook-react-i18next",
-  ],
+  addons: ["@storybook/addon-links", "@storybook/addon-essentials", "storybook-react-i18next"],
   framework: "@storybook/react",
   core: {
     builder: "@storybook/builder-vite",

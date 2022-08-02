@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom/client";
 
 import App from "./App";
 import { loadConfig } from "./config";
-import { startMock } from "./mocks";
+import { startMock } from "./test/mocks";
 import "./index.css";
 
 startMock()
@@ -16,6 +16,6 @@ startMock()
     root.render(
       <StrictMode>
         <App />
-      </StrictMode>
+      </StrictMode>,
     );
   });

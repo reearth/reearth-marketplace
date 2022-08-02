@@ -1,10 +1,4 @@
-import {
-  ApolloProvider,
-  ApolloClient,
-  ApolloLink,
-  InMemoryCache,
-  HttpLink,
-} from "@apollo/client";
+import { ApolloProvider, ApolloClient, ApolloLink, InMemoryCache, HttpLink } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 
@@ -36,8 +30,7 @@ const Provider: React.FC<Props> = ({ children, accessTokenForDebug, api }) => {
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
     if (!networkError && !graphQLErrors) return;
-    const error =
-      networkError?.message ?? graphQLErrors?.map((e) => e.message).join(", ");
+    const error = networkError?.message ?? graphQLErrors?.map(e => e.message).join(", ");
     if (error) {
       setError(error);
     }

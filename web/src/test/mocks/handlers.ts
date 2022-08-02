@@ -9,7 +9,7 @@ export const handlers = [
           id: "xxx",
           name: "Name",
         },
-      })
+      }),
     );
   }),
   graphql.mutation("UpdateMe", (_req, res, ctx) => {
@@ -20,7 +20,7 @@ export const handlers = [
           id: "xxx",
           name: "Name",
         },
-      })
+      }),
     );
   }),
 ];
