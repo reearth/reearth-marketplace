@@ -1,0 +1,5 @@
+/web/dist
+/web/coverage
+/web/storybook-static
+!/web/.storybook
+/web/.storybook/public

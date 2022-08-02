@@ -9,6 +9,7 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
+    "build:ext": "tsc && vite build -c vite.config.ext.ts",
     "preview": "vite preview",
     "test": "vitest",
     "coverage": "vitest run --coverage",
