@@ -11,3 +11,5 @@ node_modules
 /web/coverage
 /web/dist
 /web/storybook-static
+.env
+.secret

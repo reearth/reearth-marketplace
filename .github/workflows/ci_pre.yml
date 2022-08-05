@@ -1,0 +1,38 @@
+name: ci Pre
+on:
+  pull_request:
+  push:
+    branches:
+      - "main"
+jobs:
+  ci_pre:
+    runs-on: ubuntu-latest
+    # outputs:
+    #   web: ${{ steps.web.outputs.changed }}
+    #   server: ${{ steps.server.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: hello
+        run: echo "hello!"
+# MEMO: 検討！For monorepos where pulling all the branch history might not be desired, you can omit fetch-depth for pull_request events.
+      # - name: Get changed files
+      #   id: changed-files
+      #   uses: tj-actions/changed-files@v24
+      # - name: list up all
+      #   run: |
+      #     for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+      #       echo "$file was changed"
+      #     done
+      # - name: Detect web changes
+      #   if: |
+      #     contains(steps.changed-files.outputs.)
+      #   run: |
+      #     # お好きな方法で変更を検出して変更されてたらecho
+      #     echo "::set-output name=changed::true"
+      # - name: Detect server changes
+      #   id: server
+      #   run: |
+      #     # お好きな方法で変更を検出して変更されてたらecho
+      #     echo "::set-output name=changed::true"
