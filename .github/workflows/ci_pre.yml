@@ -1,4 +1,4 @@
-name: ci pre
+name: ci_pre
 on:
   pull_request:
   push:
