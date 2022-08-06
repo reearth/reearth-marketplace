@@ -1,21 +1,33 @@
-name: CI (web)
+name: ci web
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - web/**
-      - .github/workflows/web.yml
-  pull_request:
-    paths:
-      - web/**
-      - .github/workflows/web.yml
-# jobs:
-#   ci-web:
-#     runs-on: ubuntu-latest
-#     defaults:
-#       run:
-#         working-directory: web
+  workflow_run:
+    workflows: [ci pre]
+    types:
+      - "completed"
+  #   paths:
+  #     - web/**
+  #     - .github/workflows/web.yml
+  # pull_request:
+  #   paths:
+  #     - web/**
+  #     - .github/workflows/web.yml
+jobs:
+  ci-web:
+    needs: ci_pre
+    # if: ${{ needs.ci_pre.outputs.web == 'true' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - name: echo!!!
+        run: echo "-------hello-----------"
+      - name: show result
+        run: echo '----${{ needs.ci_pre.outputs.web }}
+
+    # steps:
+    #   - name: show context
+    #     run: echo '${{ toJSON(github) }}'
 #     steps:
 #       - uses: actions/setup-node@v3
 #         with:
