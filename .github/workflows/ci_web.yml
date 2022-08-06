@@ -3,13 +3,13 @@ on:
   workflow_run:
     workflows: [ci_pre]
     types: [completed]
-  #   paths:
-  #     - web/**
-  #     - .github/workflows/web.yml
-  # pull_request:
-  #   paths:
-  #     - web/**
-  #     - .github/workflows/web.yml
+    paths:
+      - web/**
+      - .github/workflows/ci_web.yml
+  pull_request:
+    paths:
+      - web/**
+      - .github/workflows/ci_web.yml
 jobs:
   ci-web:
     needs: ci_pre
