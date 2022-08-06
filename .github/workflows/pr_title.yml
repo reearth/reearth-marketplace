@@ -3,10 +3,10 @@ on:
   pull_request:
     types:
       - opened
-      - edited
-      - synchronize
-      - labeled
-      - unlabeled
+      # - edited
+      # - synchronize
+      # - labeled
+      # - unlabeled
 jobs:
   pr_title:
     runs-on: ubuntu-latest

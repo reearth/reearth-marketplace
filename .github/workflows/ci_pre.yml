@@ -1,0 +1,52 @@
+name: ci_pre
+on:
+  pull_request:
+  push:
+    branches:
+      - "main"
+jobs:
+  ci_pre:
+    runs-on: ubuntu-latest
+    outputs:
+      web: ${{ steps.web-changes.outputs.changed }}
+      server: ${{ steps.server-changes.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: hello
+        run: echo "hello!"
+# MEMO: 検討！For monorepos where pulling all the branch history might not be desired, you can omit fetch-depth for pull_request events.
+      - name: Get changed files
+        id: changed-web-files
+        uses: tj-actions/changed-files@v24
+        with:
+          files: |
+            .github/workflows/web.yml
+            .github/workflows/ci_pre.yml
+            .github/CODEOWNERS
+            .renovate.json
+            web/**
+            .eslintignore
+      - name: Detect web changes
+        id: web-changes
+        if: steps.changed-web-files.outputs.any_changed == 'true'
+        run: |
+          echo "-----------------changed!!------"
+          echo "::set-output name=changed::true"
+      - name: Get server changed files
+        id: changed-server-files
+        uses: tj-actions/changed-files@v24
+        with:
+          files: |
+            .github/workflows/server.yml
+            .github/workflows/ci_pre.yml
+            .github/CODEOWNERS
+            .renovate.json
+            server/**
+      - name: Detect server changes
+        id: server-changes
+        if: steps.changed-server-files.outputs.any_changed == 'true'
+        run: |
+          echo "-----------------changed!!------"
+          echo "::set-output name=changed::true"
