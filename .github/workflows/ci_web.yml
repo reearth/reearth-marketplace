@@ -2,8 +2,9 @@ name: ci web
 on:
   workflow_run:
     workflows: [ci_pre]
-    types:
-      - "completed"
+    types: [completed]
+    branches-ignore:
+      - "canary"
   #   paths:
   #     - web/**
   #     - .github/workflows/web.yml
