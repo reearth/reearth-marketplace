@@ -1,7 +1,7 @@
 name: ci web
 on:
   workflow_run:
-    workflows: [ci pre]
+    workflows: [ci_pre]
     types:
       - "completed"
   #   paths:
