@@ -44,6 +44,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      #Do we upload docker image to Docker Hub now?
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -98,3 +99,11 @@ jobs:
           tags: ${{ steps.options.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Save docker image
+        run: docker save ${{ steps.options.outputs.tags }} > ${{ steps.options.outputs.tags }}.tar
+      - name: Save imaged to artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: reearth-marketplace
+          path: web/reearth-marketplace.tar
+          if-no-files-found: errors

@@ -1,0 +1,74 @@
+name: deploy test
+on:
+  workflow_run:
+    workflows: [build]
+    types: [completed]
+    branches: [main]
+env:
+  REEARTH_MARKETPLACE_URL: marketplace.test.reearth.dev
+  GCS_DEST: gs://marketplace.test.reearth.dev
+  IMAGE_GCP: us.gcr.io/reearth-oss/reearth-marketplace:nightly
+  GCP_REGION: us-central1
+jobs:
+  deploy_web:
+    runs-on: ubuntu-latest
+    if: github.event.repository.full_name == "reearth/reearth-marketplace"
+    steps:
+      - name: get latest web artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.GPT }}
+          workflow: ci.yml
+          workflow_conclusion: success
+          branch: main
+          name: reearth-marketplace-web
+          check_artifacts: true
+          search_artifacts: true
+      - name: Extract
+        run: tar -xvf reearth-marketplace-web.tar.gz
+      - uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+      - name: Deploy
+        run: gsutil -m -h "Cache-Control:no-store" rsync -x "^reearth_config\\.json$" -dr reearth-marketplace-web/ $GCS_DEST
+  deploy_server:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      packages: read
+    steps:
+      - uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      #   with:
+      #     workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      #     service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+      - name: Configure docker
+        run: gcloud auth configure-docker --quiet
+      - name: Download server arfiacts
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.GPT }}
+          workflow: build.yml
+          workflow_conclusion: success
+          branch: main
+          name: reearth-marketplace
+          check_artifacts: true
+      - name: Unpack docker image
+        run: docker -o reearth-marketplace.tar reearth-marketplace
+      - name: docker push
+        run: |
+          docker tag reearth-marketplace $IMAGE_GCP
+          docker push $IMAGE_GCP
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy reearth-backend \
+            --image $IMAGE_GCP \
+            --region $GCP_REGION \
+            --platform managed \
+            --quiet
