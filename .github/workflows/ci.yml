@@ -137,7 +137,7 @@ jobs:
     needs:
       - ci_web
       - ci_server
-    if: ! failure()
+    if: ${{ ! failure() }}
     steps:
       - name: Success job
         run: echo "success all ci"
