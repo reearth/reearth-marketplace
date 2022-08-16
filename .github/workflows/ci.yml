@@ -92,7 +92,7 @@ jobs:
         with:
           name: reearth-marketplace-web
           path: web/reearth-marketplace-web.tar.gz
-          if-no-files-found: errors
+          if-no-files-found: error
   ci_server:
     needs: ci_pre
     if: ${{ needs.ci_pre.outputs.server == 'true' }}
