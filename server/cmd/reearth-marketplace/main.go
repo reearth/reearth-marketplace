@@ -10,5 +10,8 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(200, "hello")
 	})
-	e.Start(":8080")
+	err := e.Start(":8080")
+	if err != nil {
+		panic("failed to run server")
+	}
 }
