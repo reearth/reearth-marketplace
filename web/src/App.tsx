@@ -12,12 +12,13 @@ import MyPlugins from "@/components/pages/MyPlugins";
 import MyPluginSetting from "@/components/pages/MyPluginSetting";
 import AddNewPlugin from "@/components/pages/AddNewPlugin";
 import UpdatePlugin from "@/components/pages/UpdatePlugin";
+import NotFound from "./components/pages/NotFound";
 
 import { Provider as Auth0Provider } from "@/auth";
 import { Provider as GqlProvider } from "@/gql";
 import { Provider as I18nProvider } from "@/i18n";
 
-import "./index.css";
+import "antd/dist/antd.css";
 
 const routes: RouteObject[] = [
   { path: "/", element: <RootPage /> },
@@ -31,6 +32,7 @@ const routes: RouteObject[] = [
   { path: "/myplugins/:pluginId", element: <MyPluginSetting /> },
   { path: "/myplugins/new", element: <AddNewPlugin /> },
   { path: "/myplugins/:pluginId/update", element: <UpdatePlugin /> },
+  { path: "*", element: <NotFound /> },
 ];
 
 function AppRoutes() {
