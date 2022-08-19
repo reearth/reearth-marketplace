@@ -104,11 +104,13 @@ jobs:
           tags: ${{ steps.options.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Make dir
+        run: mkdir reearth
       - name: Save docker image
         run: docker save ${{ steps.options.outputs.tags }} -o ${{ steps.options.outputs.tags }}.tar
       - name: Save imaged to artifact
         uses: actions/upload-artifact@v2
         with:
           name: reearth-marketplace
-          path: web/reearth-marketplace.tar
+          path: ${{ steps.options.outputs.tags }}.tar
           if-no-files-found: errors
