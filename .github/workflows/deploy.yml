@@ -12,7 +12,7 @@ env:
 jobs:
   deploy_web:
     runs-on: ubuntu-latest
-    if: github.event.repository.full_name == "reearth/reearth-marketplace"
+    if: github.event.repository.full_name == 'reearth/reearth-marketplace'
     steps:
       - name: get latest web artifact
         uses: dawidd6/action-download-artifact@v2
