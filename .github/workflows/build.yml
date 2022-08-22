@@ -104,7 +104,6 @@ jobs:
           tags: ${{ steps.options.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          outputs: type=docker,dest=/tmp/$${{ steps.options.tags }}
       - name: setup tmate session
         uses: mxschmitt/action-tmate@v3
       - name: Make dir
