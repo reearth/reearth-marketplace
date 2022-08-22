@@ -107,7 +107,7 @@ jobs:
       - name: Make dir
         run: mkdir reearth
       - name: Save docker image
-        run: docker save ${{ steps.options.outputs.tags }} -o ${{ steps.options.outputs.tags }}.tar
+        run: docker save ${{ steps.options.outputs.tags }} -o ${{ IMAGE_NAME }}.tar
       - name: Save imaged to artifact
         uses: actions/upload-artifact@v2
         with:
