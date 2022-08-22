@@ -94,17 +94,18 @@ jobs:
           check_artifacts: true
       - name: Extract
         run: tar -xvf reearth-marketplace-web.tar.gz && mv reearth-marketplace-web server/web
-      - name: Build and push docker image
+      - name: Build and load docker image
         uses: docker/build-push-action@v3
         with:
           context: ./server
           platforms: ${{ steps.options.outputs.platforms }}
-          push: true
           load: true
           build-args: VERSION=${{ steps.options.outputs.version }}
           tags: ${{ steps.options.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Push docker images
+        run: docker push ${{ steps.options.outputs.tags }}
       - name: Make dir
         run: mkdir reearth
       - name: Save docker image
