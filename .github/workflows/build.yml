@@ -1,9 +1,11 @@
 name: build
 on:
   workflow_run:
-    workflows: [ci]
-    types: ["completed"]
-    branches: ["main"]
+    # workflows: [ci]
+    # types: ["completed"]
+    # branches: ["main"]
+  push:
+    branches: [main]
 
 jobs:
   info:
