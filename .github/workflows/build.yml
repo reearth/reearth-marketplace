@@ -4,6 +4,7 @@ on:
     workflows: [ci]
     types: ["completed"]
     branches: ["main"]
+
 jobs:
   info:
     name: Collect information
@@ -49,7 +50,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      #MEMO: check if we upload image to Docker Hub
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -104,10 +104,13 @@ jobs:
           tags: ${{ steps.options.outputs.tags }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          outputs: type=docker,dest=/tmp/$${{ steps.options.tags }}
+      - name: setup tmate session
+        uses: mxschmitt/action-tmate@v3
       - name: Make dir
         run: mkdir reearth
       - name: Save docker image
-        run: docker save ${{ steps.options.outputs.tags }} -o $IMAGE_NAME.tar
+        run: docker save ${{ steps.options.outputs.tags }} -o ${{ steps.options.outputs.tags }}.tar
       - name: Save imaged to artifact
         uses: actions/upload-artifact@v2
         with:
