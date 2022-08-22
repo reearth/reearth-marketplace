@@ -1,6 +1,6 @@
 name: build
 on:
-  workflow_run:
+  # workflow_run:
     # workflows: [ci]
     # types: ["completed"]
     # branches: ["main"]
