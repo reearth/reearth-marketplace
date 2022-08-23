@@ -115,4 +115,4 @@ jobs:
         with:
           name: reearth-marketplace
           path: $IMAGE_NAME.tar
-          if-no-files-found: errors
+          if-no-files-found: error
