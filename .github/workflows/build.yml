@@ -109,7 +109,7 @@ jobs:
       - name: Make dir
         run: mkdir reearth
       - name: Save docker image
-        run: docker save ${{ steps.options.outputs.tags }} | gzip > ${{ steps.options.outputs.tags }}.tar.gz
+        run: docker save ${{ steps.options.outputs.tags }} | gzip > $IMAGE_NAME.tar.gz
       # - name: Setup tmate session
       #   uses: mxschmitt/action-tmate@v3
       - name: Save imaged to artifact
