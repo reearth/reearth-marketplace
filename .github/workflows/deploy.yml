@@ -63,7 +63,7 @@ jobs:
         run: docker load < reearth-marketplace.tar.gz
       - name: docker push
         run: |
-          docker tag reearth-marketplace $IMAGE_GCP
+          docker tag reearth-marketplace:nightly $IMAGE_GCP
           docker push $IMAGE_GCP
       - name: Deploy to Cloud Run
         run: |
