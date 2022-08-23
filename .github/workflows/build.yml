@@ -109,12 +109,12 @@ jobs:
       - name: Make dir
         run: mkdir reearth
       - name: Save docker image
-        run: docker save ${{ steps.options.outputs.tags }} -o $IMAGE_NAME.tar
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+        run: docker save ${{ steps.options.outputs.tags }} | gzip > ${{ steps.options.outputs.tags }}.tar.gz
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
       - name: Save imaged to artifact
         uses: actions/upload-artifact@v2
         with:
           name: reearth-marketplace
-          path: $IMAGE_NAME.tar
+          path: $IMAGE_NAME.tar.gz
           if-no-files-found: error
