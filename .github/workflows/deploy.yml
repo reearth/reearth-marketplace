@@ -62,11 +62,11 @@ jobs:
       - name: Unpack docker image
         run: docker load < reearth-marketplace.tar.gz
       # TODO: start from here
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
+      # - name: Setup tmate session
+      #   uses: mxschmitt/action-tmate@v3
       - name: docker push
         run: |
-          docker tag reearth-marketplace:nightly $IMAGE_GCP
+          docker tag reearth/reearth-marketplace:nightly $IMAGE_GCP
           docker push $IMAGE_GCP
       - name: Deploy to Cloud Run
         run: |
