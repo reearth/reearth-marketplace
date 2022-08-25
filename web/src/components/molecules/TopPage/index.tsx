@@ -1,9 +1,10 @@
 import styled from "@emotion/styled";
 
 import TitleBar from "@/components/atoms/TitleBar";
+import Footer from "@/components/molecules/Common/Footer";
 import Header from "@/components/molecules/Common/Header";
+
 import TopPageContent from "./TopPageContents";
-import Footer from "@/components/molecules/Footer";
 
 export type Props = {
   isLoggedIn: boolean;
