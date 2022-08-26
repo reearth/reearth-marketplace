@@ -6,6 +6,7 @@ import {
   CaretDownOutlined,
   UserOutlined,
   ExportOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 
 export default {
@@ -16,4 +17,5 @@ export default {
   downFilled: CaretDownOutlined,
   user: UserOutlined,
   logout: ExportOutlined,
+  exclamation: ExclamationCircleOutlined,
 };
