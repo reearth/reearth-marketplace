@@ -1,5 +1,5 @@
-import PluginsListCard from "@/components/molecules/PluginsListCard";
 import Space from "@/components/atoms/Space";
+import PluginsListCard from "@/components/molecules/PluginsListCard";
 
 export type Props = {
   loading?: boolean;

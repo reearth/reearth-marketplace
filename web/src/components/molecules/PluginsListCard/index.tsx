@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
 
-import Space from "@/components/atoms/Space";
 import Button from "@/components/atoms/Button";
 import Card, { Meta } from "@/components/atoms/Card";
-import Row from "@/components/atoms/Row";
 import Icon from "@/components/atoms/Icon";
+import Row from "@/components/atoms/Row";
+import Space from "@/components/atoms/Space";
 
 export type Props = {
   loading?: boolean;
@@ -30,6 +30,7 @@ const PluginsListCard: React.FC<Props> = ({
       cover={<img alt="example" src={cover} />}
       size="small"
       bordered={false}
+      onClick={onClick}
     >
       <Row justify="space-between">
         <OrganizationName>{organizationName}</OrganizationName>
