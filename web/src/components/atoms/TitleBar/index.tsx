@@ -25,9 +25,6 @@ const Contents = styled.div`
 const Title = styled.h1`
   padding: 48px 0 10px;
   color: #fff;
-  margin: 0;
 `;
-const Desc = styled.p`
-  margin: 0;
-`;
+const Desc = styled.p``;
 export default TitleBar;

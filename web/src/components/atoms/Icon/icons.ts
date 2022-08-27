@@ -14,12 +14,17 @@ import {
   SettingOutlined,
   DesktopOutlined,
   MailOutlined,
+  InboxOutlined,
+  PaperClipOutlined,
+  DeleteOutlined,
+  ArrowRightOutlined,
 } from "@ant-design/icons";
 
 export default {
   downOutlined: DownOutlined,
   heart: HeartOutlined,
   arrowDown: ArrowDownOutlined,
+  arrowRight: ArrowRightOutlined,
   upload: CloudUploadOutlined,
   downFilled: CaretDownOutlined,
   user: UserOutlined,
@@ -32,4 +37,7 @@ export default {
   setting: SettingOutlined,
   desktop: DesktopOutlined,
   email: MailOutlined,
+  inbox: InboxOutlined,
+  paperClip: PaperClipOutlined,
+  delete: DeleteOutlined,
 };
