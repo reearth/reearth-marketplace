@@ -9,6 +9,9 @@ import {
   ExclamationCircleOutlined,
   PlusOutlined,
   CheckCircleFilled,
+  EditOutlined,
+  RocketOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 
 export default {
@@ -22,4 +25,7 @@ export default {
   exclamation: ExclamationCircleOutlined,
   plus: PlusOutlined,
   checkFilled: CheckCircleFilled,
+  edit: EditOutlined,
+  rocket: RocketOutlined,
+  setting: SettingOutlined,
 };

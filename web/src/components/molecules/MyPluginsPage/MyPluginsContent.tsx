@@ -37,8 +37,11 @@ const Wrapper = styled.div`
 const Title = styled.h1`
   font-weight: bold;
   font-size: 20px;
+  margin: 0;
 `;
 
-const TitleArea = styled(Row)``;
+const TitleArea = styled(Row)`
+  margin-bottom: 24px;
+`;
 
 export default MyPluginsContent;
