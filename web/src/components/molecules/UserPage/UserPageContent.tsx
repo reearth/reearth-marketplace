@@ -90,7 +90,6 @@ const UserIcon = styled.div`
 `;
 
 const UserInitial = styled.p`
-  margin: 0;
   color: #fff;
   font-weight: bold;
   font-size: 28px;
@@ -108,14 +107,12 @@ const DeveloperInfo = styled(Space)`
 `;
 
 const Title = styled.h1`
-  margin: 0;
   font-size: 20px;
   font-weight: bold;
 `;
 
 const Description = styled.p`
   max-width: 445px;
-  margin: 0;
 `;
 
 const AdditionalInfo = styled.div``;

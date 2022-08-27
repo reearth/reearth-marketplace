@@ -145,7 +145,6 @@ const Wrapper = styled.div`
 const PluginDocs = styled.div``;
 
 const Title = styled.h1`
-  margin: 0;
   font-size: 28px;
   font-weight: bold;
 `;

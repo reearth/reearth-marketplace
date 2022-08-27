@@ -104,7 +104,6 @@ const Wrapper = styled.div`
 
 const BoldTitle = styled.p`
   font-weight: bold;
-  margin: 0;
 `;
 
 export default MyPluginsTable;
