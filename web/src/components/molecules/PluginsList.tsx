@@ -8,27 +8,27 @@ const PluginsList: React.FC<Props> = ({ loading }) => {
   return (
     <Space size={[37.33, 24]} wrap>
       <PluginsListCard
-        title=""
+        name=""
         loading={loading}
         cover="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
       />
       <PluginsListCard
-        title=""
+        name=""
         loading={loading}
         cover="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
       />
       <PluginsListCard
-        title=""
+        name=""
         loading={loading}
         cover="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
       />
       <PluginsListCard
-        title=""
+        name=""
         loading={loading}
         cover="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
       />
       <PluginsListCard
-        title=""
+        name=""
         loading={loading}
         cover="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
       />

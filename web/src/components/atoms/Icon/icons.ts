@@ -7,6 +7,8 @@ import {
   UserOutlined,
   ExportOutlined,
   ExclamationCircleOutlined,
+  PlusOutlined,
+  CheckCircleFilled,
 } from "@ant-design/icons";
 
 export default {
@@ -18,4 +20,6 @@ export default {
   user: UserOutlined,
   logout: ExportOutlined,
   exclamation: ExclamationCircleOutlined,
+  plus: PlusOutlined,
+  checkFilled: CheckCircleFilled,
 };

@@ -9,19 +9,19 @@ import Space from "@/components/atoms/Space";
 export type Props = {
   loading?: boolean;
   cover?: string;
-  organizationName?: string;
+  author?: string;
   likedCount?: number;
   installedCount?: number;
-  title: string;
+  name: string;
   onClick?: () => void;
 };
 const PluginsListCard: React.FC<Props> = ({
   loading,
   cover,
-  organizationName,
+  author,
   likedCount,
   installedCount,
-  title,
+  name,
   onClick,
 }) => {
   return (
@@ -33,7 +33,7 @@ const PluginsListCard: React.FC<Props> = ({
       onClick={onClick}
     >
       <Row justify="space-between">
-        <OrganizationName>{organizationName}</OrganizationName>
+        <AuthorName>{author}</AuthorName>
         <Space size="small">
           <Row justify="start">
             <Button type="text" size="small" onClick={onClick}>
@@ -49,12 +49,12 @@ const PluginsListCard: React.FC<Props> = ({
           </Row>
         </Space>
       </Row>
-      <Meta title={title} />
+      <Meta title={name} />
     </Card>
   );
 };
 
-const OrganizationName = styled.p``;
+const AuthorName = styled.p``;
 const LikedNum = styled.span``;
 
 export default PluginsListCard;
