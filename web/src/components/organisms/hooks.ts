@@ -17,7 +17,28 @@ export default () => {
         },
     });
 
+    const [likePlugin] = useLikePluginMutation();
+    const [unlikePlugin] = useUnlikePluginMutation();
+    const onLike = useCallback(async (id: string) => {
+        await likePlugin({
+            variables: {
+                id,
+            },
+        });
+        await refetch();
+    } , [likePlugin, refetch]);
+    const onUnlike = useCallback(async (id: string) => {
+        await unlikePlugin({
+            variables: {
+                id,
+            },
+        });
+        await refetch();
+    } , [unlikePlugin, refetch]);
+
     return {
         plugins: data?.plugins,
+        onLike,
+        onUnlike,
     }
 }
