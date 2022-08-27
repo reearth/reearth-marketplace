@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useSearchPluginQuery } from "@/gql/graphql-client-api";
+import { useSearchPluginQuery, useLikePluginMutation, useUnlikePluginMutation } from "@/gql/graphql-client-api";
 
 
 export default () => {
@@ -15,7 +15,8 @@ export default () => {
             // sort: "",
             // after: "",
         },
-    })
+    });
+
     return {
         plugins: data?.plugins,
     }

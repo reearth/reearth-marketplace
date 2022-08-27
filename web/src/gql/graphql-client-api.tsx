@@ -401,6 +401,20 @@ export type SearchPluginQueryVariables = Exact<{
 
 export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', images: Array<string>, author?: string | null, like: number, downloads: number, name: string } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
 
+export type LikePluginMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type LikePluginMutation = { __typename?: 'Mutation', likePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', like: number } } };
+
+export type UnlikePluginMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type UnlikePluginMutation = { __typename?: 'Mutation', unlikePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', like: number } } };
+
 
 export const SearchPluginDocument = gql`
     query SearchPlugin($first: Int!, $keyword: String, $liked: Boolean, $tags: [String!], $types: [PluginType!], $publisher: ID, $sort: PluginSort, $after: Cursor) {
@@ -457,3 +471,73 @@ export function useSearchPluginLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type SearchPluginQueryHookResult = ReturnType<typeof useSearchPluginQuery>;
 export type SearchPluginLazyQueryHookResult = ReturnType<typeof useSearchPluginLazyQuery>;
 export type SearchPluginQueryResult = Apollo.QueryResult<SearchPluginQuery, SearchPluginQueryVariables>;
+export const LikePluginDocument = gql`
+    mutation LikePlugin($id: ID!) {
+  likePlugin(input: {pluginId: $id}) {
+    plugin {
+      like
+    }
+  }
+}
+    `;
+export type LikePluginMutationFn = Apollo.MutationFunction<LikePluginMutation, LikePluginMutationVariables>;
+
+/**
+ * __useLikePluginMutation__
+ *
+ * To run a mutation, you first call `useLikePluginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useLikePluginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [likePluginMutation, { data, loading, error }] = useLikePluginMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useLikePluginMutation(baseOptions?: Apollo.MutationHookOptions<LikePluginMutation, LikePluginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<LikePluginMutation, LikePluginMutationVariables>(LikePluginDocument, options);
+      }
+export type LikePluginMutationHookResult = ReturnType<typeof useLikePluginMutation>;
+export type LikePluginMutationResult = Apollo.MutationResult<LikePluginMutation>;
+export type LikePluginMutationOptions = Apollo.BaseMutationOptions<LikePluginMutation, LikePluginMutationVariables>;
+export const UnlikePluginDocument = gql`
+    mutation UnlikePlugin($id: ID!) {
+  unlikePlugin(input: {pluginId: $id}) {
+    plugin {
+      like
+    }
+  }
+}
+    `;
+export type UnlikePluginMutationFn = Apollo.MutationFunction<UnlikePluginMutation, UnlikePluginMutationVariables>;
+
+/**
+ * __useUnlikePluginMutation__
+ *
+ * To run a mutation, you first call `useUnlikePluginMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnlikePluginMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unlikePluginMutation, { data, loading, error }] = useUnlikePluginMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useUnlikePluginMutation(baseOptions?: Apollo.MutationHookOptions<UnlikePluginMutation, UnlikePluginMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnlikePluginMutation, UnlikePluginMutationVariables>(UnlikePluginDocument, options);
+      }
+export type UnlikePluginMutationHookResult = ReturnType<typeof useUnlikePluginMutation>;
+export type UnlikePluginMutationResult = Apollo.MutationResult<UnlikePluginMutation>;
+export type UnlikePluginMutationOptions = Apollo.BaseMutationOptions<UnlikePluginMutation, UnlikePluginMutationVariables>;
