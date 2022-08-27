@@ -1,3 +1,14 @@
 {
-  "possibleTypes": {}
+  "possibleTypes": {
+    "Node": [
+      "Organization",
+      "Plugin",
+      "User"
+    ],
+    "Publisher": [
+      "Me",
+      "Organization",
+      "User"
+    ]
+  }
 }
