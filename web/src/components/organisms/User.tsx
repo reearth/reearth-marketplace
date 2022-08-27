@@ -5,8 +5,8 @@ import UserPage from "@/components/molecules/UserPage";
 export type Props = {
   isLoggedIn?: boolean;
 };
-const UserPage: React.FC<Props> = ({ isLoggedIn }) => {
+const User: React.FC<Props> = ({ isLoggedIn }) => {
   return <UserPage isLoggedIn={isLoggedIn} />;
 };
 
-export default UserPage;
+export default User;

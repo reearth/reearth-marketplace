@@ -12,6 +12,8 @@ import {
   EditOutlined,
   RocketOutlined,
   SettingOutlined,
+  DesktopOutlined,
+  MailOutlined,
 } from "@ant-design/icons";
 
 export default {
@@ -28,4 +30,6 @@ export default {
   edit: EditOutlined,
   rocket: RocketOutlined,
   setting: SettingOutlined,
+  desktop: DesktopOutlined,
+  email: MailOutlined,
 };
