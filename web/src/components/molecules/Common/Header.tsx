@@ -110,7 +110,6 @@ const Wrapper = styled.header`
 const Title = styled.h1`
   color: #df3013;
   font-size: 14px;
-  margin: 0;
 `;
 
 export default Header;
