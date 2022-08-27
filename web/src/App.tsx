@@ -29,7 +29,6 @@ const routes: RouteObject[] = [
     element: <PublisherRegistration />,
   },
   { path: "/myplugins", element: <MyPlugins /> },
-  { path: "/myplugins/:pluginId", element: <MyPluginSetting /> },
   { path: "/myplugins/new", element: <AddNewPlugin /> },
   { path: "/myplugins/:pluginId/update", element: <UpdatePlugin /> },
   { path: "*", element: <NotFound /> },

@@ -1,8 +1,10 @@
 import { withAuthenticationRequired, AuthenticationRequiredPage } from "@/auth";
+import UpdatePluginOrg from "@/components/organisms/UpdatePlugin";
 
 export type Props = {};
 const UpdatePlugin: React.FC<Props> = () => {
-  return <AuthenticationRequiredPage>UpdatePlugin</AuthenticationRequiredPage>;
+  // TODO: add AuthenticationRequiredPage
+  return <UpdatePluginOrg />;
 };
-
-export default withAuthenticationRequired(UpdatePlugin);
+// TODO: withAuthenticationRequired
+export default UpdatePlugin;
