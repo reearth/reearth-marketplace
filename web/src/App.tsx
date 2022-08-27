@@ -4,19 +4,19 @@ import {
   type RouteObject,
 } from "react-router-dom";
 
-import RootPage from "@/components/pages/Root";
-import PluginDetailPage from "@/components/pages/PluginDetail";
-import UserPage from "@/components/pages/User";
+import { Provider as Auth0Provider } from "@/auth";
+import AddNewPlugin from "@/components/pages/AddNewPlugin";
 import PublisherRegistration from "@/components/pages/DeveloperRegistration";
 import MyPlugins from "@/components/pages/MyPlugins";
 import MyPluginSetting from "@/components/pages/MyPluginSetting";
-import AddNewPlugin from "@/components/pages/AddNewPlugin";
+import PluginDetailPage from "@/components/pages/PluginDetail";
+import RootPage from "@/components/pages/Root";
 import UpdatePlugin from "@/components/pages/UpdatePlugin";
-import NotFound from "./components/pages/NotFound";
-
-import { Provider as Auth0Provider } from "@/auth";
+import UserPage from "@/components/pages/User";
 import { Provider as GqlProvider } from "@/gql";
 import { Provider as I18nProvider } from "@/i18n";
+
+import NotFound from "./components/pages/NotFound";
 
 import "antd/dist/antd.css";
 
@@ -28,7 +28,7 @@ const routes: RouteObject[] = [
     path: "/:userId/publisher-registration",
     element: <PublisherRegistration />,
   },
-  { path: "/:userId/myplugins", element: <MyPlugins /> },
+  { path: "/myplugins", element: <MyPlugins /> },
   { path: "/myplugins/:pluginId", element: <MyPluginSetting /> },
   { path: "/myplugins/new", element: <AddNewPlugin /> },
   { path: "/myplugins/:pluginId/update", element: <UpdatePlugin /> },
