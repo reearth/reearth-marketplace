@@ -4,17 +4,21 @@ import TitleBar from "@/components/atoms/TitleBar";
 import Footer from "@/components/molecules/Common/Footer";
 import Header from "@/components/molecules/Common/Header";
 
-import TopPageContent from "./TopPageContents";
+import TopPageContent, { Plugin } from "./TopPageContents";
+
+export type { Plugin } from "./TopPageContents";
 
 export type Props = {
   isLoggedIn: boolean;
+  plugins?: Plugin[];
 };
-const TopPage: React.FC<Props> = ({ isLoggedIn }) => {
+
+const TopPage: React.FC<Props> = ({ isLoggedIn, plugins }) => {
   return (
     <Wrapper>
       <Header isLoggedIn={isLoggedIn} />
       <TitleBar />
-      <TopPageContent />
+      <TopPageContent plugins={plugins} />
       <Footer />
     </Wrapper>
   );

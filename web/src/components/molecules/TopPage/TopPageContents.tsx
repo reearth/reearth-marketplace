@@ -1,14 +1,19 @@
 import styled from "@emotion/styled";
 
+import PluginsList, { Plugin } from "@/components/molecules/PluginsList";
 import SearchArea from "@/components/molecules/SearchArea";
-import PluginsList from "@/components/molecules/PluginsList";
 
-export type Props = {};
-const TopPageContents: React.FC<Props> = () => {
+export type { Plugin } from "@/components/molecules/PluginsList";
+
+export type Props = {
+  plugins?: Plugin[];
+};
+
+const TopPageContents: React.FC<Props> = ({ plugins }) => {
   return (
     <Wrapper>
       <SearchArea />
-      <PluginsList />
+      <PluginsList plugins={plugins} />
     </Wrapper>
   );
 };

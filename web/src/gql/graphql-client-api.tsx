@@ -387,6 +387,13 @@ export type VersionPayload = {
   version: Version;
 };
 
+export type PluginQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' } | null };
+
 export type SearchPluginQueryVariables = Exact<{
   first: Scalars['Int'];
   keyword?: InputMaybe<Scalars['String']>;
@@ -399,29 +406,75 @@ export type SearchPluginQueryVariables = Exact<{
 }>;
 
 
-export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', images: Array<string>, author?: string | null, like: number, downloads: number, name: string } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
+export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
 
 export type LikePluginMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type LikePluginMutation = { __typename?: 'Mutation', likePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', like: number } } };
+export type LikePluginMutation = { __typename?: 'Mutation', likePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, like: number } } };
 
 export type UnlikePluginMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type UnlikePluginMutation = { __typename?: 'Mutation', unlikePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', like: number } } };
+export type UnlikePluginMutation = { __typename?: 'Mutation', unlikePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, like: number } } };
 
 
+export const PluginDocument = gql`
+    query Plugin($id: ID!) {
+  node(id: $id) {
+    ... on Plugin {
+      id
+      images
+      author
+      like
+      downloads
+      name
+      latestVersion {
+        version
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __usePluginQuery__
+ *
+ * To run a query within a React component, call `usePluginQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePluginQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePluginQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function usePluginQuery(baseOptions: Apollo.QueryHookOptions<PluginQuery, PluginQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PluginQuery, PluginQueryVariables>(PluginDocument, options);
+      }
+export function usePluginLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PluginQuery, PluginQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PluginQuery, PluginQueryVariables>(PluginDocument, options);
+        }
+export type PluginQueryHookResult = ReturnType<typeof usePluginQuery>;
+export type PluginLazyQueryHookResult = ReturnType<typeof usePluginLazyQuery>;
+export type PluginQueryResult = Apollo.QueryResult<PluginQuery, PluginQueryVariables>;
 export const SearchPluginDocument = gql`
     query SearchPlugin($first: Int!, $keyword: String, $liked: Boolean, $tags: [String!], $types: [PluginType!], $publisher: ID, $sort: PluginSort, $after: Cursor) {
   plugins(
     input: {keyword: $keyword, liked: $liked, tags: $tags, types: $types, publisher: $publisher, sort: $sort, after: $after}
   ) {
     nodes {
+      id
       images
       author
       like
@@ -475,6 +528,7 @@ export const LikePluginDocument = gql`
     mutation LikePlugin($id: ID!) {
   likePlugin(input: {pluginId: $id}) {
     plugin {
+      id
       like
     }
   }
@@ -510,6 +564,7 @@ export const UnlikePluginDocument = gql`
     mutation UnlikePlugin($id: ID!) {
   unlikePlugin(input: {pluginId: $id}) {
     plugin {
+      id
       like
     }
   }
