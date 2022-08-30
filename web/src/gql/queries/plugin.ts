@@ -32,10 +32,7 @@ export const SEARCH_PLUGIN = gql`
   ) {
     plugins(
       input: {
-<<<<<<< HEAD
-=======
         first: $first
->>>>>>> e8d370f34e75d73676bc2f05272becac579c9252
         keyword: $keyword
         liked: $liked
         tags: $tags
