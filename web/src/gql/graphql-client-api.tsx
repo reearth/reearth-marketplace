@@ -387,212 +387,120 @@ export type VersionPayload = {
   version: Version;
 };
 
-export type PluginQueryVariables = Exact<{
-  id: Scalars['ID'];
-}>;
-
-
-export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' } | null };
-
-export type SearchPluginQueryVariables = Exact<{
+export type GetMeQueryVariables = Exact<{
   first: Scalars['Int'];
-  keyword?: InputMaybe<Scalars['String']>;
-  liked?: InputMaybe<Scalars['Boolean']>;
-  tags?: InputMaybe<Array<Scalars['String']> | Scalars['String']>;
-  types?: InputMaybe<Array<PluginType> | PluginType>;
-  publisher?: InputMaybe<Scalars['ID']>;
-  sort?: InputMaybe<PluginSort>;
   after?: InputMaybe<Scalars['Cursor']>;
 }>;
 
 
-export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
+export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } } };
 
-export type LikePluginMutationVariables = Exact<{
-  id: Scalars['ID'];
+export type UpdateMeMutationVariables = Exact<{
+  name?: InputMaybe<Scalars['String']>;
+  lang?: InputMaybe<Scalars['Lang']>;
+  displayName?: InputMaybe<Scalars['String']>;
+  description?: InputMaybe<Scalars['String']>;
+  tel?: InputMaybe<Scalars['String']>;
 }>;
 
 
-export type LikePluginMutation = { __typename?: 'Mutation', likePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, like: number } } };
-
-export type UnlikePluginMutationVariables = Exact<{
-  id: Scalars['ID'];
-}>;
+export type UpdateMeMutation = { __typename?: 'Mutation', updateMe: { __typename?: 'MePayload', me: { __typename?: 'Me', id: string, name: string, lang?: any | null, displayName?: string | null, description?: string | null, tel?: string | null } } };
 
 
-export type UnlikePluginMutation = { __typename?: 'Mutation', unlikePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, like: number } } };
-
-
-export const PluginDocument = gql`
-    query Plugin($id: ID!) {
-  node(id: $id) {
-    ... on Plugin {
-      id
-      images
-      author
-      like
-      downloads
-      name
-      latestVersion {
-        version
+export const GetMeDocument = gql`
+    query GetMe($first: Int!, $after: Cursor) {
+  me {
+    id
+    plugins(first: $first, after: $after) {
+      nodes {
+        id
+        images
+        author
+        like
+        downloads
+        name
       }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      totalCount
     }
   }
 }
     `;
 
 /**
- * __usePluginQuery__
+ * __useGetMeQuery__
  *
- * To run a query within a React component, call `usePluginQuery` and pass it any options that fit your needs.
- * When your component renders, `usePluginQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = usePluginQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function usePluginQuery(baseOptions: Apollo.QueryHookOptions<PluginQuery, PluginQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PluginQuery, PluginQueryVariables>(PluginDocument, options);
-      }
-export function usePluginLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PluginQuery, PluginQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PluginQuery, PluginQueryVariables>(PluginDocument, options);
-        }
-export type PluginQueryHookResult = ReturnType<typeof usePluginQuery>;
-export type PluginLazyQueryHookResult = ReturnType<typeof usePluginLazyQuery>;
-export type PluginQueryResult = Apollo.QueryResult<PluginQuery, PluginQueryVariables>;
-export const SearchPluginDocument = gql`
-    query SearchPlugin($first: Int!, $keyword: String, $liked: Boolean, $tags: [String!], $types: [PluginType!], $publisher: ID, $sort: PluginSort, $after: Cursor) {
-  plugins(
-    input: {keyword: $keyword, liked: $liked, tags: $tags, types: $types, publisher: $publisher, sort: $sort, after: $after}
-  ) {
-    nodes {
-      id
-      images
-      author
-      like
-      downloads
-      name
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-    totalCount
-  }
-}
-    `;
-
-/**
- * __useSearchPluginQuery__
- *
- * To run a query within a React component, call `useSearchPluginQuery` and pass it any options that fit your needs.
- * When your component renders, `useSearchPluginQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useSearchPluginQuery({
+ * const { data, loading, error } = useGetMeQuery({
  *   variables: {
  *      first: // value for 'first'
- *      keyword: // value for 'keyword'
- *      liked: // value for 'liked'
- *      tags: // value for 'tags'
- *      types: // value for 'types'
- *      publisher: // value for 'publisher'
- *      sort: // value for 'sort'
  *      after: // value for 'after'
  *   },
  * });
  */
-export function useSearchPluginQuery(baseOptions: Apollo.QueryHookOptions<SearchPluginQuery, SearchPluginQueryVariables>) {
+export function useGetMeQuery(baseOptions: Apollo.QueryHookOptions<GetMeQuery, GetMeQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<SearchPluginQuery, SearchPluginQueryVariables>(SearchPluginDocument, options);
+        return Apollo.useQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
       }
-export function useSearchPluginLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchPluginQuery, SearchPluginQueryVariables>) {
+export function useGetMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMeQuery, GetMeQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<SearchPluginQuery, SearchPluginQueryVariables>(SearchPluginDocument, options);
+          return Apollo.useLazyQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
         }
-export type SearchPluginQueryHookResult = ReturnType<typeof useSearchPluginQuery>;
-export type SearchPluginLazyQueryHookResult = ReturnType<typeof useSearchPluginLazyQuery>;
-export type SearchPluginQueryResult = Apollo.QueryResult<SearchPluginQuery, SearchPluginQueryVariables>;
-export const LikePluginDocument = gql`
-    mutation LikePlugin($id: ID!) {
-  likePlugin(input: {pluginId: $id}) {
-    plugin {
+export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
+export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
+export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
+export const UpdateMeDocument = gql`
+    mutation UpdateMe($name: String, $lang: Lang, $displayName: String, $description: String, $tel: String) {
+  updateMe(
+    input: {name: $name, lang: $lang, displayName: $displayName, description: $description, tel: $tel}
+  ) {
+    me {
       id
-      like
+      name
+      lang
+      displayName
+      description
+      tel
     }
   }
 }
     `;
-export type LikePluginMutationFn = Apollo.MutationFunction<LikePluginMutation, LikePluginMutationVariables>;
+export type UpdateMeMutationFn = Apollo.MutationFunction<UpdateMeMutation, UpdateMeMutationVariables>;
 
 /**
- * __useLikePluginMutation__
+ * __useUpdateMeMutation__
  *
- * To run a mutation, you first call `useLikePluginMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useLikePluginMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpdateMeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMeMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [likePluginMutation, { data, loading, error }] = useLikePluginMutation({
+ * const [updateMeMutation, { data, loading, error }] = useUpdateMeMutation({
  *   variables: {
- *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      lang: // value for 'lang'
+ *      displayName: // value for 'displayName'
+ *      description: // value for 'description'
+ *      tel: // value for 'tel'
  *   },
  * });
  */
-export function useLikePluginMutation(baseOptions?: Apollo.MutationHookOptions<LikePluginMutation, LikePluginMutationVariables>) {
+export function useUpdateMeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMeMutation, UpdateMeMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<LikePluginMutation, LikePluginMutationVariables>(LikePluginDocument, options);
+        return Apollo.useMutation<UpdateMeMutation, UpdateMeMutationVariables>(UpdateMeDocument, options);
       }
-export type LikePluginMutationHookResult = ReturnType<typeof useLikePluginMutation>;
-export type LikePluginMutationResult = Apollo.MutationResult<LikePluginMutation>;
-export type LikePluginMutationOptions = Apollo.BaseMutationOptions<LikePluginMutation, LikePluginMutationVariables>;
-export const UnlikePluginDocument = gql`
-    mutation UnlikePlugin($id: ID!) {
-  unlikePlugin(input: {pluginId: $id}) {
-    plugin {
-      id
-      like
-    }
-  }
-}
-    `;
-export type UnlikePluginMutationFn = Apollo.MutationFunction<UnlikePluginMutation, UnlikePluginMutationVariables>;
-
-/**
- * __useUnlikePluginMutation__
- *
- * To run a mutation, you first call `useUnlikePluginMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUnlikePluginMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [unlikePluginMutation, { data, loading, error }] = useUnlikePluginMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useUnlikePluginMutation(baseOptions?: Apollo.MutationHookOptions<UnlikePluginMutation, UnlikePluginMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UnlikePluginMutation, UnlikePluginMutationVariables>(UnlikePluginDocument, options);
-      }
-export type UnlikePluginMutationHookResult = ReturnType<typeof useUnlikePluginMutation>;
-export type UnlikePluginMutationResult = Apollo.MutationResult<UnlikePluginMutation>;
-export type UnlikePluginMutationOptions = Apollo.BaseMutationOptions<UnlikePluginMutation, UnlikePluginMutationVariables>;
+export type UpdateMeMutationHookResult = ReturnType<typeof useUpdateMeMutation>;
+export type UpdateMeMutationResult = Apollo.MutationResult<UpdateMeMutation>;
+export type UpdateMeMutationOptions = Apollo.BaseMutationOptions<UpdateMeMutation, UpdateMeMutationVariables>;

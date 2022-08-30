@@ -10,6 +10,7 @@ export const PLUGIN = gql`
         like
         downloads
         name
+        icon
         latestVersion {
           version
         }
@@ -31,6 +32,7 @@ export const SEARCH_PLUGIN = gql`
   ) {
     plugins(
       input: {
+        first: $first
         keyword: $keyword
         liked: $liked
         tags: $tags
@@ -77,4 +79,72 @@ export const UNLIKE_PLUGIN = gql`
       }
     }
   }
+`;
+
+export const UPDATE_PLUGIN = gql`
+    mutation UpdatePlugin($pluginId: ID!, $active: Boolean, $images: [Upload!], $newTags: [String!], $deletedTags: [String!]) {
+        updatePlugin(input: { pluginId: $pluginId, active: $active, images: $images, newTags: $newTags, deletedTags: $deletedTags }) {
+            plugin {
+                id
+                active
+                tags
+                images
+            } 
+        }
+    }
+`;
+
+export const CREATE_PLUGIN = gql`
+    mutation CreatePlugin($file: Upload, $repo: String, $publisher: ID) {
+        createPlugin(input: { file: $file, repo: $repo, publisher: $publisher }) {
+        }
+    }
+`;
+
+export const PARSE_PLUGIN = gql`
+    mutation ParsePlugin($file: Upload, $repo: String) {
+        parsePlugin(input: { file: $file, repo: $repo }) {
+            plugin {
+                type
+                name
+                author
+                description
+                icon
+                repository
+                readme
+            }
+        }
+    }
+`;
+
+export const UPDATE_PLUGIN_VERSION = gql`
+    mutation UpdatePluginVersion(
+        $pluginId: ID!
+        $version: String!
+        $description: String
+        $active: Boolean
+    ) {
+        updateVersion(input: { pluginId: $pluginId, version: $version, description: $description, active: $active }) {
+            plugin {
+                id
+                author
+                description
+                icon
+                repository
+                publishedAt
+                readme
+                latestVersion {
+                    version {
+                        version
+                        description
+                        downloads
+                        active
+                        createdAt
+                        updatedAt
+                        publishedAt
+                    }
+                }
+            }
+        }
+    }
 `;
