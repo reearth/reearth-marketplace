@@ -3,7 +3,15 @@ import PluginsListCard from "@/components/molecules/PluginsListCard";
 
 export type Props = {
   loading?: boolean;
+  plugins?: Plugin[];
 };
+
+export type Plugin = {
+  id: string;
+  name: string;
+  cover: string;
+};
+
 const PluginsList: React.FC<Props> = ({ loading }) => {
   return (
     <Space size={[37.33, 24]} wrap>

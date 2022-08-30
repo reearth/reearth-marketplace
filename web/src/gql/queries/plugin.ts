@@ -1,6 +1,25 @@
 import { gql } from "@apollo/client";
 
-const SEARCH_PLUGIN = gql`
+export const PLUGIN = gql`
+  query Plugin($id: ID!) {
+    node(id: $id) {
+      ... on Plugin {
+        id
+        images
+        author
+        like
+        downloads
+        name
+        icon
+        latestVersion {
+          version
+        }
+      }
+    }
+  }
+`;
+
+export const SEARCH_PLUGIN = gql`
   query SearchPlugin(
     $first: Int!
     $keyword: String
@@ -13,6 +32,10 @@ const SEARCH_PLUGIN = gql`
   ) {
     plugins(
       input: {
+<<<<<<< HEAD
+=======
+        first: $first
+>>>>>>> e8d370f34e75d73676bc2f05272becac579c9252
         keyword: $keyword
         liked: $liked
         tags: $tags
@@ -39,7 +62,7 @@ const SEARCH_PLUGIN = gql`
   }
 `;
 
-const LIKE_PLUGIN = gql`
+export const LIKE_PLUGIN = gql`
   mutation LikePlugin($id: ID!) {
     likePlugin(input: { pluginId: $id }) {
       plugin {
@@ -50,12 +73,96 @@ const LIKE_PLUGIN = gql`
   }
 `;
 
-const UNLIKE_PLUGIN = gql`
+export const UNLIKE_PLUGIN = gql`
   mutation UnlikePlugin($id: ID!) {
     unlikePlugin(input: { pluginId: $id }) {
       plugin {
         id
         like
+      }
+    }
+  }
+`;
+
+export const UPDATE_PLUGIN = gql`
+  mutation UpdatePlugin(
+    $pluginId: ID!
+    $active: Boolean
+    $images: [Upload!]
+    $newTags: [String!]
+    $deletedTags: [String!]
+  ) {
+    updatePlugin(
+      input: {
+        pluginId: $pluginId
+        active: $active
+        images: $images
+        newTags: $newTags
+        deletedTags: $deletedTags
+      }
+    ) {
+      plugin {
+        id
+        active
+        tags
+        images
+      }
+    }
+  }
+`;
+
+export const CREATE_PLUGIN = gql`
+    mutation CreatePlugin($file: Upload, $repo: String, $publisher: ID) {
+        createPlugin(input: { file: $file, repo: $repo, publisher: $publisher }) {
+        }
+    }
+`;
+
+export const PARSE_PLUGIN = gql`
+  mutation ParsePlugin($file: Upload, $repo: String) {
+    parsePlugin(input: { file: $file, repo: $repo }) {
+      plugin {
+        type
+        name
+        author
+        description
+        icon
+        repository
+        readme
+      }
+    }
+  }
+`;
+
+export const UPDATE_PLUGIN_VERSION = gql`
+  mutation UpdatePluginVersion(
+    $pluginId: ID!
+    $version: String!
+    $description: String
+    $active: Boolean
+  ) {
+    updateVersion(
+      input: { pluginId: $pluginId, version: $version, description: $description, active: $active }
+    ) {
+      plugin {
+        id
+        author
+        description
+        icon
+        repository
+        publishedAt
+        readme
+        latestVersion {
+          version {
+            version
+            description
+            downloads
+            active
+            createdAt
+            updatedAt
+            publishedAt
+          }
+        }
       }
     }
   }
