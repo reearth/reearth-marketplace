@@ -96,6 +96,18 @@
             "deprecationReason": null
           },
           {
+            "name": "publisher",
+            "description": null,
+            "type": {
+              "kind": "SCALAR",
+              "name": "ID",
+              "ofType": null
+            },
+            "defaultValue": null,
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
             "name": "repo",
             "description": null,
             "type": {

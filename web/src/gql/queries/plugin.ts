@@ -109,10 +109,13 @@ export const UPDATE_PLUGIN = gql`
 `;
 
 export const CREATE_PLUGIN = gql`
-    mutation CreatePlugin($file: Upload, $repo: String, $publisher: ID) {
-        createPlugin(input: { file: $file, repo: $repo, publisher: $publisher }) {
-        }
+  mutation CreatePlugin($file: Upload, $repo: String, $publisher: ID) {
+    createPlugin(input: { file: $file, repo: $repo, publisher: $publisher }) {
+      plugin {
+        id
+      }
     }
+  }
 `;
 
 export const PARSE_PLUGIN = gql`
@@ -150,15 +153,13 @@ export const UPDATE_PLUGIN_VERSION = gql`
         publishedAt
         readme
         latestVersion {
-          version {
-            version
-            description
-            downloads
-            active
-            createdAt
-            updatedAt
-            publishedAt
-          }
+          version
+          description
+          downloads
+          active
+          createdAt
+          updatedAt
+          publishedAt
         }
       }
     }
