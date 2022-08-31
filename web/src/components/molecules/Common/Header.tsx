@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useAuth } from "@/auth/hooks";
@@ -17,32 +17,30 @@ export type Props = {
 };
 const Header: React.FC<Props> = ({ isLoggedIn, myUserId }) => {
   const navigate = useNavigate();
-  const [currentLang, updateLang] = useState<string>();
-  const handleLangMenuClick: MenuProps["onClick"] = (e) => {
-    updateLang(e.key);
-  };
-  const handleUserMenuClick: MenuProps["onClick"] = (e) => {
-    updateLang(e.key);
-  };
+  // const [currentLang, updateLang] = useState<string>();
+  // const handleLangMenuClick: MenuProps["onClick"] = (e) => {
+  //   updateLang(e.key);
+  // };
+  const handleUserMenuClick: MenuProps["onClick"] = () => {};
 
-  const { logout } = useAuth();
-  const langMenu = (
-    <Menu
-      theme="dark"
-      onClick={handleLangMenuClick}
-      items={[
-        {
-          label: "En",
-          key: 1,
-        },
-        {
-          label: "Ja",
-          key: 2,
-        },
-      ]}
-    />
-  );
-  const userMenu = (
+  const { login, logout } = useAuth();
+  // const langMenu = (
+  //   <Menu
+  //     theme="dark"
+  //     onClick={handleLangMenuClick}
+  //     items={[
+  //       {
+  //         label: "En",
+  //         key: 1,
+  //       },
+  //       {
+  //         label: "Ja",
+  //         key: 2,
+  //       },
+  //     ]}
+  //   />
+  // );
+  const userMenu = isLoggedIn ? (
     <Menu
       theme="dark"
       onClick={handleUserMenuClick}
@@ -67,6 +65,19 @@ const Header: React.FC<Props> = ({ isLoggedIn, myUserId }) => {
         },
       ]}
     />
+  ) : (
+    <Menu
+      theme="dark"
+      onClick={handleUserMenuClick}
+      items={[
+        {
+          label: "Log In",
+          key: 1,
+          icon: <Icon icon="user" style={{ paddingRight: "5px" }} />,
+          onClick: login,
+        },
+      ]}
+    />
   );
   return (
     <Wrapper>
@@ -76,11 +87,7 @@ const Header: React.FC<Props> = ({ isLoggedIn, myUserId }) => {
         </Col>
         <Col>
           <Space size="middle">
-            <Button
-              type="link"
-              size="large"
-              onClick={() => navigate("/myplugins/new")}
-            >
+            <Button type="link" size="large" onClick={() => navigate("/myplugins/new")}>
               <Icon icon="upload" />
             </Button>
             {/* TODO: Dots Nine is needed? */}

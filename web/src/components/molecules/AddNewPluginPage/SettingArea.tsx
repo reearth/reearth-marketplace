@@ -27,8 +27,7 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, description }) => {
           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           listType="picture"
           accept="image/png, image/jpeg, image/jpg"
-          defaultFileList={[]}
-        >
+          defaultFileList={[]}>
           <Button icon={<Icon icon="upload" />} type="primary" ghost>
             Upload Image
           </Button>

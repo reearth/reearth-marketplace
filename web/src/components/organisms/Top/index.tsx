@@ -14,13 +14,7 @@ const Top: React.FC<Props> = () => {
     updateSearchText(text);
   };
   const { plugins } = useHooks(searchText);
-  return (
-    <TopPage
-      isLoggedIn={isAuthenticated}
-      plugins={plugins}
-      onSearch={handleSearch}
-    />
-  );
+  return <TopPage isLoggedIn={isAuthenticated} plugins={plugins} onSearch={handleSearch} />;
 };
 
 export default Top;

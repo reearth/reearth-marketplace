@@ -23,13 +23,13 @@ const MyPluginsTable: React.FC<Props> = () => {
       title: "Plugin Name",
       dataIndex: "name",
       key: "name",
-      render: (text) => <BoldTitle>{text}</BoldTitle>,
+      render: text => <BoldTitle>{text}</BoldTitle>,
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      render: (status) => (
+      render: status => (
         <Row justify="start">
           <Space size="large">
             <Col>

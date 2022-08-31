@@ -8,11 +8,7 @@ export type Props = {};
 const Footer: React.FC<Props> = () => {
   return (
     <Wrapper>
-      <FooterMenuRow
-        justify="space-around"
-        wrap
-        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-      >
+      <FooterMenuRow justify="space-around" wrap gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Col flex={1} style={{ minWidth: "300px" }}>
           <SectionTitle>Community</SectionTitle>
           <Section direction="vertical">

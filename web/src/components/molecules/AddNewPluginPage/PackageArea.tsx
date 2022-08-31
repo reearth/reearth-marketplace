@@ -9,24 +9,17 @@ import Message from "@/components/atoms/Message";
 import Radio, { RadioChangeEvent } from "@/components/atoms/Radio";
 import Row from "@/components/atoms/Row";
 import Space from "@/components/atoms/Space";
-import Upload, {
-  Dragger,
-  UploadChangeParam,
-  RcFile,
-} from "@/components/atoms/Upload";
+import Upload, { Dragger, UploadChangeParam, RcFile } from "@/components/atoms/Upload";
 
 export type FileUploadType = string | RcFile | Blob;
 export type Props = {
   handleClickDetailSetting: () => void;
   handleParsePlugin: (file?: FileUploadType, repo?: string) => void;
 };
-const PackageArea: React.FC<Props> = ({
-  handleClickDetailSetting,
-  handleParsePlugin,
-}) => {
-  const [currentRadio, changeRadio] = useState<
-    "Upload from local" | "GitHub repository"
-  >("Upload from local");
+const PackageArea: React.FC<Props> = ({ handleClickDetailSetting, handleParsePlugin }) => {
+  const [currentRadio, changeRadio] = useState<"Upload from local" | "GitHub repository">(
+    "Upload from local",
+  );
   const [uploadedFileName, uploadZip] = useState<string>("");
 
   const handleChangeRadio = (e: RadioChangeEvent) => {
@@ -49,12 +42,8 @@ const PackageArea: React.FC<Props> = ({
         <Row justify="start">
           <Col>
             <Radio.Group onChange={handleChangeRadio} value={currentRadio}>
-              <Radio.Button value="Upload from local">
-                Upload from local
-              </Radio.Button>
-              <Radio.Button value="GitHub repository">
-                GitHub repository
-              </Radio.Button>
+              <Radio.Button value="Upload from local">Upload from local</Radio.Button>
+              <Radio.Button value="GitHub repository">GitHub repository</Radio.Button>
             </Radio.Group>
           </Col>
         </Row>
@@ -67,7 +56,7 @@ const PackageArea: React.FC<Props> = ({
               maxCount={1}
               disabled={!!uploadedFileName}
               multiple={false}
-              beforeUpload={(file) => {
+              beforeUpload={file => {
                 console.log(file);
                 const isZip = file.type === "application/zip";
                 if (!isZip) {
@@ -75,31 +64,26 @@ const PackageArea: React.FC<Props> = ({
                 }
                 return isZip || Upload.LIST_IGNORE;
               }}
-              customRequest={(info) => handleParsePlugin(info.file)}
-              onChange={(info) => {
+              customRequest={info => handleParsePlugin(info.file)}
+              onChange={info => {
                 const { status } = info.file;
                 if (status !== "uploading") {
                   console.log(info.file, info.fileList);
                 }
                 if (status === "done") {
-                  Message.success(
-                    `${info.file.name} file uploaded successfully.`
-                  );
+                  Message.success(`${info.file.name} file uploaded successfully.`);
                   handleUploadZip(info);
                 } else if (status === "error") {
                   Message.error(`${info.file.name} file upload failed.`);
                 }
               }}
-              onDrop={(e) => {
+              onDrop={e => {
                 console.log("Dropped files", e.dataTransfer.files);
-              }}
-            >
+              }}>
               <p className="ant-upload-drag-icon">
                 <Icon icon="inbox" />
               </p>
-              <p className="ant-upload-hint">
-                Click or drag file to this area to upload
-              </p>
+              <p className="ant-upload-hint">Click or drag file to this area to upload</p>
             </Dragger>
           </UploadArea>
         ) : (

@@ -1,5 +1,6 @@
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 
+import type { FileUploadType } from "@/components/molecules/AddNewPluginPage/PackageArea";
 import { useCreatePluginMutation, useParsePluginMutation } from "@/gql/graphql-client-api";
 
 export default () => {
@@ -20,7 +21,7 @@ export default () => {
   );
 
   const handleParsePluginMutation = useCallback(
-    (data: { file?: File; repo?: string }) => {
+    (data: { file?: FileUploadType; repo?: string }) => {
       parsePluginMutation({
         variables: {
           file: data.file && data.file,

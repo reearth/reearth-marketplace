@@ -21,7 +21,7 @@ const PluginsList: React.FC<Props> = ({ loading, plugins }) => {
     (id: string) => {
       navigate(`/plugins/${id}`);
     },
-    [navigate]
+    [navigate],
   );
   return (
     <Space size={[37.33, 24]} wrap>

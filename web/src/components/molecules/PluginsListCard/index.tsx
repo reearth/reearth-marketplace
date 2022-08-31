@@ -31,8 +31,7 @@ const PluginsListCard: React.FC<Props> = ({
       cover={<img alt="example" src={cover} />}
       size="small"
       bordered={false}
-      onClick={onClick}
-    >
+      onClick={onClick}>
       <Row justify="space-between">
         <AuthorName>{author}</AuthorName>
         <Space size="small">

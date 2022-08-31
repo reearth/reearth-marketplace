@@ -17,10 +17,20 @@ const AddNewPlugin: React.FC<Props> = ({ isLoggedIn }) => {
       publisher: "1",
     });
   };
+  const handleClickPublish = () => {
+    handleCreatePluginMutation({
+      file: undefined,
+      repo: "http",
+      publisher: "1",
+    });
+  };
   const handleParsePlugin = (file: FileUploadType) => {
     console.log(file);
+    handleParsePluginMutation({
+      file: file,
+      repo: "",
+    });
   };
-  const handleClickPublish = () => {};
   return (
     <AddNewPluginPage
       pluginName=""

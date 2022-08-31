@@ -1,4 +1,4 @@
-import { withAuthenticationRequired, AuthenticationRequiredPage } from "@/auth";
+// import { withAuthenticationRequired, AuthenticationRequiredPage } from "@/auth";
 import UserOrg from "@/components/organisms/User";
 
 export type Props = {};

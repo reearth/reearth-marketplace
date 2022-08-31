@@ -1,8 +1,4 @@
-import {
-  BrowserRouter as Router,
-  useRoutes,
-  type RouteObject,
-} from "react-router-dom";
+import { BrowserRouter as Router, useRoutes, type RouteObject } from "react-router-dom";
 
 import { Provider as Auth0Provider } from "@/auth";
 import AddNewPlugin from "@/components/pages/AddNewPlugin";

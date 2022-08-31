@@ -23,23 +23,19 @@ const PluginDetailContent: React.FC<Props> = ({
   version,
   publishedDate,
 }) => {
-  const onTabsChange = (key: string) => {};
+  const onTabsChange = () => {};
   return (
     <Wrapper>
       <Breadcrumb
         style={{
           paddingBottom: "24px",
-        }}
-      >
+        }}>
         <Breadcrumb.Item>
           <a href="/">Top</a>
         </Breadcrumb.Item>
         <Breadcrumb.Item>{pluginName}</Breadcrumb.Item>
       </Breadcrumb>
-      <Layout
-        hasSider
-        style={{ minHeight: "400px", width: "66.6%", maxWidth: "800px" }}
-      >
+      <Layout hasSider style={{ minHeight: "400px", width: "66.6%", maxWidth: "800px" }}>
         <Content style={{ height: "1000px", width: "100%" }}>
           <Image
             width="100%"
@@ -68,8 +64,7 @@ const PluginDetailContent: React.FC<Props> = ({
             right: 0,
             maxWidth: "400px",
             padding: "0 24px",
-          }}
-        >
+          }}>
           <Title>{pluginName}Test</Title>
           <LikesDownloaded justify="end">
             <Space>
@@ -114,12 +109,7 @@ const PluginDetailContent: React.FC<Props> = ({
             <Col>Publish date</Col>
             <Col>{publishedDate}</Col>
           </PluginInfo>
-          <Button
-            type="link"
-            size="middle"
-            style={{ padding: 0, marginTop: 12 }}
-            danger
-          >
+          <Button type="link" size="middle" style={{ padding: 0, marginTop: 12 }} danger>
             <Row align="bottom" justify="space-between" wrap={false}>
               <Col>Report this plugin</Col>
               <Col span={4}>
