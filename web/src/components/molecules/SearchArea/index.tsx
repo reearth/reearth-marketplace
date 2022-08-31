@@ -2,17 +2,64 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 
 import Button from "@/components/atoms/Button";
-import Space from "@/components/atoms/Space";
-import Icon from "@/components/atoms/Icon";
-import Search from "@/components/atoms/Search";
 import Dropdown from "@/components/atoms/Dropdown";
+import Icon from "@/components/atoms/Icon";
 import Menu, { MenuProps } from "@/components/atoms/Menu";
+import Search from "@/components/atoms/Search";
+import Space from "@/components/atoms/Space";
+import { PluginSort } from "@/components/organisms/Top/hooks";
 
 export type Props = {
   onSearch: (value: string) => void;
 };
 
+const displayMenuItems: Array<{ label: string; key: number }> = [
+  {
+    label: "",
+    key: 1,
+  },
+  {
+    label: "",
+    key: 2,
+  },
+];
+
+const orderMenuItems: Array<{ label: string; key: number; value: PluginSort }> =
+  [
+    {
+      label: "ダウンロード数降順",
+      key: 1,
+      value: PluginSort.DownloadsAsc,
+    },
+    {
+      label: "ダウンロード数昇順",
+      key: 2,
+      value: PluginSort.DownloadsDesc,
+    },
+    {
+      label: "名前降順",
+      key: 3,
+      value: PluginSort.NameAsc,
+    },
+    {
+      label: "名前昇順",
+      key: 4,
+      value: PluginSort.NameDesc,
+    },
+    {
+      label: "公開日降順",
+      key: 5,
+      value: PluginSort.PublishedatAsc,
+    },
+    {
+      label: "公開日昇順",
+      key: 6,
+      value: PluginSort.PublishedatDesc,
+    },
+  ];
+
 const SearchArea: React.FC<Props> = ({ onSearch }) => {
+  // TODO: onSearchへのソートの渡し方
   const [displayMenuState, updateDisplayMenuState] = useState(1);
   const [orderMenuState, updateOrderMenuState] = useState(1);
 
@@ -25,48 +72,27 @@ const SearchArea: React.FC<Props> = ({ onSearch }) => {
     console.log("click", e);
     updateOrderMenuState(Number(e.key));
   };
+
+  const handleFavButtonClick = () => {};
   const displayMenu = (
-    <Menu
-      onClick={handleDisplayMenuClick}
-      items={[
-        {
-          label: "",
-          key: 1,
-        },
-        {
-          label: "",
-          key: 2,
-        },
-      ]}
-    />
+    <Menu onClick={handleDisplayMenuClick} items={displayMenuItems} />
   );
   const orderMenu = (
-    <Menu
-      onClick={handleOrderMenuClick}
-      items={[
-        {
-          label: "名前降順",
-          key: 1,
-        },
-        {
-          label: "",
-          key: 2,
-        },
-      ]}
-    />
+    <Menu onClick={handleOrderMenuClick} items={orderMenuItems} />
   );
 
   return (
     <StyledSpace size={16}>
       <StyledSearch placeholder="search text" allowClear onSearch={onSearch} />
-      <Dropdown overlay={displayMenu}>
+      {/* TODO: implement this after tag function is coming */}
+      {/* <Dropdown overlay={displayMenu}>
         <Button>
           <Space size="small">
             表示
             <Icon icon="downOutlined" />
           </Space>
         </Button>
-      </Dropdown>
+      </Dropdown> */}
       <Dropdown overlay={orderMenu}>
         <Button>
           <Space size="small">
@@ -75,7 +101,7 @@ const SearchArea: React.FC<Props> = ({ onSearch }) => {
           </Space>
         </Button>
       </Dropdown>
-      <Button>
+      <Button onClick={handleFavButtonClick}>
         <Space size="small">
           お気に入り
           <Icon icon="heart" />

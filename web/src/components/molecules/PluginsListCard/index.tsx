@@ -13,6 +13,7 @@ export type Props = {
   likedCount?: number;
   installedCount?: number;
   name: string;
+  id: string;
   onClick?: () => void;
 };
 const PluginsListCard: React.FC<Props> = ({

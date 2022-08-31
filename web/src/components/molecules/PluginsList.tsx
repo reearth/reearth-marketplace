@@ -1,3 +1,6 @@
+import { useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Space from "@/components/atoms/Space";
 import PluginsListCard from "@/components/molecules/PluginsListCard";
 
@@ -12,34 +15,29 @@ export type Plugin = {
   cover: string;
 };
 
-const PluginsList: React.FC<Props> = ({ loading }) => {
+const PluginsList: React.FC<Props> = ({ loading, plugins }) => {
+  const navigate = useNavigate();
+  const handlePluginsListCardClick = useCallback(
+    (id: string) => {
+      navigate(`/plugins/${id}`);
+    },
+    [navigate]
+  );
   return (
     <Space size={[37.33, 24]} wrap>
-      <PluginsListCard
-        name=""
-        loading={loading}
-        cover="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-      />
-      <PluginsListCard
-        name=""
-        loading={loading}
-        cover="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-      />
-      <PluginsListCard
-        name=""
-        loading={loading}
-        cover="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-      />
-      <PluginsListCard
-        name=""
-        loading={loading}
-        cover="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-      />
-      <PluginsListCard
-        name=""
-        loading={loading}
-        cover="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-      />
+      {plugins
+        ? plugins.map((plugin: Plugin) => {
+            return (
+              <PluginsListCard
+                key={plugin.id}
+                name={plugin.name}
+                loading={loading}
+                cover={plugin.cover}
+                onClick={() => handlePluginsListCardClick(plugin.id)}
+              />
+            );
+          })
+        : null}
     </Space>
   );
 };

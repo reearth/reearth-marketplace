@@ -1,5 +1,7 @@
 import styled from "@emotion/styled";
 
+import HeaderBanner from "@/assets/header.png";
+
 export type Props = {};
 const TitleBar: React.FC<Props> = () => {
   return (
@@ -15,7 +17,9 @@ const TitleBar: React.FC<Props> = () => {
 const Wrapper = styled.section`
   width: 100%;
   height: 159px;
-  background: #070707;
+  background: url(${HeaderBanner}) center center;
+  background-size: cover;
+  background-repeat: no-repeat;
   color: #fff;
 `;
 const Contents = styled.div`

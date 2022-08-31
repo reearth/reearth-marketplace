@@ -3,16 +3,15 @@ import styled from "@emotion/styled";
 import PluginsList, { Plugin } from "@/components/molecules/PluginsList";
 import SearchArea from "@/components/molecules/SearchArea";
 
-export type { Plugin } from "@/components/molecules/PluginsList";
-
 export type Props = {
   plugins?: Plugin[];
+  onSearch: (text: string) => void;
 };
 
-const TopPageContents: React.FC<Props> = ({ plugins }) => {
+const TopPageContents: React.FC<Props> = ({ plugins, onSearch }) => {
   return (
     <Wrapper>
-      <SearchArea />
+      <SearchArea onSearch={onSearch} />
       <PluginsList plugins={plugins} />
     </Wrapper>
   );

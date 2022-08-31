@@ -1,23 +1,26 @@
 import { useCallback, useMemo } from "react";
 
-import type { Plugin } from "@/components/molecules/TopPage";
+import { type Plugin } from "@/components/molecules/TopPage";
 import {
   useSearchPluginQuery,
   useLikePluginMutation,
   useUnlikePluginMutation,
+  PluginSort,
 } from "@/gql/graphql-client-api";
 
-export default () => {
+export { PluginSort };
+
+export default (searchText?: string, sort?: PluginSort) => {
   const { data, refetch } = useSearchPluginQuery({
     variables: {
       first: 50,
       // TODO: fill variables here
-      // keyword: "",
+      keyword: searchText,
       // liked: false,
       // tags: [],
       // types: [],
       // publisher: "",
-      // sort: "",
+      sort: sort,
       // after: "",
     },
   });
