@@ -1,4 +1,5 @@
 import { Upload } from "antd";
+import { RcFile } from "antd/lib/upload";
 import {
   UploadChangeParam,
   UploadFile,
@@ -8,4 +9,4 @@ import {
 const { Dragger } = Upload;
 export { Dragger };
 export default Upload;
-export type { UploadChangeParam, UploadFile, UploadProps };
+export type { UploadChangeParam, UploadFile, UploadProps, RcFile };

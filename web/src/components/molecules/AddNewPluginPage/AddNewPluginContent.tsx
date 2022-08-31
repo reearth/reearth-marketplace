@@ -15,12 +15,18 @@ export type Props = {
   pluginName: string;
   version: string;
   description: string;
+  handleParsePlugin: () => void;
+  handleClickSave: () => void;
+  handleClickPublish: () => void;
 };
 
 const AddNewPluginContent: React.FC<Props> = ({
   pluginName,
   version,
   description,
+  handleParsePlugin,
+  handleClickSave,
+  handleClickPublish,
 }) => {
   const [currentTab, updateTab] = useState<"1" | "2">("1");
   const handleClickDetailSetting = () => {
@@ -39,10 +45,10 @@ const AddNewPluginContent: React.FC<Props> = ({
         </Col>
         <Col>
           <Space size="middle">
-            <Button type="default" size="large">
+            <Button type="default" size="large" onClick={handleClickSave}>
               Save
             </Button>
-            <Button type="primary" size="large">
+            <Button type="primary" size="large" onClick={handleClickPublish}>
               Publish
             </Button>
           </Space>
@@ -55,7 +61,10 @@ const AddNewPluginContent: React.FC<Props> = ({
         onChange={handleClickDetailSetting}
       >
         <TabPane tab="Package" key="1">
-          <PackageArea handleClickDetailSetting={handleClickDetailSetting} />
+          <PackageArea
+            handleClickDetailSetting={handleClickDetailSetting}
+            handleParsePlugin={handleParsePlugin}
+          />
         </TabPane>
         <TabPane tab="Setting" key="2">
           <SettingArea

@@ -9,12 +9,21 @@ import Message from "@/components/atoms/Message";
 import Radio, { RadioChangeEvent } from "@/components/atoms/Radio";
 import Row from "@/components/atoms/Row";
 import Space from "@/components/atoms/Space";
-import Upload, { Dragger, UploadChangeParam } from "@/components/atoms/Upload";
+import Upload, {
+  Dragger,
+  UploadChangeParam,
+  RcFile,
+} from "@/components/atoms/Upload";
 
+export type FileUploadType = string | RcFile | Blob;
 export type Props = {
   handleClickDetailSetting: () => void;
+  handleParsePlugin: (file?: FileUploadType, repo?: string) => void;
 };
-const PackageArea: React.FC<Props> = ({ handleClickDetailSetting }) => {
+const PackageArea: React.FC<Props> = ({
+  handleClickDetailSetting,
+  handleParsePlugin,
+}) => {
   const [currentRadio, changeRadio] = useState<
     "Upload from local" | "GitHub repository"
   >("Upload from local");
@@ -58,7 +67,6 @@ const PackageArea: React.FC<Props> = ({ handleClickDetailSetting }) => {
               maxCount={1}
               disabled={!!uploadedFileName}
               multiple={false}
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
               beforeUpload={(file) => {
                 console.log(file);
                 const isZip = file.type === "application/zip";
@@ -67,6 +75,7 @@ const PackageArea: React.FC<Props> = ({ handleClickDetailSetting }) => {
                 }
                 return isZip || Upload.LIST_IGNORE;
               }}
+              customRequest={(info) => handleParsePlugin(info.file)}
               onChange={(info) => {
                 const { status } = info.file;
                 if (status !== "uploading") {
