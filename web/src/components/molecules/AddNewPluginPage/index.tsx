@@ -7,12 +7,24 @@ import AddNewPluginContent from "./AddNewPluginContent";
 
 export type Props = {
   isLoggedIn: boolean;
+  pluginName: string;
+  description: string;
+  version: string;
 };
-const AddNewPluginPage: React.FC<Props> = ({ isLoggedIn }) => {
+const AddNewPluginPage: React.FC<Props> = ({
+  isLoggedIn,
+  pluginName,
+  description,
+  version,
+}) => {
   return (
     <Wrapper>
       <Header isLoggedIn={isLoggedIn} />
-      <AddNewPluginContent />
+      <AddNewPluginContent
+        pluginName={pluginName}
+        description={description}
+        version={version}
+      />
       <Footer />
     </Wrapper>
   );

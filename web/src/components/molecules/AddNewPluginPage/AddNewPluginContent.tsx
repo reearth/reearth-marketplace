@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { useState } from "react";
 
 import Breadcrumb from "@/components/atoms/Breadcrumb";
 import Button from "@/components/atoms/Button";
@@ -10,9 +11,21 @@ import Tabs, { TabPane } from "@/components/atoms/Tabs";
 import PackageArea from "./PackageArea";
 import SettingArea from "./SettingArea";
 
-export type Props = {};
+export type Props = {
+  pluginName: string;
+  version: string;
+  description: string;
+};
 
-const AddNewPluginContent: React.FC<Props> = () => {
+const AddNewPluginContent: React.FC<Props> = ({
+  pluginName,
+  version,
+  description,
+}) => {
+  const [currentTab, updateTab] = useState<"1" | "2">("1");
+  const handleClickDetailSetting = () => {
+    updateTab(currentTab === "1" ? "2" : "1");
+  };
   return (
     <Wrapper>
       <TopRow align="middle" justify="space-between">
@@ -35,12 +48,21 @@ const AddNewPluginContent: React.FC<Props> = () => {
           </Space>
         </Col>
       </TopRow>
-      <Tabs defaultActiveKey="1" tabBarStyle={{ margin: 0 }}>
+      <Tabs
+        defaultActiveKey={currentTab}
+        tabBarStyle={{ margin: 0 }}
+        activeKey={currentTab}
+        onChange={handleClickDetailSetting}
+      >
         <TabPane tab="Package" key="1">
-          <PackageArea />
+          <PackageArea handleClickDetailSetting={handleClickDetailSetting} />
         </TabPane>
         <TabPane tab="Setting" key="2">
-          <SettingArea />
+          <SettingArea
+            pluginName={pluginName}
+            version={version}
+            description={description}
+          />
         </TabPane>
       </Tabs>
     </Wrapper>

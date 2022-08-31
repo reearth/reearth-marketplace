@@ -79,6 +79,6 @@
     "react-router-dom": "^6.3.0"
   },
   "msw": {
-    "workerDirectory": "src/mocks"
+    "workerDirectory": "src/test/mocks"
   }
 }

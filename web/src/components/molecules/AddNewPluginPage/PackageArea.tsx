@@ -11,8 +11,10 @@ import Row from "@/components/atoms/Row";
 import Space from "@/components/atoms/Space";
 import Upload, { Dragger, UploadChangeParam } from "@/components/atoms/Upload";
 
-export type Props = {};
-const PackageArea: React.FC<Props> = () => {
+export type Props = {
+  handleClickDetailSetting: () => void;
+};
+const PackageArea: React.FC<Props> = ({ handleClickDetailSetting }) => {
   const [currentRadio, changeRadio] = useState<
     "Upload from local" | "GitHub repository"
   >("Upload from local");
@@ -29,7 +31,7 @@ const PackageArea: React.FC<Props> = () => {
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
         <Row justify="end">
           <Col>
-            <Button type="primary">
+            <Button type="primary" onClick={handleClickDetailSetting}>
               Details Setting
               <Icon icon="arrowRight" />
             </Button>

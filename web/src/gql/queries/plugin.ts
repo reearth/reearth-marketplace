@@ -113,6 +113,12 @@ export const CREATE_PLUGIN = gql`
     createPlugin(input: { file: $file, repo: $repo, publisher: $publisher }) {
       plugin {
         id
+        name
+        description
+        latestVersion {
+          version
+        }
+        images
       }
     }
   }

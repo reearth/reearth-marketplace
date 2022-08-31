@@ -8,7 +8,6 @@ import { Provider as Auth0Provider } from "@/auth";
 import AddNewPlugin from "@/components/pages/AddNewPlugin";
 import PublisherRegistration from "@/components/pages/DeveloperRegistration";
 import MyPlugins from "@/components/pages/MyPlugins";
-import MyPluginSetting from "@/components/pages/MyPluginSetting";
 import PluginDetailPage from "@/components/pages/PluginDetail";
 import RootPage from "@/components/pages/Root";
 import UpdatePlugin from "@/components/pages/UpdatePlugin";

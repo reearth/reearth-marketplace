@@ -1,15 +1,10 @@
 import styled from "@emotion/styled";
-import { useState } from "react";
 
 import Button from "@/components/atoms/Button";
-import Col from "@/components/atoms/Col";
 import Icon from "@/components/atoms/Icon";
-import Input, { TextArea } from "@/components/atoms/Input";
-import Message from "@/components/atoms/Message";
-import Radio, { RadioChangeEvent } from "@/components/atoms/Radio";
-import Row from "@/components/atoms/Row";
+import { TextArea } from "@/components/atoms/Input";
 import Space from "@/components/atoms/Space";
-import Upload, { Dragger, UploadChangeParam } from "@/components/atoms/Upload";
+import Upload from "@/components/atoms/Upload";
 
 export type Props = {
   pluginName: string;
@@ -31,6 +26,7 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, description }) => {
         <Upload
           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           listType="picture"
+          accept="image/png, image/jpeg, image/jpg"
           defaultFileList={[]}
         >
           <Button icon={<Icon icon="upload" />} type="primary" ghost>
