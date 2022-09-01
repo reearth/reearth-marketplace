@@ -9,27 +9,25 @@ import UpdatePlugin from "@marketplace/components/pages/UpdatePlugin";
 import UserPage from "@marketplace/components/pages/User";
 import { Provider as GqlProvider } from "@marketplace/gql";
 import { Provider as I18nProvider } from "@marketplace/i18n";
-import { BrowserRouter as Router, useRoutes, type RouteObject } from "react-router-dom";
-
-const routes: RouteObject[] = [
-  { path: "/", element: <RootPage /> },
-  { path: "/plugins/:pluginId", element: <PluginDetailPage /> },
-  { path: "/:userId", element: <UserPage /> },
-  {
-    path: "/:userId/publisher-registration",
-    element: <PublisherRegistration />,
-  },
-  { path: "/myplugins", element: <MyPlugins /> },
-  { path: "/myplugins/new", element: <AddNewPlugin /> },
-  { path: "/myplugins/:pluginId/update", element: <UpdatePlugin /> },
-  { path: "*", element: <NotFound /> },
-];
+import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 
 function AppRoutes() {
-  return useRoutes(routes);
+  return useRoutes([
+    { path: "/", element: <RootPage /> },
+    { path: "/plugins/:pluginId", element: <PluginDetailPage /> },
+    { path: "/:userId", element: <UserPage /> },
+    {
+      path: "/:userId/publisher-registration",
+      element: <PublisherRegistration />,
+    },
+    { path: "/myplugins", element: <MyPlugins /> },
+    { path: "/myplugins/new", element: <AddNewPlugin /> },
+    { path: "/myplugins/:pluginId/update", element: <UpdatePlugin /> },
+    { path: "*", element: <NotFound /> },
+  ]);
 }
 
-function App() {
+export default function App() {
   return (
     <Auth0Provider>
       <I18nProvider>
@@ -42,5 +40,3 @@ function App() {
     </Auth0Provider>
   );
 }
-
-export default App;

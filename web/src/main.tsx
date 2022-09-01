@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
-import * as ReactDOM from "react-dom/client";
+import { createRoot } from "react-dom/client";
 
-import App from "./App";
+import App from "./app";
 import { loadConfig } from "./config";
 import { startMock } from "./test/mocks";
 
@@ -13,8 +13,7 @@ startMock()
   .finally(() => {
     const element = document.getElementById("root");
     if (!element) throw new Error("root element is not found");
-
-    const root = ReactDOM.createRoot(element);
+    const root = createRoot(element);
     root.render(
       <StrictMode>
         <App />
