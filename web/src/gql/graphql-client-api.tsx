@@ -441,7 +441,7 @@ export type CreatePluginMutationVariables = Exact<{
 }>;
 
 
-export type CreatePluginMutation = { __typename?: 'Mutation', createPlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string } } };
+export type CreatePluginMutation = { __typename?: 'Mutation', createPlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, name: string, description?: string | null, images: Array<string>, latestVersion?: { __typename?: 'Version', version: string } | null } } };
 
 export type ParsePluginMutationVariables = Exact<{
   file?: InputMaybe<Scalars['Upload']>;
@@ -704,6 +704,12 @@ export const CreatePluginDocument = gql`
   createPlugin(input: {file: $file, repo: $repo, publisher: $publisher}) {
     plugin {
       id
+      name
+      description
+      latestVersion {
+        version
+      }
+      images
     }
   }
 }
