@@ -1,24 +1,30 @@
 import { graphql } from "msw";
 
 export const handlers = [
-  graphql.query("Me", (_req, res, ctx) => {
+  graphql.mutation("CreatePlugin", (_req, res, ctx) => {
     return res(
       ctx.data({
         me: {
-          __typename: "Me",
-          id: "xxx",
-          name: "Name",
+          __typename: "Plugin",
+          id: "1111",
+          name: "Satellite Plugin",
+          description: "This is Satellite Plugin",
+          version: "v1.0.0",
+          images: [],
         },
       }),
     );
   }),
-  graphql.mutation("UpdateMe", (_req, res, ctx) => {
+  graphql.mutation("ParsePlugin", (_req, res, ctx) => {
     return res(
       ctx.data({
         me: {
-          __typename: "Me",
-          id: "xxx",
-          name: "Name",
+          __typename: "Plugin",
+          id: "1111",
+          name: "Satellite Plugin",
+          description: "This is Satellite Plugin",
+          version: "v1.0.0",
+          images: [],
         },
       }),
     );

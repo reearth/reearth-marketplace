@@ -8,17 +8,17 @@ import { useError } from "@/state";
 type Props = {
   children?: React.ReactNode;
   api?: string;
-  accessTokenForDebug?: string;
+  accessToken?: string;
 };
 
-const Provider: React.FC<Props> = ({ children, accessTokenForDebug, api }) => {
+const Provider: React.FC<Props> = ({ children, accessToken: accessToken2, api }) => {
   const endpoint = api ? `${api}/graphql` : "/api/graphql";
   const [, setError] = useError();
   const { getAccessToken } = useAuth();
 
   const authLink = setContext(async (_, { headers }) => {
     // get the authentication token from local storage if it exists
-    const accessToken = accessTokenForDebug || (await getAccessToken());
+    const accessToken = accessToken2 || (await getAccessToken());
     // return the headers to the context so httpLink can read them
     return {
       headers: {

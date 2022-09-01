@@ -1,7 +1,6 @@
 scalar Time
 scalar URL
 scalar Lang # e.g. "ja" "en" default is "und" (language.Tag)
-
 interface Node {
   id: ID!
 }
@@ -17,7 +16,12 @@ interface Publisher {
   name: String!
   displayName: String
   description: String
-  plugins(first: Int, last: Int, before: Cursor, after: Cursor): PluginConnection!
+  plugins(
+    first: Int
+    last: Int
+    before: Cursor
+    after: Cursor
+  ): PluginConnection!
 }
 
 type User implements Node & Publisher {
@@ -26,7 +30,12 @@ type User implements Node & Publisher {
   name: String!
   displayName: String
   description: String
-  plugins(first: Int, last: Int, before: Cursor, after: Cursor): PluginConnection!
+  plugins(
+    first: Int
+    last: Int
+    before: Cursor
+    after: Cursor
+  ): PluginConnection!
   # All organizations to which the user belongs
   organizationIds: [ID!]!
   organizations: [Organization!]!
@@ -38,9 +47,14 @@ type Organization implements Node & Publisher {
   name: String!
   displayName: String
   description: String
-  # Whether to display to users. 
+  # Whether to display to users.
   active: Boolean!
-  plugins(first: Int, last: Int, before: Cursor, after: Cursor): PluginConnection!
+  plugins(
+    first: Int
+    last: Int
+    before: Cursor
+    after: Cursor
+  ): PluginConnection!
   memberIds: [ID!]!
   members: [User!]!
 }
@@ -107,7 +121,12 @@ type Me implements Publisher {
   description: String
   tel: String # Pending
   publishable: Boolean! # True once the developer profile has been filled
-  plugins(first: Int, last: Int, before: Cursor, after: Cursor): PluginConnection!
+  plugins(
+    first: Int
+    last: Int
+    before: Cursor
+    after: Cursor
+  ): PluginConnection!
 }
 
 # --------------------------------------------------------------------
@@ -184,7 +203,9 @@ type Mutation {
   # not used immediately
   createOrganization(input: CreateOrganizationInput!): OrganizationPayload!
   updateOrganization(input: UpdateOrganizationInput!): OrganizationPayload!
-  deleteOrganization(input: DeleteOrganizationInput!): DeleteOrganizationPayload!
+  deleteOrganization(
+    input: DeleteOrganizationInput!
+  ): DeleteOrganizationPayload!
 }
 
 scalar Upload
@@ -225,6 +246,7 @@ input CreatePluginInput {
   file: Upload
   # Specify a github repository name and tag name or URL; exclusive with repo. e.g.: "reearth/plugin-example@v1"
   repo: String
+  publisher: ID
 }
 
 input UpdatePluginInput {
