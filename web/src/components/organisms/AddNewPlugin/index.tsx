@@ -24,7 +24,7 @@ const AddNewPlugin: React.FC<Props> = ({ isLoggedIn }) => {
       publisher: "1",
     });
   };
-  const handleParsePlugin = (file: FileUploadType) => {
+  const handleParsePlugin = (file?: FileUploadType) => {
     console.log(file);
     handleParsePluginMutation({
       file: file,

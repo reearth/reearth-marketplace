@@ -5,7 +5,7 @@ export type Props = {};
 
 const AddNewPlugin: React.FC<Props> = () => {
   // TODO: add AuthenticationRequiredPage
-  return <AddNewPluginOrg />;
+  return <AddNewPluginOrg isLoggedIn={false} />;
 };
 
 // TODO: withAuthenticationRequired

@@ -9,16 +9,14 @@ import Space from "@/components/atoms/Space";
 import Switch from "@/components/atoms/Switch";
 import Table from "@/components/atoms/Table";
 
+import { DataType } from "./MyPluginsContent";
+
 export type Props = {
-  key: string;
-  name: string;
-  status: boolean;
-  version: string;
-  publishDate: string;
+  data: DataType[];
 };
 
-const MyPluginsTable: React.FC<Props> = () => {
-  const columns: ColumnsType<Props> = [
+const MyPluginsTable: React.FC<Props> = ({ data }) => {
+  const columns: ColumnsType<DataType> = [
     {
       title: "Plugin Name",
       dataIndex: "name",
@@ -66,29 +64,6 @@ const MyPluginsTable: React.FC<Props> = () => {
           </Col>
         </Row>
       ),
-    },
-  ];
-  const data: Props[] = [
-    {
-      key: "1",
-      name: "Location Tracker",
-      status: true,
-      version: "v0.4.0",
-      publishDate: "2011.11.11",
-    },
-    {
-      key: "2",
-      name: "Location Tracker",
-      status: false,
-      version: "v0.4.0",
-      publishDate: "2011.11.11",
-    },
-    {
-      key: "3",
-      name: "Location Tracker",
-      status: true,
-      version: "v0.4.0",
-      publishDate: "2011.11.11",
     },
   ];
   return (

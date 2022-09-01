@@ -8,14 +8,14 @@ import Row from "@/components/atoms/Row";
 import Space from "@/components/atoms/Space";
 import Tabs, { TabPane } from "@/components/atoms/Tabs";
 
-import PackageArea from "./PackageArea";
+import PackageArea, { FileUploadType } from "./PackageArea";
 import SettingArea from "./SettingArea";
 
 export type Props = {
   pluginName: string;
   version: string;
   description: string;
-  handleParsePlugin: () => void;
+  handleParsePlugin: (file?: FileUploadType) => void;
   handleClickSave: () => void;
   handleClickPublish: () => void;
 };

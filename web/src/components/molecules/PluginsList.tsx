@@ -29,6 +29,7 @@ const PluginsList: React.FC<Props> = ({ loading, plugins }) => {
         ? plugins.map((plugin: Plugin) => {
             return (
               <PluginsListCard
+                id={plugin.id}
                 key={plugin.id}
                 name={plugin.name}
                 loading={loading}

@@ -1,9 +1,8 @@
 import PluginDetailOrg from "@/components/organisms/PluginDetail";
 
-export type Props = {
-  isLoggedIn: boolean;
-};
-const PluginDetail: React.FC<Props> = ({ isLoggedIn }) => {
+export type Props = {};
+const PluginDetail: React.FC<Props> = () => {
+  const isLoggedIn = false;
   return <PluginDetailOrg isLoggedIn={isLoggedIn} />;
 };
 

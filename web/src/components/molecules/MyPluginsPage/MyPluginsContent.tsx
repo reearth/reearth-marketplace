@@ -8,6 +8,37 @@ import Row from "@/components/atoms/Row";
 import MyPluginsTable from "./MyPluginsTable";
 
 export type Props = {};
+
+export type DataType = {
+  key: string;
+  name: string;
+  status: boolean;
+  version: string;
+  publishDate: string;
+};
+const data: DataType[] = [
+  {
+    key: "1",
+    name: "Location Tracker",
+    status: true,
+    version: "v0.4.0",
+    publishDate: "2011.11.11",
+  },
+  {
+    key: "2",
+    name: "Location Tracker",
+    status: false,
+    version: "v0.4.0",
+    publishDate: "2011.11.11",
+  },
+  {
+    key: "3",
+    name: "Location Tracker",
+    status: true,
+    version: "v0.4.0",
+    publishDate: "2011.11.11",
+  },
+];
 const MyPluginsContent: React.FC<Props> = () => {
   return (
     <Wrapper>
@@ -22,7 +53,7 @@ const MyPluginsContent: React.FC<Props> = () => {
           </Button>
         </Col>
       </TitleArea>
-      <MyPluginsTable />
+      <MyPluginsTable data={data} />
     </Wrapper>
   );
 };

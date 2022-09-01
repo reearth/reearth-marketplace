@@ -4,13 +4,14 @@ import Footer from "@/components/molecules/Common/Footer";
 import Header from "@/components/molecules/Common/Header";
 
 import AddNewPluginContent from "./AddNewPluginContent";
+import { FileUploadType } from "./PackageArea";
 
 export type Props = {
   isLoggedIn: boolean;
   pluginName: string;
   description: string;
   version: string;
-  handleParsePlugin: () => void;
+  handleParsePlugin: (file?: FileUploadType) => void;
   handleClickSave: () => void;
   handleClickPublish: () => void;
 };

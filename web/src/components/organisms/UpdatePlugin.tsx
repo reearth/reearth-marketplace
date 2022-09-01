@@ -2,10 +2,9 @@ import React from "react";
 
 import UpdatePluginPage from "@/components/molecules/UpdatePluginPage";
 
-export type Props = {
-  isLoggedIn?: boolean;
-};
-const UpdatePlugin: React.FC<Props> = ({ isLoggedIn }) => {
+export type Props = {};
+const UpdatePlugin: React.FC<Props> = () => {
+  const isLoggedIn = false;
   return <UpdatePluginPage isLoggedIn={isLoggedIn} />;
 };
 
