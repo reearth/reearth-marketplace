@@ -1,8 +1,7 @@
 import styled from "@emotion/styled";
-
-import Col from "@/components/atoms/Col";
-import Row from "@/components/atoms/Row";
-import Space from "@/components/atoms/Space";
+import Col from "@marketplace/components/atoms/Col";
+import Row from "@marketplace/components/atoms/Row";
+import Space from "@marketplace/components/atoms/Space";
 
 export type Props = {};
 const Footer: React.FC<Props> = () => {

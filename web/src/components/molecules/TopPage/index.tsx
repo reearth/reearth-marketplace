@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
-
-import TitleBar from "@/components/atoms/TitleBar";
-import Footer from "@/components/molecules/Common/Footer";
-import Header from "@/components/molecules/Common/Header";
-import { type Plugin } from "@/components/molecules/PluginsList";
+import TitleBar from "@marketplace/components/atoms/TitleBar";
+import Footer from "@marketplace/components/molecules/Common/Footer";
+import Header from "@marketplace/components/molecules/Common/Header";
+import { type Plugin } from "@marketplace/components/molecules/PluginsList";
 
 import TopPageContent from "./TopPageContents";
 
-export type { Plugin } from "@/components/molecules/PluginsList";
+export type { Plugin } from "@marketplace/components/molecules/PluginsList";
 export type Props = {
   isLoggedIn: boolean;
   plugins?: Plugin[];

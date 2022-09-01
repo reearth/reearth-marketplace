@@ -1,8 +1,7 @@
+import Space from "@marketplace/components/atoms/Space";
+import PluginsListCard from "@marketplace/components/molecules/PluginsListCard";
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-
-import Space from "@/components/atoms/Space";
-import PluginsListCard from "@/components/molecules/PluginsListCard";
 
 export type Props = {
   loading?: boolean;

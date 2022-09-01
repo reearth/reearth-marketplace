@@ -1,15 +1,14 @@
 import styled from "@emotion/styled";
+import { useAuth } from "@marketplace/auth/hooks";
+import Button from "@marketplace/components/atoms/Button";
+import Col from "@marketplace/components/atoms/Col";
+import Dropdown from "@marketplace/components/atoms/Dropdown";
+import Icon from "@marketplace/components/atoms/Icon";
+import Menu, { MenuProps } from "@marketplace/components/atoms/Menu";
+import Row from "@marketplace/components/atoms/Row";
+import Space from "@marketplace/components/atoms/Space";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
-import { useAuth } from "@/auth/hooks";
-import Button from "@/components/atoms/Button";
-import Col from "@/components/atoms/Col";
-import Dropdown from "@/components/atoms/Dropdown";
-import Icon from "@/components/atoms/Icon";
-import Menu, { MenuProps } from "@/components/atoms/Menu";
-import Row from "@/components/atoms/Row";
-import Space from "@/components/atoms/Space";
 
 export type Props = {
   isLoggedIn: boolean;

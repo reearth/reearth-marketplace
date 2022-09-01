@@ -1,15 +1,14 @@
 import styled from "@emotion/styled";
-
-import Breadcrumb from "@/components/atoms/Breadcrumb";
-import Button from "@/components/atoms/Button";
-import Col from "@/components/atoms/Col";
-import Divider from "@/components/atoms/Divider";
-import Icon from "@/components/atoms/Icon";
-import Image from "@/components/atoms/Image";
-import Layout, { Sider, Content } from "@/components/atoms/Layout";
-import Row from "@/components/atoms/Row";
-import Space from "@/components/atoms/Space";
-import Tabs, { TabPane } from "@/components/atoms/Tabs";
+import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
+import Button from "@marketplace/components/atoms/Button";
+import Col from "@marketplace/components/atoms/Col";
+import Divider from "@marketplace/components/atoms/Divider";
+import Icon from "@marketplace/components/atoms/Icon";
+import Image from "@marketplace/components/atoms/Image";
+import Layout, { Sider, Content } from "@marketplace/components/atoms/Layout";
+import Row from "@marketplace/components/atoms/Row";
+import Space from "@marketplace/components/atoms/Space";
+import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 
 export type Props = {
   pluginName: string;

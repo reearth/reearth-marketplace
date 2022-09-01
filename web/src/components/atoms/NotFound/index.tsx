@@ -1,4 +1,4 @@
-import Typography from "@/components/atoms/Typography";
+import Typography from "@marketplace/components/atoms/Typography";
 
 const NotFound: React.FC = () => {
   const { Title } = Typography;

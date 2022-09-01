@@ -1,6 +1,5 @@
+import { usePluginQuery } from "@marketplace/gql";
 import { useCallback, useMemo } from "react";
-
-import { usePluginQuery } from "@/gql";
 
 export default function (pluginId: string | undefined, onInstall?: (pluginId: string) => void) {
   const { data } = usePluginQuery({

@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
-
-import Footer from "@/components/molecules/Common/Footer";
-import Header from "@/components/molecules/Common/Header";
+import Footer from "@marketplace/components/molecules/Common/Footer";
+import Header from "@marketplace/components/molecules/Common/Header";
 
 export type Props = {
   isLoggedIn: boolean;

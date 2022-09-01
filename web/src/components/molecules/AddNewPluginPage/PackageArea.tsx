@@ -1,15 +1,14 @@
 import styled from "@emotion/styled";
+import Button from "@marketplace/components/atoms/Button";
+import Col from "@marketplace/components/atoms/Col";
+import Icon from "@marketplace/components/atoms/Icon";
+import Input from "@marketplace/components/atoms/Input";
+import Message from "@marketplace/components/atoms/Message";
+import Radio, { RadioChangeEvent } from "@marketplace/components/atoms/Radio";
+import Row from "@marketplace/components/atoms/Row";
+import Space from "@marketplace/components/atoms/Space";
+import Upload, { Dragger, UploadChangeParam, RcFile } from "@marketplace/components/atoms/Upload";
 import { useState } from "react";
-
-import Button from "@/components/atoms/Button";
-import Col from "@/components/atoms/Col";
-import Icon from "@/components/atoms/Icon";
-import Input from "@/components/atoms/Input";
-import Message from "@/components/atoms/Message";
-import Radio, { RadioChangeEvent } from "@/components/atoms/Radio";
-import Row from "@/components/atoms/Row";
-import Space from "@/components/atoms/Space";
-import Upload, { Dragger, UploadChangeParam, RcFile } from "@/components/atoms/Upload";
 
 export type FileUploadType = string | RcFile | Blob;
 export type Props = {

@@ -1,5 +1,5 @@
-// import { withAuthenticationRequired, AuthenticationRequiredPage } from "@/auth";
-import UserOrg from "@/components/organisms/User";
+// import { withAuthenticationRequired, AuthenticationRequiredPage } from "@marketplace/auth";
+import UserOrg from "@marketplace/components/organisms/User";
 
 export type Props = {};
 

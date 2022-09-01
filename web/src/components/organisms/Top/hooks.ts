@@ -1,12 +1,11 @@
-import { useCallback, useMemo } from "react";
-
-import { type Plugin } from "@/components/molecules/TopPage";
+import { type Plugin } from "@marketplace/components/molecules/TopPage";
 import {
   useSearchPluginQuery,
   useLikePluginMutation,
   useUnlikePluginMutation,
   PluginSort,
-} from "@/gql/graphql-client-api";
+} from "@marketplace/gql/graphql-client-api";
+import { useCallback, useMemo } from "react";
 
 export { PluginSort };
 

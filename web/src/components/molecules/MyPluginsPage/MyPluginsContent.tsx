@@ -1,9 +1,8 @@
 import styled from "@emotion/styled";
-
-import Button from "@/components/atoms/Button";
-import Col from "@/components/atoms/Col";
-import Icon from "@/components/atoms/Icon";
-import Row from "@/components/atoms/Row";
+import Button from "@marketplace/components/atoms/Button";
+import Col from "@marketplace/components/atoms/Col";
+import Icon from "@marketplace/components/atoms/Icon";
+import Row from "@marketplace/components/atoms/Row";
 
 import MyPluginsTable from "./MyPluginsTable";
 

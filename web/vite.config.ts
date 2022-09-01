@@ -12,7 +12,7 @@ export default defineConfig({
   envPrefix: "REEARTH_",
   plugins: [react(), yaml(), serverHeaders()],
   resolve: {
-    alias: [{ find: "@", replacement: resolve(__dirname, "src") }],
+    alias: [{ find: "@marketplace", replacement: resolve(__dirname, "src") }],
   },
   test: {
     globals: true,

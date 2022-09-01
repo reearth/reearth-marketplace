@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
+import Button from "@marketplace/components/atoms/Button";
+import Dropdown from "@marketplace/components/atoms/Dropdown";
+import Icon from "@marketplace/components/atoms/Icon";
+import Menu, { MenuProps } from "@marketplace/components/atoms/Menu";
+import Search from "@marketplace/components/atoms/Search";
+import Space from "@marketplace/components/atoms/Space";
+import { PluginSort } from "@marketplace/components/organisms/Top/hooks";
 import { useState } from "react";
-
-import Button from "@/components/atoms/Button";
-import Dropdown from "@/components/atoms/Dropdown";
-import Icon from "@/components/atoms/Icon";
-import Menu, { MenuProps } from "@/components/atoms/Menu";
-import Search from "@/components/atoms/Search";
-import Space from "@/components/atoms/Space";
-import { PluginSort } from "@/components/organisms/Top/hooks";
 
 export type Props = {
   onSearch: (value: string) => void;

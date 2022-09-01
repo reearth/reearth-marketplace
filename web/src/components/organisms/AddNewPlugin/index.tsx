@@ -1,7 +1,6 @@
+import AddNewPluginPage from "@marketplace/components/molecules/AddNewPluginPage";
+import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
 import React from "react";
-
-import AddNewPluginPage from "@/components/molecules/AddNewPluginPage";
-import type { FileUploadType } from "@/components/molecules/AddNewPluginPage/PackageArea";
 
 import useHooks from "./hooks";
 

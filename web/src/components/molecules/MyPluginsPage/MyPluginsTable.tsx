@@ -1,13 +1,12 @@
 import styled from "@emotion/styled";
+import Button from "@marketplace/components/atoms/Button";
+import Col from "@marketplace/components/atoms/Col";
+import Icon from "@marketplace/components/atoms/Icon";
+import Row from "@marketplace/components/atoms/Row";
+import Space from "@marketplace/components/atoms/Space";
+import Switch from "@marketplace/components/atoms/Switch";
+import Table from "@marketplace/components/atoms/Table";
 import type { ColumnsType } from "antd/es/table";
-
-import Button from "@/components/atoms/Button";
-import Col from "@/components/atoms/Col";
-import Icon from "@/components/atoms/Icon";
-import Row from "@/components/atoms/Row";
-import Space from "@/components/atoms/Space";
-import Switch from "@/components/atoms/Switch";
-import Table from "@/components/atoms/Table";
 
 import { DataType } from "./MyPluginsContent";
 

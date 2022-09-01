@@ -1,6 +1,5 @@
+import UpdatePluginPage from "@marketplace/components/molecules/UpdatePluginPage";
 import React from "react";
-
-import UpdatePluginPage from "@/components/molecules/UpdatePluginPage";
 
 export type Props = {};
 const UpdatePlugin: React.FC<Props> = () => {

@@ -1,4 +1,4 @@
-import { withAuthenticationRequired, AuthenticationRequiredPage } from "@/auth";
+import { withAuthenticationRequired, AuthenticationRequiredPage } from "@marketplace/auth";
 
 export type Props = {};
 

@@ -1,6 +1,5 @@
+import PluginDetailPage from "@marketplace/components/molecules/PluginDetailPage";
 import React from "react";
-
-import PluginDetailPage from "@/components/molecules/PluginDetailPage";
 
 export type Props = {
   isLoggedIn: boolean;

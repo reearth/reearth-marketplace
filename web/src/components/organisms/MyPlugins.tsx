@@ -1,6 +1,5 @@
+import MyPluginsPage from "@marketplace/components/molecules/MyPluginsPage";
 import React from "react";
-
-import MyPluginsPage from "@/components/molecules/MyPluginsPage";
 
 export type Props = {};
 const MyPlugins: React.FC<Props> = () => {

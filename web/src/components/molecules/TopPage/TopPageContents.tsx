@@ -1,7 +1,6 @@
 import styled from "@emotion/styled";
-
-import PluginsList, { Plugin } from "@/components/molecules/PluginsList";
-import SearchArea from "@/components/molecules/SearchArea";
+import PluginsList, { Plugin } from "@marketplace/components/molecules/PluginsList";
+import SearchArea from "@marketplace/components/molecules/SearchArea";
 
 export type Props = {
   plugins?: Plugin[];

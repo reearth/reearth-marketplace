@@ -1,10 +1,9 @@
 import styled from "@emotion/styled";
-
-import Button from "@/components/atoms/Button";
-import Card, { Meta } from "@/components/atoms/Card";
-import Icon from "@/components/atoms/Icon";
-import Row from "@/components/atoms/Row";
-import Space from "@/components/atoms/Space";
+import Button from "@marketplace/components/atoms/Button";
+import Card, { Meta } from "@marketplace/components/atoms/Card";
+import Icon from "@marketplace/components/atoms/Icon";
+import Row from "@marketplace/components/atoms/Row";
+import Space from "@marketplace/components/atoms/Space";
 
 export type Props = {
   loading?: boolean;

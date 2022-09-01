@@ -1,12 +1,11 @@
 import styled from "@emotion/styled";
-
-import HeaderBanner from "@/assets/header.png";
-import Breadcrumb from "@/components/atoms/Breadcrumb";
-import Button from "@/components/atoms/Button";
-import Icon from "@/components/atoms/Icon";
-import Image from "@/components/atoms/Image";
-import Space from "@/components/atoms/Space";
-import PluginsList from "@/components/molecules/PluginsList";
+import HeaderBanner from "@marketplace/assets/header.png";
+import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
+import Button from "@marketplace/components/atoms/Button";
+import Icon from "@marketplace/components/atoms/Icon";
+import Image from "@marketplace/components/atoms/Image";
+import Space from "@marketplace/components/atoms/Space";
+import PluginsList from "@marketplace/components/molecules/PluginsList";
 
 export type Props = {};
 const UserPageContents: React.FC<Props> = () => {

@@ -1,7 +1,9 @@
+import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
+import {
+  useCreatePluginMutation,
+  useParsePluginMutation,
+} from "@marketplace/gql/graphql-client-api";
 import { useCallback } from "react";
-
-import type { FileUploadType } from "@/components/molecules/AddNewPluginPage/PackageArea";
-import { useCreatePluginMutation, useParsePluginMutation } from "@/gql/graphql-client-api";
 
 export default () => {
   const [createPluginMutation] = useCreatePluginMutation();

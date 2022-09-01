@@ -1,6 +1,5 @@
+import { useT } from "@marketplace/i18n";
 import { ComponentStory, ComponentMeta } from "@storybook/react";
-
-import { useT } from "@/i18n";
 
 export default {
   title: "test",

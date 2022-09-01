@@ -4,7 +4,9 @@ import * as ReactDOM from "react-dom/client";
 import App from "./App";
 import { loadConfig } from "./config";
 import { startMock } from "./test/mocks";
+
 import "./index.css";
+import "antd/dist/antd.css";
 
 startMock()
   .then(loadConfig)

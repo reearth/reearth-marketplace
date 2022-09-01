@@ -1,4 +1,4 @@
-import PluginDetailOrg from "@/components/organisms/PluginDetail";
+import PluginDetailOrg from "@marketplace/components/organisms/PluginDetail";
 
 export type Props = {};
 const PluginDetail: React.FC<Props> = () => {

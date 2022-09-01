@@ -1,12 +1,11 @@
 import styled from "@emotion/styled";
+import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
+import Button from "@marketplace/components/atoms/Button";
+import Col from "@marketplace/components/atoms/Col";
+import Row from "@marketplace/components/atoms/Row";
+import Space from "@marketplace/components/atoms/Space";
+import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import { useState } from "react";
-
-import Breadcrumb from "@/components/atoms/Breadcrumb";
-import Button from "@/components/atoms/Button";
-import Col from "@/components/atoms/Col";
-import Row from "@/components/atoms/Row";
-import Space from "@/components/atoms/Space";
-import Tabs, { TabPane } from "@/components/atoms/Tabs";
 
 import PackageArea, { FileUploadType } from "./PackageArea";
 import SettingArea from "./SettingArea";

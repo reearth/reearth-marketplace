@@ -1,10 +1,9 @@
 import styled from "@emotion/styled";
-
-import Button from "@/components/atoms/Button";
-import Icon from "@/components/atoms/Icon";
-import { TextArea } from "@/components/atoms/Input";
-import Space from "@/components/atoms/Space";
-import Upload from "@/components/atoms/Upload";
+import Button from "@marketplace/components/atoms/Button";
+import Icon from "@marketplace/components/atoms/Icon";
+import { TextArea } from "@marketplace/components/atoms/Input";
+import Space from "@marketplace/components/atoms/Space";
+import Upload from "@marketplace/components/atoms/Upload";
 
 export type Props = {
   pluginName: string;

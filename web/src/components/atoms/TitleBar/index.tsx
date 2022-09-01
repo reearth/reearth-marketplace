@@ -1,6 +1,5 @@
 import styled from "@emotion/styled";
-
-import HeaderBanner from "@/assets/header.png";
+import HeaderBanner from "@marketplace/assets/header.png";
 
 export type Props = {};
 const TitleBar: React.FC<Props> = () => {
