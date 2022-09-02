@@ -10,7 +10,7 @@ import Table from "@marketplace/components/atoms/Table";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
 
-import { DataType } from "./MyPluginsContent";
+import { DataType } from ".";
 
 export type Props = {
   data: DataType[];

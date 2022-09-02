@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { useAuth } from "@marketplace/auth/hooks";
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Dropdown from "@marketplace/components/atoms/Dropdown";
@@ -13,8 +12,10 @@ import { useNavigate } from "react-router-dom";
 export type Props = {
   isLoggedIn: boolean;
   myUserId?: string;
+  login?: () => void;
+  logout?: () => void;
 };
-const Header: React.FC<Props> = ({ isLoggedIn, myUserId }) => {
+const Header: React.FC<Props> = ({ isLoggedIn, myUserId, login, logout }) => {
   const navigate = useNavigate();
   // const [currentLang, updateLang] = useState<string>();
   // const handleLangMenuClick: MenuProps["onClick"] = (e) => {
@@ -22,7 +23,6 @@ const Header: React.FC<Props> = ({ isLoggedIn, myUserId }) => {
   // };
   const handleUserMenuClick: MenuProps["onClick"] = () => {};
 
-  const { login, logout } = useAuth();
   // const langMenu = (
   //   <Menu
   //     theme="dark"
