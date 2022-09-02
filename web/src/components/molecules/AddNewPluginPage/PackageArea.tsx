@@ -12,15 +12,21 @@ import { useState } from "react";
 
 export type FileUploadType = string | RcFile | Blob;
 export type Props = {
+  githubUrl: string;
   handleClickDetailSetting: () => void;
   handleParsePlugin: (file?: FileUploadType, repo?: string) => void;
+  handleChangeGithubUrl: (value: string) => void;
 };
-const PackageArea: React.FC<Props> = ({ handleClickDetailSetting, handleParsePlugin }) => {
+const PackageArea: React.FC<Props> = ({
+  githubUrl,
+  handleClickDetailSetting,
+  handleParsePlugin,
+  handleChangeGithubUrl,
+}) => {
   const [currentRadio, changeRadio] = useState<"Upload from local" | "GitHub repository">(
     "Upload from local",
   );
   const [uploadedFileName, uploadZip] = useState<string>("");
-
   const handleChangeRadio = (e: RadioChangeEvent) => {
     changeRadio(e.target.value);
   };
@@ -87,7 +93,12 @@ const PackageArea: React.FC<Props> = ({ handleClickDetailSetting, handleParsePlu
           </UploadArea>
         ) : (
           <>
-            <Input placeholder="github.com/xxx/xxx"></Input>
+            <Input
+              placeholder="github.com/xxx/xxx"
+              value={githubUrl}
+              onChange={e => {
+                handleChangeGithubUrl(e.target.value);
+              }}></Input>
             <p>Please set your repository as public respository.</p>
           </>
         )}
