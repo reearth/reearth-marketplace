@@ -1,12 +1,14 @@
 import { AuthenticationRequiredPage } from "@marketplace/auth";
 import AddNewPluginOrg from "@marketplace/components/organisms/AddNewPlugin";
 
-export type Props = {};
+export type Props = {
+  isLoggedIn: boolean;
+};
 
-const AddNewPlugin: React.FC<Props> = () => {
+const AddNewPlugin: React.FC<Props> = ({ isLoggedIn }) => {
   return (
     <AuthenticationRequiredPage>
-      <AddNewPluginOrg isLoggedIn={false} />
+      <AddNewPluginOrg isLoggedIn={isLoggedIn} />
     </AuthenticationRequiredPage>
   );
 };
