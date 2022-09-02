@@ -1,14 +1,13 @@
-import { AuthenticationRequiredPage } from "@marketplace/auth";
+import { AuthenticationRequiredPage, useAuth } from "@marketplace/auth";
 import AddNewPluginOrg from "@marketplace/components/organisms/AddNewPlugin";
 
-export type Props = {
-  isLoggedIn: boolean;
-};
+export type Props = {};
 
-const AddNewPlugin: React.FC<Props> = ({ isLoggedIn }) => {
+const AddNewPlugin: React.FC<Props> = () => {
+  const { isAuthenticated } = useAuth();
   return (
     <AuthenticationRequiredPage>
-      <AddNewPluginOrg isLoggedIn={isLoggedIn} />
+      <AddNewPluginOrg isLoggedIn={isAuthenticated} />
     </AuthenticationRequiredPage>
   );
 };
