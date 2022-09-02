@@ -92,6 +92,7 @@ const UserInitial = styled.p`
   justify-self: center;
   width: 100%;
   text-align: center;
+  margin: 0;
 `;
 
 const DeveloperInfo = styled(Space)`

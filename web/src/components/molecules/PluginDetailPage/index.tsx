@@ -10,6 +10,7 @@ export type Props = {
   developerLink: string;
   version: string;
   publishedDate: string;
+  handleClickChoose: (projectId: string) => void;
 };
 const PluginDetailPage: React.FC<Props> = ({
   isLoggedIn,
@@ -17,6 +18,7 @@ const PluginDetailPage: React.FC<Props> = ({
   developerLink,
   version,
   publishedDate,
+  handleClickChoose,
 }) => {
   return (
     <Wrapper>
@@ -26,6 +28,7 @@ const PluginDetailPage: React.FC<Props> = ({
         developerLink={developerLink}
         version={version}
         publishedDate={publishedDate}
+        handleClickChoose={handleClickChoose}
       />
       <Footer />
     </Wrapper>

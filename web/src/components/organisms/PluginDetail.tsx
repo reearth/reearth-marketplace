@@ -9,6 +9,7 @@ const PluginDetail: React.FC<Props> = () => {
   const developerLink = "";
   const publishedDate = "";
   const { isAuthenticated } = useAuth();
+  const handleClickChoose = () => {};
 
   return (
     <PluginDetailPage
@@ -17,6 +18,7 @@ const PluginDetail: React.FC<Props> = () => {
       version={version}
       developerLink={developerLink}
       publishedDate={publishedDate}
+      handleClickChoose={handleClickChoose}
     />
   );
 };
