@@ -3,6 +3,7 @@ import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Icon from "@marketplace/components/atoms/Icon";
 import Row from "@marketplace/components/atoms/Row";
+import { useNavigate } from "react-router-dom";
 
 import MyPluginsTable from "./MyPluginsTable";
 
@@ -39,6 +40,7 @@ const data: DataType[] = [
   },
 ];
 const MyPluginsContent: React.FC<Props> = () => {
+  const navigate = useNavigate();
   return (
     <Wrapper>
       <TitleArea justify="space-between" align="middle">
@@ -46,7 +48,7 @@ const MyPluginsContent: React.FC<Props> = () => {
           <Title>My Plugins</Title>
         </Col>
         <Col>
-          <Button type="primary">
+          <Button type="primary" onClick={() => navigate("/myplugins/new")}>
             <Icon icon="plus" />
             New Plugin
           </Button>
