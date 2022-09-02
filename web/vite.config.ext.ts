@@ -5,6 +5,7 @@ import { resolve } from "path";
 
 import yaml from "@rollup/plugin-yaml";
 import react from "@vitejs/plugin-react";
+import externalGlobals from "rollup-plugin-external-globals";
 import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
@@ -35,6 +36,12 @@ export default defineConfig({
           "react-dom": "ReactDOM",
         },
       },
+      plugins: [
+        externalGlobals({
+          react: "React",
+          "react-dom": "ReactDOM",
+        }),
+      ],
     },
   },
 });
