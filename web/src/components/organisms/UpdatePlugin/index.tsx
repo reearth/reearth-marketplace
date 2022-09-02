@@ -1,14 +1,15 @@
+import { useAuth } from "@marketplace/auth";
 import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
 import UpdatePluginPage from "@marketplace/components/molecules/UpdatePluginPage";
 import React from "react";
 
 import useHooks from "./hooks";
 
-export type Props = {
-  isLoggedIn: boolean;
-};
-const UpdatePlugin: React.FC<Props> = ({ isLoggedIn }) => {
+export type Props = {};
+const UpdatePlugin: React.FC<Props> = () => {
   const { handleParsePluginMutation, handleCreatePluginMutation } = useHooks();
+  const { isAuthenticated } = useAuth();
+
   const handleClickSave = () => {
     handleCreatePluginMutation({
       file: undefined,
@@ -35,7 +36,7 @@ const UpdatePlugin: React.FC<Props> = ({ isLoggedIn }) => {
   const version = "";
   return (
     <UpdatePluginPage
-      isLoggedIn={isLoggedIn}
+      isLoggedIn={isAuthenticated}
       pluginName={pluginName}
       description={description}
       version={version}
