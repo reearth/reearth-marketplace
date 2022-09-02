@@ -3,8 +3,7 @@ import React from "react";
 
 export type Props = {};
 const MyPlugins: React.FC<Props> = () => {
-  const isLoggedIn = false;
-  return <MyPluginsPage isLoggedIn={isLoggedIn} />;
+  return <MyPluginsPage />;
 };
 
 export default MyPlugins;

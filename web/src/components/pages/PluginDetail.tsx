@@ -2,8 +2,7 @@ import PluginDetailOrg from "@marketplace/components/organisms/PluginDetail";
 
 export type Props = {};
 const PluginDetail: React.FC<Props> = () => {
-  const isLoggedIn = false;
-  return <PluginDetailOrg isLoggedIn={isLoggedIn} />;
+  return <PluginDetailOrg />;
 };
 
 export default PluginDetail;

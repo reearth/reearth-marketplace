@@ -8,7 +8,7 @@ import Switch from "@marketplace/components/atoms/Switch";
 import Table from "@marketplace/components/atoms/Table";
 import type { ColumnsType } from "antd/es/table";
 
-import { DataType } from "./MyPluginsContent";
+import { DataType } from ".";
 
 export type Props = {
   data: DataType[];

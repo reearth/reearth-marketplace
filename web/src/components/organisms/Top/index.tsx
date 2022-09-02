@@ -1,6 +1,6 @@
 import { useAuth } from "@marketplace/auth/hooks";
 import TopPage from "@marketplace/components/molecules/TopPage";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import useHooks from "./hooks";
 
