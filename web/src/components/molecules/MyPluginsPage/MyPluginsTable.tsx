@@ -2,11 +2,13 @@ import styled from "@emotion/styled";
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Icon from "@marketplace/components/atoms/Icon";
+import Popover from "@marketplace/components/atoms/Popover";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Switch from "@marketplace/components/atoms/Switch";
 import Table from "@marketplace/components/atoms/Table";
 import type { ColumnsType } from "antd/es/table";
+import { useNavigate } from "react-router-dom";
 
 import { DataType } from "./MyPluginsContent";
 
@@ -15,6 +17,7 @@ export type Props = {
 };
 
 const MyPluginsTable: React.FC<Props> = ({ data }) => {
+  const navigate = useNavigate();
   const columns: ColumnsType<DataType> = [
     {
       title: "Plugin Name",
@@ -50,19 +53,38 @@ const MyPluginsTable: React.FC<Props> = ({ data }) => {
     {
       title: "Action",
       key: "action",
-      render: () => (
-        <Row justify="space-around" style={{ maxWidth: "200px" }}>
-          <Col>
-            <Button type="link" size="middle" icon={<Icon icon="edit" />} />
-          </Col>
-          <Col>
-            <Button type="link" size="middle" icon={<Icon icon="rocket" />} />
-          </Col>
-          <Col>
-            <Button type="link" size="middle" icon={<Icon icon="setting" />} />
-          </Col>
-        </Row>
-      ),
+      dataIndex: "id",
+      render: id => {
+        return (
+          <Row justify="space-around" style={{ maxWidth: "200px" }}>
+            {/* <Col>
+              <Popover content="Edit this plugin info">
+                <Button
+                  type="link"
+                  size="middle"
+                  icon={<Icon icon="edit" />}
+                  onClick={() => navigate(`/myplugins/${id}/update`)}
+                />
+              </Popover>
+            </Col> */}
+            <Col>
+              <Popover content="Update this plugin">
+                <Button
+                  type="link"
+                  size="middle"
+                  icon={<Icon icon="rocket" />}
+                  onClick={() => navigate(`/myplugins/${id}/update`)}
+                />
+              </Popover>
+            </Col>
+            <Col>
+              <Popover content="setting">
+                <Button type="link" size="middle" icon={<Icon icon="setting" />} />
+              </Popover>
+            </Col>
+          </Row>
+        );
+      },
     },
   ];
   return (

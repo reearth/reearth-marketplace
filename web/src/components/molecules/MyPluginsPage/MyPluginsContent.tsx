@@ -11,6 +11,7 @@ export type Props = {};
 
 export type DataType = {
   key: string;
+  id: string;
   name: string;
   status: boolean;
   version: string;
@@ -19,6 +20,7 @@ export type DataType = {
 const data: DataType[] = [
   {
     key: "1",
+    id: "23",
     name: "Location Tracker",
     status: true,
     version: "v0.4.0",
@@ -26,6 +28,7 @@ const data: DataType[] = [
   },
   {
     key: "2",
+    id: "25",
     name: "Location Tracker",
     status: false,
     version: "v0.4.0",
@@ -33,6 +36,7 @@ const data: DataType[] = [
   },
   {
     key: "3",
+    id: "2324",
     name: "Location Tracker",
     status: true,
     version: "v0.4.0",
