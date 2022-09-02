@@ -10,6 +10,7 @@ import { useState } from "react";
 
 export type Props = {
   onSearch: (value: string) => void;
+  isLoggedIn: boolean;
 };
 
 // const displayMenuItems: Array<{ label: string; key: number }> = [
@@ -56,7 +57,7 @@ const orderMenuItems: Array<{ label: string; key: number; value: PluginSort }> =
   },
 ];
 
-const SearchArea: React.FC<Props> = ({ onSearch }) => {
+const SearchArea: React.FC<Props> = ({ onSearch, isLoggedIn }) => {
   // TODO: onSearchへのソートの渡し方
   // const [displayMenuState, updateDisplayMenuState] = useState(1);
   const [_, updateOrderMenuState] = useState(1);
@@ -95,12 +96,14 @@ const SearchArea: React.FC<Props> = ({ onSearch }) => {
           </Space>
         </Button>
       </Dropdown>
-      <Button onClick={handleFavButtonClick}>
-        <Space size="small">
-          お気に入り
-          <Icon icon="heart" />
-        </Space>
-      </Button>
+      {isLoggedIn ? (
+        <Button onClick={handleFavButtonClick}>
+          <Space size="small">
+            お気に入り
+            <Icon icon="heart" />
+          </Space>
+        </Button>
+      ) : null}
     </StyledSpace>
   );
 };

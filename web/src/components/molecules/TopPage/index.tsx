@@ -18,7 +18,7 @@ const TopPage: React.FC<Props> = ({ isLoggedIn, plugins, onSearch }) => {
     <Wrapper>
       <Header isLoggedIn={isLoggedIn} />
       <TitleBar />
-      <TopPageContent plugins={plugins} onSearch={onSearch} />
+      <TopPageContent plugins={plugins} onSearch={onSearch} isLoggedIn={isLoggedIn} />
       <Footer />
     </Wrapper>
   );
