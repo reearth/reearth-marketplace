@@ -1,12 +1,9 @@
 import styled from "@emotion/styled";
-import Footer from "@marketplace/components/molecules/Common/Footer";
-import Header from "@marketplace/components/molecules/Common/Header";
 
 import AddNewPluginContent from "./AddNewPluginContent";
 import { FileUploadType } from "./PackageArea";
 
 export type Props = {
-  isLoggedIn: boolean;
   pluginName: string;
   description: string;
   version: string;
@@ -15,7 +12,6 @@ export type Props = {
   handleClickPublish: () => void;
 };
 const AddNewPluginPage: React.FC<Props> = ({
-  isLoggedIn,
   pluginName,
   description,
   version,
@@ -25,7 +21,6 @@ const AddNewPluginPage: React.FC<Props> = ({
 }) => {
   return (
     <Wrapper>
-      <Header isLoggedIn={isLoggedIn} />
       <AddNewPluginContent
         pluginName={pluginName}
         description={description}
@@ -34,13 +29,12 @@ const AddNewPluginPage: React.FC<Props> = ({
         handleClickSave={handleClickSave}
         handleClickPublish={handleClickPublish}
       />
-      <Footer />
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  height: 100vh;
+  height: 100%;
   background: rgba(250, 250, 250, 1);
 `;
 
