@@ -2,54 +2,75 @@ import styled from "@emotion/styled";
 import Col from "@marketplace/components/atoms/Col";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
+import Image from "@marketplace/components/atoms/Image";
+
+import Logo from "@marketplace/assets/logo.png";
 
 export type Props = {};
 const Footer: React.FC<Props> = () => {
   return (
     <Wrapper>
-      <FooterMenuRow justify="space-around" wrap gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
-        <Col flex={1} style={{ minWidth: "300px" }}>
-          <SectionTitle>Community</SectionTitle>
-          <Section direction="vertical">
-            <SectionContent>Discord</SectionContent>
-            <SectionContent>Discussion</SectionContent>
-            <SectionContent>Events</SectionContent>
-            <SectionContent>Road Maps</SectionContent>
-          </Section>
-        </Col>
-        <Col flex={1} style={{ minWidth: "300px" }}>
-          <SectionTitle>Support</SectionTitle>
-          <Section direction="vertical">
-            <SectionContent>Getting Started</SectionContent>
-            <SectionContent>Reference</SectionContent>
-            <SectionContent>Developer Guide</SectionContent>
-            <SectionContent>Tutorial</SectionContent>
-            <SectionContent>Terms of Use</SectionContent>
-          </Section>
-        </Col>
-        <Col flex={1} style={{ minWidth: "300px" }}>
-          <SectionTitle>Developers</SectionTitle>
-          <Section direction="vertical">
-            <SectionContent>Github</SectionContent>
-            <SectionContent>Road Maps</SectionContent>
-            <SectionContent>Changelog</SectionContent>
-            <SectionContent>Code of Conduct</SectionContent>
-          </Section>
-        </Col>
-        <Col flex={1} style={{ minWidth: "300px" }}>
-          <SectionTitle>Company</SectionTitle>
-          <Section direction="vertical">
-            <SectionContent>Website</SectionContent>
-            <SectionContent>Facebook</SectionContent>
-            <SectionContent>Twitter</SectionContent>
-            <SectionContent>Privacy Policy</SectionContent>
-          </Section>
+      <FooterMenuRow
+        justify="space-around"
+        wrap
+        gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
+        align="middle"
+      >
+        <Col span={18} offset={4} style={{ marginTop: "47px" }}>
+          <Row>
+            <Col flex={1} style={{ maxWidth: "300px" }}>
+              <SectionTitle>Community</SectionTitle>
+              <Section direction="vertical">
+                <SectionContent>Discord</SectionContent>
+                <SectionContent>Discussion</SectionContent>
+                <SectionContent>Events</SectionContent>
+                <SectionContent>Road Maps</SectionContent>
+              </Section>
+            </Col>
+            <Col flex={1} style={{ maxWidth: "300px" }}>
+              <SectionTitle>Support</SectionTitle>
+              <Section direction="vertical">
+                <SectionContent>Getting Started</SectionContent>
+                <SectionContent>Reference</SectionContent>
+                <SectionContent>Developer Guide</SectionContent>
+                <SectionContent>Tutorial</SectionContent>
+                <SectionContent>Terms of Use</SectionContent>
+              </Section>
+            </Col>
+            <Col flex={1} style={{ maxWidth: "300px" }}>
+              <SectionTitle>Developers</SectionTitle>
+              <Section direction="vertical">
+                <SectionContent>Github</SectionContent>
+                <SectionContent>Road Maps</SectionContent>
+                <SectionContent>Changelog</SectionContent>
+                <SectionContent>Code of Conduct</SectionContent>
+              </Section>
+            </Col>
+            <Col flex={1} style={{ maxWidth: "300px" }}>
+              <SectionTitle>Company</SectionTitle>
+              <Section direction="vertical">
+                <SectionContent>Website</SectionContent>
+                <SectionContent>Facebook</SectionContent>
+                <SectionContent>Twitter</SectionContent>
+                <SectionContent>Privacy Policy</SectionContent>
+              </Section>
+            </Col>
+          </Row>
         </Col>
       </FooterMenuRow>
 
-      <Space align="center" direction="horizontal" style={{ width: "100%" }}>
-        <div style={{ margin: "0px auto", width: "100%" }}>Logo</div>
-      </Space>
+      <div
+        style={{ margin: "32px auto 0", width: "100%", textAlign: "center" }}
+      >
+        <Row align="middle" justify="center">
+          <Space direction="vertical" size="large">
+            <Col>
+              <Image src={Logo} preview={false} width="120px" />
+            </Col>
+            <Col>© 2022 Re:Earth contributors.</Col>
+          </Space>
+        </Row>
+      </div>
     </Wrapper>
   );
 };
