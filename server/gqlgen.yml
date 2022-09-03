@@ -1,0 +1,20 @@
+# Where are all the schema files located? globs are supported eg  src/**/*.graphqls
+schema:
+  - schema.graphql
+
+# Where should the generated server code go?
+exec:
+  filename: internal/adapter/gql/generated.go
+
+model:
+  filename: internal/adapter/gql/gqlmodel/models_gen.go
+
+resolver:
+  filename: internal/adapter/gql/resolver.go
+  type: Resolver
+
+models:
+  Plugin:
+    model: github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel.Plugin
+  Me:
+    model: github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel.Me

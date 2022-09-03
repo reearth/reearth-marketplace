@@ -1,6 +1,7 @@
 scalar Time
 scalar URL
 scalar Lang # e.g. "ja" "en" default is "und" (language.Tag)
+
 interface Node {
   id: ID!
 }
@@ -76,10 +77,11 @@ type Plugin implements Node {
   repository: String
   # Published date of the latest version
   publishedAt: Time!
-  # Total number of plug-ins downloaded
+  # Total number of plugins downloaded
   downloads: Int!
   # Whether the plugin is available for anyone to view and download
   active: Boolean!
+  # README.md of the latest version. It is automatically loaded from the plugin's manifest file.
   readme: String!
   tags: [String!]!
   latestVersion: Version
@@ -88,9 +90,6 @@ type Plugin implements Node {
   publisherId: ID!
   publisher: Publisher!
 
-  likerIds: [ID!]!
-  liker: [User!]!
-  # or
   like: Int!
 }
 
@@ -107,8 +106,6 @@ type Version {
   updatedAt: Time!
   # Date when active is true
   publishedAt: Time!
-  # If there is no valid access token, no value is returned. This is for business reasons.
-  url: String
   checksum: String!
 }
 
@@ -246,6 +243,7 @@ input CreatePluginInput {
   file: Upload
   # Specify a github repository name and tag name or URL; exclusive with repo. e.g.: "reearth/plugin-example@v1"
   repo: String
+  # If omitted, the plugin will be published from the personal publisher
   publisher: ID
 }
 
