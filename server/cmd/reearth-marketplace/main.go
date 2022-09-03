@@ -1,17 +1,12 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4"
+	"github.com/reearth/reearth-marketplace/server/internal/app"
+	"github.com/reearth/reearthx/log"
 )
 
 func main() {
-	println("hello, world.")
-	e := echo.New()
-	e.GET("/", func(c echo.Context) error {
-		return c.JSON(200, "hello")
-	})
-	err := e.Start(":8080")
-	if err != nil {
-		panic("failed to run server")
+	if err := app.Start(false, "0.0.0"); err != nil {
+		log.Fatal(err)
 	}
 }
