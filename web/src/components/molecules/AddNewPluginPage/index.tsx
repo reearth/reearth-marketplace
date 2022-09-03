@@ -8,7 +8,7 @@ export type Props = {
   description: string;
   version: string;
   githubUrl: string;
-  handleChangeGithubUrl: (value: string) => void;
+  handleChangeGithubUrl: (url: string) => void;
   handleParsePlugin: (file?: FileUploadType) => void;
   handleClickSave: () => void;
   handleClickPublish: () => void;

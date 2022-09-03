@@ -10,8 +10,8 @@ const AddNewPlugin: React.FC<Props> = () => {
 
   const [githubUrl, changeGithubUrl] = useState<string>("");
 
-  const handleChangeGithubUrl = (value: string) => {
-    changeGithubUrl(value);
+  const handleChangeGithubUrl = (url: string) => {
+    changeGithubUrl(url);
   };
   const handleClickSave = () => {
     handleCreatePluginMutation({
