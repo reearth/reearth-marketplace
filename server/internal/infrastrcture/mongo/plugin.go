@@ -70,8 +70,8 @@ func NewPlugin(client *mongox.Client) repo.Plugin {
 
 func (r *pluginRepo) init() {
 	r.pluginClient().CreateUniqueIndex(context.Background(), []string{"name", "publisherId", "publishedAt", "downloads"}, []string{"name"})
-	r.pluginLikeClient().Collection().Indexes().CreateOne(context.Background(), mongo.IndexModel{
-		Keys:    bson.D{{"userId", 1}, {"pluginId", 1}},
+	_, _ = r.pluginLikeClient().Collection().Indexes().CreateOne(context.Background(), mongo.IndexModel{
+		Keys:    bson.D{{Key: "userId", Value: 1}, {Key: "pluginId", Value: 1}},
 		Options: options.Index().SetUnique(true),
 	})
 }
@@ -287,7 +287,7 @@ func (r *pluginRepo) UpdateLatest(ctx context.Context, p *plugin.Plugin) (*plugi
 	sr := r.pluginVersionClient().Collection().FindOne(
 		ctx,
 		bson.M{"pluginId": p.ID().String(), "active": true},
-		options.FindOne().SetSort(bson.D{{"createdAt", -1}}),
+		options.FindOne().SetSort(bson.D{{Key: "createdAt", Value: -1}}),
 	)
 	if sr.Err() != nil {
 		return nil, sr.Err()
@@ -508,7 +508,7 @@ func NewSort(sort string) (*Sort, error) {
 }
 
 func (s *Sort) SortOption() bson.D {
-	return bson.D{{s.Key, s.Val}, {"id", 1}}
+	return bson.D{{Key: s.Key, Value: s.Val}, {Key: "id", Value: 1}}
 }
 
 func (s *Sort) AfterCondition(sc *searchCursor) bson.M {

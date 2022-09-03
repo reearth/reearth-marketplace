@@ -1,8 +1,7 @@
 package user
 
 type OrganizationBuilder struct {
-	o   *Organization
-	err error
+	o *Organization
 }
 
 func NewOrganization() *OrganizationBuilder {

@@ -36,9 +36,6 @@ func (i *User) Update(ctx context.Context, u *user.User, param interfaces.Update
 		}
 		u.SetLang(lang)
 	}
-	if param.Tel != nil {
-		// pending
-	}
 	if err := i.userRepo.Save(ctx, u); err != nil {
 		return nil, err
 	}
