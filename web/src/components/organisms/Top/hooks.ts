@@ -35,7 +35,7 @@ export default (searchText?: string, sort?: PluginSort) => {
       });
       await refetch();
     },
-    [likePlugin, refetch],
+    [likePlugin, refetch]
   );
 
   const onUnlike = useCallback(
@@ -47,8 +47,9 @@ export default (searchText?: string, sort?: PluginSort) => {
       });
       await refetch();
     },
-    [unlikePlugin, refetch],
+    [unlikePlugin, refetch]
   );
+  console.log(data);
 
   const plugins = useMemo(
     () =>
@@ -59,11 +60,14 @@ export default (searchText?: string, sort?: PluginSort) => {
                 id: p.id,
                 name: p.name,
                 cover: p.images[0],
+                author: p.author ? p.author : "",
+                like: p.like,
+                downloads: p.downloads,
               }
-            : undefined,
+            : undefined
         )
         .filter((p): p is Plugin => !!p),
-    [data?.plugins],
+    [data?.plugins]
   );
 
   return {
