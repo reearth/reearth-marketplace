@@ -307,18 +307,24 @@ func (r *pluginRepo) UpdateLatest(ctx context.Context, p *plugin.Plugin) (*plugi
 		bson.M{"pluginId": p.ID().String(), "active": true},
 		options.FindOne().SetSort(bson.D{{Key: "createdAt", Value: -1}}),
 	)
-	if sr.Err() != nil {
-		return nil, sr.Err()
+	if err := sr.Err(); err != nil {
+		if !errors.Is(sr.Err(), mongo.ErrNoDocuments) {
+			return nil, err
+		}
+		pv, _ := plugin.NewPartialVersion().Version("0.0.0").Build()
+		p.SetLatestVersion(pv)
+	} else {
+		var d mongodoc.PluginVersionDocument
+		if err := sr.Decode(&d); err != nil {
+			return nil, err
+		}
+		v, err := d.Model()
+		if err != nil {
+			return nil, err
+		}
+		p.SetLatestVersion(&v.PartialVersion)
 	}
-	var d mongodoc.PluginVersionDocument
-	if err := sr.Decode(&d); err != nil {
-		return nil, err
-	}
-	v, err := d.Model()
-	if err != nil {
-		return nil, err
-	}
-	p.SetLatestVersion(&v.PartialVersion)
+
 	if err := r.Save(ctx, p); err != nil {
 		return nil, err
 	}

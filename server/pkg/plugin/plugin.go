@@ -68,6 +68,10 @@ func (p *Plugin) Downloads() int64 {
 	return p.downloads
 }
 
+func (p *Plugin) AddDownloads(add int64) {
+	p.downloads += add
+}
+
 func (p *Plugin) Like() int64 {
 	return p.like
 }
@@ -109,6 +113,10 @@ func (v *Version) ID() VersionID {
 
 func (v *Version) Downloads() int64 {
 	return v.downloads
+}
+
+func (v *Version) AddDownloads(add int64) {
+	v.downloads += add
 }
 
 func (v *Version) Active() bool {

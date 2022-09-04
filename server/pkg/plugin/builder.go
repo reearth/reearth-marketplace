@@ -81,10 +81,11 @@ type VersionedBuilder struct {
 }
 
 func Versioned(plugin *Plugin) *VersionedBuilder {
+	vid, _ := NewVersionID(plugin.Name(), plugin.latestVersion.version.String())
 	return &VersionedBuilder{
 		p: VersionedPlugin{
 			plugin:  plugin,
-			version: &Version{PartialVersion: *plugin.latestVersion},
+			version: &Version{PartialVersion: *plugin.latestVersion, id: vid},
 		},
 	}
 }
@@ -179,6 +180,9 @@ func NewPartialVersion() *PartialVersionBuilder {
 }
 
 func (b *PartialVersionBuilder) Version(version string) *PartialVersionBuilder {
+	if version == "" {
+		return b
+	}
 	v, err := semver.Parse(version)
 	if err != nil {
 		b.err = err
