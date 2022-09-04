@@ -21,4 +21,5 @@ type Plugin interface {
 	Versions(ctx context.Context, id plugin.ID) ([]*plugin.Version, error)
 	UpdateLatest(ctx context.Context, p *plugin.Plugin) (*plugin.Plugin, error)
 	List(ctx context.Context, user *user.User, filter *interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error)
+	Liked(ctx context.Context, user *user.User, id plugin.ID) (bool, error)
 }

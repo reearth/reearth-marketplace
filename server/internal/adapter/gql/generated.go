@@ -38,6 +38,7 @@ type Config struct {
 
 type ResolverRoot interface {
 	Mutation() MutationResolver
+	Plugin() PluginResolver
 	Query() QueryResolver
 }
 
@@ -120,6 +121,7 @@ type ComplexityRoot struct {
 		Images        func(childComplexity int) int
 		LatestVersion func(childComplexity int) int
 		Like          func(childComplexity int) int
+		Liked         func(childComplexity int) int
 		Name          func(childComplexity int) int
 		PublishedAt   func(childComplexity int) int
 		Publisher     func(childComplexity int) int
@@ -195,6 +197,9 @@ type MutationResolver interface {
 	CreateOrganization(ctx context.Context, input gqlmodel.CreateOrganizationInput) (*gqlmodel.OrganizationPayload, error)
 	UpdateOrganization(ctx context.Context, input gqlmodel.UpdateOrganizationInput) (*gqlmodel.OrganizationPayload, error)
 	DeleteOrganization(ctx context.Context, input gqlmodel.DeleteOrganizationInput) (*gqlmodel.DeleteOrganizationPayload, error)
+}
+type PluginResolver interface {
+	Liked(ctx context.Context, obj *gqlmodel.Plugin) (bool, error)
 }
 type QueryResolver interface {
 	Me(ctx context.Context) (*gqlmodel.Me, error)
@@ -616,6 +621,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Plugin.Like(childComplexity), true
+
+	case "Plugin.liked":
+		if e.complexity.Plugin.Liked == nil {
+			break
+		}
+
+		return e.complexity.Plugin.Liked(childComplexity), true
 
 	case "Plugin.name":
 		if e.complexity.Plugin.Name == nil {
@@ -1076,6 +1088,7 @@ type Plugin implements Node {
   publisher: Publisher!
 
   like: Int!
+  liked: Boolean!
 }
 
 type Version {
@@ -4494,6 +4507,50 @@ func (ec *executionContext) fieldContext_Plugin_like(ctx context.Context, field 
 	return fc, nil
 }
 
+func (ec *executionContext) _Plugin_liked(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.Plugin) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Plugin_liked(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Plugin().Liked(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Plugin_liked(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Plugin",
+		Field:      field,
+		IsMethod:   true,
+		IsResolver: true,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type Boolean does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _PluginConnection_edges(ctx context.Context, field graphql.CollectedField, obj *gqlmodel.PluginConnection) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_PluginConnection_edges(ctx, field)
 	if err != nil {
@@ -4623,6 +4680,8 @@ func (ec *executionContext) fieldContext_PluginConnection_nodes(ctx context.Cont
 				return ec.fieldContext_Plugin_publisher(ctx, field)
 			case "like":
 				return ec.fieldContext_Plugin_like(ctx, field)
+			case "liked":
+				return ec.fieldContext_Plugin_liked(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Plugin", field.Name)
 		},
@@ -4848,6 +4907,8 @@ func (ec *executionContext) fieldContext_PluginEdge_node(ctx context.Context, fi
 				return ec.fieldContext_Plugin_publisher(ctx, field)
 			case "like":
 				return ec.fieldContext_Plugin_like(ctx, field)
+			case "liked":
+				return ec.fieldContext_Plugin_liked(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Plugin", field.Name)
 		},
@@ -4934,6 +4995,8 @@ func (ec *executionContext) fieldContext_PluginPayload_plugin(ctx context.Contex
 				return ec.fieldContext_Plugin_publisher(ctx, field)
 			case "like":
 				return ec.fieldContext_Plugin_like(ctx, field)
+			case "liked":
+				return ec.fieldContext_Plugin_liked(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Plugin", field.Name)
 		},
@@ -6076,6 +6139,8 @@ func (ec *executionContext) fieldContext_VersionPayload_plugin(ctx context.Conte
 				return ec.fieldContext_Plugin_publisher(ctx, field)
 			case "like":
 				return ec.fieldContext_Plugin_like(ctx, field)
+			case "liked":
+				return ec.fieldContext_Plugin_liked(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Plugin", field.Name)
 		},
@@ -9168,6 +9233,26 @@ func (ec *executionContext) _Plugin(ctx context.Context, sel ast.SelectionSet, o
 			if out.Values[i] == graphql.Null {
 				atomic.AddUint32(&invalids, 1)
 			}
+		case "liked":
+			field := field
+
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Plugin_liked(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			}
+
+			out.Concurrently(i, func() graphql.Marshaler {
+				return innerFunc(ctx)
+
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

@@ -46,3 +46,11 @@ func (p *Plugin) Versions(ctx context.Context) ([]*Version, error) {
 		return ToVersion(x)
 	}), nil
 }
+
+func (p *Plugin) Liked(ctx context.Context) (bool, error) {
+	pid, err := plugin.IDFrom(p.ID)
+	if err != nil {
+		return false, err
+	}
+	return adapter.Usecases(ctx).Plugin.Liked(ctx, adapter.User(ctx), pid)
+}
