@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 )
 
 func initEcho(cfg *ServerConfig) *echo.Echo {
@@ -9,6 +10,10 @@ func initEcho(cfg *ServerConfig) *echo.Echo {
 	e.Debug = cfg.Debug
 	e.HideBanner = true
 	e.HidePort = true
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: cfg.Config.Origins,
+		AllowHeaders: []string{"Authorization"},
+	}))
 	e.Use(
 		jwtEchoMiddleware(cfg),
 		authMiddleware(cfg),
