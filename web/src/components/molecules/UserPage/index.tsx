@@ -6,6 +6,7 @@ import Icon from "@marketplace/components/atoms/Icon";
 import Image from "@marketplace/components/atoms/Image";
 import Space from "@marketplace/components/atoms/Space";
 import PluginsList from "@marketplace/components/molecules/PluginsList";
+import { Link } from "react-router-dom";
 
 export type Props = {};
 const UserPageContents: React.FC<Props> = () => {
@@ -14,10 +15,9 @@ const UserPageContents: React.FC<Props> = () => {
       <Breadcrumb
         style={{
           paddingBottom: "24px",
-        }}
-      >
+        }}>
         <Breadcrumb.Item>
-          <a href="/">Top</a>
+          <Link to="/">Top</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>Developer</Breadcrumb.Item>
       </Breadcrumb>
@@ -30,17 +30,15 @@ const UserPageContents: React.FC<Props> = () => {
       <DeveloperInfo size="small" direction="vertical">
         <Title>Re: Earth Team</Title>
         <Description>
-          Descriptions are here.Descriptions are here.Descriptions are
-          here.Descriptions are here.Descriptions are here.Descriptions are
-          here.
+          Descriptions are here.Descriptions are here.Descriptions are here.Descriptions are
+          here.Descriptions are here.Descriptions are here.
         </Description>
         <AdditionalInfo>
           <Button
             type="link"
             size="middle"
             href=""
-            style={{ color: "rgba(0, 0, 0, 0.45)", padding: 0 }}
-          >
+            style={{ color: "rgba(0, 0, 0, 0.45)", padding: 0 }}>
             <Icon icon="desktop" />
             https://hoge.com
           </Button>
@@ -50,8 +48,7 @@ const UserPageContents: React.FC<Props> = () => {
             type="link"
             size="middle"
             href=""
-            style={{ color: "rgba(0, 0, 0, 0.45)", padding: 0 }}
-          >
+            style={{ color: "rgba(0, 0, 0, 0.45)", padding: 0 }}>
             <Icon icon="email" />
             https://hoge.com
           </Button>

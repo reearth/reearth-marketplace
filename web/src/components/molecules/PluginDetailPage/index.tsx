@@ -10,6 +10,7 @@ import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import ModalContent from "./ModalContent";
 
@@ -39,7 +40,7 @@ const PluginDetailPage: React.FC<Props> = ({
             paddingBottom: "24px",
           }}>
           <Breadcrumb.Item>
-            <a href="/">Top</a>
+            <Link to="/">Top</Link>
           </Breadcrumb.Item>
           <Breadcrumb.Item>{pluginName}</Breadcrumb.Item>
         </Breadcrumb>
@@ -109,7 +110,7 @@ const PluginDetailPage: React.FC<Props> = ({
               </PluginInfo>
               <PluginInfo>
                 <Col>Version</Col>
-                <Col>{version}</Col>
+                <Col>v{version}</Col>
               </PluginInfo>
               <PluginInfo>
                 <Col>Publish date</Col>
@@ -165,6 +166,7 @@ const Description = styled.p`
 const PluginInfo = styled(Row)`
   margin-top: 12px;
   font-size: 16px;
+  color: black;
 `;
 
 export default PluginDetailPage;
