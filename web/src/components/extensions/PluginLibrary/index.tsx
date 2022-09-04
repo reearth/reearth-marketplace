@@ -1,14 +1,32 @@
 // import { Provider as Auth0Provider } from "@marketplace/auth";
-import MarketplaceCore from "@marketplace/components/MarketplaceCore";
-import Root from "@marketplace/components/pages/Root";
-// import MyPlugins from "@marketplace/components/pages/MyPlugins";
+import CoreWrapper from "@marketplace/components/molecules/Common/CoreWrapper";
+import PluginDetailPage from "@marketplace/components/pages/PluginDetail";
+import RootPage from "@marketplace/components/pages/Root";
+import UserPage from "@marketplace/components/pages/User";
 import { Provider as GqlProvider } from "@marketplace/gql";
 import { Provider as I18nProvider } from "@marketplace/i18n";
+import { MemoryRouter as Router, Routes, Route } from "react-router-dom";
+
+// const AppRoutes = ({ selectedPluginId }: { selectedPluginId?: string }) => {
+//   return useRoutes([
+//     { path: "/", element: <RootPage /> },
+//     { path: "/plugins/:pluginId", element: <PluginDetailPage /> },
+//     { path: "/:userId", element: <UserPage /> },
+//     {
+//       path: "*",
+//       element: selectedPluginId ? (
+//         <PluginDetailPage selectedPluginId={selectedPluginId} />
+//       ) : (
+//         <RootPage />
+//       ),
+//     },
+//   ]);
+// };
 
 export default function LibraryExtension({
   // theme,
   // lang,
-  // selectedPluginId,
+  selectedPluginId,
   // installedPlugins,
   // onInstall,
   // onUninstall,
@@ -44,7 +62,16 @@ export default function LibraryExtension({
     // <Auth0Provider>
     <I18nProvider>
       <GqlProvider accessToken={accessToken} api="https://api.marketplace.test.reearth.dev/api">
-        <MarketplaceCore customFallback={Root} />
+        <Router initialEntries={selectedPluginId ? [`/plugins/${selectedPluginId}`] : ["/"]}>
+          <CoreWrapper>
+            {/* <AppRoutes selectedPluginId={selectedPluginId} /> */}
+            <Routes>
+              <Route path="/" element={<RootPage showBanner />} />
+              <Route path="/plugins/:pluginId" element={<PluginDetailPage />} />
+              <Route path="/:userId" element={<UserPage />} />
+            </Routes>
+          </CoreWrapper>
+        </Router>
       </GqlProvider>
     </I18nProvider>
     // </Auth0Provider>
