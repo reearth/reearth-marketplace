@@ -1,6 +1,6 @@
 import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
 import UpdatePluginPage from "@marketplace/components/molecules/UpdatePluginPage";
-import React from "react";
+import React, { useState } from "react";
 
 import useHooks from "./hooks";
 
@@ -8,6 +8,11 @@ export type Props = {};
 const UpdatePlugin: React.FC<Props> = () => {
   const { handleParsePluginMutation, handleCreatePluginMutation } = useHooks();
 
+  const [githubUrl, changeGithubUrl] = useState<string>("");
+
+  const handleChangeGithubUrl = (url: string) => {
+    changeGithubUrl(url);
+  };
   const handleClickSave = () => {
     handleCreatePluginMutation({
       file: undefined,
@@ -37,6 +42,8 @@ const UpdatePlugin: React.FC<Props> = () => {
       pluginName={pluginName}
       description={description}
       version={version}
+      githubUrl={githubUrl}
+      handleChangeGithubUrl={handleChangeGithubUrl}
       handleParsePlugin={handleParsePlugin}
       handleClickSave={handleClickSave}
       handleClickPublish={handleClickPublish}
