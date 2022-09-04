@@ -13,9 +13,10 @@ import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 export type Props = {
   header?: ComponentType;
   footer?: ComponentType;
+  customFallback?: ComponentType;
 };
 
-function AppRoutes() {
+const AppRoutes = ({ customFallback: CustomFallback }: { customFallback?: ComponentType }) => {
   return useRoutes([
     { path: "/", element: <RootPage /> },
     { path: "/plugins/:pluginId", element: <PluginDetailPage /> },
@@ -27,15 +28,15 @@ function AppRoutes() {
     { path: "/myplugins", element: <MyPlugins /> },
     { path: "/myplugins/new", element: <AddNewPlugin /> },
     { path: "/myplugins/:pluginId/update", element: <UpdatePlugin /> },
-    { path: "*", element: <NotFound /> },
+    { path: "*", element: CustomFallback ? <CustomFallback /> : <NotFound /> },
   ]);
-}
+};
 
-const MarketplaceCore: React.FC<Props> = ({ header, footer }) => {
+const MarketplaceCore: React.FC<Props> = ({ header, footer, customFallback }) => {
   return (
     <Router>
       <CoreWrapper header={header} footer={footer}>
-        <AppRoutes />
+        <AppRoutes customFallback={customFallback} />
       </CoreWrapper>
     </Router>
   );
