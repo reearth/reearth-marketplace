@@ -38,7 +38,6 @@ type Config struct {
 
 type ResolverRoot interface {
 	Mutation() MutationResolver
-	Plugin() PluginResolver
 	Query() QueryResolver
 }
 
@@ -197,9 +196,6 @@ type MutationResolver interface {
 	CreateOrganization(ctx context.Context, input gqlmodel.CreateOrganizationInput) (*gqlmodel.OrganizationPayload, error)
 	UpdateOrganization(ctx context.Context, input gqlmodel.UpdateOrganizationInput) (*gqlmodel.OrganizationPayload, error)
 	DeleteOrganization(ctx context.Context, input gqlmodel.DeleteOrganizationInput) (*gqlmodel.DeleteOrganizationPayload, error)
-}
-type PluginResolver interface {
-	Liked(ctx context.Context, obj *gqlmodel.Plugin) (bool, error)
 }
 type QueryResolver interface {
 	Me(ctx context.Context) (*gqlmodel.Me, error)
@@ -4521,7 +4517,7 @@ func (ec *executionContext) _Plugin_liked(ctx context.Context, field graphql.Col
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Plugin().Liked(rctx, obj)
+		return obj.Liked(ctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4543,7 +4539,7 @@ func (ec *executionContext) fieldContext_Plugin_liked(ctx context.Context, field
 		Object:     "Plugin",
 		Field:      field,
 		IsMethod:   true,
-		IsResolver: true,
+		IsResolver: false,
 		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
 			return nil, errors.New("field of type Boolean does not have child fields")
 		},
