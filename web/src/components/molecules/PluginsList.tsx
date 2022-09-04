@@ -15,6 +15,7 @@ export type Plugin = {
   author: string;
   like: number;
   downloads: number;
+  version?: string;
 };
 
 const PluginsList: React.FC<Props> = ({ loading, plugins }) => {

@@ -15,17 +15,19 @@ import ModalContent from "./ModalContent";
 
 export type Props = {
   pluginName: string;
-  developerLink: string;
-  version: string;
-  publishedDate: string;
+  author: string;
+  version?: string;
+  likes: number;
+  downloads: number;
   handleClickChoose: (projectId: string) => void;
 };
 
 const PluginDetailPage: React.FC<Props> = ({
   pluginName,
-  developerLink,
+  author,
   version,
-  publishedDate,
+  likes,
+  downloads,
   handleClickChoose,
 }) => {
   const onTabsChange = () => {};
@@ -37,7 +39,8 @@ const PluginDetailPage: React.FC<Props> = ({
         <Breadcrumb
           style={{
             paddingBottom: "24px",
-          }}>
+          }}
+        >
           <Breadcrumb.Item>
             <a href="/">Top</a>
           </Breadcrumb.Item>
@@ -45,7 +48,13 @@ const PluginDetailPage: React.FC<Props> = ({
         </Breadcrumb>
         <Layout
           hasSider
-          style={{ minHeight: "400px", minWidth: "800px", margin: "0 auto", background: "#fff" }}>
+          style={{
+            minHeight: "400px",
+            minWidth: "800px",
+            margin: "0 auto",
+            background: "#fff",
+          }}
+        >
           <Row wrap={false} style={{ width: "100%" }} justify="start">
             <Col flex={3} style={{ maxWidth: "720px" }}>
               <Image
@@ -70,19 +79,18 @@ const PluginDetailPage: React.FC<Props> = ({
               style={{
                 padding: "0 24px",
                 maxWidth: "400px",
-              }}>
+              }}
+            >
               <Title>{pluginName}Test</Title>
               <LikesDownloaded justify="end">
                 <Space>
                   <Col>
                     <Icon icon="heart" />
-                    {/* TODO: number from API */}
-                    100
+                    {likes}
                   </Col>
                   <Col>
                     <Icon icon="arrowDown" />
-                    {/* TODO: number from API */}
-                    100
+                    {downloads}
                   </Col>
                 </Space>
               </LikesDownloaded>
@@ -94,7 +102,12 @@ const PluginDetailPage: React.FC<Props> = ({
                   </Button>
                 </Col>
                 <Col flex="auto">
-                  <Button type="primary" size="large" block onClick={() => setIsModalVisible(true)}>
+                  <Button
+                    type="primary"
+                    size="large"
+                    block
+                    onClick={() => setIsModalVisible(true)}
+                  >
                     <Icon icon="logout" />
                     Open Plugin in your project
                   </Button>
@@ -104,18 +117,23 @@ const PluginDetailPage: React.FC<Props> = ({
               <PluginInfo align="middle" justify="space-between">
                 <Col>Developer</Col>
                 <Col>
-                  <Button type="link">{developerLink}Link</Button>
+                  <Button type="text">{author}</Button>
                 </Col>
               </PluginInfo>
               <PluginInfo>
                 <Col>Version</Col>
                 <Col>{version}</Col>
               </PluginInfo>
-              <PluginInfo>
+              {/* <PluginInfo>
                 <Col>Publish date</Col>
                 <Col>{publishedDate}</Col>
-              </PluginInfo>
-              <Button type="link" size="middle" style={{ padding: 0, marginTop: 12 }} danger>
+              </PluginInfo> */}
+              <Button
+                type="link"
+                size="middle"
+                style={{ padding: 0, marginTop: 12 }}
+                danger
+              >
                 <Row align="bottom" justify="space-between" wrap={false}>
                   <Col>Report this plugin</Col>
                   <Col span={4}>

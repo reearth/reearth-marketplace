@@ -49,7 +49,6 @@ export default (searchText?: string, sort?: PluginSort) => {
     },
     [unlikePlugin, refetch]
   );
-  console.log(data);
 
   const plugins = useMemo(
     () =>
