@@ -20,8 +20,7 @@ export type Props = {
   publishedDate: string;
   handleClickChoose: (projectId: string) => void;
 };
-
-const PluginDetailPage: React.FC<Props> = ({
+const PluginDetailContent: React.FC<Props> = ({
   pluginName,
   developerLink,
   version,
@@ -30,7 +29,6 @@ const PluginDetailPage: React.FC<Props> = ({
 }) => {
   const onTabsChange = () => {};
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
-
   return (
     <>
       <Wrapper>
@@ -167,4 +165,4 @@ const PluginInfo = styled(Row)`
   font-size: 16px;
 `;
 
-export default PluginDetailPage;
+export default PluginDetailContent;

@@ -14,7 +14,8 @@ const UserPageContents: React.FC<Props> = () => {
       <Breadcrumb
         style={{
           paddingBottom: "24px",
-        }}>
+        }}
+      >
         <Breadcrumb.Item>
           <a href="/">Top</a>
         </Breadcrumb.Item>
@@ -29,15 +30,17 @@ const UserPageContents: React.FC<Props> = () => {
       <DeveloperInfo size="small" direction="vertical">
         <Title>Re: Earth Team</Title>
         <Description>
-          Descriptions are here.Descriptions are here.Descriptions are here.Descriptions are
-          here.Descriptions are here.Descriptions are here.
+          Descriptions are here.Descriptions are here.Descriptions are
+          here.Descriptions are here.Descriptions are here.Descriptions are
+          here.
         </Description>
         <AdditionalInfo>
           <Button
             type="link"
             size="middle"
             href=""
-            style={{ color: "rgba(0, 0, 0, 0.45)", padding: 0 }}>
+            style={{ color: "rgba(0, 0, 0, 0.45)", padding: 0 }}
+          >
             <Icon icon="desktop" />
             https://hoge.com
           </Button>
@@ -47,7 +50,8 @@ const UserPageContents: React.FC<Props> = () => {
             type="link"
             size="middle"
             href=""
-            style={{ color: "rgba(0, 0, 0, 0.45)", padding: 0 }}>
+            style={{ color: "rgba(0, 0, 0, 0.45)", padding: 0 }}
+          >
             <Icon icon="email" />
             https://hoge.com
           </Button>
@@ -92,6 +96,7 @@ const UserInitial = styled.p`
   justify-self: center;
   width: 100%;
   text-align: center;
+  margin: 0;
 `;
 
 const DeveloperInfo = styled(Space)`

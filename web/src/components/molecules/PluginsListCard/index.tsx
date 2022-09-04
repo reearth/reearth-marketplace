@@ -8,9 +8,9 @@ import Space from "@marketplace/components/atoms/Space";
 export type Props = {
   loading?: boolean;
   cover?: string;
-  author?: string;
-  likedCount?: number;
-  installedCount?: number;
+  author: string;
+  likedCount: number;
+  downloadCount: number;
   name: string;
   id: string;
   onClick?: () => void;
@@ -20,18 +20,21 @@ const PluginsListCard: React.FC<Props> = ({
   cover,
   author,
   likedCount,
-  installedCount,
+  downloadCount,
   name,
   onClick,
 }) => {
   return (
     <Card
       loading={loading}
-      cover={<img alt="example" src={cover} />}
+      cover={<img alt="example" src={cover} width="100%" />}
       size="small"
       bordered={false}
-      onClick={onClick}>
-      <Row justify="space-between">
+      onClick={onClick}
+      style={{ maxWidth: "240px", cursor: "pointer" }}
+      bodyStyle={{ padding: "4px 0" }}
+    >
+      <Row justify="space-between" align="top">
         <AuthorName>{author}</AuthorName>
         <Space size="small">
           <Row justify="start">
@@ -43,7 +46,7 @@ const PluginsListCard: React.FC<Props> = ({
           <Row justify="start">
             <Space size="small">
               <Icon icon="arrowDown" />
-              <LikedNum>{installedCount}</LikedNum>
+              <LikedNum>{downloadCount}</LikedNum>
             </Space>
           </Row>
         </Space>

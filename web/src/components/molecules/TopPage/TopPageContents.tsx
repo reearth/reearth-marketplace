@@ -1,17 +1,24 @@
 import styled from "@emotion/styled";
-import PluginsList, { Plugin } from "@marketplace/components/molecules/PluginsList";
-import SearchArea from "@marketplace/components/molecules/SearchArea";
+import PluginsList, {
+  Plugin,
+} from "@marketplace/components/molecules/PluginsList";
+// import SearchArea from "@marketplace/components/molecules/SearchArea";
 
 export type Props = {
   plugins?: Plugin[];
-  onSearch: (text: string) => void;
-  isLoggedIn: boolean;
+  // onSearch: (text: string) => void;
+  // isLoggedIn: boolean;
 };
 
-const TopPageContents: React.FC<Props> = ({ plugins, onSearch, isLoggedIn }) => {
+const TopPageContents: React.FC<Props> = ({
+  plugins,
+  // onSearch,
+  // isLoggedIn,
+}) => {
   return (
     <Wrapper>
-      <SearchArea onSearch={onSearch} isLoggedIn={isLoggedIn} />
+      {/* TODO: Search Bar */}
+      {/* <SearchArea onSearch={onSearch} isLoggedIn={isLoggedIn} /> */}
       <PluginsList plugins={plugins} />
     </Wrapper>
   );

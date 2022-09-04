@@ -14,6 +14,8 @@ export type Props = {
   pluginName: string;
   version: string;
   description: string;
+  githubUrl: string;
+  handleChangeGithubUrl: (url: string) => void;
   handleParsePlugin: (file?: FileUploadType) => void;
   handleClickSave: () => void;
   handleClickPublish: () => void;
@@ -23,6 +25,8 @@ const AddNewPluginContent: React.FC<Props> = ({
   pluginName,
   version,
   description,
+  githubUrl,
+  handleChangeGithubUrl,
   handleParsePlugin,
   handleClickSave,
   handleClickPublish,
@@ -57,15 +61,22 @@ const AddNewPluginContent: React.FC<Props> = ({
         defaultActiveKey={currentTab}
         tabBarStyle={{ margin: 0 }}
         activeKey={currentTab}
-        onChange={handleClickDetailSetting}>
+        onChange={handleClickDetailSetting}
+      >
         <TabPane tab="Package" key="1">
           <PackageArea
+            githubUrl={githubUrl}
+            handleChangeGithubUrl={handleChangeGithubUrl}
             handleClickDetailSetting={handleClickDetailSetting}
             handleParsePlugin={handleParsePlugin}
           />
         </TabPane>
         <TabPane tab="Setting" key="2">
-          <SettingArea pluginName={pluginName} version={version} description={description} />
+          <SettingArea
+            pluginName={pluginName}
+            version={version}
+            description={description}
+          />
         </TabPane>
       </Tabs>
     </Wrapper>

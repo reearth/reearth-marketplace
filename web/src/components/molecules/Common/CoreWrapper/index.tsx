@@ -29,7 +29,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
 
-  > :first-child {
+  > :first-of-type {
     flex: 1;
     width: 100%;
   }

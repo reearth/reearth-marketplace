@@ -7,20 +7,30 @@ import Message from "@marketplace/components/atoms/Message";
 import Radio, { RadioChangeEvent } from "@marketplace/components/atoms/Radio";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
-import Upload, { Dragger, UploadChangeParam, RcFile } from "@marketplace/components/atoms/Upload";
+import Upload, {
+  Dragger,
+  UploadChangeParam,
+  RcFile,
+} from "@marketplace/components/atoms/Upload";
 import { useState } from "react";
 
 export type FileUploadType = string | RcFile | Blob;
 export type Props = {
+  githubUrl: string;
   handleClickDetailSetting: () => void;
   handleParsePlugin: (file?: FileUploadType, repo?: string) => void;
+  handleChangeGithubUrl: (url: string) => void;
 };
-const PackageArea: React.FC<Props> = ({ handleClickDetailSetting, handleParsePlugin }) => {
-  const [currentRadio, changeRadio] = useState<"Upload from local" | "GitHub repository">(
-    "Upload from local",
-  );
+const PackageArea: React.FC<Props> = ({
+  githubUrl,
+  handleClickDetailSetting,
+  handleParsePlugin,
+  handleChangeGithubUrl,
+}) => {
+  const [currentRadio, changeRadio] = useState<
+    "Upload from local" | "GitHub repository"
+  >("Upload from local");
   const [uploadedFileName, uploadZip] = useState<string>("");
-
   const handleChangeRadio = (e: RadioChangeEvent) => {
     changeRadio(e.target.value);
   };
@@ -41,8 +51,12 @@ const PackageArea: React.FC<Props> = ({ handleClickDetailSetting, handleParsePlu
         <Row justify="start">
           <Col>
             <Radio.Group onChange={handleChangeRadio} value={currentRadio}>
-              <Radio.Button value="Upload from local">Upload from local</Radio.Button>
-              <Radio.Button value="GitHub repository">GitHub repository</Radio.Button>
+              <Radio.Button value="Upload from local">
+                Upload from local
+              </Radio.Button>
+              <Radio.Button value="GitHub repository">
+                GitHub repository
+              </Radio.Button>
             </Radio.Group>
           </Col>
         </Row>
@@ -55,7 +69,7 @@ const PackageArea: React.FC<Props> = ({ handleClickDetailSetting, handleParsePlu
               maxCount={1}
               disabled={!!uploadedFileName}
               multiple={false}
-              beforeUpload={file => {
+              beforeUpload={(file) => {
                 console.log(file);
                 const isZip = file.type === "application/zip";
                 if (!isZip) {
@@ -63,31 +77,42 @@ const PackageArea: React.FC<Props> = ({ handleClickDetailSetting, handleParsePlu
                 }
                 return isZip || Upload.LIST_IGNORE;
               }}
-              customRequest={info => handleParsePlugin(info.file)}
-              onChange={info => {
+              customRequest={(info) => handleParsePlugin(info.file)}
+              onChange={(info) => {
                 const { status } = info.file;
                 if (status !== "uploading") {
                   console.log(info.file, info.fileList);
                 }
                 if (status === "done") {
-                  Message.success(`${info.file.name} file uploaded successfully.`);
+                  Message.success(
+                    `${info.file.name} file uploaded successfully.`
+                  );
                   handleUploadZip(info);
                 } else if (status === "error") {
                   Message.error(`${info.file.name} file upload failed.`);
                 }
               }}
-              onDrop={e => {
+              onDrop={(e) => {
                 console.log("Dropped files", e.dataTransfer.files);
-              }}>
+              }}
+            >
               <p className="ant-upload-drag-icon">
                 <Icon icon="inbox" />
               </p>
-              <p className="ant-upload-hint">Click or drag file to this area to upload</p>
+              <p className="ant-upload-hint">
+                Click or drag file to this area to upload
+              </p>
             </Dragger>
           </UploadArea>
         ) : (
           <>
-            <Input placeholder="github.com/xxx/xxx"></Input>
+            <Input
+              placeholder="github.com/xxx/xxx"
+              value={githubUrl}
+              onChange={(e) => {
+                handleChangeGithubUrl(e.target.value);
+              }}
+            ></Input>
             <p>Please set your repository as public respository.</p>
           </>
         )}

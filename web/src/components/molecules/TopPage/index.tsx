@@ -5,16 +5,16 @@ import TopPageContent from "./TopPageContents";
 
 export type { Plugin } from "@marketplace/components/molecules/PluginsList";
 export type Props = {
-  isLoggedIn: boolean;
+  // isLoggedIn: boolean;
   plugins?: Plugin[];
-  onSearch: (text: string) => void;
+  // onSearch: (text: string) => void;
 };
 
-const TopPage: React.FC<Props> = ({ isLoggedIn, plugins, onSearch }) => {
+const TopPage: React.FC<Props> = ({ plugins }) => {
   return (
     <div>
       <TitleBar />
-      <TopPageContent plugins={plugins} onSearch={onSearch} isLoggedIn={isLoggedIn} />
+      <TopPageContent plugins={plugins} />
     </div>
   );
 };

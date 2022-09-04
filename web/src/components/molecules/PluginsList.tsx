@@ -12,6 +12,9 @@ export type Plugin = {
   id: string;
   name: string;
   cover: string;
+  author: string;
+  like: number;
+  downloads: number;
 };
 
 const PluginsList: React.FC<Props> = ({ loading, plugins }) => {
@@ -20,7 +23,7 @@ const PluginsList: React.FC<Props> = ({ loading, plugins }) => {
     (id: string) => {
       navigate(`/plugins/${id}`);
     },
-    [navigate],
+    [navigate]
   );
   return (
     <Space size={[37.33, 24]} wrap>
@@ -31,8 +34,11 @@ const PluginsList: React.FC<Props> = ({ loading, plugins }) => {
                 id={plugin.id}
                 key={plugin.id}
                 name={plugin.name}
+                author={plugin.author}
                 loading={loading}
                 cover={plugin.cover}
+                likedCount={plugin.like}
+                downloadCount={plugin.downloads}
                 onClick={() => handlePluginsListCardClick(plugin.id)}
               />
             );
