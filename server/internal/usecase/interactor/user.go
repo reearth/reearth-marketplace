@@ -5,6 +5,7 @@ import (
 
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
+	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
 	"golang.org/x/text/language"
 )
@@ -40,4 +41,12 @@ func (i *User) Update(ctx context.Context, u *user.User, param interfaces.Update
 		return nil, err
 	}
 	return u, nil
+}
+
+func (i *User) FindByID(ctx context.Context, uid id.UserID) (*user.User, error) {
+	us, err := i.userRepo.FindByIDs(ctx, id.UserIDList{uid})
+	if err != nil {
+		return nil, err
+	}
+	return us[0], nil
 }

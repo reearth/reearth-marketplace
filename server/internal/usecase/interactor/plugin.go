@@ -227,8 +227,8 @@ func (p *Plugin) ImageURL(ctx context.Context, name string) string {
 	return p.file.AssetsURL(ctx, name)
 }
 
-func (p *Plugin) List(ctx context.Context, publisher *user.User, param interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error) {
-	return p.pluginRepo.List(ctx, publisher, &param)
+func (p *Plugin) List(ctx context.Context, uid id.UserID, param interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error) {
+	return p.pluginRepo.List(ctx, uid, &param)
 }
 
 func (p *Plugin) Liked(ctx context.Context, user *user.User, id id.PluginID) (bool, error) {

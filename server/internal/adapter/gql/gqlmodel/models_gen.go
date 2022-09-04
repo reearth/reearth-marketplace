@@ -153,19 +153,6 @@ type UpdateVersionInput struct {
 	Active      *bool   `json:"active"`
 }
 
-type User struct {
-	ID              string            `json:"id"`
-	Name            string            `json:"name"`
-	DisplayName     *string           `json:"displayName"`
-	Description     *string           `json:"description"`
-	Plugins         *PluginConnection `json:"plugins"`
-	OrganizationIds []string          `json:"organizationIds"`
-	Organizations   []*Organization   `json:"organizations"`
-}
-
-func (User) IsNode()      {}
-func (User) IsPublisher() {}
-
 type Version struct {
 	Version     string    `json:"version"`
 	Description string    `json:"description"`

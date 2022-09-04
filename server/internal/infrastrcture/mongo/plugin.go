@@ -13,6 +13,7 @@ import (
 	"github.com/reearth/reearth-marketplace/server/internal/infrastrcture/mongo/mongodoc"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
+	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
 	"github.com/reearth/reearthx/mongox"
@@ -324,11 +325,16 @@ func (r *pluginRepo) UpdateLatest(ctx context.Context, p *plugin.Plugin) (*plugi
 	return p, nil
 }
 
-func (r *pluginRepo) List(ctx context.Context, user *user.User, param *interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error) {
+func (r *pluginRepo) List(ctx context.Context, uid id.UserID, param *interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error) {
 	var conditions []bson.M
 	conditions = append(conditions, bson.M{
-		"publisherId": user.ID().String(),
+		"publisherId": uid.String(),
 	})
+	if param.ActiveOnly {
+		conditions = append(conditions, bson.M{
+			"active": true,
+		})
+	}
 	totalCount, err := r.pluginClient().Count(ctx, toFilter(conditions))
 	if err != nil {
 		return nil, nil, err

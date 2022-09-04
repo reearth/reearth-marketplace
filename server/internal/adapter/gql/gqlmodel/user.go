@@ -8,31 +8,31 @@ import (
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
 )
 
-type Me struct {
-	id          id.UserID
-	Lang        *string `json:"lang"`
-	Name        string  `json:"name"`
-	DisplayName *string `json:"displayName"`
-	Description *string `json:"description"`
-	Tel         *string `json:"tel"`
-	Publishable bool    `json:"publishable"`
+type User struct {
+	id              id.UserID
+	Name            string          `json:"name"`
+	DisplayName     *string         `json:"displayName"`
+	Description     *string         `json:"description"`
+	OrganizationIds []string        `json:"organizationIds"`
+	Organizations   []*Organization `json:"organizations"`
 }
 
-func (*Me) IsPublisher() {}
+func (*User) IsNode()      {}
+func (*User) IsPublisher() {}
 
-func (m *Me) ID() string {
-	return "u:" + m.id.String()
+func (u *User) ID() string {
+	return "u:" + u.id.String()
 }
 
-func (m *Me) Plugins(ctx context.Context, first *int, last *int, before *string, after *string) (*PluginConnection, error) {
+func (u *User) Plugins(ctx context.Context, first *int, last *int, before *string, after *string) (*PluginConnection, error) {
 	ps, pageInfo, err := adapter.Usecases(ctx).Plugin.List(ctx,
-		m.id,
+		u.id,
 		interfaces.ListPluginParam{
 			First:      first,
 			Last:       last,
 			Before:     before,
 			After:      after,
-			ActiveOnly: false,
+			ActiveOnly: true,
 		},
 	)
 	if err != nil {
