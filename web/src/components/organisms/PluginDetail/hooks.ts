@@ -50,6 +50,7 @@ export default (pluginId: string) => {
             cover: data.node.images[0],
             author: data.node.author ? data.node.author : "",
             like: data.node.like,
+            images: data.node.images,
             // TODO: where is publishDate?
             // publishData:
             version: data.node.latestVersion?.version,
