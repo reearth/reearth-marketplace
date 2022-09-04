@@ -16,6 +16,7 @@ import (
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
 	"github.com/reearth/reearthx/mongox"
+	"github.com/reearth/reearthx/rerror"
 	"github.com/reearth/reearthx/usecase"
 	"github.com/samber/lo"
 	"go.mongodb.org/mongo-driver/bson"
@@ -25,6 +26,22 @@ import (
 
 type pluginRepo struct {
 	client *mongox.Client
+}
+
+func (r *pluginRepo) Liked(ctx context.Context, user *user.User, id plugin.ID) (bool, error) {
+	var c mongox.SliceConsumer[mongodoc.PluginLikeDocument]
+	err := r.pluginLikeClient().FindOne(
+		ctx,
+		bson.M{"userId": user.ID().String(), "pluginId": id.String()},
+		&c,
+	)
+	if err == nil {
+		return true, nil
+	}
+	if errors.Is(err, rerror.ErrNotFound) {
+		return false, nil
+	}
+	return false, err
 }
 
 func (r *pluginRepo) FindByVersion(ctx context.Context, id plugin.ID, version string) (*plugin.VersionedPlugin, error) {

@@ -231,6 +231,10 @@ func (p *Plugin) List(ctx context.Context, publisher *user.User, param interface
 	return p.pluginRepo.List(ctx, publisher, &param)
 }
 
+func (p *Plugin) Liked(ctx context.Context, user *user.User, id id.PluginID) (bool, error) {
+	return p.pluginRepo.Liked(ctx, user, id)
+}
+
 func (p *Plugin) create(ctx context.Context, publisher *user.User, pkg *pluginpack.Package) (*plugin.VersionedPlugin, error) {
 	vp, err := pluginpack.ToPlugin(ctx, pkg, publisher.ID())
 	if err != nil {

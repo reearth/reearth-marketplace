@@ -30,6 +30,7 @@ type Plugin interface {
 	Versions(ctx context.Context, id id.PluginID) ([]*plugin.Version, error)
 	ImageURL(ctx context.Context, name string) string
 	List(ctx context.Context, publisher *user.User, param ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error)
+	Liked(ctx context.Context, user *user.User, id id.PluginID) (bool, error)
 }
 
 type UpdatePluginParam struct {
