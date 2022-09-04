@@ -13,7 +13,8 @@ var (
 )
 
 type File interface {
-	UploadPlugin(ctx context.Context, pid id.VersionID, content []byte) error
+	UploadPlugin(ctx context.Context, vid id.VersionID, content []byte) error
+	DownloadPlugin(ctx context.Context, vid id.VersionID) ([]byte, error)
 	UploadImage(ctx context.Context, img io.ReadSeeker) (string, error)
 	AssetsURL(ctx context.Context, name string) string
 }

@@ -40,13 +40,13 @@ func NewFile(bucketName, assetsBucketName, assetsBaseURL string) (gateway.File, 
 	}, nil
 }
 
-func (f *fileRepo) UploadPlugin(ctx context.Context, pid id.VersionID, content []byte) error {
+func (f *fileRepo) UploadPlugin(ctx context.Context, vid id.VersionID, content []byte) error {
 	client, err := storage.NewClient(ctx)
 	if err != nil {
 		return err
 	}
 	bucket := client.Bucket(f.pluginBucketName)
-	name := path.Join(gcsPluginBasePath, pid.String(), "plugin.zip")
+	name := path.Join(gcsPluginBasePath, vid.String(), "plugin.zip")
 	object := bucket.Object(name)
 	if err := object.Delete(ctx); err != nil && !errors.Is(err, storage.ErrObjectNotExist) {
 		return gateway.ErrFailedToUploadFile
@@ -60,6 +60,21 @@ func (f *fileRepo) UploadPlugin(ctx context.Context, pid id.VersionID, content [
 		return gateway.ErrFailedToUploadFile
 	}
 	return nil
+}
+
+func (f *fileRepo) DownloadPlugin(ctx context.Context, vid id.VersionID) ([]byte, error) {
+	client, err := storage.NewClient(ctx)
+	if err != nil {
+		return nil, err
+	}
+	bucket := client.Bucket(f.pluginBucketName)
+	name := path.Join(gcsPluginBasePath, vid.String(), "plugin.zip")
+	object := bucket.Object(name)
+	r, err := object.NewReader(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return io.ReadAll(r)
 }
 
 func (f *fileRepo) UploadImage(ctx context.Context, image io.ReadSeeker) (string, error) {
