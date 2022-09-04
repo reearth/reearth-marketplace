@@ -2,10 +2,12 @@ package gql
 
 import (
 	"context"
+	"fmt"
+	"strings"
 
 	"github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
-	"github.com/reearth/reearth-marketplace/server/pkg/plugin"
+	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/samber/lo"
 )
 
@@ -18,16 +20,31 @@ func (r *queryResolver) Me(ctx context.Context) (*gqlmodel.Me, error) {
 	return gqlmodel.ToMe(getUser(ctx)), nil
 }
 
-func (r *queryResolver) Node(ctx context.Context, id string) (gqlmodel.Node, error) {
-	pid, err := plugin.IDFrom(id)
-	if err != nil {
-		return nil, err
+func (r *queryResolver) Node(ctx context.Context, idStr string) (gqlmodel.Node, error) {
+	kind, idStr, _ := strings.Cut(idStr, ":")
+	switch kind {
+	case "u":
+		uid, err := id.UserIDFrom(idStr)
+		if err != nil {
+			return nil, err
+		}
+		u, err := usecases(ctx).User.FindByID(ctx, uid)
+		if err != nil {
+			return nil, err
+		}
+		return gqlmodel.ToUser(u), nil
+	case "p":
+		pid, err := id.PluginIDFrom(idStr)
+		if err != nil {
+			return nil, err
+		}
+		p, err := usecases(ctx).Plugin.FindByID(ctx, pid)
+		if err != nil {
+			return nil, err
+		}
+		return gqlmodel.ToPlugin(ctx, p), nil
 	}
-	p, err := usecases(ctx).Plugin.FindByID(ctx, pid)
-	if err != nil {
-		return nil, err
-	}
-	return gqlmodel.ToPlugin(ctx, p), nil
+	return nil, fmt.Errorf("invalid id: %s", idStr)
 }
 
 func (r *queryResolver) Nodes(ctx context.Context, ids []string) ([]gqlmodel.Node, error) {

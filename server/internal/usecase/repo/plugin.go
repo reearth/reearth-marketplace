@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
+	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
 	"github.com/reearth/reearthx/usecase"
@@ -20,6 +21,6 @@ type Plugin interface {
 	Unlike(ctx context.Context, user *user.User, id plugin.ID) error
 	Versions(ctx context.Context, id plugin.ID) ([]*plugin.Version, error)
 	UpdateLatest(ctx context.Context, p *plugin.Plugin) (*plugin.Plugin, error)
-	List(ctx context.Context, user *user.User, filter *interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error)
+	List(ctx context.Context, uid id.UserID, filter *interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error)
 	Liked(ctx context.Context, user *user.User, id plugin.ID) (bool, error)
 }
