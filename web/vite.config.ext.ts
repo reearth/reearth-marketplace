@@ -5,7 +5,10 @@ import { resolve } from "path";
 
 import yaml from "@rollup/plugin-yaml";
 import react from "@vitejs/plugin-react";
+import externalGlobals from "rollup-plugin-external-globals";
+// import visualizer from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
+import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -14,10 +17,11 @@ export default defineConfig({
     react({
       jsxRuntime: "classic",
     }),
+    cssInjectedByJsPlugin(),
     yaml(),
   ],
   resolve: {
-    alias: [{ find: "@", replacement: resolve(__dirname, "src") }],
+    alias: [{ find: "@marketplace", replacement: resolve(__dirname, "src") }],
   },
   build: {
     emptyOutDir: false,
@@ -35,6 +39,13 @@ export default defineConfig({
           "react-dom": "ReactDOM",
         },
       },
+      plugins: [
+        externalGlobals({
+          react: "React",
+          "react-dom": "ReactDOM",
+        }),
+        // visualizer(),
+      ],
     },
   },
 });

@@ -8,8 +8,9 @@ export { useAuth, useCleanUrl, useAuthenticationRequired } from "./hooks";
 export { withAuthenticationRequired } from "@auth0/auth0-react";
 
 export function AuthenticationRequiredPage({
+  accessToken,
   children,
-}: PropsWithChildren<unknown>): JSX.Element | null {
-  const [isAuthenticated] = useAuthenticationRequired(); // TODO: show error
+}: PropsWithChildren<{ accessToken?: string }>): JSX.Element | null {
+  const [isAuthenticated] = useAuthenticationRequired({ accessToken }); // TODO: show error
   return isAuthenticated && children ? <>{children}</> : null;
 }

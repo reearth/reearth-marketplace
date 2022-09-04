@@ -4,9 +4,11 @@ import TopPage from "@marketplace/components/molecules/TopPage";
 
 import useHooks from "./hooks";
 
-export type Props = {};
+export type Props = {
+  showBanner?: boolean;
+};
 
-const Top: React.FC<Props> = () => {
+const Top: React.FC<Props> = ({ showBanner }) => {
   // const { isAuthenticated } = useAuth();
   // const [searchText, updateSearchText] = useState<string>("");
   // const handleSearch = (text: string) => {
@@ -14,7 +16,7 @@ const Top: React.FC<Props> = () => {
   // };
   // const { plugins } = useHooks(searchText);
   const { plugins } = useHooks();
-  return <TopPage plugins={plugins} />;
+  return <TopPage plugins={plugins} showBanner={showBanner} />;
 };
 
 export default Top;

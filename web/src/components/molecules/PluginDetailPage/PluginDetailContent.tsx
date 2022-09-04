@@ -10,6 +10,7 @@ import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import ModalContent from "./ModalContent";
 
@@ -37,7 +38,7 @@ const PluginDetailContent: React.FC<Props> = ({
             paddingBottom: "24px",
           }}>
           <Breadcrumb.Item>
-            <a href="/">Top</a>
+            <Link to="/">Top</Link>
           </Breadcrumb.Item>
           <Breadcrumb.Item>{pluginName}</Breadcrumb.Item>
         </Breadcrumb>
