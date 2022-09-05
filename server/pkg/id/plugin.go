@@ -8,27 +8,27 @@ import (
 )
 
 type PluginID struct {
-	name string
+	id string
 }
 
 var (
 	versionSeparator = "~"
-	pluginNameRe     = regexp.MustCompile("^[a-zA-Z0-9_-]+$")
+	pluginIDRe       = regexp.MustCompile("^[a-zA-Z0-9_-]+$")
 )
 
-func validatePluginName(s string) bool {
-	if len(s) == 0 || len(s) > 100 || s == "reearth" || strings.Contains(s, "/") {
+func validatePluginID(s string) bool {
+	if len(s) == 0 || len(s) > 100 || s == "reearth" {
 		return false
 	}
-	return pluginNameRe.MatchString(s)
+	return pluginIDRe.MatchString(s)
 }
 
-func NewPluginID(name string) (PluginID, error) {
-	if !validatePluginName(name) {
+func NewPluginID(id string) (PluginID, error) {
+	if !validatePluginID(id) {
 		return PluginID{}, ErrInvalidID
 	}
 	return PluginID{
-		name: name,
+		id: id,
 	}, nil
 }
 
@@ -61,28 +61,23 @@ func PluginIDFromRef(id *string) *PluginID {
 // Clone duplicates the PluginID
 func (d PluginID) Clone() PluginID {
 	return PluginID{
-		name: d.name,
+		id: d.id,
 	}
 }
 
 // IsNil checks if ID is empty or not.
 func (d PluginID) IsNil() bool {
-	return d.name == ""
-}
-
-// Name returns a name.
-func (d PluginID) Name() string {
-	return d.name
+	return d.id == ""
 }
 
 // Validate returns true if id is valid.
 func (d PluginID) Validate() bool {
-	return validatePluginName(d.name)
+	return validatePluginID(d.id)
 }
 
 // String returns a string representation.
 func (d PluginID) String() (s string) {
-	return d.name
+	return d.id
 }
 
 // Ref returns a reference.
@@ -110,7 +105,7 @@ func (d *PluginID) StringRef() *string {
 
 // Equal returns true if two IDs are equal.
 func (d PluginID) Equal(d2 PluginID) bool {
-	return d.name == d2.name
+	return d.id == d2.id
 }
 
 // MarshalText implements encoding.TextMarshaler interface
@@ -147,34 +142,34 @@ func PluginIDsFrom(ids []string) ([]PluginID, error) {
 }
 
 type VersionID struct {
-	name    string
-	version string
+	pluginID PluginID
+	version  string
 }
 
-func NewVersionID(name, version string) (VersionID, error) {
-	if !validatePluginName(name) {
-		return VersionID{}, ErrInvalidID
-	}
+func NewVersionID(pid PluginID, version string) (VersionID, error) {
 	if _, err := semver.Parse(version); err != nil {
 		return VersionID{}, ErrInvalidID
 	}
 	return VersionID{
-		name:    name,
-		version: version,
+		pluginID: pid,
+		version:  version,
 	}, nil
 }
 
 func VersionIDFrom(id string) (VersionID, error) {
-	name, version, ok := strings.Cut(id, versionSeparator)
+	id, version, ok := strings.Cut(id, versionSeparator)
 	if ok {
 		return VersionID{}, ErrInvalidID
 	}
-	return NewVersionID(name, version)
+	pid, err := NewPluginID(id)
+	if err != nil {
+		return VersionID{}, err
+	}
+	return NewVersionID(pid, version)
 }
 
 func (i VersionID) PluginID() PluginID {
-	pid, _ := NewPluginID(i.name)
-	return pid
+	return i.pluginID
 }
 
 func (i VersionID) Version() string {
@@ -182,5 +177,5 @@ func (i VersionID) Version() string {
 }
 
 func (i VersionID) String() string {
-	return i.name + versionSeparator + i.version
+	return i.pluginID.String() + versionSeparator + i.version
 }

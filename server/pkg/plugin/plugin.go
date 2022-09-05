@@ -33,7 +33,7 @@ func (p *Plugin) ID() ID {
 }
 
 func (p *Plugin) Name() string {
-	return p.id.Name()
+	return p.latestVersion.name
 }
 
 func (p *Plugin) Type() string {
@@ -129,6 +129,7 @@ func (v *Version) SetActive(active bool) {
 
 // PartialVersion is a subset type of Version for de-normalization.
 type PartialVersion struct {
+	name        string
 	version     semver.Version
 	author      string
 	repository  string
@@ -139,6 +140,10 @@ type PartialVersion struct {
 	checksum    string
 	createdAt   time.Time
 	updatedAt   time.Time
+}
+
+func (v *PartialVersion) Name() string {
+	return v.name
 }
 
 func (v *PartialVersion) Version() semver.Version {

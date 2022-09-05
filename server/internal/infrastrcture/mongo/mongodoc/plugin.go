@@ -50,6 +50,7 @@ func NewPluginLike(userID id.UserID, pluginID id.PluginID) *PluginLikeDocument {
 type PluginVersionDocument struct {
 	ID          string    `bson:"id"`
 	PluginID    string    `bson:"pluginId"`
+	Name        string    `bson:"name"`
 	Version     string    `bson:"version"`
 	Author      string    `bson:"author"`
 	Repository  string    `bson:"repository"`
@@ -113,6 +114,7 @@ func NewVersionedPlugin(p *plugin.VersionedPlugin) (*PluginDocument, *PluginVers
 	pluginVersionDoc := &PluginVersionDocument{
 		ID:          p.Version().ID().String(),
 		PluginID:    pluginDoc.ID,
+		Name:        p.Version().Name(),
 		Version:     p.Version().Version().String(),
 		Author:      p.Version().Author(),
 		Repository:  p.Version().Repository(),
@@ -158,6 +160,7 @@ func (d *PluginDocument) Model() (*plugin.Plugin, error) {
 		return nil, err
 	}
 	latestVersion, err := plugin.NewPartialVersion().
+		Name(d.Name).
 		Version(d.LatestVersion).
 		Author(d.Author).
 		Repository(d.Repository).
