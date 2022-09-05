@@ -3,6 +3,7 @@ import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { useAuth } from "@marketplace/auth";
 import { useError } from "@marketplace/state";
+import { createUploadLink } from "apollo-upload-client";
 
 type Props = {
   children?: React.ReactNode;
@@ -42,11 +43,15 @@ const Provider: React.FC<Props> = ({ children, accessToken: accessToken2 }) => {
     uri: endpoint,
   });
 
+  const uploadLink = createUploadLink({
+    uri: endpoint,
+  });
+
   const cache = new InMemoryCache({});
 
   const client = new ApolloClient({
     uri: endpoint,
-    link: ApolloLink.from([errorLink, authLink, httpLink]),
+    link: ApolloLink.from([errorLink, authLink, httpLink, uploadLink]),
     cache,
     connectToDevTools: process.env.NODE_ENV === "development",
   });
