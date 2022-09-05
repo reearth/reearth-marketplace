@@ -18,7 +18,7 @@ func ToPlugin(ctx context.Context, p *plugin.VersionedPlugin) *Plugin {
 	}
 	pid := IDFromPluginID(p.Plugin().ID())
 	return &Plugin{
-		ID:          string(pid),
+		ID:          "p:" + string(pid),
 		Name:        p.Plugin().Name(),
 		Author:      strRef(p.Version().Author()),
 		Description: strRef(p.Version().Description()),
@@ -45,10 +45,9 @@ func ToPlugin(ctx context.Context, p *plugin.VersionedPlugin) *Plugin {
 		Images: lo.Map(p.Plugin().Images(), func(x string, _ int) string {
 			return adapter.Usecases(ctx).Plugin.ImageURL(ctx, x)
 		}),
-		PublisherID: p.Plugin().PublisherID().String(),
-		Like:        int(p.Plugin().Like()),
-		// TODO: fill
-		Publisher: nil,
+		Like: int(p.Plugin().Like()),
+
+		publisherID: p.Plugin().PublisherID(),
 	}
 }
 

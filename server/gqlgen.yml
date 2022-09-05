@@ -18,3 +18,5 @@ models:
     model: github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel.Plugin
   Me:
     model: github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel.Me
+  User:
+    model: github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel.User

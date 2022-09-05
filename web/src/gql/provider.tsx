@@ -10,10 +10,13 @@ type Props = {
   accessToken?: string;
 };
 
-const Provider: React.FC<Props> = ({ children, accessToken: accessToken2, api }) => {
-  const endpoint = api ? `${api}/graphql` : "/api/graphql";
+const Provider: React.FC<Props> = ({ children, accessToken: accessToken2 }) => {
+  const endpoint = window.REEARTH_CONFIG?.api
+    ? `${window.REEARTH_CONFIG.api}/graphql`
+    : "/api/graphql";
   const [, setError] = useError();
   const { getAccessToken } = useAuth();
+  console.log(endpoint, "endpoint");
 
   const authLink = setContext(async (_, { headers }) => {
     // get the authentication token from local storage if it exists

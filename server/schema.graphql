@@ -91,6 +91,7 @@ type Plugin implements Node {
   publisher: Publisher!
 
   like: Int!
+  liked: Boolean!
 }
 
 type Version {

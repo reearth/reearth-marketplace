@@ -19,6 +19,7 @@ type Config struct {
 	Auth    AuthConfig
 	GCS     GCSConfig
 	GraphQL GraphQLConfig
+	Origins []string
 	Debug   bool
 }
 
