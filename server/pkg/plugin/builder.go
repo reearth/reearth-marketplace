@@ -21,9 +21,9 @@ func New(publisherID id.UserID) *Builder {
 	}
 }
 
-func (b *Builder) NewID(name string) *Builder {
+func (b *Builder) NewID(id string) *Builder {
 	if b.err == nil {
-		b.p.id, b.err = NewID(name)
+		b.p.id, b.err = NewID(id)
 	}
 	return b
 }
@@ -81,13 +81,18 @@ type VersionedBuilder struct {
 }
 
 func Versioned(plugin *Plugin) *VersionedBuilder {
-	vid, _ := NewVersionID(plugin.Name(), plugin.latestVersion.version.String())
+	vid, _ := NewVersionID(plugin.ID(), plugin.latestVersion.version.String())
 	return &VersionedBuilder{
 		p: VersionedPlugin{
 			plugin:  plugin,
 			version: &Version{PartialVersion: *plugin.latestVersion, id: vid},
 		},
 	}
+}
+
+func (b *VersionedBuilder) Name(name string) *VersionedBuilder {
+	b.p.version.name = name
+	return b
 }
 
 func (b *VersionedBuilder) Version(version string) *VersionedBuilder {
@@ -97,7 +102,7 @@ func (b *VersionedBuilder) Version(version string) *VersionedBuilder {
 		return b
 	}
 	b.p.version.version = v
-	vid, err := NewVersionID(b.p.Plugin().Name(), version)
+	vid, err := NewVersionID(b.p.Plugin().ID(), version)
 	if err != nil {
 		b.err = err
 		return b
@@ -177,6 +182,11 @@ func NewPartialVersion() *PartialVersionBuilder {
 	return &PartialVersionBuilder{
 		p: &PartialVersion{},
 	}
+}
+
+func (b *PartialVersionBuilder) Name(name string) *PartialVersionBuilder {
+	b.p.name = name
+	return b
 }
 
 func (b *PartialVersionBuilder) Version(version string) *PartialVersionBuilder {

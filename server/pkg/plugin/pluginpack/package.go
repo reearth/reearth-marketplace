@@ -112,29 +112,38 @@ func ToPlugin(ctx context.Context, pkg *Package, publisherID plugin.PublisherID)
 		return nil, fmt.Errorf("readme: %w", err)
 	}
 	now := time.Now()
-	p, err := plugin.New(publisherID).
-		NewID(pkg.manifest.Name).
-		Type(pkg.pluginType).
-		CreatedAt(now).
-		UpdatedAt(now).
-		Active(false).
-		Build()
-	if err != nil {
-		return nil, fmt.Errorf("plugin: %w", err)
-	}
-	vp, err := plugin.Versioned(p).
+
+	pv, err := plugin.NewPartialVersion().
+		Name(pkg.manifest.Name).
 		Version(pkg.manifest.Version).
 		Author(pkg.manifest.Author).
 		Repository(pkg.manifest.Repository).
 		Description(pkg.manifest.Description).
 		Readme(readme).
 		Icon(iconURL).
-		Downloads(0).
-		Active(false).
 		CreatedAt(now).
 		UpdatedAt(now).
 		PublishedAt(time.Time{}).
 		Checksum(pkg.checksum).
+		Build()
+	if err != nil {
+		return nil, fmt.Errorf("partial version: %w", err)
+	}
+
+	p, err := plugin.New(publisherID).
+		NewID(pkg.manifest.ID).
+		Type(pkg.pluginType).
+		CreatedAt(now).
+		UpdatedAt(now).
+		Active(false).
+		LatestVersion(pv).
+		Build()
+	if err != nil {
+		return nil, fmt.Errorf("plugin: %w", err)
+	}
+	vp, err := plugin.Versioned(p).
+		Downloads(0).
+		Active(false).
 		Build()
 	if err != nil {
 		return nil, fmt.Errorf("versioned: %w", err)
@@ -158,6 +167,9 @@ func (p *Package) readme() (string, error) {
 }
 
 func (p *Package) iconURL(ctx context.Context) (string, error) {
+	if p.manifest.Icon == "" {
+		return "", nil
+	}
 	var icon []byte
 	switch {
 	case strings.HasPrefix(p.manifest.Icon, "http://"), strings.HasPrefix(p.manifest.Icon, "https://"):
