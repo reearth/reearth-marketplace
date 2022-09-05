@@ -12,7 +12,6 @@ func initEcho(cfg *ServerConfig) *echo.Echo {
 	e.HidePort = true
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
 		AllowOrigins: cfg.Config.Origins,
-		AllowHeaders: []string{"Authorization"},
 	}))
 	e.Use(
 		jwtEchoMiddleware(cfg),
