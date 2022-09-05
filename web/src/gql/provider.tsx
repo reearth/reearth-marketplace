@@ -1,4 +1,4 @@
-import { ApolloProvider, ApolloClient, ApolloLink, InMemoryCache, HttpLink } from "@apollo/client";
+import { ApolloProvider, ApolloClient, ApolloLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { useAuth } from "@marketplace/auth";
@@ -39,10 +39,6 @@ const Provider: React.FC<Props> = ({ children, accessToken: accessToken2 }) => {
     }
   });
 
-  const httpLink = new HttpLink({
-    uri: endpoint,
-  });
-
   const uploadLink = createUploadLink({
     uri: endpoint,
   });
@@ -51,7 +47,7 @@ const Provider: React.FC<Props> = ({ children, accessToken: accessToken2 }) => {
 
   const client = new ApolloClient({
     uri: endpoint,
-    link: ApolloLink.from([errorLink, authLink, httpLink, uploadLink]),
+    link: ApolloLink.from([errorLink, authLink, uploadLink]),
     cache,
     connectToDevTools: process.env.NODE_ENV === "development",
   });
