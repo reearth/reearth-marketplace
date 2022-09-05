@@ -291,17 +291,29 @@ func (p *Plugin) download(ctx context.Context, vp *plugin.VersionedPlugin) (_ []
 	return b, nil
 }
 
-func (p *Plugin) create(ctx context.Context, publisher *user.User, pkg *pluginpack.Package) (*plugin.VersionedPlugin, error) {
+func (p *Plugin) create(ctx context.Context, publisher *user.User, pkg *pluginpack.Package) (_ *plugin.VersionedPlugin, err error) {
 	vp, err := pluginpack.ToPlugin(ctx, pkg, publisher.ID())
 	if err != nil {
+		return nil, err
+	}
+
+	tx, err := p.transaction.Begin()
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		err2 := tx.End(ctx)
+		if err == nil {
+			err = err2
+		}
+	}()
+	if err := p.pluginRepo.Create(ctx, vp); err != nil {
 		return nil, err
 	}
 	if err := p.file.UploadPlugin(ctx, vp.Version().ID(), pkg.Content()); err != nil {
 		return nil, err
 	}
-	if err := p.pluginRepo.Create(ctx, vp); err != nil {
-		return nil, err
-	}
+	tx.Commit()
 	return vp, nil
 }
 
