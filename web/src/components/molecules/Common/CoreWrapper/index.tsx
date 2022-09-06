@@ -2,14 +2,20 @@ import styled from "@emotion/styled";
 import { ComponentType } from "react";
 
 export type Props = {
+  className?: string;
   header?: ComponentType;
   footer?: ComponentType;
   children?: React.ReactNode;
 };
 
-const CoreWrapper: React.FC<Props> = ({ header: Header, footer: Footer, children }) => {
+const CoreWrapper: React.FC<Props> = ({
+  className = "light",
+  header: Header,
+  footer: Footer,
+  children,
+}) => {
   return (
-    <Wrapper>
+    <Wrapper className={className}>
       {Header && <Header />}
       <Content>{children}</Content>
       {Footer && <Footer />}

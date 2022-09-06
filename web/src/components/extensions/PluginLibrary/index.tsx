@@ -6,6 +6,7 @@ import UserPage from "@marketplace/components/pages/User";
 import { Provider as GqlProvider } from "@marketplace/gql";
 import { Provider as I18nProvider } from "@marketplace/i18n";
 import { MemoryRouter as Router, Routes, Route } from "react-router-dom";
+import "@marketplace/index.css";
 
 // const AppRoutes = ({ selectedPluginId }: { selectedPluginId?: string }) => {
 //   return useRoutes([
@@ -24,7 +25,7 @@ import { MemoryRouter as Router, Routes, Route } from "react-router-dom";
 // };
 
 export default function LibraryExtension({
-  // theme,
+  theme,
   // lang,
   selectedPluginId,
   // installedPlugins,
@@ -49,11 +50,10 @@ export default function LibraryExtension({
     heading?: string,
   ) => void;
 }) {
-  console.log(accessToken, "retrieved from reearth-web");
+  console.log(!!accessToken, "retrieved from reearth-web");
   // console.log(lang, "retrieved from reearth-web");
   // console.log(selectedPluginId, "retrieved from reearth-web");
   // console.log(installedPlugins, "retrieved from reearth-web");
-  // console.log(theme, "retrieved from reearth-web");
   // console.log(onInstall, "retrieved from reearth-web");
   // console.log(onUninstall, "retrieved from reearth-web");
   // console.log(onNotificationChange, "retrieved from reearth-web");
@@ -63,8 +63,7 @@ export default function LibraryExtension({
     <I18nProvider>
       <GqlProvider accessToken={accessToken} api="https://api.marketplace.test.reearth.dev/api">
         <Router initialEntries={selectedPluginId ? [`/plugins/${selectedPluginId}`] : ["/"]}>
-          <CoreWrapper>
-            {/* <AppRoutes selectedPluginId={selectedPluginId} /> */}
+          <CoreWrapper className={theme}>
             <Routes>
               <Route path="/" element={<RootPage showBanner />} />
               <Route path="/plugins/:pluginId" element={<PluginDetailPage />} />
