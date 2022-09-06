@@ -108,23 +108,28 @@ func (r *pluginRepo) pluginLikeClient() *mongox.ClientCollection {
 
 func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) (err error) {
 	pluginDoc, pluginVersionDoc := mongodoc.NewVersionedPlugin(p)
-	tx, err := r.client.BeginTransaction()
-	if err != nil {
-		return fmt.Errorf("begin tx: %w", err)
+	var pc mongox.SliceConsumer[mongodoc.PluginDocument]
+	if err := r.pluginClient().FindOne(ctx, bson.M{"id": pluginDoc.ID}, &pc); err != nil && !errors.Is(err, rerror.ErrNotFound) {
+		return fmt.Errorf("find plugin: %w", err)
 	}
-	defer func() {
-		endErr := tx.End(ctx)
-		if err == nil && endErr != nil {
-			err = fmt.Errorf("end tx: %w", endErr)
+	if len(pc.Result) > 0 {
+		if p.Plugin().PublisherID().String() != pc.Result[0].PublisherID {
+			return fmt.Errorf("plugin id already used")
 		}
-	}()
+	}
 	if err := r.pluginClient().SaveOne(ctx, pluginDoc.ID, pluginDoc); err != nil {
 		return fmt.Errorf("save plugin: %w", err)
+	}
+	var pvc mongox.SliceConsumer[mongodoc.PluginVersionDocument]
+	if err := r.pluginVersionClient().FindOne(ctx, bson.M{"id": pluginVersionDoc.ID}, &pvc); err != nil && !errors.Is(err, rerror.ErrNotFound) {
+		return fmt.Errorf("find plugin version: %w", err)
+	}
+	if len(pvc.Result) > 0 {
+		return fmt.Errorf("plugin version already exists")
 	}
 	if err := r.pluginVersionClient().SaveOne(ctx, pluginVersionDoc.ID, pluginVersionDoc); err != nil {
 		return fmt.Errorf("save plugin version: %w", err)
 	}
-	tx.Commit()
 	return nil
 }
 

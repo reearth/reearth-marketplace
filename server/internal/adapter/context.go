@@ -44,7 +44,7 @@ func User(ctx context.Context) *user.User {
 }
 
 func GetAuthInfo(ctx context.Context) *AuthInfo {
-	if ai, ok := ctx.Value(ContextAuthInfo).(*appx.AuthInfo); ok {
+	if ai, ok := ctx.Value(ContextAuthInfo).(appx.AuthInfo); ok {
 		return &AuthInfo{
 			Token:         ai.Token,
 			Sub:           ai.Sub,
