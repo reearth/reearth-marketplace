@@ -1,6 +1,5 @@
 import PluginInstalledList from "@marketplace/components/extensions/PluginInstalledList";
 import PluginLibrary from "@marketplace/components/extensions/PluginLibrary";
-import "antd/dist/antd.css";
 
 export type ExtensionType = "plugin-library" | "plugin-installed";
 

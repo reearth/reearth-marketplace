@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import { styled } from "@marketplace/theme";
 import Button from "@marketplace/components/atoms/Button";
 import Dropdown from "@marketplace/components/atoms/Dropdown";
 import Icon from "@marketplace/components/atoms/Icon";

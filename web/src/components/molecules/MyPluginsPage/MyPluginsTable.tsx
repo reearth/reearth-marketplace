@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Icon from "@marketplace/components/atoms/Icon";
@@ -7,6 +6,7 @@ import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Switch from "@marketplace/components/atoms/Switch";
 import Table from "@marketplace/components/atoms/Table";
+import { styled } from "@marketplace/theme";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
 

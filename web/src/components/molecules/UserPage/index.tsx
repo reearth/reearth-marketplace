@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import HeaderBanner from "@marketplace/assets/header.png";
 import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
 import Button from "@marketplace/components/atoms/Button";
@@ -6,6 +5,7 @@ import Icon from "@marketplace/components/atoms/Icon";
 import Image from "@marketplace/components/atoms/Image";
 import Space from "@marketplace/components/atoms/Space";
 import PluginsList from "@marketplace/components/molecules/PluginsList";
+import { styled } from "@marketplace/theme";
 import { Link } from "react-router-dom";
 
 export type Props = {};
@@ -17,7 +17,7 @@ const UserPageContents: React.FC<Props> = () => {
           paddingBottom: "24px",
         }}>
         <Breadcrumb.Item>
-          <Link to="/">Top</Link>
+          <StyledLink to="/">Top</StyledLink>
         </Breadcrumb.Item>
         <Breadcrumb.Item>Developer</Breadcrumb.Item>
       </Breadcrumb>
@@ -34,24 +34,16 @@ const UserPageContents: React.FC<Props> = () => {
           here.Descriptions are here.Descriptions are here.
         </Description>
         <AdditionalInfo>
-          <Button
-            type="link"
-            size="middle"
-            href=""
-            style={{ color: "rgba(0, 0, 0, 0.45)", padding: 0 }}>
+          <StyledButton type="link" size="middle" href="">
             <Icon icon="desktop" />
             https://hoge.com
-          </Button>
+          </StyledButton>
         </AdditionalInfo>
         <AdditionalInfo>
-          <Button
-            type="link"
-            size="middle"
-            href=""
-            style={{ color: "rgba(0, 0, 0, 0.45)", padding: 0 }}>
+          <StyledButton type="link" size="middle" href="">
             <Icon icon="email" />
             https://hoge.com
-          </Button>
+          </StyledButton>
         </AdditionalInfo>
       </DeveloperInfo>
       <MyPlugins>
@@ -66,10 +58,33 @@ const Wrapper = styled.div`
   margin: 0 auto;
   padding-top: 48px;
   padding-bottom: 72px;
+  color: ${({ theme }) => theme.main.text};
+  background: ${({ theme }) => theme.main.background};
+
+  .ant-breadcrumb-separator,
+  .ant-breadcrumb-link {
+    color: ${({ theme }) => theme.main.text};
+  }
 `;
 
 const HeaderBannerSpace = styled.div`
   width: 100%;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+
+  && {
+    color: white;
+    :hover {
+      color: white;
+    }
+  }
+`;
+
+const StyledButton = styled(Button)`
+  color: ${({ theme }) => theme.main.weakText};
+  padding: 0;
 `;
 
 const UserIcon = styled.div`
@@ -106,6 +121,7 @@ const DeveloperInfo = styled(Space)`
 const Title = styled.h1`
   font-size: 20px;
   font-weight: bold;
+  color: ${({ theme }) => theme.main.text};
 `;
 
 const Description = styled.p`

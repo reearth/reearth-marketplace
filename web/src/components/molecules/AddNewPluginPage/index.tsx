@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import { styled } from "@marketplace/theme";
 
 import AddNewPluginContent from "./AddNewPluginContent";
 import { FileUploadType } from "./PackageArea";

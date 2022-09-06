@@ -9,6 +9,7 @@ import PluginDetailPage from "@marketplace/components/pages/PluginDetail";
 import RootPage from "@marketplace/components/pages/Root";
 import UpdatePlugin from "@marketplace/components/pages/UpdatePlugin";
 import UserPage from "@marketplace/components/pages/User";
+import { Provider as ThemeProvider } from "@marketplace/theme";
 import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 
 const AppRoutes = () => {
@@ -29,11 +30,13 @@ const AppRoutes = () => {
 
 const MarketplaceCore: React.FC = () => {
   return (
-    <Router>
-      <CoreWrapper header={Header} footer={Footer}>
-        <AppRoutes />
-      </CoreWrapper>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <CoreWrapper header={Header} footer={Footer}>
+          <AppRoutes />
+        </CoreWrapper>
+      </Router>
+    </ThemeProvider>
   );
 };
 
