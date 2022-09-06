@@ -13,12 +13,19 @@ import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 // https://vitejs.dev/config/
 export default defineConfig({
   envPrefix: "REEARTH_",
+  css: {
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+        additionalData: "@root-entry-name: default;",
+      },
+    },
+  },
   plugins: [
     react({
       jsxRuntime: "classic",
     }),
     cssInjectedByJsPlugin(),
-    yaml(),
   ],
   resolve: {
     alias: [{ find: "@marketplace", replacement: resolve(__dirname, "src") }],
@@ -44,6 +51,7 @@ export default defineConfig({
           react: "React",
           "react-dom": "ReactDOM",
         }),
+        yaml(),
         // visualizer(),
       ],
     },
