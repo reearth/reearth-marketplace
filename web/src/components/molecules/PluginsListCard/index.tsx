@@ -25,13 +25,12 @@ const PluginsListCard: React.FC<Props> = ({
   onClick,
 }) => {
   return (
-    <Card
+    <StyledCard
       loading={loading}
       cover={<img alt="example" src={cover} width="100%" />}
       size="small"
       bordered={false}
       onClick={onClick}
-      style={{ maxWidth: "240px", cursor: "pointer" }}
       bodyStyle={{ padding: "4px 0" }}>
       <Row justify="space-between" align="top">
         <AuthorName>{author}</AuthorName>
@@ -50,12 +49,30 @@ const PluginsListCard: React.FC<Props> = ({
           </Row>
         </Space>
       </Row>
-      <Meta title={name} />
-    </Card>
+      <StyledMeta title={name} />
+    </StyledCard>
   );
 };
 
-const AuthorName = styled.p``;
-const LikedNum = styled.span``;
+const StyledCard = styled(Card)`
+  background: ${({ theme }) => theme.main.background};
+  color: ${({ theme }) => theme.main.text};
+  max-width: 240px;
+  cursor: pointer;
+`;
+
+const AuthorName = styled.p`
+  color: ${({ theme }) => theme.main.text};
+`;
+
+const LikedNum = styled.span`
+  color: ${({ theme }) => theme.main.text};
+`;
+
+const StyledMeta = styled(Meta)`
+  * {
+    color: ${({ theme }) => theme.main.text};
+  }
+`;
 
 export default PluginsListCard;

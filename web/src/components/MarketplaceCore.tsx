@@ -30,7 +30,7 @@ const AppRoutes = () => {
 
 const MarketplaceCore: React.FC = () => {
   return (
-    <ThemeProvider theme="dark">
+    <ThemeProvider>
       <Router>
         <CoreWrapper header={Header} footer={Footer}>
           <AppRoutes />

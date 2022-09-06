@@ -27,6 +27,7 @@ const Wrapper = styled.div`
   margin: 0 auto;
   padding-top: 48px;
   padding-bottom: 72px;
+  background: ${({ theme }) => theme.main.background};
 `;
 
 export default TopPageContents;
