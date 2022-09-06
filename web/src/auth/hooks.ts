@@ -3,15 +3,15 @@ import { useEffect, useState } from "react";
 
 export const errorKey = "reeartherror";
 
-export function useAuth(accessTokenForDebug?: string) {
+export function useAuth(accessToken?: string) {
   const { isAuthenticated, error, isLoading, loginWithRedirect, logout, getAccessTokenSilently } =
     useAuth0();
 
   return {
-    isAuthenticated: !!accessTokenForDebug || (isAuthenticated && !error),
+    isAuthenticated: !!accessToken || (isAuthenticated && !error),
     isLoading,
     error: error?.message,
-    getAccessToken: () => accessTokenForDebug || getAccessTokenSilently(),
+    getAccessToken: () => accessToken || getAccessTokenSilently(),
     login: () => loginWithRedirect(),
     logout: () =>
       logout({
@@ -49,8 +49,12 @@ export function useCleanUrl() {
   return error;
 }
 
-export function useAuthenticationRequired(): [boolean, string | undefined] {
-  const { isAuthenticated, isLoading, error: authError, login, logout } = useAuth();
+export function useAuthenticationRequired({
+  accessToken,
+}: {
+  accessToken?: string;
+}): [boolean, string | undefined] {
+  const { isAuthenticated, isLoading, error: authError, login, logout } = useAuth(accessToken);
 
   useEffect(() => {
     if (isLoading || isAuthenticated) {

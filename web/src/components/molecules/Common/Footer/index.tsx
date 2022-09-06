@@ -1,10 +1,9 @@
-import styled from "@emotion/styled";
+import Logo from "@marketplace/assets/logo.png";
 import Col from "@marketplace/components/atoms/Col";
+import Image from "@marketplace/components/atoms/Image";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
-import Image from "@marketplace/components/atoms/Image";
-
-import Logo from "@marketplace/assets/logo.png";
+import { styled } from "@marketplace/theme";
 
 export type Props = {};
 const Footer: React.FC<Props> = () => {
@@ -14,8 +13,7 @@ const Footer: React.FC<Props> = () => {
         justify="space-around"
         wrap
         gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}
-        align="middle"
-      >
+        align="middle">
         <Col span={18} offset={4} style={{ marginTop: "47px" }}>
           <Row>
             <Col flex={1} style={{ maxWidth: "300px" }}>
@@ -135,9 +133,7 @@ const Footer: React.FC<Props> = () => {
         </Col>
       </FooterMenuRow>
 
-      <div
-        style={{ margin: "32px auto 0", width: "100%", textAlign: "center" }}
-      >
+      <div style={{ margin: "32px auto 0", width: "100%", textAlign: "center" }}>
         <Row align="middle" justify="center">
           <Space direction="vertical" size="large">
             <Col>

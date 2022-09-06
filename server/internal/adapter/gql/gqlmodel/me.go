@@ -5,10 +5,11 @@ import (
 
 	"github.com/reearth/reearth-marketplace/server/internal/adapter"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
+	"github.com/reearth/reearth-marketplace/server/pkg/id"
 )
 
 type Me struct {
-	ID          string  `json:"id"`
+	id          id.UserID
 	Lang        *string `json:"lang"`
 	Name        string  `json:"name"`
 	DisplayName *string `json:"displayName"`
@@ -19,14 +20,19 @@ type Me struct {
 
 func (*Me) IsPublisher() {}
 
+func (m *Me) ID() string {
+	return "u:" + m.id.String()
+}
+
 func (m *Me) Plugins(ctx context.Context, first *int, last *int, before *string, after *string) (*PluginConnection, error) {
 	ps, pageInfo, err := adapter.Usecases(ctx).Plugin.List(ctx,
-		adapter.User(ctx),
+		m.id,
 		interfaces.ListPluginParam{
-			First:  first,
-			Last:   last,
-			Before: before,
-			After:  after,
+			First:      first,
+			Last:       last,
+			Before:     before,
+			After:      after,
+			ActiveOnly: false,
 		},
 	)
 	if err != nil {

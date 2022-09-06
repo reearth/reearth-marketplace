@@ -5,8 +5,8 @@ import App from "./app";
 import { loadConfig } from "./config";
 import { startMock } from "./test/mocks";
 
-import "./index.css";
 import "antd/dist/antd.css";
+import "./index.css";
 
 startMock()
   .then(loadConfig)

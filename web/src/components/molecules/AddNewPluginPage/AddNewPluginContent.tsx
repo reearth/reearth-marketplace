@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import { styled } from "@marketplace/theme";
 import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
@@ -6,6 +6,7 @@ import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 import PackageArea, { FileUploadType } from "./PackageArea";
 import SettingArea from "./SettingArea";
@@ -41,7 +42,7 @@ const AddNewPluginContent: React.FC<Props> = ({
         <Col>
           <Breadcrumb>
             <Breadcrumb.Item>
-              <a href="/myplugins">Plugins List</a>
+              <Link to="/myplugins">Plugins List</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>New Plugin</Breadcrumb.Item>
           </Breadcrumb>
@@ -61,8 +62,7 @@ const AddNewPluginContent: React.FC<Props> = ({
         defaultActiveKey={currentTab}
         tabBarStyle={{ margin: 0 }}
         activeKey={currentTab}
-        onChange={handleClickDetailSetting}
-      >
+        onChange={handleClickDetailSetting}>
         <TabPane tab="Package" key="1">
           <PackageArea
             githubUrl={githubUrl}
@@ -72,11 +72,7 @@ const AddNewPluginContent: React.FC<Props> = ({
           />
         </TabPane>
         <TabPane tab="Setting" key="2">
-          <SettingArea
-            pluginName={pluginName}
-            version={version}
-            description={description}
-          />
+          <SettingArea pluginName={pluginName} version={version} description={description} />
         </TabPane>
       </Tabs>
     </Wrapper>

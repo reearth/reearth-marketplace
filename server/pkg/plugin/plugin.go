@@ -33,7 +33,7 @@ func (p *Plugin) ID() ID {
 }
 
 func (p *Plugin) Name() string {
-	return p.id.Name()
+	return p.latestVersion.name
 }
 
 func (p *Plugin) Type() string {
@@ -66,6 +66,10 @@ func (p *Plugin) PublisherID() id.UserID {
 
 func (p *Plugin) Downloads() int64 {
 	return p.downloads
+}
+
+func (p *Plugin) AddDownloads(add int64) {
+	p.downloads += add
 }
 
 func (p *Plugin) Like() int64 {
@@ -111,6 +115,10 @@ func (v *Version) Downloads() int64 {
 	return v.downloads
 }
 
+func (v *Version) AddDownloads(add int64) {
+	v.downloads += add
+}
+
 func (v *Version) Active() bool {
 	return v.active
 }
@@ -121,6 +129,7 @@ func (v *Version) SetActive(active bool) {
 
 // PartialVersion is a subset type of Version for de-normalization.
 type PartialVersion struct {
+	name        string
 	version     semver.Version
 	author      string
 	repository  string
@@ -131,6 +140,10 @@ type PartialVersion struct {
 	checksum    string
 	createdAt   time.Time
 	updatedAt   time.Time
+}
+
+func (v *PartialVersion) Name() string {
+	return v.name
 }
 
 func (v *PartialVersion) Version() semver.Version {

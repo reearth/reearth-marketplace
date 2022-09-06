@@ -1,5 +1,5 @@
-import TestInstalled from "./TestInstalled";
-import TestLibrary from "./TestLibrary";
+import PluginInstalledList from "@marketplace/components/extensions/PluginInstalledList";
+import PluginLibrary from "@marketplace/components/extensions/PluginLibrary";
 
 export type ExtensionType = "plugin-library" | "plugin-installed";
 
@@ -13,11 +13,11 @@ export default [
   {
     type: "plugin-library",
     id: "marketplace-library",
-    component: TestLibrary,
+    component: PluginLibrary,
   },
   {
     type: "plugin-installed",
     id: "marketplace-installed",
-    component: TestInstalled,
+    component: PluginInstalledList,
   },
 ] as Extension[];

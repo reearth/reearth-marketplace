@@ -41,6 +41,10 @@ func (p *Plugin) FindByID(ctx context.Context, id id.PluginID) (*plugin.Versione
 	return plugin.Versioned(pl).Build()
 }
 
+func (p *Plugin) FindByVersion(ctx context.Context, id id.PluginID, version string) (*plugin.VersionedPlugin, error) {
+	return p.pluginRepo.FindByVersion(ctx, id, version)
+}
+
 func (p *Plugin) Parse(ctx context.Context, publisher *user.User, r io.Reader) (*plugin.VersionedPlugin, error) {
 	pkg, err := packageFromZip(r)
 	if err != nil {
@@ -227,21 +231,89 @@ func (p *Plugin) ImageURL(ctx context.Context, name string) string {
 	return p.file.AssetsURL(ctx, name)
 }
 
-func (p *Plugin) List(ctx context.Context, publisher *user.User, param interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error) {
-	return p.pluginRepo.List(ctx, publisher, &param)
+func (p *Plugin) List(ctx context.Context, uid id.UserID, param interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error) {
+	return p.pluginRepo.List(ctx, uid, &param)
 }
 
-func (p *Plugin) create(ctx context.Context, publisher *user.User, pkg *pluginpack.Package) (*plugin.VersionedPlugin, error) {
+func (p *Plugin) Liked(ctx context.Context, user *user.User, id id.PluginID) (bool, error) {
+	return p.pluginRepo.Liked(ctx, user, id)
+}
+
+func (p *Plugin) Download(ctx context.Context, id id.PluginID, version string) ([]byte, error) {
+	vp, err := p.pluginRepo.FindByVersion(ctx, id, version)
+	if err != nil {
+		return nil, err
+	}
+	return p.download(ctx, vp)
+}
+
+func (p *Plugin) DownloadLatest(ctx context.Context, id id.PluginID) ([]byte, error) {
+	pl, err := p.pluginRepo.FindByID(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+	vp, err := plugin.Versioned(pl).Build()
+	if err != nil {
+		return nil, err
+	}
+	return p.download(ctx, vp)
+}
+
+func (p *Plugin) download(ctx context.Context, vp *plugin.VersionedPlugin) (_ []byte, err error) {
+	tx, err := p.transaction.Begin()
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		err2 := tx.End(ctx)
+		if err == nil {
+			err = err2
+		}
+	}()
+	vp2, err := p.FindByVersion(ctx, vp.Plugin().ID(), vp.Version().Version().String())
+	if err != nil {
+		return nil, err
+	}
+	vp2.Plugin().AddDownloads(1)
+	vp2.Version().AddDownloads(1)
+
+	if err := p.pluginRepo.Save(ctx, vp2.Plugin()); err != nil {
+		return nil, err
+	}
+	if err := p.pluginRepo.SaveVersion(ctx, vp2.Version()); err != nil {
+		return nil, err
+	}
+	b, err := p.file.DownloadPlugin(ctx, vp2.Version().ID())
+	if err != nil {
+		return nil, err
+	}
+	tx.Commit()
+	return b, nil
+}
+
+func (p *Plugin) create(ctx context.Context, publisher *user.User, pkg *pluginpack.Package) (_ *plugin.VersionedPlugin, err error) {
 	vp, err := pluginpack.ToPlugin(ctx, pkg, publisher.ID())
 	if err != nil {
+		return nil, err
+	}
+
+	tx, err := p.transaction.Begin()
+	if err != nil {
+		return nil, err
+	}
+	defer func() {
+		err2 := tx.End(ctx)
+		if err == nil {
+			err = err2
+		}
+	}()
+	if err := p.pluginRepo.Create(ctx, vp); err != nil {
 		return nil, err
 	}
 	if err := p.file.UploadPlugin(ctx, vp.Version().ID(), pkg.Content()); err != nil {
 		return nil, err
 	}
-	if err := p.pluginRepo.Create(ctx, vp); err != nil {
-		return nil, err
-	}
+	tx.Commit()
 	return vp, nil
 }
 

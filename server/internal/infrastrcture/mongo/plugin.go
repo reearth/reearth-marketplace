@@ -13,9 +13,11 @@ import (
 	"github.com/reearth/reearth-marketplace/server/internal/infrastrcture/mongo/mongodoc"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
+	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
 	"github.com/reearth/reearthx/mongox"
+	"github.com/reearth/reearthx/rerror"
 	"github.com/reearth/reearthx/usecase"
 	"github.com/samber/lo"
 	"go.mongodb.org/mongo-driver/bson"
@@ -25,6 +27,22 @@ import (
 
 type pluginRepo struct {
 	client *mongox.Client
+}
+
+func (r *pluginRepo) Liked(ctx context.Context, user *user.User, id plugin.ID) (bool, error) {
+	var c mongox.SliceConsumer[mongodoc.PluginLikeDocument]
+	err := r.pluginLikeClient().FindOne(
+		ctx,
+		bson.M{"userId": user.ID().String(), "pluginId": id.String()},
+		&c,
+	)
+	if err == nil {
+		return true, nil
+	}
+	if errors.Is(err, rerror.ErrNotFound) {
+		return false, nil
+	}
+	return false, err
 }
 
 func (r *pluginRepo) FindByVersion(ctx context.Context, id plugin.ID, version string) (*plugin.VersionedPlugin, error) {
@@ -90,23 +108,28 @@ func (r *pluginRepo) pluginLikeClient() *mongox.ClientCollection {
 
 func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) (err error) {
 	pluginDoc, pluginVersionDoc := mongodoc.NewVersionedPlugin(p)
-	tx, err := r.client.BeginTransaction()
-	if err != nil {
-		return fmt.Errorf("begin tx: %w", err)
+	var pc mongox.SliceConsumer[mongodoc.PluginDocument]
+	if err := r.pluginClient().FindOne(ctx, bson.M{"id": pluginDoc.ID}, &pc); err != nil && !errors.Is(err, rerror.ErrNotFound) {
+		return fmt.Errorf("find plugin: %w", err)
 	}
-	defer func() {
-		endErr := tx.End(ctx)
-		if err == nil && endErr != nil {
-			err = fmt.Errorf("end tx: %w", endErr)
+	if len(pc.Result) > 0 {
+		if p.Plugin().PublisherID().String() != pc.Result[0].PublisherID {
+			return fmt.Errorf("plugin id already used")
 		}
-	}()
+	}
 	if err := r.pluginClient().SaveOne(ctx, pluginDoc.ID, pluginDoc); err != nil {
 		return fmt.Errorf("save plugin: %w", err)
+	}
+	var pvc mongox.SliceConsumer[mongodoc.PluginVersionDocument]
+	if err := r.pluginVersionClient().FindOne(ctx, bson.M{"id": pluginVersionDoc.ID}, &pvc); err != nil && !errors.Is(err, rerror.ErrNotFound) {
+		return fmt.Errorf("find plugin version: %w", err)
+	}
+	if len(pvc.Result) > 0 {
+		return fmt.Errorf("plugin version already exists")
 	}
 	if err := r.pluginVersionClient().SaveOne(ctx, pluginVersionDoc.ID, pluginVersionDoc); err != nil {
 		return fmt.Errorf("save plugin version: %w", err)
 	}
-	tx.Commit()
 	return nil
 }
 
@@ -289,29 +312,40 @@ func (r *pluginRepo) UpdateLatest(ctx context.Context, p *plugin.Plugin) (*plugi
 		bson.M{"pluginId": p.ID().String(), "active": true},
 		options.FindOne().SetSort(bson.D{{Key: "createdAt", Value: -1}}),
 	)
-	if sr.Err() != nil {
-		return nil, sr.Err()
+	if err := sr.Err(); err != nil {
+		if !errors.Is(sr.Err(), mongo.ErrNoDocuments) {
+			return nil, err
+		}
+		pv, _ := plugin.NewPartialVersion().Version("0.0.0").Build()
+		p.SetLatestVersion(pv)
+	} else {
+		var d mongodoc.PluginVersionDocument
+		if err := sr.Decode(&d); err != nil {
+			return nil, err
+		}
+		v, err := d.Model()
+		if err != nil {
+			return nil, err
+		}
+		p.SetLatestVersion(&v.PartialVersion)
 	}
-	var d mongodoc.PluginVersionDocument
-	if err := sr.Decode(&d); err != nil {
-		return nil, err
-	}
-	v, err := d.Model()
-	if err != nil {
-		return nil, err
-	}
-	p.SetLatestVersion(&v.PartialVersion)
+
 	if err := r.Save(ctx, p); err != nil {
 		return nil, err
 	}
 	return p, nil
 }
 
-func (r *pluginRepo) List(ctx context.Context, user *user.User, param *interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error) {
+func (r *pluginRepo) List(ctx context.Context, uid id.UserID, param *interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error) {
 	var conditions []bson.M
 	conditions = append(conditions, bson.M{
-		"publisherId": user.ID().String(),
+		"publisherId": uid.String(),
 	})
+	if param.ActiveOnly {
+		conditions = append(conditions, bson.M{
+			"active": true,
+		})
+	}
 	totalCount, err := r.pluginClient().Count(ctx, toFilter(conditions))
 	if err != nil {
 		return nil, nil, err

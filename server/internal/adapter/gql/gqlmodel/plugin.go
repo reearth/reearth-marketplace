@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/reearth/reearth-marketplace/server/internal/adapter"
+	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin"
 	"github.com/samber/lo"
 )
@@ -26,9 +27,9 @@ type Plugin struct {
 	Tags          []string   `json:"tags"`
 	LatestVersion *Version   `json:"latestVersion"`
 	Images        []string   `json:"images"`
-	PublisherID   string     `json:"publisherId"`
-	Publisher     Publisher  `json:"publisher"`
 	Like          int        `json:"like"`
+
+	publisherID id.UserID
 }
 
 func (*Plugin) IsNode() {}
@@ -45,4 +46,24 @@ func (p *Plugin) Versions(ctx context.Context) ([]*Version, error) {
 	return lo.Map(vs, func(x *plugin.Version, _ int) *Version {
 		return ToVersion(x)
 	}), nil
+}
+
+func (p *Plugin) Liked(ctx context.Context) (bool, error) {
+	pid, err := plugin.IDFrom(p.ID)
+	if err != nil {
+		return false, err
+	}
+	return adapter.Usecases(ctx).Plugin.Liked(ctx, adapter.User(ctx), pid)
+}
+
+func (p *Plugin) Publisher(ctx context.Context) (Publisher, error) {
+	u, err := adapter.Usecases(ctx).User.FindByID(ctx, p.publisherID)
+	if err != nil {
+		return nil, err
+	}
+	return ToUser(u), nil
+}
+
+func (p *Plugin) PublisherID() string {
+	return "u:" + p.publisherID.String()
 }

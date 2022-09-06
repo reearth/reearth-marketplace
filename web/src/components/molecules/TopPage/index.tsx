@@ -7,13 +7,14 @@ export type { Plugin } from "@marketplace/components/molecules/PluginsList";
 export type Props = {
   // isLoggedIn: boolean;
   plugins?: Plugin[];
+  showBanner?: boolean;
   // onSearch: (text: string) => void;
 };
 
-const TopPage: React.FC<Props> = ({ plugins }) => {
+const TopPage: React.FC<Props> = ({ plugins, showBanner }) => {
   return (
     <div>
-      <TitleBar />
+      {showBanner && <TitleBar />}
       <TopPageContent plugins={plugins} />
     </div>
   );

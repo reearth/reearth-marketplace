@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import { styled } from "@marketplace/theme";
 import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
@@ -10,6 +10,7 @@ import PackageArea, {
 } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
 import SettingArea from "@marketplace/components/molecules/AddNewPluginPage/SettingArea";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // TODO: merge with Add New Plugin
 export type Props = {
@@ -42,7 +43,7 @@ const UpdatePluginContent: React.FC<Props> = ({
         <Col>
           <Breadcrumb>
             <Breadcrumb.Item>
-              <a href="/myplugins">Plugins List</a>
+              <Link to="/myplugins">Plugins List</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>Update Plugin</Breadcrumb.Item>
           </Breadcrumb>
@@ -62,8 +63,7 @@ const UpdatePluginContent: React.FC<Props> = ({
         defaultActiveKey={currentTab}
         tabBarStyle={{ margin: 0 }}
         activeKey={currentTab}
-        onChange={handleClickDetailSetting}
-      >
+        onChange={handleClickDetailSetting}>
         <TabPane tab="Package" key="1">
           <PackageArea
             githubUrl={githubUrl}
@@ -73,11 +73,7 @@ const UpdatePluginContent: React.FC<Props> = ({
           />
         </TabPane>
         <TabPane tab="Setting" key="2">
-          <SettingArea
-            pluginName={pluginName}
-            version={version}
-            description={description}
-          />
+          <SettingArea pluginName={pluginName} version={version} description={description} />
         </TabPane>
       </Tabs>
     </Wrapper>

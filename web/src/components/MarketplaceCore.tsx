@@ -1,4 +1,6 @@
 import CoreWrapper from "@marketplace/components/molecules/Common/CoreWrapper";
+import Footer from "@marketplace/components/molecules/Common/Footer";
+import Header from "@marketplace/components/organisms/Common/Header";
 import AddNewPlugin from "@marketplace/components/pages/AddNewPlugin";
 import PublisherRegistration from "@marketplace/components/pages/DeveloperRegistration";
 import MyPlugins from "@marketplace/components/pages/MyPlugins";
@@ -7,17 +9,12 @@ import PluginDetailPage from "@marketplace/components/pages/PluginDetail";
 import RootPage from "@marketplace/components/pages/Root";
 import UpdatePlugin from "@marketplace/components/pages/UpdatePlugin";
 import UserPage from "@marketplace/components/pages/User";
-import { ComponentType } from "react";
+import { Provider as ThemeProvider } from "@marketplace/theme";
 import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 
-export type Props = {
-  header?: ComponentType;
-  footer?: ComponentType;
-};
-
-function AppRoutes() {
+const AppRoutes = () => {
   return useRoutes([
-    { path: "/", element: <RootPage /> },
+    { path: "/", element: <RootPage showBanner /> },
     { path: "/plugins/:pluginId", element: <PluginDetailPage /> },
     { path: "/:userId", element: <UserPage /> },
     {
@@ -29,15 +26,17 @@ function AppRoutes() {
     { path: "/myplugins/:pluginId/update", element: <UpdatePlugin /> },
     { path: "*", element: <NotFound /> },
   ]);
-}
+};
 
-const MarketplaceCore: React.FC<Props> = ({ header, footer }) => {
+const MarketplaceCore: React.FC = () => {
   return (
-    <Router>
-      <CoreWrapper header={header} footer={footer}>
-        <AppRoutes />
-      </CoreWrapper>
-    </Router>
+    <ThemeProvider>
+      <Router>
+        <CoreWrapper header={Header} footer={Footer}>
+          <AppRoutes />
+        </CoreWrapper>
+      </Router>
+    </ThemeProvider>
   );
 };
 
