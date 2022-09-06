@@ -1,15 +1,15 @@
 import { useAuth } from "@marketplace/auth";
 import PluginDetailPage from "@marketplace/components/molecules/PluginDetailPage";
 import React from "react";
-import { useParams } from "react-router-dom";
 import useHooks from "./hooks";
 
-export type Props = {};
-const PluginDetail: React.FC<Props> = () => {
+export type Props = {
+  pluginId?: string;
+};
+const PluginDetail: React.FC<Props> = ({ pluginId }) => {
   const { isAuthenticated } = useAuth();
   const handleClickChoose = () => {};
-  const { pluginId = "" } = useParams();
-  const { plugin } = useHooks(pluginId);
+  const { plugin } = useHooks(pluginId ? pluginId : "");
 
   const handleClickLike = () => {};
   return (
