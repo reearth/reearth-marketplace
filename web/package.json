@@ -83,7 +83,8 @@
     "react-accessible-accordion": "5.0.0",
     "react-dom": "18.2.0",
     "react-i18next": "11.16.9",
-    "react-router-dom": "6.3.0"
+    "react-router-dom": "6.3.0",
+    "react-markdown": "^8.0.3"
   },
   "msw": {
     "workerDirectory": "src/test/mocks"

@@ -52,17 +52,32 @@ export const handlers = [
       })
     );
   }),
-  graphql.mutation("CreatePlugin", (_req, res, ctx) => {
+  graphql.query("Plugin", (_req, res, ctx) => {
     return res(
       ctx.data({
-        me: {
+        node: {
           __typename: "Plugin",
           id: "1111",
           name: "Satellite Plugin",
-          description: "This is Satellite Plugin",
-          version: "v1.0.0",
-          images: [],
+          author: "Re: Earth Team",
+          like: 100,
+          downloads: 100,
+          latestVersion: {
+            version: "v1.0.0",
+          },
+          images: [`${MockImage}`, `${MockImage}`],
         },
+      })
+    );
+  }),
+  graphql.mutation("CreatePlugin", (_req, res, ctx) => {
+    return res(
+      ctx.data({
+        __typename: "Plugin",
+        id: "1111",
+        name: "Satellite Plugin",
+        version: "v1.0.0",
+        images: [],
       })
     );
   }),

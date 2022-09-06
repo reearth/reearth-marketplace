@@ -19,38 +19,114 @@ const Footer: React.FC<Props> = () => {
             <Col flex={1} style={{ maxWidth: "300px" }}>
               <SectionTitle>Community</SectionTitle>
               <Section direction="vertical">
-                <SectionContent>Discord</SectionContent>
-                <SectionContent>Discussion</SectionContent>
-                <SectionContent>Events</SectionContent>
-                <SectionContent>Road Maps</SectionContent>
+                <SectionContent
+                  href="https://discord.gg/XJhYkQQDAu"
+                  target="_blank"
+                >
+                  Discord
+                </SectionContent>
+                <SectionContent
+                  href="https://github.com/reearth/reearth/discussions"
+                  target="_blank"
+                >
+                  Discussion
+                </SectionContent>
+                <SectionContent
+                  href="https://reearth.io/blog/tags/event"
+                  target="_blank"
+                >
+                  Events
+                </SectionContent>
               </Section>
             </Col>
             <Col flex={1} style={{ maxWidth: "300px" }}>
               <SectionTitle>Support</SectionTitle>
               <Section direction="vertical">
-                <SectionContent>Getting Started</SectionContent>
-                <SectionContent>Reference</SectionContent>
-                <SectionContent>Developer Guide</SectionContent>
-                <SectionContent>Tutorial</SectionContent>
-                <SectionContent>Terms of Use</SectionContent>
+                <SectionContent
+                  href="https://docs2.reearth.io/getting-started"
+                  target="_blank"
+                >
+                  Getting Started
+                </SectionContent>
+                <SectionContent
+                  href="https://docs2.reearth.io/reference"
+                  target="_blank"
+                >
+                  Reference
+                </SectionContent>
+                <SectionContent
+                  href="https://docs.reearth.io/developer-guide/intro/about"
+                  target="_blank"
+                >
+                  Developer Guide
+                </SectionContent>
+                <SectionContent
+                  href="https://docs.reearth.io/tutorial/home"
+                  target="_blank"
+                >
+                  Tutorial
+                </SectionContent>
+                <SectionContent
+                  href="https://reearth.io/docs/terms-of-use"
+                  target="_blank"
+                >
+                  Terms of Use
+                </SectionContent>
               </Section>
             </Col>
             <Col flex={1} style={{ maxWidth: "300px" }}>
               <SectionTitle>Developers</SectionTitle>
               <Section direction="vertical">
-                <SectionContent>Github</SectionContent>
-                <SectionContent>Road Maps</SectionContent>
-                <SectionContent>Changelog</SectionContent>
-                <SectionContent>Code of Conduct</SectionContent>
+                <SectionContent
+                  href="https://github.com/reearth/reearth"
+                  target="_blank"
+                >
+                  Github
+                </SectionContent>
+                <SectionContent
+                  href="https://github.com/reearth/reearth/projects/1"
+                  target="_blank"
+                >
+                  Road Maps
+                </SectionContent>
+                <SectionContent
+                  href="https://github.com/reearth/reearth/blob/main/CHANGELOG.md"
+                  target="_blank"
+                >
+                  Changelog
+                </SectionContent>
+                <SectionContent
+                  href="https://github.com/reearth/reearth/blob/main/CODE_OF_CONDUCT.md"
+                  target="_blank"
+                >
+                  Code of Conduct
+                </SectionContent>
               </Section>
             </Col>
             <Col flex={1} style={{ maxWidth: "300px" }}>
               <SectionTitle>Company</SectionTitle>
               <Section direction="vertical">
-                <SectionContent>Website</SectionContent>
-                <SectionContent>Facebook</SectionContent>
-                <SectionContent>Twitter</SectionContent>
-                <SectionContent>Privacy Policy</SectionContent>
+                <SectionContent href="https://eukarya.io/" target="_blank">
+                  Website
+                </SectionContent>
+                <SectionContent
+                  href="https://www.facebook.com/EukaryaInc"
+                  target="_blank"
+                >
+                  Facebook
+                </SectionContent>
+                <SectionContent
+                  href="https://twitter.com/eukaryaofficial"
+                  target="_blank"
+                >
+                  Twitter
+                </SectionContent>
+                <SectionContent
+                  href="https://reearth.io/docs/privacy-policy"
+                  target="_blank"
+                >
+                  Privacy Policy
+                </SectionContent>
               </Section>
             </Col>
           </Row>
