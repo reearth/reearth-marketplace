@@ -1,5 +1,6 @@
 import TitleBar from "@marketplace/components/atoms/TitleBar";
 import { type Plugin } from "@marketplace/components/molecules/PluginsList";
+import { styled } from "@marketplace/theme";
 
 import TopPageContent from "./TopPageContents";
 
@@ -13,11 +14,15 @@ export type Props = {
 
 const TopPage: React.FC<Props> = ({ plugins, showBanner }) => {
   return (
-    <div>
+    <Wrapper>
       {showBanner && <TitleBar />}
       <TopPageContent plugins={plugins} />
-    </div>
+    </Wrapper>
   );
 };
 
 export default TopPage;
+
+const Wrapper = styled.div`
+  background: ${({ theme }) => theme.main.background};
+`;
