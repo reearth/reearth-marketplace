@@ -19,7 +19,6 @@ const Wrapper = styled.section`
   background: url(${HeaderBanner}) center center;
   background-size: cover;
   background-repeat: no-repeat;
-  color: #fff;
 `;
 const Contents = styled.div`
   max-width: 1200px;
@@ -27,7 +26,6 @@ const Contents = styled.div`
 `;
 const Title = styled.h1`
   padding: 48px 0 10px;
-  color: #fff;
 `;
 const Desc = styled.p``;
 export default TitleBar;
