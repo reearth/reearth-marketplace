@@ -166,7 +166,6 @@ const Description = styled.p`
 const PluginInfo = styled(Row)`
   margin-top: 12px;
   font-size: 16px;
-  color: black;
 `;
 
 export default PluginDetailPage;

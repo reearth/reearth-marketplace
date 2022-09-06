@@ -86,7 +86,6 @@ const UserIcon = styled.div`
 `;
 
 const UserInitial = styled.p`
-  color: #fff;
   font-weight: bold;
   font-size: 28px;
   align-self: center;
