@@ -17,7 +17,6 @@ const Provider: React.FC<Props> = ({ children, accessToken: accessToken2 }) => {
     : "/api/graphql";
   const [, setError] = useError();
   const { getAccessToken } = useAuth();
-  console.log(endpoint, "endpoint");
 
   const authLink = setContext(async (_, { headers }) => {
     // get the authentication token from local storage if it exists
