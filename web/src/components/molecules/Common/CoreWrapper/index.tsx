@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import { styled } from "@marketplace/theme";
 import { ComponentType } from "react";
 
 export type Props = {

@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Dropdown from "@marketplace/components/atoms/Dropdown";
@@ -6,6 +5,7 @@ import Icon from "@marketplace/components/atoms/Icon";
 import Menu, { MenuProps } from "@marketplace/components/atoms/Menu";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
+import { styled } from "@marketplace/theme";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 

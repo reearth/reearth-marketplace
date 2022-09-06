@@ -1,7 +1,5 @@
-import styled from "@emotion/styled";
-import PluginsList, {
-  Plugin,
-} from "@marketplace/components/molecules/PluginsList";
+import PluginsList, { Plugin } from "@marketplace/components/molecules/PluginsList";
+import { styled } from "@marketplace/theme";
 // import SearchArea from "@marketplace/components/molecules/SearchArea";
 
 export type Props = {

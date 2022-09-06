@@ -1,9 +1,9 @@
-import styled from "@emotion/styled";
 import Button from "@marketplace/components/atoms/Button";
 import Card, { Meta } from "@marketplace/components/atoms/Card";
 import Icon from "@marketplace/components/atoms/Icon";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
+import { styled } from "@marketplace/theme";
 
 export type Props = {
   loading?: boolean;
@@ -32,8 +32,7 @@ const PluginsListCard: React.FC<Props> = ({
       bordered={false}
       onClick={onClick}
       style={{ maxWidth: "240px", cursor: "pointer" }}
-      bodyStyle={{ padding: "4px 0" }}
-    >
+      bodyStyle={{ padding: "4px 0" }}>
       <Row justify="space-between" align="top">
         <AuthorName>{author}</AuthorName>
         <Space size="small">

@@ -1,8 +1,8 @@
-import styled from "@emotion/styled";
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Icon from "@marketplace/components/atoms/Icon";
 import Row from "@marketplace/components/atoms/Row";
+import { styled } from "@marketplace/theme";
 import { useNavigate } from "react-router-dom";
 
 import MyPluginsTable from "./MyPluginsTable";

@@ -3,7 +3,7 @@
 // import Flex from "@reearth/components/atoms/Flex";
 // import Text from "@reearth/components/atoms/Text";
 // import { useT } from "@reearth/i18n";
-// import styled from "@emotion/styled";
+// import { styled } from "@marketplace/theme";
 // import React, { useState } from "react";
 
 // import DeleteModal from "./deleteModal";

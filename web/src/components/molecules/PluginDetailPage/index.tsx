@@ -1,4 +1,3 @@
-import styled from "@emotion/styled";
 import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
@@ -9,6 +8,7 @@ import Layout from "@marketplace/components/atoms/Layout";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
+import { styled } from "@marketplace/theme";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
