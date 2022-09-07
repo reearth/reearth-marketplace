@@ -67,8 +67,12 @@ const InnerWrapper = styled.div`
   color: ${({ theme }) => theme.main.text};
 
   .ant-breadcrumb-separator,
-  .ant-breadcrumb-link {
+  .ant-breadcrumb-link,
+  .ant-breadcrumb li a {
     color: ${({ theme }) => theme.main.text};
+    :hover {
+      color: ${({ theme }) => theme.main.weakText};
+    }
   }
 `;
 
@@ -78,13 +82,6 @@ const HeaderBannerSpace = styled.div`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-
-  && {
-    color: white;
-    :hover {
-      color: white;
-    }
-  }
 `;
 
 const StyledButton = styled(Button)`

@@ -1,3 +1,4 @@
+// import { Provider as Auth0Provider } from "@marketplace/auth";
 import CoreWrapper from "@marketplace/components/molecules/Common/CoreWrapper";
 import PluginDetailPage from "@marketplace/components/pages/PluginDetail";
 import RootPage from "@marketplace/components/pages/Root";
@@ -14,7 +15,7 @@ export default function LibraryExtension({
   // lang,
   selectedPluginId,
   // installedPlugins,
-  // onInstall,
+  onInstall,
   // onUninstall,
   // onNotificationChange,
   accessToken,
@@ -38,6 +39,7 @@ export default function LibraryExtension({
   console.log(!!accessToken, "retrieved from reearth-web");
 
   return (
+    // <Auth0Provider>
     <I18nProvider>
       <GqlProvider accessToken={accessToken} api="https://api.marketplace.test.reearth.dev/api">
         <ThemeProvider theme={theme}>
@@ -45,13 +47,24 @@ export default function LibraryExtension({
             <CoreWrapper>
               <Routes>
                 <Route path="/" element={<RootPage showBanner />} />
-                <Route path="/plugins/:pluginId" element={<PluginDetailPage />} />
+                <Route
+                  path="/plugins/:pluginId"
+                  element={
+                    <PluginDetailPage
+                      selectedPluginId={selectedPluginId}
+                      accessToken={accessToken}
+                      onInstall={onInstall}
+                    />
+                  }
+                />
                 <Route path="/:userId" element={<UserPage />} />
+                {/* <Route path="/:userId" element={<UserPage accessToken={accessToken} />} /> */}
               </Routes>
             </CoreWrapper>
           </Router>
         </ThemeProvider>
       </GqlProvider>
     </I18nProvider>
+    // </Auth0Provider>
   );
 }
