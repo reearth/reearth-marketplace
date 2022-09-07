@@ -1,5 +1,6 @@
 import {
   ArrowDownOutlined,
+  DownloadOutlined,
   DownOutlined,
   HeartOutlined,
   CloudUploadOutlined,
@@ -23,6 +24,7 @@ import {
 export default {
   downOutlined: DownOutlined,
   heart: HeartOutlined,
+  download: DownloadOutlined,
   arrowDown: ArrowDownOutlined,
   arrowRight: ArrowRightOutlined,
   upload: CloudUploadOutlined,
