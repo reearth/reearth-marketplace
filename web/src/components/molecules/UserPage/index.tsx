@@ -1,40 +1,50 @@
 import HeaderBanner from "@marketplace/assets/header.png";
 import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
-import Button from "@marketplace/components/atoms/Button";
-import Icon from "@marketplace/components/atoms/Icon";
+// import Button from "@marketplace/components/atoms/Button";
+// import Icon from "@marketplace/components/atoms/Icon";
 import Image from "@marketplace/components/atoms/Image";
 import Space from "@marketplace/components/atoms/Space";
 import PluginsList from "@marketplace/components/molecules/PluginsList";
 import { styled } from "@marketplace/theme";
 import { Link } from "react-router-dom";
 
-export type Props = {};
-const UserPageContents: React.FC<Props> = () => {
+import type {
+  myDataType,
+  Plugin,
+} from "@marketplace/components/organisms/User";
+
+export type Props = {
+  myData?: myDataType;
+  plugins?: Plugin[];
+};
+const UserPageContents: React.FC<Props> = ({ myData, plugins }) => {
   return (
     <Wrapper>
       <InnerWrapper>
         <Breadcrumb
           style={{
             paddingBottom: "24px",
-          }}>
+          }}
+        >
           <Breadcrumb.Item>
             <StyledLink to="/">Top</StyledLink>
           </Breadcrumb.Item>
-          <Breadcrumb.Item>Developer</Breadcrumb.Item>
+          <Breadcrumb.Item>{myData ? myData.displayName : ""}</Breadcrumb.Item>
         </Breadcrumb>
         <HeaderBannerSpace>
           <Image src={HeaderBanner} preview={false} />
           <UserIcon>
-            <UserInitial>D</UserInitial>
+            <UserInitial>
+              {myData?.displayName
+                ? myData.displayName.substring(0, 1).toUpperCase()
+                : ""}
+            </UserInitial>
           </UserIcon>
         </HeaderBannerSpace>
         <DeveloperInfo size="small" direction="vertical">
           <Title>Re: Earth Team</Title>
-          <Description>
-            Descriptions are here.Descriptions are here.Descriptions are here.Descriptions are
-            here.Descriptions are here.Descriptions are here.
-          </Description>
-          <AdditionalInfo>
+          <Description>{myData ? myData.description : ""}</Description>
+          {/* <AdditionalInfo>
             <StyledButton type="link" size="middle" href="">
               <Icon icon="desktop" />
               https://hoge.com
@@ -45,10 +55,10 @@ const UserPageContents: React.FC<Props> = () => {
               <Icon icon="email" />
               https://hoge.com
             </StyledButton>
-          </AdditionalInfo>
+          </AdditionalInfo> */}
         </DeveloperInfo>
         <MyPlugins>
-          <PluginsList />
+          <PluginsList plugins={plugins ? plugins : undefined} />
         </MyPlugins>
       </InnerWrapper>
     </Wrapper>
@@ -84,10 +94,10 @@ const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-const StyledButton = styled(Button)`
-  color: ${({ theme }) => theme.main.weakText};
-  padding: 0;
-`;
+// const StyledButton = styled(Button)`
+//   color: ${({ theme }) => theme.main.weakText};
+//   padding: 0;
+// `;
 
 const UserIcon = styled.div`
   width: 110px;
@@ -130,7 +140,7 @@ const Description = styled.p`
   max-width: 445px;
 `;
 
-const AdditionalInfo = styled.div``;
+// const AdditionalInfo = styled.div``;
 
 const MyPlugins = styled.div``;
 

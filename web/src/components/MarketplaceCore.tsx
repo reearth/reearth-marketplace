@@ -16,7 +16,8 @@ const AppRoutes = () => {
   return useRoutes([
     { path: "/", element: <RootPage showBanner /> },
     { path: "/plugins/:pluginId", element: <PluginDetailPage /> },
-    { path: "/:userId", element: <UserPage /> },
+    // TODO: Since we don't have api for calling others' plugins, put "mypage" instead of userid
+    { path: "/mypage", element: <UserPage /> },
     {
       path: "/:userId/publisher-registration",
       element: <PublisherRegistration />,

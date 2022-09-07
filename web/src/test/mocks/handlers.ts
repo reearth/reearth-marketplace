@@ -80,6 +80,10 @@ export const handlers = [
       ctx.data({
         me: {
           id: "1",
+          name: "Re: Earth",
+          displayName: "Re: Earth Team",
+          description: "This is Re: Earth Team",
+          __typename: "Me",
           plugins: {
             __typename: "Plugin",
             pageInfo: {
@@ -193,10 +197,14 @@ export const handlers = [
   graphql.mutation("LikePlugin", (_req, res, ctx) => {
     return res(
       ctx.data({
-        __typename: "Plugin",
-        id: "1111",
-        name: "Satellite Plugin",
-        liked: false,
+        likePlugin: {
+          plugin: {
+            __typename: "Plugin",
+            id: "1111",
+            name: "Satellite Plugin",
+            liked: false,
+          },
+        },
       })
     );
   }),
@@ -204,8 +212,8 @@ export const handlers = [
     // TODO: What is Missing field??
     return res(
       ctx.data({
-        plugin: {
-          node: {
+        unlikePlugin: {
+          plugin: {
             __typename: "Plugin",
             id: "1111",
             like: 100,

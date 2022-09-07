@@ -11,11 +11,11 @@ import { useNavigate } from "react-router-dom";
 
 export type Props = {
   isLoggedIn: boolean;
-  myUserId?: string;
+  // myUserId?: string;
   login?: () => void;
   logout?: () => void;
 };
-const Header: React.FC<Props> = ({ isLoggedIn, myUserId, login, logout }) => {
+const Header: React.FC<Props> = ({ isLoggedIn, login, logout }) => {
   const navigate = useNavigate();
   // const [currentLang, updateLang] = useState<string>();
   // const handleLangMenuClick: MenuProps["onClick"] = (e) => {
@@ -48,7 +48,7 @@ const Header: React.FC<Props> = ({ isLoggedIn, myUserId, login, logout }) => {
           label: "Profile",
           key: 1,
           icon: <Icon icon="user" style={{ paddingRight: "5px" }} />,
-          onClick: () => navigate(`/${myUserId}`),
+          onClick: () => navigate(`/mypage`),
         },
         {
           label: "My Plugins",
@@ -86,7 +86,11 @@ const Header: React.FC<Props> = ({ isLoggedIn, myUserId, login, logout }) => {
         </Col>
         <Col>
           <Space size="middle">
-            <Button type="link" size="large" onClick={() => navigate("/myplugins/new")}>
+            <Button
+              type="link"
+              size="large"
+              onClick={() => navigate("/myplugins/new")}
+            >
               <Icon icon="upload" />
             </Button>
             {/* TODO: Dots Nine is needed? */}

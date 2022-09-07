@@ -4,6 +4,9 @@ export const GET_ME = gql`
   query GetMe($first: Int!, $after: Cursor) {
     me {
       id
+      name
+      displayName
+      description
       plugins(first: $first, after: $after) {
         nodes {
           id
