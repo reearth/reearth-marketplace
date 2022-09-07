@@ -5,7 +5,7 @@ const lightTheme: Theme = {
     text: "black",
     antiText: "white",
     weakText: "rgba(0, 0, 0, 0.45)",
-    background: "white",
+    background: "transparent",
   },
 };
 
