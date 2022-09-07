@@ -68,6 +68,7 @@ export const LIKE_PLUGIN = gql`
       plugin {
         id
         like
+        liked
       }
     }
   }
@@ -79,6 +80,7 @@ export const UNLIKE_PLUGIN = gql`
       plugin {
         id
         like
+        liked
       }
     }
   }

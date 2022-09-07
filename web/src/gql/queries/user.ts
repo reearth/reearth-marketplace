@@ -12,6 +12,12 @@ export const GET_ME = gql`
           like
           downloads
           name
+          latestVersion {
+            version
+          }
+          active
+          publishedAt
+          updatedAt
         }
         pageInfo {
           endCursor

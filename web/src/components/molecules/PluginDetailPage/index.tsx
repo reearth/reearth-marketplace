@@ -30,7 +30,7 @@ export type Props = {
   images: string[];
   isLiked: boolean;
   handleClickChoose: (projectId: string) => void;
-  handleClickLike: () => void;
+  handleClickLike: (isLiked: boolean) => void;
   onInstall?: (pluginId: string) => void;
 };
 
@@ -121,7 +121,7 @@ const PluginDetailPage: React.FC<Props> = ({
                       size="large"
                       ghost
                       disabled={!isLoggedIn}
-                      onClick={() => handleClickLike()}
+                      onClick={() => handleClickLike(isLiked)}
                     >
                       <Icon
                         icon="heart"

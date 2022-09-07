@@ -6,41 +6,16 @@ import { styled } from "@marketplace/theme";
 import { useNavigate } from "react-router-dom";
 
 import MyPluginsTable from "./MyPluginsTable";
+import type { Plugin } from "@marketplace/components/organisms/MyPlugins";
 
-export type Props = {};
-
-export type DataType = {
-  key: string;
-  name: string;
-  status: boolean;
-  version: string;
-  publishDate: string;
+export type Props = {
+  plugins?: Plugin[];
+  handlePublishClick: (id: string, active: boolean) => void;
 };
-const data: DataType[] = [
-  {
-    key: "1",
-    name: "Location Tracker",
-    status: true,
-    version: "v0.4.0",
-    publishDate: "2011.11.11",
-  },
-  {
-    key: "2",
-    name: "Location Tracker",
-    status: false,
-    version: "v0.4.0",
-    publishDate: "2011.11.11",
-  },
-  {
-    key: "3",
-    name: "Location Tracker",
-    status: true,
-    version: "v0.4.0",
-    publishDate: "2011.11.11",
-  },
-];
-const MyPluginsContent: React.FC<Props> = () => {
+
+const MyPluginsContent: React.FC<Props> = ({ plugins, handlePublishClick }) => {
   const navigate = useNavigate();
+  console.log(plugins);
   return (
     <Wrapper>
       <TitleArea justify="space-between" align="middle">
@@ -54,7 +29,7 @@ const MyPluginsContent: React.FC<Props> = () => {
           </Button>
         </Col>
       </TitleArea>
-      <MyPluginsTable data={data} />
+      <MyPluginsTable data={plugins} handlePublishClick={handlePublishClick} />
     </Wrapper>
   );
 };

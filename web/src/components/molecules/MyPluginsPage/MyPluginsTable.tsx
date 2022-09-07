@@ -9,33 +9,37 @@ import Table from "@marketplace/components/atoms/Table";
 import { styled } from "@marketplace/theme";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
-
-import { DataType } from ".";
+import type { Plugin } from "@marketplace/components/organisms/MyPlugins";
 
 export type Props = {
-  data: DataType[];
+  data?: Plugin[];
+  handlePublishClick: (id: string, active: boolean) => void;
 };
 
-const MyPluginsTable: React.FC<Props> = ({ data }) => {
+const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
   const navigate = useNavigate();
-  const columns: ColumnsType<DataType> = [
+  const columns: ColumnsType<Plugin> = [
     {
       title: "Plugin Name",
       dataIndex: "name",
       key: "name",
-      render: text => <BoldTitle>{text}</BoldTitle>,
+      render: (text) => <BoldTitle>{text}</BoldTitle>,
     },
     {
       title: "Status",
-      dataIndex: "status",
-      key: "status",
-      render: status => (
+      dataIndex: "active",
+      key: "active",
+      render: (active, plugin) => (
         <Row justify="start">
           <Space size="large">
             <Col>
-              <Switch defaultChecked={status} />
+              <Switch
+                defaultChecked={active}
+                checked={active}
+                onClick={() => handlePublishClick(plugin.id, active)}
+              />
             </Col>
-            <Col>{status ? "Published" : "Not Published"}</Col>
+            <Col>{active ? "Published" : "Not Published"}</Col>
           </Space>
         </Row>
       ),
@@ -46,15 +50,19 @@ const MyPluginsTable: React.FC<Props> = ({ data }) => {
       key: "version",
     },
     {
-      title: "Publish Date",
-      dataIndex: "publishDate",
-      key: "publishDate",
+      title: "Updated Date",
+      dataIndex: "updateAt",
+      key: "updateAt",
+      render: (date: Date) => {
+        date = new Date(date);
+        return `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
+      },
     },
     {
       title: "Action",
       key: "action",
       dataIndex: "id",
-      render: id => {
+      render: (id) => {
         return (
           <Row justify="space-around" style={{ maxWidth: "200px" }}>
             {/* <Col>
@@ -79,7 +87,11 @@ const MyPluginsTable: React.FC<Props> = ({ data }) => {
             </Col>
             <Col>
               <Popover content="setting">
-                <Button type="link" size="middle" icon={<Icon icon="setting" />} />
+                <Button
+                  type="link"
+                  size="middle"
+                  icon={<Icon icon="setting" />}
+                />
               </Popover>
             </Col>
           </Row>

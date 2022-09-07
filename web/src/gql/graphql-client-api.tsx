@@ -412,14 +412,14 @@ export type LikePluginMutationVariables = Exact<{
 }>;
 
 
-export type LikePluginMutation = { __typename?: 'Mutation', likePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, like: number } } };
+export type LikePluginMutation = { __typename?: 'Mutation', likePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, like: number, liked: boolean } } };
 
 export type UnlikePluginMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type UnlikePluginMutation = { __typename?: 'Mutation', unlikePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, like: number } } };
+export type UnlikePluginMutation = { __typename?: 'Mutation', unlikePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, like: number, liked: boolean } } };
 
 export type UpdatePluginMutationVariables = Exact<{
   pluginId: Scalars['ID'];
@@ -465,7 +465,7 @@ export type GetMeQueryVariables = Exact<{
 }>;
 
 
-export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } } };
+export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, active: boolean, publishedAt: Date, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } } };
 
 export type UpdateMeMutationVariables = Exact<{
   name?: InputMaybe<Scalars['String']>;
@@ -590,6 +590,7 @@ export const LikePluginDocument = gql`
     plugin {
       id
       like
+      liked
     }
   }
 }
@@ -626,6 +627,7 @@ export const UnlikePluginDocument = gql`
     plugin {
       id
       like
+      liked
     }
   }
 }
@@ -852,6 +854,12 @@ export const GetMeDocument = gql`
         like
         downloads
         name
+        latestVersion {
+          version
+        }
+        active
+        publishedAt
+        updatedAt
       }
       pageInfo {
         endCursor

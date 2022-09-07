@@ -66,10 +66,88 @@ export const handlers = [
           readme:
             "# Satellite Plugin \n ## What is this? \n This plugin has a bunch of satellites' location data",
           downloads: 100,
+          icon: null,
           latestVersion: {
             version: "v1.0.0",
           },
           images: [`${MockImage}`, `${MockImage}`],
+        },
+      })
+    );
+  }),
+  graphql.query("GetMe", (_req, res, ctx) => {
+    return res(
+      ctx.data({
+        me: {
+          id: "1",
+          plugins: {
+            __typename: "Plugin",
+            pageInfo: {
+              startCursor: 0,
+              endCursor: 100,
+              hasNextPage: true,
+              hasPreviousPage: false,
+            },
+            nodes: [
+              {
+                id: "1",
+                name: "Satellite Plugin",
+                active: true,
+                publishedAt: Date.now(),
+                updatedAt: Date.now(),
+                latestVersion: {
+                  version: "v1.0.0",
+                },
+                images: [`${MockImage}`, `${MockImage}`],
+                author: "Re: Earth Team",
+                like: 100,
+                downloads: 1000,
+              },
+              {
+                id: "2",
+                name: "Satellite Plugin",
+                active: true,
+                publishedAt: Date.now(),
+                updatedAt: Date.now(),
+                latestVersion: {
+                  version: "v1.0.0",
+                },
+                images: [`${MockImage}`, `${MockImage}`],
+                author: "Re: Earth Team",
+                like: 100,
+                downloads: 1000,
+              },
+              {
+                id: "3",
+                name: "Satellite Plugin",
+                active: true,
+                publishedAt: Date.now(),
+                updatedAt: Date.now(),
+                latestVersion: {
+                  version: "v1.0.0",
+                },
+                images: [`${MockImage}`, `${MockImage}`],
+                author: "Re: Earth Team",
+                like: 100,
+                downloads: 1000,
+              },
+              {
+                id: "4",
+                name: "Satellite Plugin",
+                active: true,
+                publishedAt: Date.now(),
+                updatedAt: Date.now(),
+                latestVersion: {
+                  version: "v1.0.0",
+                },
+                images: [`${MockImage}`, `${MockImage}`],
+                author: "Re: Earth Team",
+                like: 100,
+                downloads: 1000,
+              },
+            ],
+            totalCount: 4,
+          },
         },
       })
     );
@@ -94,6 +172,46 @@ export const handlers = [
         description: "This is Satellite Plugin",
         version: "v1.0.0",
         images: [],
+      })
+    );
+  }),
+  graphql.mutation("UpdatePlugin", (_req, res, ctx) => {
+    return res(
+      ctx.data({
+        updatePlugin: {
+          plugin: {
+            __typename: "Plugin",
+            id: "1111",
+            active: false,
+            tags: [],
+            images: [],
+          },
+        },
+      })
+    );
+  }),
+  graphql.mutation("LikePlugin", (_req, res, ctx) => {
+    return res(
+      ctx.data({
+        __typename: "Plugin",
+        id: "1111",
+        name: "Satellite Plugin",
+        liked: false,
+      })
+    );
+  }),
+  graphql.mutation("UnlikePlugin", (_req, res, ctx) => {
+    // TODO: What is Missing field??
+    return res(
+      ctx.data({
+        plugin: {
+          node: {
+            __typename: "Plugin",
+            id: "1111",
+            like: 100,
+            liked: false,
+          },
+        },
       })
     );
   }),

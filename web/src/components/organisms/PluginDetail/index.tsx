@@ -16,9 +16,13 @@ const PluginDetail: React.FC<Props> = ({
 }) => {
   const { isAuthenticated } = useAuth(accessToken);
   const handleClickChoose = () => {};
-  const { plugin } = useHooks(pluginId ? pluginId : "");
+  const { plugin, onLike, onUnlike } = useHooks(pluginId ? pluginId : "");
 
-  const handleClickLike = () => {};
+  const handleClickLike = (isLiked: boolean) => {
+    isLiked
+      ? onUnlike(pluginId ? pluginId : "")
+      : onLike(pluginId ? pluginId : "");
+  };
   return (
     <PluginDetailPage
       // TODO: isLiked をconnect

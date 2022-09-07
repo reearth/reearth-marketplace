@@ -54,6 +54,7 @@ export default (pluginId: string) => {
             // TODO: where is publishDate?
             // publishData:
             description: data.node.description ? data.node.description : "",
+            icon: null,
             readme: data.node.readme,
             liked: data.node.liked,
             version: data.node.latestVersion?.version,
