@@ -213,8 +213,7 @@ export type Plugin = Node & {
   images: Array<Scalars['URL']>;
   latestVersion?: Maybe<Version>;
   like: Scalars['Int'];
-  liker: Array<User>;
-  likerIds: Array<Scalars['ID']>;
+  liked: Scalars['Boolean'];
   name: Scalars['String'];
   publishedAt: Scalars['Time'];
   publisher: Publisher;
@@ -378,7 +377,6 @@ export type Version = {
   downloads: Scalars['Int'];
   publishedAt: Scalars['Time'];
   updatedAt: Scalars['Time'];
-  url?: Maybe<Scalars['String']>;
   version: Scalars['String'];
 };
 
@@ -393,7 +391,7 @@ export type PluginQueryVariables = Exact<{
 }>;
 
 
-export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' } | null };
+export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' } | null };
 
 export type SearchPluginQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -492,6 +490,9 @@ export const PluginDocument = gql`
       downloads
       name
       icon
+      readme
+      description
+      liked
       latestVersion {
         version
       }

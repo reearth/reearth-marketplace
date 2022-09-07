@@ -61,6 +61,10 @@ export const handlers = [
           name: "Satellite Plugin",
           author: "Re: Earth Team",
           like: 100,
+          liked: true,
+          description: "This is Satellite Plugin",
+          readme:
+            "# Satellite Plugin \n ## What is this? \n This plugin has a bunch of satellites' location data",
           downloads: 100,
           latestVersion: {
             version: "v1.0.0",

@@ -12,8 +12,7 @@ import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import { styled } from "@marketplace/theme";
 import { useState } from "react";
-import Carousel from "@marketplace/components/atoms/Carousel";
-import Markdown from "@marketplace/components/atoms/Markdown";
+
 import { Link } from "react-router-dom";
 
 import ModalContent from "./ModalContent";
@@ -26,6 +25,8 @@ export type Props = {
   version?: string;
   likes: number;
   downloads: number;
+  description?: string;
+  readme: string;
   images: string[];
   isLiked: boolean;
   handleClickChoose: (projectId: string) => void;
@@ -41,6 +42,8 @@ const PluginDetailPage: React.FC<Props> = ({
   version,
   images,
   likes,
+  description,
+  readme,
   downloads,
   isLiked,
   handleClickChoose,
@@ -81,11 +84,12 @@ const PluginDetailPage: React.FC<Props> = ({
                 <PluginDocs>
                   <Tabs defaultActiveKey="1" onChange={onTabsChange}>
                     <TabPane tab="Readme" key="1">
-                      <Markdown># Hello</Markdown>
+                      <Markdown>{readme}</Markdown>
                     </TabPane>
-                    <TabPane tab="Change log" key="2">
+                    {/* TODO: after developing function for posting changelogs */}
+                    {/* <TabPane tab="Change log" key="2">
                       Change log
-                    </TabPane>
+                    </TabPane> */}
                   </Tabs>
                 </PluginDocs>
               </Col>
@@ -142,7 +146,10 @@ const PluginDetailPage: React.FC<Props> = ({
                     </Button>
                   </Col>
                 </ActionButtons>
-                <Description>Description</Description>
+                <Description>
+                  <Col style={{ paddingBottom: "8px" }}>Description</Col>
+                  <Col>{description}</Col>
+                </Description>
                 <PluginInfo align="middle" justify="space-between">
                   <Col>Developer</Col>
                   <Col>{author}</Col>
