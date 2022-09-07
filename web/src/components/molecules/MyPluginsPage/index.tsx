@@ -13,7 +13,7 @@ export type Props = {
   handlePublishClick: (id: string, active: boolean) => void;
 };
 
-const MyPluginsContent: React.FC<Props> = ({ plugins, handlePublishClick }) => {
+const MyPluginsPage: React.FC<Props> = ({ plugins, handlePublishClick }) => {
   const navigate = useNavigate();
   console.log(plugins);
   return (
@@ -50,4 +50,4 @@ const TitleArea = styled(Row)`
   margin-bottom: 24px;
 `;
 
-export default MyPluginsContent;
+export default MyPluginsPage;
