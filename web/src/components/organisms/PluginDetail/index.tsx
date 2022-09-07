@@ -1,13 +1,20 @@
 import { useAuth } from "@marketplace/auth";
 import PluginDetailPage from "@marketplace/components/molecules/PluginDetailPage";
 import React from "react";
+
 import useHooks from "./hooks";
 
 export type Props = {
   pluginId?: string;
+  accessToken?: string;
+  onInstall?: (pluginId: string) => void;
 };
-const PluginDetail: React.FC<Props> = ({ pluginId }) => {
-  const { isAuthenticated } = useAuth();
+const PluginDetail: React.FC<Props> = ({
+  pluginId,
+  accessToken,
+  onInstall,
+}) => {
+  const { isAuthenticated } = useAuth(accessToken);
   const handleClickChoose = () => {};
   const { plugin } = useHooks(pluginId ? pluginId : "");
 
@@ -26,6 +33,7 @@ const PluginDetail: React.FC<Props> = ({ pluginId }) => {
       downloads={plugin ? plugin.downloads : 0}
       handleClickLike={handleClickLike}
       handleClickChoose={handleClickChoose}
+      onInstall={onInstall}
     />
   );
 };

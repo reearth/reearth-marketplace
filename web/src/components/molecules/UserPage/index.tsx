@@ -12,58 +12,67 @@ export type Props = {};
 const UserPageContents: React.FC<Props> = () => {
   return (
     <Wrapper>
-      <Breadcrumb
-        style={{
-          paddingBottom: "24px",
-        }}>
-        <Breadcrumb.Item>
-          <StyledLink to="/">Top</StyledLink>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>Developer</Breadcrumb.Item>
-      </Breadcrumb>
-      <HeaderBannerSpace>
-        <Image src={HeaderBanner} preview={false} />
-        <UserIcon>
-          <UserInitial>D</UserInitial>
-        </UserIcon>
-      </HeaderBannerSpace>
-      <DeveloperInfo size="small" direction="vertical">
-        <Title>Re: Earth Team</Title>
-        <Description>
-          Descriptions are here.Descriptions are here.Descriptions are here.Descriptions are
-          here.Descriptions are here.Descriptions are here.
-        </Description>
-        <AdditionalInfo>
-          <StyledButton type="link" size="middle" href="">
-            <Icon icon="desktop" />
-            https://hoge.com
-          </StyledButton>
-        </AdditionalInfo>
-        <AdditionalInfo>
-          <StyledButton type="link" size="middle" href="">
-            <Icon icon="email" />
-            https://hoge.com
-          </StyledButton>
-        </AdditionalInfo>
-      </DeveloperInfo>
-      <MyPlugins>
-        <PluginsList />
-      </MyPlugins>
+      <InnerWrapper>
+        <Breadcrumb
+          style={{
+            paddingBottom: "24px",
+          }}>
+          <Breadcrumb.Item>
+            <StyledLink to="/">Top</StyledLink>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>Developer</Breadcrumb.Item>
+        </Breadcrumb>
+        <HeaderBannerSpace>
+          <Image src={HeaderBanner} preview={false} />
+          <UserIcon>
+            <UserInitial>D</UserInitial>
+          </UserIcon>
+        </HeaderBannerSpace>
+        <DeveloperInfo size="small" direction="vertical">
+          <Title>Re: Earth Team</Title>
+          <Description>
+            Descriptions are here.Descriptions are here.Descriptions are here.Descriptions are
+            here.Descriptions are here.Descriptions are here.
+          </Description>
+          <AdditionalInfo>
+            <StyledButton type="link" size="middle" href="">
+              <Icon icon="desktop" />
+              https://hoge.com
+            </StyledButton>
+          </AdditionalInfo>
+          <AdditionalInfo>
+            <StyledButton type="link" size="middle" href="">
+              <Icon icon="email" />
+              https://hoge.com
+            </StyledButton>
+          </AdditionalInfo>
+        </DeveloperInfo>
+        <MyPlugins>
+          <PluginsList />
+        </MyPlugins>
+      </InnerWrapper>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
+  background: ${({ theme }) => theme.main.background};
+`;
+
+const InnerWrapper = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding-top: 48px;
   padding-bottom: 72px;
   color: ${({ theme }) => theme.main.text};
-  background: ${({ theme }) => theme.main.background};
 
   .ant-breadcrumb-separator,
-  .ant-breadcrumb-link {
+  .ant-breadcrumb-link,
+  .ant-breadcrumb li a {
     color: ${({ theme }) => theme.main.text};
+    :hover {
+      color: ${({ theme }) => theme.main.weakText};
+    }
   }
 `;
 
@@ -73,13 +82,6 @@ const HeaderBannerSpace = styled.div`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-
-  && {
-    color: white;
-    :hover {
-      color: white;
-    }
-  }
 `;
 
 const StyledButton = styled(Button)`
