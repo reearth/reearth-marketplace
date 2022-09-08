@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 
 import useHooks from "./hooks";
+import { useParams } from "react-router-dom";
 
 export type Props = {};
 const UpdatePlugin: React.FC<Props> = () => {
@@ -13,6 +14,8 @@ const UpdatePlugin: React.FC<Props> = () => {
     handleCreatePluginMutation,
     handleUpdatePluginMutation,
   } = useHooks();
+
+  const params = useParams();
 
   const [githubUrl, changeGithubUrl] = useState<string | undefined>(undefined);
   const [uploadedFile, uploadZip] = useState<FileUploadType>();
@@ -28,20 +31,32 @@ const UpdatePlugin: React.FC<Props> = () => {
           file: uploadedFile,
           repo: undefined,
         })
-      : await handleCreatePluginMutation({
+      : githubUrl
+      ? await handleCreatePluginMutation({
           file: undefined,
           repo: githubUrl,
-        });
+        })
+      : null;
+    console.log(uploadedImages.length);
     uploadImages.length > 0 &&
-      parsedPlugin &&
       (await handleUpdatePluginMutation({
-        id: parsedPlugin.id,
+        id: parsedPlugin
+          ? parsedPlugin.id
+          : params.pluginId
+          ? params.pluginId
+          : "",
         images: uploadedImages,
       }));
   };
   const handleClickPublish = () => {
     handleUpdatePluginMutation({
-      id: parsedPlugin ? parsedPlugin.id : "",
+      id: parsedPlugin
+        ? parsedPlugin.id
+        : params.pluginId
+        ? params.pluginId
+        : "",
+      active: true,
+      images: uploadedImages,
     });
   };
   // When Github Url Input
@@ -64,7 +79,6 @@ const UpdatePlugin: React.FC<Props> = () => {
     <UpdatePluginPage
       pluginName={parsedPlugin ? parsedPlugin.name : ""}
       description={parsedPlugin ? parsedPlugin.description : ""}
-      uploadedFile={uploadedFile}
       version={parsedPlugin ? parsedPlugin.version : ""}
       githubUrl={githubUrl}
       handleChangeGithubUrl={handleChangeGithubUrl}

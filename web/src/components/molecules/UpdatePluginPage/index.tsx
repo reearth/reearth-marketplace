@@ -8,7 +8,6 @@ export type Props = {
   description: string;
   version: string;
   githubUrl?: string;
-  uploadedFile?: FileUploadType;
   handleChangeGithubUrl: (url: string) => void;
   handleParsePlugin: (file?: FileUploadType) => void;
   handleClickSave: () => void;
@@ -20,7 +19,6 @@ const UpdatePluginPage: React.FC<Props> = ({
   description,
   version,
   githubUrl,
-  uploadedFile,
   handleChangeGithubUrl,
   handleParsePlugin,
   handleClickSave,
@@ -33,7 +31,6 @@ const UpdatePluginPage: React.FC<Props> = ({
         pluginName={pluginName}
         description={description}
         version={version}
-        uploadedFile={uploadedFile}
         githubUrl={githubUrl}
         handleChangeGithubUrl={handleChangeGithubUrl}
         handleParsePlugin={handleParsePlugin}

@@ -15,7 +15,7 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
       first: 50,
       // TODO: fill variables here
       keyword: searchText,
-      liked: liked ? liked : false,
+      // liked: liked ? liked : false,
       // tags: [],
       // types: [],
       // publisher: "",
