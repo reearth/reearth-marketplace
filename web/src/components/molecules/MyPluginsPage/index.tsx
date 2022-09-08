@@ -15,7 +15,6 @@ export type Props = {
 
 const MyPluginsPage: React.FC<Props> = ({ plugins, handlePublishClick }) => {
   const navigate = useNavigate();
-  console.log(plugins);
   return (
     <Wrapper>
       <TitleArea justify="space-between" align="middle">

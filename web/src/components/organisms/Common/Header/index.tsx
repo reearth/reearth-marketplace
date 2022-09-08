@@ -6,10 +6,8 @@ import React from "react";
 export type Props = {
   myUserId?: string;
 };
-const Header: React.FC<Props> = ({ myUserId }) => {
+const Header: React.FC<Props> = () => {
   const { login, logout, isAuthenticated } = useAuth();
-
-  console.log(myUserId, "myUserId");
 
   return <HeaderOrganism isLoggedIn={isAuthenticated} login={login} logout={logout} />;
 };

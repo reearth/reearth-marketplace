@@ -36,7 +36,6 @@ export default () => {
 
   const handleUpdatePluginMutation = useCallback(
     async (data: { id: string; images?: string[]; active?: boolean }) => {
-      console.log(data.images);
       await updatePluginMutation({
         variables: {
           pluginId: data.id,

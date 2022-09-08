@@ -39,7 +39,6 @@ export default (pluginId: string) => {
     },
     [unlikePlugin, refetch],
   );
-  console.log(data);
 
   const plugin = useMemo(
     () =>

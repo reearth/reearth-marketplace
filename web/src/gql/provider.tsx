@@ -18,8 +18,13 @@ const Provider: React.FC<Props> = ({ children, accessToken: accessToken2 }) => {
   const { getAccessToken } = useAuth();
 
   const authLink = setContext(async (_, { headers }) => {
-    // get the authentication token from local storage if it exists
-    const accessToken = accessToken2 || (await getAccessToken());
+    let accessToken: string | undefined;
+    try {
+      // get the authentication token from local storage if it exists
+      accessToken = accessToken2 || (await getAccessToken());
+    } catch {
+      // ignore
+    }
     // return the headers to the context so httpLink can read them
     return {
       headers: {

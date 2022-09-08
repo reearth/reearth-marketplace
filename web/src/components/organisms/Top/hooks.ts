@@ -13,7 +13,6 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
   const { data, refetch } = useSearchPluginQuery({
     variables: {
       first: 50,
-      // TODO: fill variables here
       keyword: searchText,
       liked: liked || undefined,
       // tags: [],
@@ -49,7 +48,6 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
     },
     [unlikePlugin, refetch],
   );
-  console.log(data);
 
   const plugins = useMemo(
     () =>

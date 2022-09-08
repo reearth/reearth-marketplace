@@ -19,12 +19,19 @@ export const defaultConfig: Config = {
 export async function loadConfig() {
   if (window.REEARTH_MARKETPLACE_CONFIG) return;
   window.REEARTH_MARKETPLACE_CONFIG = defaultConfig;
+
+  let config: any = {};
+  try {
+    const res = await fetch(
+      `${window.REEARTH_CONFIG?.marketplaceUrl?.replace(/\/$/, "") ?? ""}/reearth_config.json`,
+    );
+    if (res.status === 200) config = await res.json();
+  } catch (err) {
+    console.error("config load error", err);
+  }
+
   window.REEARTH_MARKETPLACE_CONFIG = {
     ...defaultConfig,
-    ...(await (
-      await fetch(
-        `${window.REEARTH_CONFIG?.marketplaceUrl?.replace(/\/$/, "") ?? ""}/reearth_config.json`,
-      )
-    ).json()),
+    ...config,
   };
 }

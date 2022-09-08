@@ -57,7 +57,6 @@ const PackageArea: React.FC<Props> = ({
               maxCount={1}
               multiple={false}
               beforeUpload={file => {
-                console.log(file);
                 const isZip = file.type === "application/zip";
                 if (!isZip) {
                   Message.error(`${file.name} is not a zip file`);
@@ -67,17 +66,11 @@ const PackageArea: React.FC<Props> = ({
               customRequest={info => handleParsePlugin(info.file)}
               onChange={info => {
                 const { status } = info.file;
-                if (status === "uploading") {
-                  console.log(`${info.file.name} file uploading.`);
-                }
                 if (status === "done") {
                   Message.success(`${info.file.name} file uploaded successfully.`);
                 } else if (status === "error") {
                   Message.error(`${info.file.name} file upload failed.`);
                 }
-              }}
-              onDrop={e => {
-                console.log("Dropped files", e.dataTransfer.files);
               }}>
               <p className="ant-upload-drag-icon">
                 <Icon icon="inbox" />
