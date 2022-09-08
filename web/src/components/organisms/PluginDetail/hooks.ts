@@ -65,21 +65,20 @@ export default (pluginId: string) => {
     [data?.node]
   );
 
-  useEffect(() => {
-    const getMeFromReEarth = await fetch({
-      url: window.REEARTH_CONFIG.reearthApi + "/graphql",
-      method: "POST",
-      data: JSON.stringify({
-        "query": `query { me { teams { id, name, projects(first:100) { nodes { id, name } } } } }`
-      }),
-      headers: {
-        Authorization: `Bearer ${token}`
-        'Content-Type': 'application/json',
-      }
-    }).then(r => r.json());
-    console.log(getMeFromReEarth);
-  }, []);
-  
+  // useEffect(() => {
+  //   const getMeFromReEarth = await fetch({
+  //     url: window.REEARTH_CONFIG.reearthApi + "/graphql",
+  //     method: "POST",
+  //     data: JSON.stringify({
+  //       "query": `query { me { teams { id, name, projects(first:100) { nodes { id, name } } } } }`
+  //     }),
+  //     headers: {
+  //       Authorization: `Bearer ${token}`
+  //       'Content-Type': 'application/json',
+  //     }
+  //   }).then(r => r.json());
+  //   console.log(getMeFromReEarth);
+  // }, []);
 
   return {
     plugin,

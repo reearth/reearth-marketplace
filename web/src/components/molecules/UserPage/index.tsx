@@ -42,7 +42,7 @@ const UserPageContents: React.FC<Props> = ({ myData, plugins }) => {
           </UserIcon>
         </HeaderBannerSpace>
         <DeveloperInfo size="small" direction="vertical">
-          <Title>Re: Earth Team</Title>
+          <Title>{myData ? myData.displayName : ""}</Title>
           <Description>{myData ? myData.description : ""}</Description>
           {/* <AdditionalInfo>
             <StyledButton type="link" size="middle" href="">
