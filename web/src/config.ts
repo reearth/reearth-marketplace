@@ -19,6 +19,8 @@ export async function loadConfig() {
   window.REEARTH_MARKETPLACE_CONFIG = defaultConfig;
   window.REEARTH_MARKETPLACE_CONFIG = {
     ...defaultConfig,
-    ...(await (await fetch(`${window.REEARTH_CONFIG?.marketplaceUrl}/reearth_config.json`)).json()),
+    ...(await (
+      await fetch(`${window.REEARTH_CONFIG?.marketplaceUrl ?? ""}/reearth_config.json`)
+    ).json()),
   };
 }
