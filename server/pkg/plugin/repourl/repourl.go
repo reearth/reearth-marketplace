@@ -30,7 +30,7 @@ func New(u *url.URL) (*URL, error) {
 	if u.Scheme == "" {
 		// github.com/aaa/bbb
 		s := strings.SplitN(u.Path, "/", 2)
-		if len(p) < 2 {
+		if len(s) < 2 {
 			return nil, ErrInvalidURL
 		}
 		h = s[0]
