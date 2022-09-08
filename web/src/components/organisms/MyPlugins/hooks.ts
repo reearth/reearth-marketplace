@@ -1,7 +1,4 @@
-import {
-  useGetMeQuery,
-  useUpdatePluginMutation,
-} from "@marketplace/gql/graphql-client-api";
+import { useGetMeQuery, useUpdatePluginMutation } from "@marketplace/gql/graphql-client-api";
 import { useCallback, useMemo } from "react";
 
 import { type Plugin } from "./";
@@ -9,7 +6,7 @@ import { type Plugin } from "./";
 export default (id?: string, active?: boolean) => {
   const { data, refetch } = useGetMeQuery({
     variables: {
-      first: 0,
+      first: 50,
     },
   });
   const [updatePlugin] = useUpdatePluginMutation({
@@ -26,7 +23,7 @@ export default (id?: string, active?: boolean) => {
       });
       await refetch();
     },
-    [updatePlugin, refetch]
+    [updatePlugin, refetch],
   );
   const plugins = useMemo(
     () =>
@@ -40,10 +37,10 @@ export default (id?: string, active?: boolean) => {
                 updateAt: p.updatedAt,
                 active: p.active,
               }
-            : undefined
+            : undefined,
         )
         .filter((p): p is Plugin => !!p),
-    [data?.me.plugins.nodes]
+    [data?.me.plugins.nodes],
   );
 
   return {

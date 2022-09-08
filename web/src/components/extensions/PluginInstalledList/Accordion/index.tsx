@@ -32,7 +32,7 @@ const PluginAccordion: React.FC<PluginAccordionProps> = ({
 }) => {
   const { data } = useGetMeQuery({
     variables: {
-      first: 0,
+      first: 50,
     },
   });
 

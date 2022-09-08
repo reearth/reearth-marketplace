@@ -51,7 +51,7 @@
     "babel-loader": "8.2.5",
     "babel-plugin-macros": "3.1.0",
     "eslint": "8.15.0",
-    "eslint-config-reearth": "0.1.0",
+    "eslint-config-reearth": "0.2.0",
     "i18next-parser": "6.4.0",
     "jsdom": "19.0.0",
     "less": "4.1.3",

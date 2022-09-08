@@ -8,39 +8,69 @@ import { useState } from "react";
 type Props = {
   title: string;
   visible: boolean;
+  workspaces?: Workspace[];
+  onPluginInstall?: (workspaceId: string, projectId: string) => void;
   onCancel: () => void;
   handleClickChoose: (projectId: string) => void;
 };
-const ModalContent: React.FC<Props> = ({ title, visible, onCancel, handleClickChoose }) => {
-  const [projectId, selectProject] = useState<string>("");
-  const projects = [
-    {
-      id: "2332",
-      name: "hoge",
-    },
-  ];
+
+export type Workspace = {
+  id: string;
+  name: string;
+  projects: Project[];
+};
+
+export type Project = {
+  id: string;
+  name: string;
+};
+
+const ModalContent: React.FC<Props> = ({
+  title,
+  visible,
+  workspaces,
+  onCancel,
+  onPluginInstall,
+  handleClickChoose,
+}) => {
+  const [workspaceId, selectWorkspace] = useState<string>("");
+
   return (
     <Modal
       title={title}
       visible={visible}
       onCancel={onCancel}
       okText="Choose"
-      okButtonProps={{ disabled: !projectId }}
+      okButtonProps={{ disabled: !workspaceId }}
       onOk={() => handleClickChoose}>
       <Row>
-        <Col>Workspace: </Col>
+        <Col>
+          Workspace: {(workspaceId && workspaces?.find(ws => ws.id === workspaceId)?.name) || "-"}
+        </Col>
+        {workspaces?.map(ws => (
+          <button
+            key={ws.id}
+            onClick={() => {
+              selectWorkspace(ws.id);
+            }}>
+            {ws.name}
+          </button>
+        ))}
       </Row>
       <Divider />
       <Row>
-        {projects.map(project => {
-          return (
-            <Col span={24} key={project.id}>
-              <Button onClick={() => selectProject(project.id)} block>
-                {project.name}
-              </Button>
-            </Col>
-          );
-        })}
+        {workspaceId &&
+          workspaces
+            ?.find(ws => ws.id === workspaceId)
+            ?.projects.map(prj => {
+              return (
+                <Col span={24} key={prj.id}>
+                  <Button onClick={() => onPluginInstall?.(workspaceId, prj.id)} block>
+                    {prj.name}
+                  </Button>
+                </Col>
+              );
+            })}
       </Row>
     </Modal>
   );

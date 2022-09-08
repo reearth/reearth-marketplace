@@ -9,13 +9,13 @@ import { useCallback, useMemo } from "react";
 
 export { PluginSort };
 
-export default (searchText?: string, sort?: PluginSort) => {
+export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
   const { data, refetch } = useSearchPluginQuery({
     variables: {
       first: 50,
       // TODO: fill variables here
       keyword: searchText,
-      // liked: false,
+      liked: liked || undefined,
       // tags: [],
       // types: [],
       // publisher: "",
@@ -35,7 +35,7 @@ export default (searchText?: string, sort?: PluginSort) => {
       });
       await refetch();
     },
-    [likePlugin, refetch]
+    [likePlugin, refetch],
   );
 
   const onUnlike = useCallback(
@@ -47,7 +47,7 @@ export default (searchText?: string, sort?: PluginSort) => {
       });
       await refetch();
     },
-    [unlikePlugin, refetch]
+    [unlikePlugin, refetch],
   );
   console.log(data);
 
@@ -64,10 +64,10 @@ export default (searchText?: string, sort?: PluginSort) => {
                 like: p.like,
                 downloads: p.downloads,
               }
-            : undefined
+            : undefined,
         )
         .filter((p): p is Plugin => !!p),
-    [data?.plugins]
+    [data?.plugins],
   );
 
   return {

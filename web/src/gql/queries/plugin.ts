@@ -14,6 +14,7 @@ export const PLUGIN = gql`
         readme
         description
         liked
+        updatedAt
         latestVersion {
           version
         }
@@ -133,6 +134,7 @@ export const PARSE_PLUGIN = gql`
   mutation ParsePlugin($file: Upload, $repo: String) {
     parsePlugin(input: { file: $file, repo: $repo }) {
       plugin {
+        id
         type
         name
         author
@@ -140,6 +142,9 @@ export const PARSE_PLUGIN = gql`
         icon
         repository
         readme
+        latestVersion {
+          version
+        }
       }
     }
   }
@@ -153,12 +158,7 @@ export const UPDATE_PLUGIN_VERSION = gql`
     $active: Boolean
   ) {
     updateVersion(
-      input: {
-        pluginId: $pluginId
-        version: $version
-        description: $description
-        active: $active
-      }
+      input: { pluginId: $pluginId, version: $version, description: $description, active: $active }
     ) {
       plugin {
         id

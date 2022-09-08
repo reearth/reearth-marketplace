@@ -1,5 +1,5 @@
-import { graphql } from "msw";
 import MockImage from "@marketplace/assets/mock/satellite.png";
+import { graphql } from "msw";
 
 export const handlers = [
   graphql.query("SearchPlugin", (_req, res, ctx) => {
@@ -49,7 +49,7 @@ export const handlers = [
           ],
           totalCount: 4,
         },
-      })
+      }),
     );
   }),
   graphql.query("Plugin", (_req, res, ctx) => {
@@ -72,7 +72,7 @@ export const handlers = [
           },
           images: [`${MockImage}`, `${MockImage}`],
         },
-      })
+      }),
     );
   }),
   graphql.query("GetMe", (_req, res, ctx) => {
@@ -153,7 +153,7 @@ export const handlers = [
             totalCount: 4,
           },
         },
-      })
+      }),
     );
   }),
   graphql.mutation("CreatePlugin", (_req, res, ctx) => {
@@ -164,19 +164,29 @@ export const handlers = [
         name: "Satellite Plugin",
         version: "v1.0.0",
         images: [],
-      })
+      }),
     );
   }),
   graphql.mutation("ParsePlugin", (_req, res, ctx) => {
     return res(
       ctx.data({
-        __typename: "Plugin",
-        id: "1111",
-        name: "Satellite Plugin",
-        description: "This is Satellite Plugin",
-        version: "v1.0.0",
-        images: [],
-      })
+        parsePlugin: {
+          plugin: {
+            __typename: "Plugin",
+            type: "REEARTH",
+            author: "Re: Earth Team",
+            icon: null,
+            repository: null,
+            readme:
+              "# Satellite Plugin \n ## What is this? \n This plugin has a bunch of satellites' location data",
+            id: "1111",
+            name: "Satellite Plugin",
+            description: "This is Satellite Plugin",
+            version: "v1.0.0",
+            images: [],
+          },
+        },
+      }),
     );
   }),
   graphql.mutation("UpdatePlugin", (_req, res, ctx) => {
@@ -191,7 +201,7 @@ export const handlers = [
             images: [],
           },
         },
-      })
+      }),
     );
   }),
   graphql.mutation("LikePlugin", (_req, res, ctx) => {
@@ -205,7 +215,7 @@ export const handlers = [
             liked: false,
           },
         },
-      })
+      }),
     );
   }),
   graphql.mutation("UnlikePlugin", (_req, res, ctx) => {
@@ -220,7 +230,51 @@ export const handlers = [
             liked: false,
           },
         },
-      })
+      }),
+    );
+  }),
+  graphql.mutation("UpdatePlugin", (_req, res, ctx) => {
+    return res(
+      ctx.data({
+        updatePlugin: {
+          plugin: {
+            __typename: "Plugin",
+            id: "1111",
+            active: false,
+            tags: [],
+            images: [],
+          },
+        },
+      }),
+    );
+  }),
+  graphql.mutation("LikePlugin", (_req, res, ctx) => {
+    return res(
+      ctx.data({
+        likePlugin: {
+          plugin: {
+            __typename: "Plugin",
+            id: "1111",
+            name: "Satellite Plugin",
+            liked: false,
+          },
+        },
+      }),
+    );
+  }),
+  graphql.mutation("UnlikePlugin", (_req, res, ctx) => {
+    // TODO: What is Missing field??
+    return res(
+      ctx.data({
+        unlikePlugin: {
+          plugin: {
+            __typename: "Plugin",
+            id: "1111",
+            like: 100,
+            liked: false,
+          },
+        },
+      }),
     );
   }),
 ];

@@ -1,4 +1,3 @@
-import { styled } from "@marketplace/theme";
 import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
@@ -9,6 +8,8 @@ import PackageArea, {
   FileUploadType,
 } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
 import SettingArea from "@marketplace/components/molecules/AddNewPluginPage/SettingArea";
+import { styled } from "@marketplace/theme";
+import { UploadRequestOption } from "rc-upload/lib/interface";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
@@ -17,21 +18,25 @@ export type Props = {
   pluginName: string;
   version: string;
   description: string;
-  githubUrl: string;
+  githubUrl?: string;
+  uploadedFile?: FileUploadType;
   handleChangeGithubUrl: (url: string) => void;
   handleParsePlugin: (file?: FileUploadType) => void;
   handleClickSave: () => void;
   handleClickPublish: () => void;
+  handleUploadImages: (image: UploadRequestOption) => void;
 };
 const UpdatePluginContent: React.FC<Props> = ({
   pluginName,
   version,
   description,
   githubUrl,
+  uploadedFile,
   handleChangeGithubUrl,
   handleParsePlugin,
   handleClickSave,
   handleClickPublish,
+  handleUploadImages,
 }) => {
   const [currentTab, updateTab] = useState<"1" | "2">("1");
   const handleClickDetailSetting = () => {
@@ -50,10 +55,14 @@ const UpdatePluginContent: React.FC<Props> = ({
         </Col>
         <Col>
           <Space size="middle">
-            <Button type="default" size="large" onClick={handleClickSave}>
+            <Button type="default" size="large" onClick={handleClickSave} disabled={!uploadedFile}>
               Save
             </Button>
-            <Button type="primary" size="large" onClick={handleClickPublish}>
+            <Button
+              type="primary"
+              size="large"
+              onClick={handleClickPublish}
+              disabled={!uploadedFile}>
               Publish
             </Button>
           </Space>
@@ -73,7 +82,12 @@ const UpdatePluginContent: React.FC<Props> = ({
           />
         </TabPane>
         <TabPane tab="Setting" key="2">
-          <SettingArea pluginName={pluginName} version={version} description={description} />
+          <SettingArea
+            pluginName={pluginName}
+            version={version}
+            description={description}
+            handleUploadImages={handleUploadImages}
+          />
         </TabPane>
       </Tabs>
     </Wrapper>

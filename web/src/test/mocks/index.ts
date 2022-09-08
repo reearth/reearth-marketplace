@@ -1,4 +1,4 @@
-const forceUnregister = false;
+const forceUnregister = true;
 
 export async function startMock() {
   if (!forceUnregister && import.meta.env.DEV) {

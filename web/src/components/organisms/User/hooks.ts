@@ -6,7 +6,7 @@ import { type Plugin } from "./";
 export default () => {
   const { data } = useGetMeQuery({
     variables: {
-      first: 0,
+      first: 50,
     },
   });
 
@@ -19,7 +19,7 @@ export default () => {
             description: data.me ? data.me.description : "",
           }
         : undefined,
-    [data?.me]
+    [data?.me],
   );
 
   const plugins = useMemo(
@@ -36,10 +36,10 @@ export default () => {
                 downloads: p.downloads,
                 author: p.author ? p.author : "",
               }
-            : undefined
+            : undefined,
         )
         .filter((p): p is Plugin => !!p),
-    [data?.me.plugins.nodes]
+    [data?.me.plugins.nodes],
   );
 
   return {

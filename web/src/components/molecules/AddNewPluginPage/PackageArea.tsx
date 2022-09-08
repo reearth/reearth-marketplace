@@ -6,13 +6,13 @@ import Message from "@marketplace/components/atoms/Message";
 import Radio, { RadioChangeEvent } from "@marketplace/components/atoms/Radio";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
-import Upload, { Dragger, UploadChangeParam, RcFile } from "@marketplace/components/atoms/Upload";
+import Upload, { Dragger, RcFile } from "@marketplace/components/atoms/Upload";
 import { styled } from "@marketplace/theme";
 import { useState } from "react";
 
 export type FileUploadType = string | RcFile | Blob;
 export type Props = {
-  githubUrl: string;
+  githubUrl?: string;
   handleClickDetailSetting: () => void;
   handleParsePlugin: (file?: FileUploadType, repo?: string) => void;
   handleChangeGithubUrl: (url: string) => void;
@@ -26,12 +26,8 @@ const PackageArea: React.FC<Props> = ({
   const [currentRadio, changeRadio] = useState<"Upload from local" | "GitHub repository">(
     "Upload from local",
   );
-  const [uploadedFileName, uploadZip] = useState<string>("");
   const handleChangeRadio = (e: RadioChangeEvent) => {
     changeRadio(e.target.value);
-  };
-  const handleUploadZip = (info: UploadChangeParam) => {
-    uploadZip(info.file.name);
   };
   return (
     <Wrapper>
@@ -59,7 +55,6 @@ const PackageArea: React.FC<Props> = ({
               name="plugin"
               accept=".zip"
               maxCount={1}
-              disabled={!!uploadedFileName}
               multiple={false}
               beforeUpload={file => {
                 console.log(file);
@@ -72,12 +67,11 @@ const PackageArea: React.FC<Props> = ({
               customRequest={info => handleParsePlugin(info.file)}
               onChange={info => {
                 const { status } = info.file;
-                if (status !== "uploading") {
-                  console.log(info.file, info.fileList);
+                if (status === "uploading") {
+                  console.log(`${info.file.name} file uploading.`);
                 }
                 if (status === "done") {
                   Message.success(`${info.file.name} file uploaded successfully.`);
-                  handleUploadZip(info);
                 } else if (status === "error") {
                   Message.error(`${info.file.name} file upload failed.`);
                 }
@@ -98,7 +92,8 @@ const PackageArea: React.FC<Props> = ({
               value={githubUrl}
               onChange={e => {
                 handleChangeGithubUrl(e.target.value);
-              }}></Input>
+              }}
+            />
             <p>Please set your repository as public respository.</p>
           </>
         )}

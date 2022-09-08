@@ -1,5 +1,6 @@
 import MyPluginsPage from "@marketplace/components/molecules/MyPluginsPage";
 import React from "react";
+
 import useHooks from "./hooks";
 
 export type Plugin = {
@@ -15,9 +16,7 @@ const MyPlugins: React.FC<Props> = () => {
   const handlePublishClick = (id: string, active: boolean) => {
     onToggleActive(id, !active);
   };
-  return (
-    <MyPluginsPage plugins={plugins} handlePublishClick={handlePublishClick} />
-  );
+  return <MyPluginsPage plugins={plugins} handlePublishClick={handlePublishClick} />;
 };
 
 export default MyPlugins;

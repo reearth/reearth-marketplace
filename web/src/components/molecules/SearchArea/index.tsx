@@ -1,4 +1,3 @@
-import { styled } from "@marketplace/theme";
 import Button from "@marketplace/components/atoms/Button";
 import Dropdown from "@marketplace/components/atoms/Dropdown";
 import Icon from "@marketplace/components/atoms/Icon";
@@ -6,11 +5,14 @@ import Menu, { MenuProps } from "@marketplace/components/atoms/Menu";
 import Search from "@marketplace/components/atoms/Search";
 import Space from "@marketplace/components/atoms/Space";
 import { PluginSort } from "@marketplace/components/organisms/Top/hooks";
+import { styled } from "@marketplace/theme";
 import { useState } from "react";
 
 export type Props = {
   onSearch: (value: string) => void;
   isLoggedIn: boolean;
+  isFavSelected: boolean;
+  handleFavButtonClick: (isFaved: boolean) => void;
 };
 
 // const displayMenuItems: Array<{ label: string; key: number }> = [
@@ -57,7 +59,12 @@ const orderMenuItems: Array<{ label: string; key: number; value: PluginSort }> =
   },
 ];
 
-const SearchArea: React.FC<Props> = ({ onSearch, isLoggedIn }) => {
+const SearchArea: React.FC<Props> = ({
+  onSearch,
+  isLoggedIn,
+  isFavSelected,
+  handleFavButtonClick,
+}) => {
   // TODO: onSearchへのソートの渡し方
   // const [displayMenuState, updateDisplayMenuState] = useState(1);
   const [_, updateOrderMenuState] = useState(1);
@@ -68,11 +75,9 @@ const SearchArea: React.FC<Props> = ({ onSearch, isLoggedIn }) => {
   // };
 
   const handleOrderMenuClick: MenuProps["onClick"] = e => {
-    console.log("click", e);
     updateOrderMenuState(Number(e.key));
   };
 
-  const handleFavButtonClick = () => {};
   // const displayMenu = <Menu onClick={handleDisplayMenuClick} items={displayMenuItems} />;
   const orderMenu = <Menu onClick={handleOrderMenuClick} items={orderMenuItems} />;
 
@@ -97,7 +102,9 @@ const SearchArea: React.FC<Props> = ({ onSearch, isLoggedIn }) => {
         </Button>
       </Dropdown>
       {isLoggedIn ? (
-        <Button onClick={handleFavButtonClick}>
+        <Button
+          onClick={() => handleFavButtonClick(!isFavSelected)}
+          style={{ color: isFavSelected ? "#f57c4b" : "" }}>
           <Space size="small">
             お気に入り
             <Icon icon="heart" />
