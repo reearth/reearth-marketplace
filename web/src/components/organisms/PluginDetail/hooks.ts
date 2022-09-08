@@ -8,7 +8,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default (pluginId: string) => {
-  const { getAccessToken } = useAuth();
+  const auth = useAuth();
 
   const { data, refetch } = usePluginQuery({
     variables: {
@@ -29,7 +29,7 @@ export default (pluginId: string) => {
       });
       await refetch();
     },
-    [likePlugin, refetch]
+    [likePlugin, refetch],
   );
 
   const onUnlike = useCallback(
@@ -41,7 +41,7 @@ export default (pluginId: string) => {
       });
       await refetch();
     },
-    [unlikePlugin, refetch]
+    [unlikePlugin, refetch],
   );
   console.log(data);
 
@@ -66,18 +66,18 @@ export default (pluginId: string) => {
             updatedAt: data.node.updatedAt,
           }
         : undefined,
-    [data?.node]
+    [data?.node],
   );
 
   const [modalVisible, onToggleModal] = useState(false);
-  const [workspaces, _setWorkspaces] = useState<Workspace[]>([]);
+  const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
 
   useEffect(() => {
     if (!modalVisible || !window.REEARTH_MARKETPLACE_CONFIG) return;
     const base = window.REEARTH_MARKETPLACE_CONFIG.reearthApi;
 
     (async () => {
-      const token = getAccessToken();
+      const token = await auth.getAccessToken();
 
       const data = await fetch(base + "/graphql", {
         method: "POST",
@@ -88,29 +88,30 @@ export default (pluginId: string) => {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
-      }).then((r) => r.json());
+      }).then(r => r.json());
 
-      // setWorkspaces(data);
-      console.log(data);
+      if (!data.data) return;
+      const ws = data.data.me.teams.map((t: any) => ({
+        ...t,
+        projects: t.projects.nodes,
+      }));
+      setWorkspaces(ws);
     })();
-  }, [getAccessToken, modalVisible]);
+  }, [auth, modalVisible]);
 
   const onPluginInstall = useCallback(
     (workspaceId: string, projectId: string) => {
-      // location.href =
-      //   (window.REEARTH_MARKETPLACE_CONFIG?.reearthWeb ?? "") +
-      //   `/workspaces/${workspaceId}/projects/${projectId}/plugins/${pluginId}`;
-      console.log(
+      location.href =
         (window.REEARTH_MARKETPLACE_CONFIG?.reearthWeb ?? "") +
-          `/workspaces/${workspaceId}/projects/${projectId}/plugins/${pluginId}`
-      );
+        `/settings/projects/${projectId}/plugins/plugins/${pluginId}`;
     },
-    [pluginId]
+    [pluginId],
   );
 
   return {
     plugin,
     workspaces,
+    modalVisible,
     onLike,
     onUnlike,
     onToggleModal,

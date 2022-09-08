@@ -3,7 +3,7 @@ import Col from "@marketplace/components/atoms/Col";
 import Divider from "@marketplace/components/atoms/Divider";
 import Modal from "@marketplace/components/atoms/Modal";
 import Row from "@marketplace/components/atoms/Row";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 type Props = {
   title: string;
@@ -34,9 +34,6 @@ const ModalContent: React.FC<Props> = ({
   handleClickChoose,
 }) => {
   const [workspaceId, selectWorkspace] = useState<string>("");
-  useEffect(() => {
-    selectWorkspace("");
-  }, [workspaces]);
 
   return (
     <Modal

@@ -17,9 +17,8 @@ const PluginDetail: React.FC<Props> = ({
 }) => {
   const { isAuthenticated } = useAuth(accessToken);
   const handleClickChoose = () => {};
-  const { plugin, workspaces, onLike, onUnlike, onToggleModal, onPluginInstall } = useHooks(
-    pluginId ? pluginId : "",
-  );
+  const { plugin, workspaces, modalVisible, onLike, onUnlike, onToggleModal, onPluginInstall } =
+    useHooks(pluginId ? pluginId : "");
 
   const handleClickLike = (isLiked: boolean) => {
     console.log(pluginId);
@@ -41,6 +40,7 @@ const PluginDetail: React.FC<Props> = ({
       downloads={plugin ? plugin.downloads : 0}
       updatedDate={plugin ? plugin.updatedAt : undefined}
       workspaces={workspaces}
+      modalVisible={modalVisible}
       handleClickLike={handleClickLike}
       handleClickChoose={handleClickChoose}
       onPluginInstall={onPluginInstall}

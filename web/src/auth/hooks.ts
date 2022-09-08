@@ -1,5 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export const errorKey = "reeartherror";
 
@@ -7,19 +7,30 @@ export function useAuth(accessToken?: string) {
   const { isAuthenticated, error, isLoading, loginWithRedirect, logout, getAccessTokenSilently } =
     useAuth0();
 
-  return {
-    isAuthenticated: !!accessToken || (isAuthenticated && !error),
-    isLoading,
-    error: error?.message,
-    getAccessToken: () => accessToken || getAccessTokenSilently(),
-    login: () => loginWithRedirect(),
-    logout: () =>
-      logout({
-        returnTo: error
-          ? `${window.location.origin}?${errorKey}=${encodeURIComponent(error?.message)}`
-          : window.location.origin,
-      }),
-  };
+  return useMemo(
+    () => ({
+      isAuthenticated: !!accessToken || (isAuthenticated && !error),
+      isLoading,
+      error: error?.message,
+      getAccessToken: () => accessToken || getAccessTokenSilently(),
+      login: () => loginWithRedirect(),
+      logout: () =>
+        logout({
+          returnTo: error
+            ? `${window.location.origin}?${errorKey}=${encodeURIComponent(error?.message)}`
+            : window.location.origin,
+        }),
+    }),
+    [
+      accessToken,
+      error,
+      getAccessTokenSilently,
+      isAuthenticated,
+      isLoading,
+      loginWithRedirect,
+      logout,
+    ],
+  );
 }
 
 export function useCleanUrl() {

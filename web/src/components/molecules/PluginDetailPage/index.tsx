@@ -11,7 +11,6 @@ import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import { styled } from "@marketplace/theme";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import ModalContent, { Workspace } from "./ModalContent";
@@ -32,6 +31,7 @@ export type Props = {
   images: string[];
   isLiked: boolean;
   workspaces?: Workspace[];
+  modalVisible?: boolean;
   handleClickChoose: (projectId: string) => void;
   handleClickLike: (isLiked: boolean) => void;
   onPluginInstall?: (workspaceId: string, projectId: string) => void;
@@ -53,6 +53,7 @@ const PluginDetailPage: React.FC<Props> = ({
   updatedDate,
   isLiked,
   workspaces,
+  modalVisible,
   handleClickChoose,
   handleClickLike,
   onPluginInstall,
@@ -60,12 +61,7 @@ const PluginDetailPage: React.FC<Props> = ({
   onToggleModal,
 }) => {
   const onTabsChange = () => {};
-  const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const date = new Date(updatedDate ? updatedDate : "");
-
-  useEffect(() => {
-    onToggleModal?.(isModalVisible);
-  }, [isModalVisible, onToggleModal]);
 
   return (
     <>
@@ -150,7 +146,7 @@ const PluginDetailPage: React.FC<Props> = ({
                       onClick={() =>
                         onExtPluginInstall
                           ? onExtPluginInstall(`${pluginName}~${version}`)
-                          : setIsModalVisible(true)
+                          : onToggleModal?.(true)
                       }
                       disabled={!isLoggedIn}>
                       <Icon icon="download" />
@@ -189,10 +185,10 @@ const PluginDetailPage: React.FC<Props> = ({
       </Wrapper>
       <ModalContent
         title="Choose one project to open this plugin"
-        visible={isModalVisible}
+        visible={modalVisible ?? false}
         handleClickChoose={handleClickChoose}
         workspaces={workspaces}
-        onCancel={() => setIsModalVisible(false)}
+        onCancel={() => onToggleModal?.(false)}
         onPluginInstall={onPluginInstall}
       />
     </>
