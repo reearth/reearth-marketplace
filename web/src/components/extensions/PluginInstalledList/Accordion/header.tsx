@@ -1,100 +1,126 @@
-// import Box from "@reearth/components/atoms/Box";
-// import Button from "@reearth/components/atoms/Button";
-// import Flex from "@reearth/components/atoms/Flex";
-// import Text from "@reearth/components/atoms/Text";
-// import { useT } from "@reearth/i18n";
-// import { styled } from "@marketplace/theme";
-// import React, { useState } from "react";
-
-// import DeleteModal from "./deleteModal";
+import { useT } from "@marketplace/i18n";
+import { styled } from "@marketplace/theme";
 
 export type PluginItemProps = {
   className?: string;
   thumbnail?: string;
   title?: string;
   version?: string;
+  author?: string;
   isInstalled?: boolean;
-  onUninstall: () => void;
+  onInstall?: () => void;
+  onUninstall?: () => void;
 };
 
-const PluginAccordionItemHeader: React.FC<PluginItemProps> = () => {
-  // const PluginAccordionItemHeader: React.FC<PluginItemProps> = ({
-  //   className,
-  //   thumbnail,
-  //   title,
-  //   version,
-  //   isInstalled,
-  //   onUninstall,
-  // }) => {
-  //   const t = useT();
-  //   const [isModalOpen, setIsModalOpen] = useState(false);
-  //   const [hovered, setHovered] = useState(false);
-  //   const handleMouseEnter = () => {
-  //     setHovered(true);
-  //   };
-  //   const handleMouseLeave = () => {
-  //     setHovered(false);
-  //   };
+const PluginAccordionItemHeader: React.FC<PluginItemProps> = ({
+  className,
+  thumbnail,
+  title,
+  version,
+  author,
+  isInstalled,
+  onInstall,
+  onUninstall,
+}) => {
+  const t = useT();
+
   return (
-    // <Wrapper align="center" justify="space-between" className={className}>
-    //   <Flex align="center">
-    //     <TitleWrapper>
-    //       {thumbnail && (
-    //         <Box borderRadius={8} mh="m">
-    //           <Thumbnail src={thumbnail} alt="plugin thumbnail" />
-    //         </Box>
-    //       )}
-    //       <Text size="m" weight="bold" otherProperties={{ marginRight: "20px", maxWidth: "200px" }}>
-    //         {title}
-    //       </Text>
-    //     </TitleWrapper>
-    //     <Text size="m">v{version}</Text>
-    //   </Flex>
-    //   <StyledButton
-    //     buttonType={isInstalled && hovered ? "danger" : "secondary"}
-    //     type="button"
-    //     large
-    //     icon={isInstalled ? (hovered ? "bin" : "check") : "install"}
-    //     text={isInstalled ? (hovered ? t("Uninstall") : t("Installed")) : t("Install")}
-    //     onMouseEnter={handleMouseEnter}
-    //     onMouseLeave={handleMouseLeave}
-    //     onClick={isInstalled ? () => setIsModalOpen(true) : undefined}
-    //   />
-    //   <DeleteModal
-    //     onCancel={() => setIsModalOpen(false)}
-    //     isOpen={isModalOpen}
-    //     onClose={() => setIsModalOpen(false)}
-    //     onProceed={onUninstall}
-    //   />
-    // </Wrapper>
-    <div>
-      <p>header</p>
-    </div>
+    <Wrapper className={className}>
+      <InnerWrapper>
+        <InfoWrapper>
+          <MainInfo>
+            {thumbnail && <Thumbnail src={thumbnail} alt="plugin thumbnail" />}
+            <Title style={{ marginRight: "20px", maxWidth: "200px" }}>{title}</Title>
+          </MainInfo>
+          <SecondaryInfo>
+            <p id="version">v{version}</p>
+            <p id="author">{author}</p>
+          </SecondaryInfo>
+        </InfoWrapper>
+      </InnerWrapper>
+      <ButtonWrapper>
+        <Button onClick={isInstalled ? () => onInstall?.() : undefined}>{t("Update")}</Button>
+        <Button onClick={isInstalled ? () => onUninstall?.() : undefined}>{t("Uninstall")}</Button>
+      </ButtonWrapper>
+    </Wrapper>
   );
 };
 
-// const Wrapper = styled(Flex)`
-//   width: 100%;
-//   padding: ${props => `${props.theme.metrics.xl}px 0`};
-// `;
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 88px;
+  background: ${({ theme }) => theme.main.lightBackground};
+`;
 
-// const TitleWrapper = styled(Flex)`
-//   width: 250px;
-//   margin-right: 32px;
-// `;
+const InnerWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;
 
-// const Thumbnail = styled.img`
-//   border-radius: 8px;
-//   width: 64px;
-//   height: 64px;
-// `;
+const InfoWrapper = styled.div`
+  display: flex;
+  margin-right: 32px;
 
-// const StyledButton = styled(Button)`
-//   font-weight: ${fonts.weight.bold};
-//   width: 153px;
-//   border-radius: ${props => props.theme.metrics.s}px;
-//   padding: ${({ theme }) => `${theme.metrics.s}px ${theme.metrics["2xl"]}`};
-//   transition: all 0.3s;
-// `;
+  p {
+    font-size: 16px;
+  }
+`;
+
+const MainInfo = styled.div`
+  display: flex;
+  width: 250px;
+`;
+
+const SecondaryInfo = styled.div`
+  display: flex;
+
+  #version {
+    margin-right: 32px;
+  }
+  #author {
+    color: #4770ff;
+  }
+`;
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 316px;
+`;
+
+const Thumbnail = styled.img`
+  border-radius: 8px;
+  width: 64px;
+  height: 64px;
+  margin-right: 24px;
+`;
+
+const Title = styled.p`
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const Button = styled.button`
+  width: 153px;
+  height: 38px;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: all 0.3s;
+  border-style: solid;
+  border-width: 1px;
+  color: ${({ theme }) => theme.main.weakText};
+  border-color: ${({ theme }) => theme.main.weakText};
+
+  :hover {
+    color: ${({ theme }) => theme.main.text};
+    border-color: ${({ theme }) => theme.main.text};
+  }
+`;
 
 export default PluginAccordionItemHeader;
