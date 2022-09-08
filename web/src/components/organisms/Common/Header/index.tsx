@@ -11,7 +11,13 @@ const Header: React.FC<Props> = ({ myUserId }) => {
 
   console.log(myUserId, "myUserId");
 
-  return <HeaderOrganism isLoggedIn={isAuthenticated} login={login} logout={logout} />;
+  return (
+    <HeaderOrganism
+      isLoggedIn={isAuthenticated}
+      login={login}
+      logout={logout}
+    />
+  );
 };
 
 export default Header;
