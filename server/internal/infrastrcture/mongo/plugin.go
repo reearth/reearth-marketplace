@@ -48,13 +48,20 @@ func (r *pluginRepo) Liked(ctx context.Context, user *user.User, id plugin.ID) (
 
 func (r *pluginRepo) FindByVersion(ctx context.Context, id plugin.ID, version string) (*plugin.VersionedPlugin, error) {
 	var pc mongodoc.PluginConsumer
-	if err := r.pluginClient().FindOne(ctx, bson.M{"id": id}, &pc); err != nil {
+	if err := r.pluginClient().FindOne(ctx, bson.M{
+		"id": id.String(),
+	}, &pc); err != nil {
 		return nil, err
 	}
+
 	var pvc mongox.SliceConsumer[mongodoc.PluginVersionDocument]
-	if err := r.pluginVersionClient().FindOne(ctx, bson.M{"pluginId": id, "version": version}, &pvc); err != nil {
+	if err := r.pluginVersionClient().FindOne(ctx, bson.M{
+		"pluginId": id.String(),
+		"version":  version,
+	}, &pvc); err != nil {
 		return nil, err
 	}
+
 	pvd := pvc.Result[0]
 	return plugin.Versioned(pc.Rows[0]).
 		Version(pvd.Version).
