@@ -7,13 +7,12 @@ import { createUploadLink } from "apollo-upload-client";
 
 type Props = {
   children?: React.ReactNode;
-  api?: string;
   accessToken?: string;
 };
 
 const Provider: React.FC<Props> = ({ children, accessToken: accessToken2 }) => {
-  const endpoint = window.REEARTH_CONFIG?.marketplaceApi
-    ? `${window.REEARTH_CONFIG.marketplaceApi}/graphql`
+  const endpoint = window.REEARTH_MARKETPLACE_CONFIG?.marketplaceApi
+    ? `${window.REEARTH_MARKETPLACE_CONFIG.marketplaceApi}/graphql`
     : "/api/graphql";
   const [, setError] = useError();
   const { getAccessToken } = useAuth();
