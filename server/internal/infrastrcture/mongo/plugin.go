@@ -143,7 +143,9 @@ func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) (err
 
 func (r *pluginRepo) FindByID(ctx context.Context, id plugin.ID) (*plugin.Plugin, error) {
 	var consumer mongodoc.PluginConsumer
-	if err := r.pluginClient().FindOne(ctx, bson.M{"id": id.String()}, &consumer); err != nil {
+	if err := r.pluginClient().FindOne(ctx, bson.M{
+		"id": id.String(),
+	}, &consumer); err != nil {
 		return nil, err
 	}
 	return consumer.Rows[0], nil
@@ -151,9 +153,13 @@ func (r *pluginRepo) FindByID(ctx context.Context, id plugin.ID) (*plugin.Plugin
 
 func (r *pluginRepo) FindByIDs(ctx context.Context, ids []plugin.ID) ([]*plugin.Plugin, error) {
 	var consumer mongodoc.PluginConsumer
-	if err := r.pluginClient().Find(ctx, bson.M{"id": lo.Map(ids, func(id plugin.ID, _ int) string {
-		return id.String()
-	})}, &consumer); err != nil {
+	if err := r.pluginClient().Find(ctx, bson.M{
+		"id": bson.M{
+			"$in": lo.Map(ids, func(id plugin.ID, _ int) string {
+				return id.String()
+			}),
+		},
+	}, &consumer); err != nil {
 		return nil, err
 	}
 	return consumer.Rows, nil
