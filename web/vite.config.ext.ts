@@ -25,6 +25,7 @@ export default defineConfig({
     react({
       jsxRuntime: "classic",
     }),
+    yaml(),
     cssInjectedByJsPlugin(),
   ],
   resolve: {
@@ -51,7 +52,6 @@ export default defineConfig({
           react: "React",
           "react-dom": "ReactDOM",
         }),
-        yaml(),
         // visualizer(),
       ],
     },
