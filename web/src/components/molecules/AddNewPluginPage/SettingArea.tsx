@@ -4,13 +4,20 @@ import Icon from "@marketplace/components/atoms/Icon";
 import { TextArea } from "@marketplace/components/atoms/Input";
 import Space from "@marketplace/components/atoms/Space";
 import Upload from "@marketplace/components/atoms/Upload";
+import { UploadRequestOption } from "rc-upload/lib/interface";
 
 export type Props = {
   pluginName: string;
   version: string;
   description: string;
+  handleUploadImages: (image: UploadRequestOption) => void;
 };
-const SettingArea: React.FC<Props> = ({ pluginName, version, description }) => {
+const SettingArea: React.FC<Props> = ({
+  pluginName,
+  version,
+  description,
+  handleUploadImages,
+}) => {
   return (
     <Wrapper>
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
@@ -23,10 +30,14 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, description }) => {
         <StyledTextArea rows={4} defaultValue={description} />
         <Title>Images</Title>
         <Upload
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           listType="picture"
           accept="image/png, image/jpeg, image/jpg"
-          defaultFileList={[]}>
+          customRequest={(image) => {
+            handleUploadImages(image);
+          }}
+          defaultFileList={[]}
+          multiple
+        >
           <Button icon={<Icon icon="upload" />} type="primary" ghost>
             Upload Image
           </Button>

@@ -1,22 +1,32 @@
-import PluginsList, { Plugin } from "@marketplace/components/molecules/PluginsList";
+import PluginsList, {
+  Plugin,
+} from "@marketplace/components/molecules/PluginsList";
 import { styled } from "@marketplace/theme";
-// import SearchArea from "@marketplace/components/molecules/SearchArea";
+import SearchArea from "@marketplace/components/molecules/SearchArea";
 
 export type Props = {
   plugins?: Plugin[];
-  // onSearch: (text: string) => void;
-  // isLoggedIn: boolean;
+  onSearch: (text: string) => void;
+  isLoggedIn: boolean;
+  isFavSelected: boolean;
+  handleFavButtonClick: (isFaved: boolean) => void;
 };
 
 const TopPageContents: React.FC<Props> = ({
   plugins,
-  // onSearch,
-  // isLoggedIn,
+  onSearch,
+  isLoggedIn,
+  isFavSelected,
+  handleFavButtonClick,
 }) => {
   return (
     <Wrapper>
-      {/* TODO: Search Bar */}
-      {/* <SearchArea onSearch={onSearch} isLoggedIn={isLoggedIn} /> */}
+      <SearchArea
+        onSearch={onSearch}
+        isLoggedIn={isLoggedIn}
+        handleFavButtonClick={handleFavButtonClick}
+        isFavSelected={isFavSelected}
+      />
       <PluginsList plugins={plugins} />
     </Wrapper>
   );

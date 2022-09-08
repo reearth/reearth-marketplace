@@ -6,17 +6,32 @@ import TopPageContent from "./TopPageContents";
 
 export type { Plugin } from "@marketplace/components/molecules/PluginsList";
 export type Props = {
-  // isLoggedIn: boolean;
+  isLoggedIn: boolean;
   plugins?: Plugin[];
   showBanner?: boolean;
-  // onSearch: (text: string) => void;
+  isFavSelected: boolean;
+  onSearch: (text: string) => void;
+  handleFavButtonClick: (isFaved: boolean) => void;
 };
 
-const TopPage: React.FC<Props> = ({ plugins, showBanner }) => {
+const TopPage: React.FC<Props> = ({
+  plugins,
+  showBanner,
+  isLoggedIn,
+  isFavSelected,
+  onSearch,
+  handleFavButtonClick,
+}) => {
   return (
     <Wrapper>
       {showBanner && <TitleBar />}
-      <TopPageContent plugins={plugins} />
+      <TopPageContent
+        plugins={plugins}
+        onSearch={onSearch}
+        isLoggedIn={isLoggedIn}
+        isFavSelected={isFavSelected}
+        handleFavButtonClick={handleFavButtonClick}
+      />
     </Wrapper>
   );
 };

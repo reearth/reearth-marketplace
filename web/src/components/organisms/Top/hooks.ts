@@ -9,13 +9,13 @@ import { useCallback, useMemo } from "react";
 
 export { PluginSort };
 
-export default (searchText?: string, sort?: PluginSort) => {
+export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
   const { data, refetch } = useSearchPluginQuery({
     variables: {
       first: 50,
       // TODO: fill variables here
       keyword: searchText,
-      // liked: false,
+      // liked: liked ? liked : false,
       // tags: [],
       // types: [],
       // publisher: "",

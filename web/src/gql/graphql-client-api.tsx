@@ -447,7 +447,7 @@ export type ParsePluginMutationVariables = Exact<{
 }>;
 
 
-export type ParsePluginMutation = { __typename?: 'Mutation', parsePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', type: PluginType, name: string, author?: string | null, description?: string | null, icon?: string | null, repository?: string | null, readme: string } } };
+export type ParsePluginMutation = { __typename?: 'Mutation', parsePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, type: PluginType, name: string, author?: string | null, description?: string | null, icon?: string | null, repository?: string | null, readme: string } } };
 
 export type UpdatePluginVersionMutationVariables = Exact<{
   pluginId: Scalars['ID'];
@@ -749,6 +749,7 @@ export const ParsePluginDocument = gql`
     mutation ParsePlugin($file: Upload, $repo: String) {
   parsePlugin(input: {file: $file, repo: $repo}) {
     plugin {
+      id
       type
       name
       author

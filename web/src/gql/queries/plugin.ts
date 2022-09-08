@@ -133,6 +133,7 @@ export const PARSE_PLUGIN = gql`
   mutation ParsePlugin($file: Upload, $repo: String) {
     parsePlugin(input: { file: $file, repo: $repo }) {
       plugin {
+        id
         type
         name
         author

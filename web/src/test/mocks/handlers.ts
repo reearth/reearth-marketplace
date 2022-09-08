@@ -170,12 +170,22 @@ export const handlers = [
   graphql.mutation("ParsePlugin", (_req, res, ctx) => {
     return res(
       ctx.data({
-        __typename: "Plugin",
-        id: "1111",
-        name: "Satellite Plugin",
-        description: "This is Satellite Plugin",
-        version: "v1.0.0",
-        images: [],
+        parsePlugin: {
+          plugin: {
+            __typename: "Plugin",
+            type: "REEARTH",
+            author: "Re: Earth Team",
+            icon: null,
+            repository: null,
+            readme:
+              "# Satellite Plugin \n ## What is this? \n This plugin has a bunch of satellites' location data",
+            id: "1111",
+            name: "Satellite Plugin",
+            description: "This is Satellite Plugin",
+            version: "v1.0.0",
+            images: [],
+          },
+        },
       })
     );
   }),

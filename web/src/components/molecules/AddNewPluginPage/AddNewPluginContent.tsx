@@ -7,6 +7,7 @@ import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { UploadRequestOption } from "rc-upload/lib/interface";
 
 import PackageArea, { FileUploadType } from "./PackageArea";
 import SettingArea from "./SettingArea";
@@ -15,11 +16,13 @@ export type Props = {
   pluginName: string;
   version: string;
   description: string;
-  githubUrl: string;
+  githubUrl?: string;
+  uploadedFile?: FileUploadType;
   handleChangeGithubUrl: (url: string) => void;
   handleParsePlugin: (file?: FileUploadType) => void;
   handleClickSave: () => void;
   handleClickPublish: () => void;
+  handleUploadImages: (image: UploadRequestOption) => void;
 };
 
 const AddNewPluginContent: React.FC<Props> = ({
@@ -27,10 +30,12 @@ const AddNewPluginContent: React.FC<Props> = ({
   version,
   description,
   githubUrl,
+  uploadedFile,
   handleChangeGithubUrl,
   handleParsePlugin,
   handleClickSave,
   handleClickPublish,
+  handleUploadImages,
 }) => {
   const [currentTab, updateTab] = useState<"1" | "2">("1");
   const handleClickDetailSetting = () => {
@@ -49,10 +54,20 @@ const AddNewPluginContent: React.FC<Props> = ({
         </Col>
         <Col>
           <Space size="middle">
-            <Button type="default" size="large" onClick={handleClickSave}>
+            <Button
+              type="default"
+              size="large"
+              onClick={handleClickSave}
+              disabled={!uploadedFile}
+            >
               Save
             </Button>
-            <Button type="primary" size="large" onClick={handleClickPublish}>
+            <Button
+              type="primary"
+              size="large"
+              onClick={handleClickPublish}
+              disabled={!uploadedFile}
+            >
               Publish
             </Button>
           </Space>
@@ -62,7 +77,8 @@ const AddNewPluginContent: React.FC<Props> = ({
         defaultActiveKey={currentTab}
         tabBarStyle={{ margin: 0 }}
         activeKey={currentTab}
-        onChange={handleClickDetailSetting}>
+        onChange={handleClickDetailSetting}
+      >
         <TabPane tab="Package" key="1">
           <PackageArea
             githubUrl={githubUrl}
@@ -72,7 +88,12 @@ const AddNewPluginContent: React.FC<Props> = ({
           />
         </TabPane>
         <TabPane tab="Setting" key="2">
-          <SettingArea pluginName={pluginName} version={version} description={description} />
+          <SettingArea
+            pluginName={pluginName}
+            version={version}
+            description={description}
+            handleUploadImages={handleUploadImages}
+          />
         </TabPane>
       </Tabs>
     </Wrapper>
