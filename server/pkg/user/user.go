@@ -22,6 +22,13 @@ func (u *User) Auth() Auth                     { return u.auth }
 func (u *User) Lang() language.Tag             { return u.lang }
 func (u *User) Organizations() OrganizationIDs { return u.organizations }
 
+func (u *User) IDRef() *ID {
+	if u == nil {
+		return nil
+	}
+	return u.id.Ref()
+}
+
 func (u *User) SetName(name string) {
 	u.name = name
 }

@@ -57,8 +57,9 @@ func (r *mutationResolver) UpdatePlugin(ctx context.Context, input gqlmodel.Upda
 		return nil, fmt.Errorf("invalid plugin id: %w", err)
 	}
 	p, err := usecases(ctx).Plugin.Update(ctx, interfaces.UpdatePluginParam{
-		PluginID: pluginID,
-		Active:   input.Active,
+		Publisher: getUser(ctx),
+		PluginID:  pluginID,
+		Active:    input.Active,
 		Images: lo.Map(input.Images, func(x *graphql.Upload, _ int) io.ReadSeeker {
 			return x.File
 		}),

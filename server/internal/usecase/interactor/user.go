@@ -21,6 +21,10 @@ func NewUser(r *repo.Container) interfaces.User {
 }
 
 func (i *User) Update(ctx context.Context, u *user.User, param interfaces.UpdateUserParam) (*user.User, error) {
+	if u == nil {
+		return nil, interfaces.ErrOperationDenied
+	}
+
 	if param.Name != nil {
 		u.SetName(*param.Name)
 	}

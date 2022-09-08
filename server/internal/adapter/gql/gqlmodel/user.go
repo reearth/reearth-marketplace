@@ -26,7 +26,7 @@ func (u *User) ID() string {
 
 func (u *User) Plugins(ctx context.Context, first *int, last *int, before *string, after *string) (*PluginConnection, error) {
 	ps, pageInfo, err := adapter.Usecases(ctx).Plugin.List(ctx,
-		u.id,
+		&u.id,
 		interfaces.ListPluginParam{
 			First:      first,
 			Last:       last,
