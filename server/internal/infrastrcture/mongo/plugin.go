@@ -287,7 +287,7 @@ func (r *pluginRepo) Like(ctx context.Context, user *user.User, id plugin.ID) er
 }
 
 func (r *pluginRepo) Unlike(ctx context.Context, user *user.User, id plugin.ID) error {
-	return r.pluginLikeClient().RemoveOne(ctx, bson.M{"pluginId": id.String(), "userId": user.ID()})
+	return r.pluginLikeClient().RemoveOne(ctx, bson.M{"pluginId": id.String(), "userId": user.ID().String()})
 }
 
 func (r *pluginRepo) Versions(ctx context.Context, id plugin.ID) ([]*plugin.Version, error) {
