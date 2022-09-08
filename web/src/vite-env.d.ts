@@ -5,6 +5,8 @@ type Config = {
   authClientId?: string;
   authDomain?: string;
   authAudience?: string;
+  reearthApi?: string;
+  reearthWeb?: string;
 };
 
 interface ImportMetaEnv {
@@ -12,6 +14,8 @@ interface ImportMetaEnv {
   readonly REEARTH_MARKETPLACE_AUTH_DOMAIN: string;
   readonly REEARTH_MARKETPLACE_AUTH_AUDIENCE: string;
   readonly REEARTH_MARKETPLACE_AUTH_CLIENT_ID: string;
+  readonly REEARTH_MARKETPLACE_REEARTH_API: string;
+  readonly REEARTH_MARKETPLACE_REEARTH_WEB: string;
 }
 
 declare global {

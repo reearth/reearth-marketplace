@@ -12,6 +12,8 @@ export const defaultConfig: Config = {
   authAudience: import.meta.env.REEARTH_MARKETPLACE_AUTH_AUDIENCE,
   authDomain: import.meta.env.REEARTH_MARKETPLACE_AUTH_DOMAIN,
   authClientId: import.meta.env.REEARTH_MARKETPLACE_AUTH_CLIENT_ID,
+  reearthApi: import.meta.env.REEARTH_MARKETPLACE_REEARTH_API,
+  reearthWeb: import.meta.env.REEARTH_MARKETPLACE_REEARTH_WEB,
 };
 
 export async function loadConfig() {
@@ -20,7 +22,9 @@ export async function loadConfig() {
   window.REEARTH_MARKETPLACE_CONFIG = {
     ...defaultConfig,
     ...(await (
-      await fetch(`${window.REEARTH_CONFIG?.marketplaceUrl ?? ""}/reearth_config.json`)
+      await fetch(
+        `${window.REEARTH_CONFIG?.marketplaceUrl ?? ""}/reearth_config.json`
+      )
     ).json()),
   };
 }
