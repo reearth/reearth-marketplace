@@ -233,4 +233,48 @@ export const handlers = [
       })
     );
   }),
+  graphql.mutation("UpdatePlugin", (_req, res, ctx) => {
+    return res(
+      ctx.data({
+        updatePlugin: {
+          plugin: {
+            __typename: "Plugin",
+            id: "1111",
+            active: false,
+            tags: [],
+            images: [],
+          },
+        },
+      })
+    );
+  }),
+  graphql.mutation("LikePlugin", (_req, res, ctx) => {
+    return res(
+      ctx.data({
+        likePlugin: {
+          plugin: {
+            __typename: "Plugin",
+            id: "1111",
+            name: "Satellite Plugin",
+            liked: false,
+          },
+        },
+      })
+    );
+  }),
+  graphql.mutation("UnlikePlugin", (_req, res, ctx) => {
+    // TODO: What is Missing field??
+    return res(
+      ctx.data({
+        unlikePlugin: {
+          plugin: {
+            __typename: "Plugin",
+            id: "1111",
+            like: 100,
+            liked: false,
+          },
+        },
+      })
+    );
+  }),
 ];

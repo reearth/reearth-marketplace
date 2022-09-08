@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"strings"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel"
@@ -52,7 +53,7 @@ func (r *mutationResolver) CreatePlugin(ctx context.Context, input gqlmodel.Crea
 }
 
 func (r *mutationResolver) UpdatePlugin(ctx context.Context, input gqlmodel.UpdatePluginInput) (*gqlmodel.PluginPayload, error) {
-	pluginID, err := id.PluginIDFrom(input.PluginID)
+	pluginID, err := pluginIDFrom(input.PluginID)
 	if err != nil {
 		return nil, fmt.Errorf("invalid plugin id: %w", err)
 	}
@@ -78,7 +79,7 @@ func (r *mutationResolver) DeletePlugin(ctx context.Context, input gqlmodel.Dele
 }
 
 func (r *mutationResolver) LikePlugin(ctx context.Context, input gqlmodel.LikePluginInput) (*gqlmodel.PluginPayload, error) {
-	pid, err := id.PluginIDFrom(input.PluginID)
+	pid, err := pluginIDFrom(input.PluginID)
 	if err != nil {
 		return nil, err
 	}
@@ -93,7 +94,7 @@ func (r *mutationResolver) LikePlugin(ctx context.Context, input gqlmodel.LikePl
 }
 
 func (r *mutationResolver) UnlikePlugin(ctx context.Context, input gqlmodel.UnlikePluginInput) (*gqlmodel.PluginPayload, error) {
-	pid, err := id.PluginIDFrom(input.PluginID)
+	pid, err := pluginIDFrom(input.PluginID)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +108,7 @@ func (r *mutationResolver) UnlikePlugin(ctx context.Context, input gqlmodel.Unli
 }
 
 func (r *mutationResolver) UpdateVersion(ctx context.Context, input gqlmodel.UpdateVersionInput) (*gqlmodel.VersionPayload, error) {
-	pid, err := id.PluginIDFrom(input.PluginID)
+	pid, err := pluginIDFrom(input.PluginID)
 	if err != nil {
 		return nil, err
 	}
@@ -128,4 +129,12 @@ func (r *mutationResolver) UpdateVersion(ctx context.Context, input gqlmodel.Upd
 
 func (r *mutationResolver) DeleteVersion(ctx context.Context, input gqlmodel.DeleteVersionInput) (*gqlmodel.DeleteVersionPayload, error) {
 	panic("not implemented")
+}
+
+func pluginIDFrom(goid string) (id.PluginID, error) {
+	kind, pid, _ := strings.Cut(goid, ":")
+	if kind != "p" {
+		return id.PluginID{}, fmt.Errorf("invalid global object id: %s", goid)
+	}
+	return id.PluginIDFrom(pid)
 }

@@ -12,7 +12,7 @@ import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  envPrefix: "REEARTH_",
+  envPrefix: "REEARTH_MARKETPLACE_",
   css: {
     preprocessorOptions: {
       less: {
@@ -25,6 +25,7 @@ export default defineConfig({
     react({
       jsxRuntime: "classic",
     }),
+    yaml(),
     cssInjectedByJsPlugin(),
   ],
   resolve: {
@@ -51,7 +52,6 @@ export default defineConfig({
           react: "React",
           "react-dom": "ReactDOM",
         }),
-        yaml(),
         // visualizer(),
       ],
     },

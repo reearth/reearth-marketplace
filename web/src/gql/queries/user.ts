@@ -15,6 +15,8 @@ export const GET_ME = gql`
           like
           downloads
           name
+          readme
+          icon
           latestVersion {
             version
           }

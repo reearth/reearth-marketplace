@@ -1,23 +1,23 @@
 /// <reference types="vite/client" />
 
 type Config = {
-  api: string;
+  marketplaceApi: string;
   authClientId?: string;
   authDomain?: string;
   authAudience?: string;
 };
 
 interface ImportMetaEnv {
-  readonly REEARTH_API: string;
-  readonly REEARTH_AUTH_DOMAIN: string;
-  readonly REEARTH_AUTH_AUDIENCE: string;
-  readonly REEARTH_AUTH_CLIENT_ID: string;
+  readonly REEARTH_MARKETPLACE_API: string;
+  readonly REEARTH_MARKETPLACE_AUTH_DOMAIN: string;
+  readonly REEARTH_MARKETPLACE_AUTH_AUDIENCE: string;
+  readonly REEARTH_MARKETPLACE_AUTH_CLIENT_ID: string;
 }
 
 declare global {
   interface Window {
-    REEARTH_E2E_ACCESS_TOKEN?: string;
-    REEARTH_CONFIG?: Config;
+    REEARTH_MARKETPLACE_E2E_ACCESS_TOKEN?: string;
+    REEARTH_MARKETPLACE_CONFIG?: Config;
   }
 }
 

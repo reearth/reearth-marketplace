@@ -4,5 +4,7 @@ export type Theme = {
     antiText: string;
     weakText: string;
     background: string;
+    lightBackground: string;
+    border: string;
   };
 };
