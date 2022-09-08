@@ -152,7 +152,7 @@ func (r *pluginRepo) Search(ctx context.Context, user *user.User, param *interfa
 		"active": true,
 	})
 	if param.Keyword != nil {
-		keywordMatcher := bson.M{"$regex": regexp.QuoteMeta(*param.Keyword)}
+		keywordMatcher := bson.M{"$regex": regexp.QuoteMeta(*param.Keyword), "$options": "i"}
 		conditions = append(conditions, bson.M{
 			"$or": bson.A{
 				bson.M{"id": keywordMatcher},
