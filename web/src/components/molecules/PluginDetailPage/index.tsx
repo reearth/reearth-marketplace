@@ -11,11 +11,12 @@ import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import { styled } from "@marketplace/theme";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import ModalContent from "./ModalContent";
+import ModalContent, { Workspace } from "./ModalContent";
+
+export type { Workspace, Project } from "./ModalContent";
 
 export type Props = {
   isLoggedIn: boolean;
@@ -30,9 +31,12 @@ export type Props = {
   updatedDate?: Date;
   images: string[];
   isLiked: boolean;
+  workspaces?: Workspace[];
   handleClickChoose: (projectId: string) => void;
   handleClickLike: (isLiked: boolean) => void;
-  onInstall?: (pluginId: string) => void;
+  onPluginInstall?: (workspaceId: string, projectId: string) => void;
+  onExtPluginInstall?: (pluginId: string) => void;
+  onToggleModal?: (shown: boolean) => void;
 };
 
 const PluginDetailPage: React.FC<Props> = ({
@@ -48,13 +52,21 @@ const PluginDetailPage: React.FC<Props> = ({
   downloads,
   updatedDate,
   isLiked,
+  workspaces,
   handleClickChoose,
   handleClickLike,
-  onInstall,
+  onPluginInstall,
+  onExtPluginInstall,
+  onToggleModal,
 }) => {
   const onTabsChange = () => {};
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false);
   const date = new Date(updatedDate ? updatedDate : "");
+
+  useEffect(() => {
+    onToggleModal?.(isModalVisible);
+  }, [isModalVisible, onToggleModal]);
+
   return (
     <>
       <Wrapper>
@@ -62,8 +74,7 @@ const PluginDetailPage: React.FC<Props> = ({
           <Breadcrumb
             style={{
               paddingBottom: "24px",
-            }}
-          >
+            }}>
             <Breadcrumb.Item>
               <StyledLink to="/">Top</StyledLink>
             </Breadcrumb.Item>
@@ -73,7 +84,7 @@ const PluginDetailPage: React.FC<Props> = ({
             <Row wrap={false} style={{ width: "100%" }} justify="start">
               <Col flex={3} style={{ maxWidth: "720px" }}>
                 <Carousel autoplay>
-                  {images.map((image) => (
+                  {images.map(image => (
                     <Image
                       key={id}
                       width="100%"
@@ -105,8 +116,7 @@ const PluginDetailPage: React.FC<Props> = ({
                 style={{
                   padding: "0 24px",
                   maxWidth: "400px",
-                }}
-              >
+                }}>
                 <Title>{pluginName}</Title>
                 <LikesDownloaded justify="end">
                   <Space>
@@ -128,12 +138,8 @@ const PluginDetailPage: React.FC<Props> = ({
                       size="large"
                       ghost
                       disabled={!isLoggedIn}
-                      onClick={() => handleClickLike(isLiked)}
-                    >
-                      <Icon
-                        icon="heart"
-                        style={{ color: isLiked ? "#B02838" : "" }}
-                      />
+                      onClick={() => handleClickLike(isLiked)}>
+                      <Icon icon="heart" style={{ color: isLiked ? "#B02838" : "" }} />
                     </Button>
                   </Col>
                   <Col flex="auto">
@@ -142,14 +148,13 @@ const PluginDetailPage: React.FC<Props> = ({
                       size="large"
                       block
                       onClick={() =>
-                        onInstall
-                          ? onInstall(`${pluginName}~${version}`)
+                        onExtPluginInstall
+                          ? onExtPluginInstall(`${pluginName}~${version}`)
                           : setIsModalVisible(true)
                       }
-                      disabled={!isLoggedIn}
-                    >
+                      disabled={!isLoggedIn}>
                       <Icon icon="download" />
-                      {onInstall ? "Install" : "Open Plugin in your project"}
+                      Open Plugin in your project
                     </Button>
                   </Col>
                 </ActionButtons>
@@ -167,11 +172,7 @@ const PluginDetailPage: React.FC<Props> = ({
                 </PluginInfo>
                 <PluginInfo align="middle" justify="space-between">
                   <Col>Update date</Col>
-                  <Col>
-                    {`${date.getFullYear()}.${
-                      date.getMonth() + 1
-                    }.${date.getDate()}`}
-                  </Col>
+                  <Col>{`${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`}</Col>
                 </PluginInfo>
                 <ReportButton type="link" size="middle" danger>
                   <Row align="bottom" justify="space-between" wrap={false}>
@@ -189,8 +190,10 @@ const PluginDetailPage: React.FC<Props> = ({
       <ModalContent
         title="Choose one project to open this plugin"
         visible={isModalVisible}
-        onCancel={() => setIsModalVisible(false)}
         handleClickChoose={handleClickChoose}
+        workspaces={workspaces}
+        onCancel={() => setIsModalVisible(false)}
+        onPluginInstall={onPluginInstall}
       />
     </>
   );

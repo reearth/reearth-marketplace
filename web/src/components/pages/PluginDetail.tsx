@@ -6,13 +6,14 @@ export type Props = {
   accessToken?: string;
   onInstall?: (pluginId: string) => void;
 };
+
 const PluginDetail: React.FC<Props> = ({ selectedPluginId, accessToken, onInstall }) => {
   const { pluginId } = useParams();
   return (
     <PluginDetailOrg
       pluginId={selectedPluginId ?? pluginId}
       accessToken={accessToken}
-      onInstall={onInstall}
+      onPluginInstall={onInstall}
     />
   );
 };

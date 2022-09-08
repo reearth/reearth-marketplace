@@ -7,22 +7,23 @@ import useHooks from "./hooks";
 export type Props = {
   pluginId?: string;
   accessToken?: string;
-  onInstall?: (pluginId: string) => void;
+  onPluginInstall?: (pluginId: string) => void;
 };
+
 const PluginDetail: React.FC<Props> = ({
   pluginId,
   accessToken,
-  onInstall,
+  onPluginInstall: onExtPluginInstall,
 }) => {
   const { isAuthenticated } = useAuth(accessToken);
   const handleClickChoose = () => {};
-  const { plugin, onLike, onUnlike } = useHooks(pluginId ? pluginId : "");
+  const { plugin, workspaces, onLike, onUnlike, onToggleModal, onPluginInstall } = useHooks(
+    pluginId ? pluginId : "",
+  );
 
   const handleClickLike = (isLiked: boolean) => {
     console.log(pluginId);
-    isLiked
-      ? onUnlike(pluginId ? pluginId : "")
-      : onLike(pluginId ? pluginId : "");
+    isLiked ? onUnlike(pluginId ? pluginId : "") : onLike(pluginId ? pluginId : "");
   };
   return (
     <PluginDetailPage
@@ -39,9 +40,12 @@ const PluginDetail: React.FC<Props> = ({
       images={plugin ? plugin.images : []}
       downloads={plugin ? plugin.downloads : 0}
       updatedDate={plugin ? plugin.updatedAt : undefined}
+      workspaces={workspaces}
       handleClickLike={handleClickLike}
       handleClickChoose={handleClickChoose}
-      onInstall={onInstall}
+      onPluginInstall={onPluginInstall}
+      onExtPluginInstall={onExtPluginInstall}
+      onToggleModal={onToggleModal}
     />
   );
 };
