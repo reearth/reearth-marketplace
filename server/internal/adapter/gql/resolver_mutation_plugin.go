@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"strings"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel"
@@ -132,9 +131,5 @@ func (r *mutationResolver) DeleteVersion(ctx context.Context, input gqlmodel.Del
 }
 
 func pluginIDFrom(goid string) (id.PluginID, error) {
-	kind, pid, _ := strings.Cut(goid, ":")
-	if kind != "p" {
-		return id.PluginID{}, fmt.Errorf("invalid global object id: %s", goid)
-	}
-	return id.PluginIDFrom(pid)
+	return id.PluginIDFrom(goid)
 }

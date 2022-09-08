@@ -21,7 +21,7 @@ func (r *queryResolver) Me(ctx context.Context) (*gqlmodel.Me, error) {
 
 func (r *queryResolver) Node(ctx context.Context, idStr string, typeArg gqlmodel.NodeType) (gqlmodel.Node, error) {
 	switch typeArg {
-	case gqlmodel.NodeTypePlugin:
+	case gqlmodel.NodeTypeUser:
 		uid, err := id.UserIDFrom(idStr)
 		if err != nil {
 			return nil, err
@@ -31,7 +31,7 @@ func (r *queryResolver) Node(ctx context.Context, idStr string, typeArg gqlmodel
 			return nil, err
 		}
 		return gqlmodel.ToUser(u), nil
-	case gqlmodel.NodeTypeUser:
+	case gqlmodel.NodeTypePlugin:
 		pid, err := id.PluginIDFrom(idStr)
 		if err != nil {
 			return nil, err
