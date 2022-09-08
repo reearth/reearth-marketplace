@@ -149,6 +149,16 @@ func (r *pluginRepo) FindByID(ctx context.Context, id plugin.ID) (*plugin.Plugin
 	return consumer.Rows[0], nil
 }
 
+func (r *pluginRepo) FindByIDs(ctx context.Context, ids []plugin.ID) ([]*plugin.Plugin, error) {
+	var consumer mongodoc.PluginConsumer
+	if err := r.pluginClient().Find(ctx, bson.M{"id": lo.Map(ids, func(id plugin.ID, _ int) string {
+		return id.String()
+	})}, &consumer); err != nil {
+		return nil, err
+	}
+	return consumer.Rows, nil
+}
+
 func (r *pluginRepo) Save(ctx context.Context, p *plugin.Plugin) error {
 	pluginDoc := mongodoc.NewPlugin(p)
 	return r.pluginClient().SaveOne(ctx, pluginDoc.ID, pluginDoc)

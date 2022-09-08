@@ -13,6 +13,7 @@ import (
 type Plugin interface {
 	Create(ctx context.Context, p *plugin.VersionedPlugin) error
 	FindByID(ctx context.Context, id plugin.ID) (*plugin.Plugin, error)
+	FindByIDs(ctx context.Context, ids []plugin.ID) ([]*plugin.Plugin, error)
 	FindByVersion(ctx context.Context, id plugin.ID, version string) (*plugin.VersionedPlugin, error)
 	SaveVersion(ctx context.Context, v *plugin.Version) error
 	Save(ctx context.Context, p *plugin.Plugin) error

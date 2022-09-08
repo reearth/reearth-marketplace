@@ -50,3 +50,7 @@ func (i *User) FindByID(ctx context.Context, uid id.UserID) (*user.User, error) 
 	}
 	return us[0], nil
 }
+
+func (i *User) FindByIDs(ctx context.Context, uids []id.UserID) ([]*user.User, error) {
+	return i.userRepo.FindByIDs(ctx, uids)
+}

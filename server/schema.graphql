@@ -138,7 +138,7 @@ type Me implements Publisher {
 type Query {
   me: Me!
   node(id: ID!, type: NodeType!): Node
-  nodes(ids: [ID!]!): [Node!]!
+  nodes(ids: [ID!]!, type: NodeType!): [Node!]!
   plugins(input: PluginsInput!): PluginConnection!
 }
 

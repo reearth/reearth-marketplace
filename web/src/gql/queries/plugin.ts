@@ -1,8 +1,31 @@
 import { gql } from "@apollo/client";
 
 export const PLUGIN = gql`
-  query Plugin($id: ID!, $type: NodeType!) {
-    node(id: $id, type: $type) {
+  query Plugin($id: ID!) {
+    node(id: $id, type: PLUGIN) {
+      ... on Plugin {
+        id
+        images
+        author
+        like
+        downloads
+        name
+        icon
+        readme
+        description
+        liked
+        updatedAt
+        latestVersion {
+          version
+        }
+      }
+    }
+  }
+`;
+
+export const PLUGINS = gql`
+  query Plugins($ids: [ID!]!) {
+    nodes(ids: $ids, type: PLUGIN) {
       ... on Plugin {
         id
         images

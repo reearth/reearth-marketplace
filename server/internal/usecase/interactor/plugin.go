@@ -15,6 +15,7 @@ import (
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin/repourl"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
 	"github.com/reearth/reearthx/usecasex"
+	"github.com/reearth/reearthx/util"
 )
 
 type Plugin struct {
@@ -39,6 +40,14 @@ func (p *Plugin) FindByID(ctx context.Context, id id.PluginID) (*plugin.Versione
 		return nil, err
 	}
 	return plugin.Versioned(pl).Build()
+}
+
+func (i *Plugin) FindByIDs(ctx context.Context, uids []id.PluginID) ([]*plugin.VersionedPlugin, error) {
+	res, err := i.pluginRepo.FindByIDs(ctx, uids)
+	if err != nil {
+		return nil, err
+	}
+	return util.TryMap(res, func(pl *plugin.Plugin) (*plugin.VersionedPlugin, error) { return plugin.Versioned(pl).Build() })
 }
 
 func (p *Plugin) FindByVersion(ctx context.Context, id id.PluginID, version string) (*plugin.VersionedPlugin, error) {

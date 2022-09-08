@@ -7,6 +7,9 @@ import (
 	"github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
+	"github.com/reearth/reearth-marketplace/server/pkg/plugin"
+	"github.com/reearth/reearth-marketplace/server/pkg/user"
+	"github.com/reearth/reearthx/util"
 	"github.com/samber/lo"
 )
 
@@ -45,8 +48,30 @@ func (r *queryResolver) Node(ctx context.Context, idStr string, typeArg gqlmodel
 	return nil, fmt.Errorf("invalid id: %s", idStr)
 }
 
-func (r *queryResolver) Nodes(ctx context.Context, ids []string) ([]gqlmodel.Node, error) {
-	panic("not implemented")
+func (r *queryResolver) Nodes(ctx context.Context, ids []string, typeArg gqlmodel.NodeType) ([]gqlmodel.Node, error) {
+	switch typeArg {
+	case gqlmodel.NodeTypeUser:
+		uid, err := util.TryMap(ids, id.UserIDFrom)
+		if err != nil {
+			return nil, err
+		}
+		u, err := usecases(ctx).User.FindByIDs(ctx, uid)
+		if err != nil {
+			return nil, err
+		}
+		return util.Map(u, func(u *user.User) gqlmodel.Node { return gqlmodel.ToUser(u) }), nil
+	case gqlmodel.NodeTypePlugin:
+		pid, err := util.TryMap(ids, id.PluginIDFrom)
+		if err != nil {
+			return nil, err
+		}
+		p, err := usecases(ctx).Plugin.FindByIDs(ctx, pid)
+		if err != nil {
+			return nil, err
+		}
+		return util.Map(p, func(p *plugin.VersionedPlugin) gqlmodel.Node { return gqlmodel.ToPlugin(ctx, p) }), nil
+	}
+	return nil, fmt.Errorf("invalid id: %s", ids)
 }
 
 func (r *queryResolver) Plugins(ctx context.Context, input gqlmodel.PluginsInput) (*gqlmodel.PluginConnection, error) {
