@@ -104,7 +104,6 @@ var cases = []struct {
 }
 
 func TestNew(t *testing.T) {
-	// nil
 	u, err := New(nil)
 	assert.NoError(t, err)
 	assert.Nil(t, u)

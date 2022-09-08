@@ -1,11 +1,6 @@
 import { useAuth } from "@marketplace/auth";
 import { Workspace } from "@marketplace/components/molecules/PluginDetailPage";
-import {
-  usePluginQuery,
-  useLikePluginMutation,
-  useUnlikePluginMutation,
-  NodeType,
-} from "@marketplace/gql";
+import { usePluginQuery, useLikePluginMutation, useUnlikePluginMutation } from "@marketplace/gql";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default (pluginId: string) => {
@@ -14,7 +9,6 @@ export default (pluginId: string) => {
   const { data, refetch } = usePluginQuery({
     variables: {
       id: pluginId,
-      type: NodeType.Plugin,
     },
   });
 
