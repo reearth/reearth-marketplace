@@ -2,12 +2,14 @@ import type { FileUploadType } from "@marketplace/components/molecules/AddNewPlu
 import UpdatePluginPage from "@marketplace/components/molecules/UpdatePluginPage";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
 
 import useHooks from "./hooks";
 
-export type Props = {};
-const UpdatePlugin: React.FC<Props> = () => {
+export type Props = {
+  pluginId?: string;
+};
+
+const UpdatePlugin: React.FC<Props> = ({ pluginId }) => {
   const {
     parsedPlugin,
     handleParsePluginMutation,
@@ -19,7 +21,6 @@ const UpdatePlugin: React.FC<Props> = () => {
   const [uploadedFile, uploadZip] = useState<FileUploadType>();
   // TODO: use Antd's file upload after backend ready
   const [uploadedImages, uploadImages] = useState<any[]>([]);
-  const params = useParams();
   const handleUploadImages = (image: UploadRequestOption) => {
     uploadImages([...uploadedImages, image.file]);
   };
@@ -36,16 +37,15 @@ const UpdatePlugin: React.FC<Props> = () => {
           repo: githubUrl,
         })
       : null;
-    console.log(uploadedImages.length);
     uploadImages.length > 0 &&
       (await handleUpdatePluginMutation({
-        id: parsedPlugin ? parsedPlugin.id : params.pluginId ? params.pluginId : "",
+        id: parsedPlugin ? parsedPlugin.id : pluginId || "",
         images: uploadedImages,
       }));
   };
   const handleClickPublish = () => {
     handleUpdatePluginMutation({
-      id: parsedPlugin ? parsedPlugin.id : params.pluginId ? params.pluginId : "",
+      id: parsedPlugin ? parsedPlugin.id : pluginId || "",
       active: true,
       images: uploadedImages,
     });
