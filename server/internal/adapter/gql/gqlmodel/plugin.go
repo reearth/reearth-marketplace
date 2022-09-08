@@ -11,6 +11,7 @@ import (
 )
 
 type Plugin struct {
+	id            id.PluginID
 	ID            string     `json:"id"`
 	Type          PluginType `json:"type"`
 	CreatedAt     time.Time  `json:"createdAt"`
@@ -35,11 +36,7 @@ type Plugin struct {
 func (*Plugin) IsNode() {}
 
 func (p *Plugin) Versions(ctx context.Context) ([]*Version, error) {
-	pid, err := plugin.IDFrom(p.ID)
-	if err != nil {
-		return nil, err
-	}
-	vs, err := adapter.Usecases(ctx).Plugin.Versions(ctx, pid)
+	vs, err := adapter.Usecases(ctx).Plugin.Versions(ctx, p.id)
 	if err != nil {
 		return nil, err
 	}
@@ -49,11 +46,7 @@ func (p *Plugin) Versions(ctx context.Context) ([]*Version, error) {
 }
 
 func (p *Plugin) Liked(ctx context.Context) (bool, error) {
-	pid, err := plugin.IDFrom(p.ID)
-	if err != nil {
-		return false, err
-	}
-	return adapter.Usecases(ctx).Plugin.Liked(ctx, adapter.User(ctx), pid)
+	return adapter.Usecases(ctx).Plugin.Liked(ctx, adapter.User(ctx), p.id)
 }
 
 func (p *Plugin) Publisher(ctx context.Context) (Publisher, error) {
