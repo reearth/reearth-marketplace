@@ -2,9 +2,9 @@ import type { FileUploadType } from "@marketplace/components/molecules/AddNewPlu
 import UpdatePluginPage from "@marketplace/components/molecules/UpdatePluginPage";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 
 import useHooks from "./hooks";
-import { useParams } from "react-router-dom";
 
 export type Props = {};
 const UpdatePlugin: React.FC<Props> = () => {
@@ -39,21 +39,13 @@ const UpdatePlugin: React.FC<Props> = () => {
     console.log(uploadedImages.length);
     uploadImages.length > 0 &&
       (await handleUpdatePluginMutation({
-        id: parsedPlugin
-          ? parsedPlugin.id
-          : params.pluginId
-          ? params.pluginId
-          : "",
+        id: parsedPlugin ? parsedPlugin.id : params.pluginId ? params.pluginId : "",
         images: uploadedImages,
       }));
   };
   const handleClickPublish = () => {
     handleUpdatePluginMutation({
-      id: parsedPlugin
-        ? parsedPlugin.id
-        : params.pluginId
-        ? params.pluginId
-        : "",
+      id: parsedPlugin ? parsedPlugin.id : params.pluginId ? params.pluginId : "",
       active: true,
       images: uploadedImages,
     });

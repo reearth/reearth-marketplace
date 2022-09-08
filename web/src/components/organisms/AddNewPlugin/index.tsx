@@ -2,6 +2,7 @@ import AddNewPluginPage from "@marketplace/components/molecules/AddNewPluginPage
 import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { useState } from "react";
+
 import useHooks from "./hooks";
 
 export type Props = {};

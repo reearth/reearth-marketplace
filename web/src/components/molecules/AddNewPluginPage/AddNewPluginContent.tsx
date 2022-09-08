@@ -54,20 +54,14 @@ const AddNewPluginContent: React.FC<Props> = ({
         </Col>
         <Col>
           <Space size="middle">
-            <Button
-              type="default"
-              size="large"
-              onClick={handleClickSave}
-              disabled={!uploadedFile}
-            >
+            <Button type="default" size="large" onClick={handleClickSave} disabled={!uploadedFile}>
               Save
             </Button>
             <Button
               type="primary"
               size="large"
               onClick={handleClickPublish}
-              disabled={!uploadedFile}
-            >
+              disabled={!uploadedFile}>
               Publish
             </Button>
           </Space>
@@ -77,8 +71,7 @@ const AddNewPluginContent: React.FC<Props> = ({
         defaultActiveKey={currentTab}
         tabBarStyle={{ margin: 0 }}
         activeKey={currentTab}
-        onChange={handleClickDetailSetting}
-      >
+        onChange={handleClickDetailSetting}>
         <TabPane tab="Package" key="1">
           <PackageArea
             githubUrl={githubUrl}

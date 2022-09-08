@@ -23,9 +23,9 @@ const PackageArea: React.FC<Props> = ({
   handleParsePlugin,
   handleChangeGithubUrl,
 }) => {
-  const [currentRadio, changeRadio] = useState<
-    "Upload from local" | "GitHub repository"
-  >("Upload from local");
+  const [currentRadio, changeRadio] = useState<"Upload from local" | "GitHub repository">(
+    "Upload from local",
+  );
   const handleChangeRadio = (e: RadioChangeEvent) => {
     changeRadio(e.target.value);
   };
@@ -43,12 +43,8 @@ const PackageArea: React.FC<Props> = ({
         <Row justify="start">
           <Col>
             <Radio.Group onChange={handleChangeRadio} value={currentRadio}>
-              <Radio.Button value="Upload from local">
-                Upload from local
-              </Radio.Button>
-              <Radio.Button value="GitHub repository">
-                GitHub repository
-              </Radio.Button>
+              <Radio.Button value="Upload from local">Upload from local</Radio.Button>
+              <Radio.Button value="GitHub repository">GitHub repository</Radio.Button>
             </Radio.Group>
           </Col>
         </Row>
@@ -60,7 +56,7 @@ const PackageArea: React.FC<Props> = ({
               accept=".zip"
               maxCount={1}
               multiple={false}
-              beforeUpload={(file) => {
+              beforeUpload={file => {
                 console.log(file);
                 const isZip = file.type === "application/zip";
                 if (!isZip) {
@@ -68,30 +64,25 @@ const PackageArea: React.FC<Props> = ({
                 }
                 return isZip || Upload.LIST_IGNORE;
               }}
-              customRequest={(info) => handleParsePlugin(info.file)}
-              onChange={(info) => {
+              customRequest={info => handleParsePlugin(info.file)}
+              onChange={info => {
                 const { status } = info.file;
                 if (status === "uploading") {
                   console.log(`${info.file.name} file uploading.`);
                 }
                 if (status === "done") {
-                  Message.success(
-                    `${info.file.name} file uploaded successfully.`
-                  );
+                  Message.success(`${info.file.name} file uploaded successfully.`);
                 } else if (status === "error") {
                   Message.error(`${info.file.name} file upload failed.`);
                 }
               }}
-              onDrop={(e) => {
+              onDrop={e => {
                 console.log("Dropped files", e.dataTransfer.files);
-              }}
-            >
+              }}>
               <p className="ant-upload-drag-icon">
                 <Icon icon="inbox" />
               </p>
-              <p className="ant-upload-hint">
-                Click or drag file to this area to upload
-              </p>
+              <p className="ant-upload-hint">Click or drag file to this area to upload</p>
             </Dragger>
           </UploadArea>
         ) : (
@@ -99,7 +90,7 @@ const PackageArea: React.FC<Props> = ({
             <Input
               placeholder="github.com/xxx/xxx"
               value={githubUrl}
-              onChange={(e) => {
+              onChange={e => {
                 handleChangeGithubUrl(e.target.value);
               }}
             />
