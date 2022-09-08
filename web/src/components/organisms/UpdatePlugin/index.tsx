@@ -5,8 +5,11 @@ import React, { useState } from "react";
 
 import useHooks from "./hooks";
 
-export type Props = {};
-const UpdatePlugin: React.FC<Props> = () => {
+export type Props = {
+  pluginId?: string;
+};
+
+const UpdatePlugin: React.FC<Props> = ({ pluginId }) => {
   const {
     parsedPlugin,
     handleParsePluginMutation,
@@ -28,20 +31,23 @@ const UpdatePlugin: React.FC<Props> = () => {
           file: uploadedFile,
           repo: undefined,
         })
-      : await handleCreatePluginMutation({
+      : githubUrl
+      ? await handleCreatePluginMutation({
           file: undefined,
           repo: githubUrl,
-        });
+        })
+      : null;
     uploadImages.length > 0 &&
-      parsedPlugin &&
       (await handleUpdatePluginMutation({
-        id: parsedPlugin.id,
+        id: parsedPlugin ? parsedPlugin.id : pluginId || "",
         images: uploadedImages,
       }));
   };
   const handleClickPublish = () => {
     handleUpdatePluginMutation({
-      id: parsedPlugin ? parsedPlugin.id : "",
+      id: parsedPlugin ? parsedPlugin.id : pluginId || "",
+      active: true,
+      images: uploadedImages,
     });
   };
   // When Github Url Input
@@ -64,7 +70,6 @@ const UpdatePlugin: React.FC<Props> = () => {
     <UpdatePluginPage
       pluginName={parsedPlugin ? parsedPlugin.name : ""}
       description={parsedPlugin ? parsedPlugin.description : ""}
-      uploadedFile={uploadedFile}
       version={parsedPlugin ? parsedPlugin.version : ""}
       githubUrl={githubUrl}
       handleChangeGithubUrl={handleChangeGithubUrl}

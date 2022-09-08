@@ -8,7 +8,6 @@ import { useCallback, useMemo } from "react";
 
 export default () => {
   const [parsePluginMutation, { data: parsedData }] = useParsePluginMutation();
-  console.log(parsedData);
   const [createPluginMutation] = useCreatePluginMutation();
   const [updatePluginMutation] = useUpdatePluginMutation();
   const handleCreatePluginMutation = useCallback(
@@ -36,12 +35,12 @@ export default () => {
   );
 
   const handleUpdatePluginMutation = useCallback(
-    async (data: { id: string; images?: string[] }) => {
+    async (data: { id: string; images?: string[]; active?: boolean }) => {
       console.log(data.images);
       await updatePluginMutation({
         variables: {
           pluginId: data.id,
-          active: true,
+          active: data.active,
           images: data.images,
         },
       });
@@ -67,6 +66,7 @@ export default () => {
         : undefined,
     [parsedData?.parsePlugin.plugin],
   );
+
   return {
     parsedPlugin,
     handleParsePluginMutation,
