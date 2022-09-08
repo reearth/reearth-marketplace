@@ -145,12 +145,12 @@ const PluginDetailPage: React.FC<Props> = ({
                       block
                       onClick={() =>
                         onExtPluginInstall
-                          ? onExtPluginInstall(`${pluginName}~${version}`)
+                          ? onExtPluginInstall(`${id}~${version}`)
                           : onToggleModal?.(true)
                       }
                       disabled={!isLoggedIn}>
                       <Icon icon="download" />
-                      Open Plugin in your project
+                      {onExtPluginInstall ? "Install" : "Open Plugin in your project"}
                     </Button>
                   </Col>
                 </ActionButtons>

@@ -56,7 +56,6 @@ export default function LibraryExtension({
               }
             />
             <Route path="/:userId" element={<UserPage />} />
-            {/* <Route path="/:userId" element={<UserPage accessToken={accessToken} />} /> */}
           </Routes>
         </CoreWrapper>
       </Router>
