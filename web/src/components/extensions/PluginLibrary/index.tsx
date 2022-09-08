@@ -44,7 +44,7 @@ export default function LibraryExtension({
       <Router initialEntries={selectedPluginId ? [`/plugins/${selectedPluginId}`] : ["/"]}>
         <CoreWrapper>
           <Routes>
-            <Route path="/" element={<RootPage showBanner />} />
+            <Route path="/" element={<RootPage />} />
             <Route
               path="/plugins/:pluginId"
               element={
