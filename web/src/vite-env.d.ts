@@ -1,14 +1,14 @@
 /// <reference types="vite/client" />
 
 type Config = {
-  api: string;
+  marketplaceApi: string;
   authClientId?: string;
   authDomain?: string;
   authAudience?: string;
 };
 
 interface ImportMetaEnv {
-  readonly REEARTH_API: string;
+  readonly REEARTH_MARKETPLACE_API: string;
   readonly REEARTH_AUTH_DOMAIN: string;
   readonly REEARTH_AUTH_AUDIENCE: string;
   readonly REEARTH_AUTH_CLIENT_ID: string;
