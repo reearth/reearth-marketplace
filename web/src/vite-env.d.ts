@@ -1,7 +1,7 @@
 /// <reference types="vite/client" />
 
 type Config = {
-  marketplaceApi: string;
+  api: string;
   authClientId?: string;
   authDomain?: string;
   authAudience?: string;
