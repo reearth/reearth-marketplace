@@ -1,4 +1,3 @@
-import { styled } from "@marketplace/theme";
 import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
@@ -9,9 +8,10 @@ import PackageArea, {
   FileUploadType,
 } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
 import SettingArea from "@marketplace/components/molecules/AddNewPluginPage/SettingArea";
+import { styled } from "@marketplace/theme";
+import { UploadRequestOption } from "rc-upload/lib/interface";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { UploadRequestOption } from "rc-upload/lib/interface";
 
 // TODO: merge with Add New Plugin
 export type Props = {
@@ -55,20 +55,14 @@ const UpdatePluginContent: React.FC<Props> = ({
         </Col>
         <Col>
           <Space size="middle">
-            <Button
-              type="default"
-              size="large"
-              onClick={handleClickSave}
-              disabled={!uploadedFile}
-            >
+            <Button type="default" size="large" onClick={handleClickSave} disabled={!uploadedFile}>
               Save
             </Button>
             <Button
               type="primary"
               size="large"
               onClick={handleClickPublish}
-              disabled={!uploadedFile}
-            >
+              disabled={!uploadedFile}>
               Publish
             </Button>
           </Space>
@@ -78,8 +72,7 @@ const UpdatePluginContent: React.FC<Props> = ({
         defaultActiveKey={currentTab}
         tabBarStyle={{ margin: 0 }}
         activeKey={currentTab}
-        onChange={handleClickDetailSetting}
-      >
+        onChange={handleClickDetailSetting}>
         <TabPane tab="Package" key="1">
           <PackageArea
             githubUrl={githubUrl}

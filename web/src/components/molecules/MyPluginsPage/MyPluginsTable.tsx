@@ -6,10 +6,10 @@ import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Switch from "@marketplace/components/atoms/Switch";
 import Table from "@marketplace/components/atoms/Table";
+import type { Plugin } from "@marketplace/components/organisms/MyPlugins";
 import { styled } from "@marketplace/theme";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
-import type { Plugin } from "@marketplace/components/organisms/MyPlugins";
 
 export type Props = {
   data?: Plugin[];
@@ -23,7 +23,7 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
       title: "Plugin Name",
       dataIndex: "name",
       key: "name",
-      render: (text) => <BoldTitle>{text}</BoldTitle>,
+      render: text => <BoldTitle>{text}</BoldTitle>,
     },
     {
       title: "Status",
@@ -62,7 +62,7 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
       title: "Action",
       key: "action",
       dataIndex: "id",
-      render: (id) => {
+      render: id => {
         return (
           <Row justify="space-around" style={{ maxWidth: "200px" }}>
             {/* <Col>
@@ -87,11 +87,7 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
             </Col>
             <Col>
               <Popover content="setting">
-                <Button
-                  type="link"
-                  size="middle"
-                  icon={<Icon icon="setting" />}
-                />
+                <Button type="link" size="middle" icon={<Icon icon="setting" />} />
               </Popover>
             </Col>
           </Row>

@@ -17,6 +17,7 @@ const Provider: React.FC<{ children?: ReactNode }> = ({ children }) => {
       {children}
     </Auth0Provider>
   ) : (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>{children}</>
   );
 };

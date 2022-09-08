@@ -1,3 +1,14 @@
 extends:
   - reearth
 root: true
+overrides:
+  - files:
+      - .storybook/main.js
+      - i18next-parser.config.js
+    extends:
+      - reearth/commonjs
+      - reearth/node
+  - files:
+      - .storybook/main.js
+      - i18next-parser.config.js
+    extends: reearth/commonjs

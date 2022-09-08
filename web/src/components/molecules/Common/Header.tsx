@@ -86,11 +86,7 @@ const Header: React.FC<Props> = ({ isLoggedIn, login, logout }) => {
         </Col>
         <Col>
           <Space size="middle">
-            <Button
-              type="link"
-              size="large"
-              onClick={() => navigate("/myplugins/new")}
-            >
+            <Button type="link" size="large" onClick={() => navigate("/myplugins/new")}>
               <Icon icon="upload" />
             </Button>
             {/* TODO: Dots Nine is needed? */}

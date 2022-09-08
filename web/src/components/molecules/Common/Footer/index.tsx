@@ -19,22 +19,15 @@ const Footer: React.FC<Props> = () => {
             <Col flex={1} style={{ maxWidth: "300px" }}>
               <SectionTitle>Community</SectionTitle>
               <Section direction="vertical">
-                <SectionContent
-                  href="https://discord.gg/XJhYkQQDAu"
-                  target="_blank"
-                >
+                <SectionContent href="https://discord.gg/XJhYkQQDAu" target="_blank">
                   Discord
                 </SectionContent>
                 <SectionContent
                   href="https://github.com/reearth/reearth/discussions"
-                  target="_blank"
-                >
+                  target="_blank">
                   Discussion
                 </SectionContent>
-                <SectionContent
-                  href="https://reearth.io/blog/tags/event"
-                  target="_blank"
-                >
+                <SectionContent href="https://reearth.io/blog/tags/event" target="_blank">
                   Events
                 </SectionContent>
               </Section>
@@ -42,34 +35,21 @@ const Footer: React.FC<Props> = () => {
             <Col flex={1} style={{ maxWidth: "300px" }}>
               <SectionTitle>Support</SectionTitle>
               <Section direction="vertical">
-                <SectionContent
-                  href="https://docs2.reearth.io/getting-started"
-                  target="_blank"
-                >
+                <SectionContent href="https://docs2.reearth.io/getting-started" target="_blank">
                   Getting Started
                 </SectionContent>
-                <SectionContent
-                  href="https://docs2.reearth.io/reference"
-                  target="_blank"
-                >
+                <SectionContent href="https://docs2.reearth.io/reference" target="_blank">
                   Reference
                 </SectionContent>
                 <SectionContent
                   href="https://docs.reearth.io/developer-guide/intro/about"
-                  target="_blank"
-                >
+                  target="_blank">
                   Developer Guide
                 </SectionContent>
-                <SectionContent
-                  href="https://docs.reearth.io/tutorial/home"
-                  target="_blank"
-                >
+                <SectionContent href="https://docs.reearth.io/tutorial/home" target="_blank">
                   Tutorial
                 </SectionContent>
-                <SectionContent
-                  href="https://reearth.io/docs/terms-of-use"
-                  target="_blank"
-                >
+                <SectionContent href="https://reearth.io/docs/terms-of-use" target="_blank">
                   Terms of Use
                 </SectionContent>
               </Section>
@@ -77,28 +57,22 @@ const Footer: React.FC<Props> = () => {
             <Col flex={1} style={{ maxWidth: "300px" }}>
               <SectionTitle>Developers</SectionTitle>
               <Section direction="vertical">
-                <SectionContent
-                  href="https://github.com/reearth/reearth"
-                  target="_blank"
-                >
+                <SectionContent href="https://github.com/reearth/reearth" target="_blank">
                   Github
                 </SectionContent>
                 <SectionContent
                   href="https://github.com/reearth/reearth/projects/1"
-                  target="_blank"
-                >
+                  target="_blank">
                   Road Maps
                 </SectionContent>
                 <SectionContent
                   href="https://github.com/reearth/reearth/blob/main/CHANGELOG.md"
-                  target="_blank"
-                >
+                  target="_blank">
                   Changelog
                 </SectionContent>
                 <SectionContent
                   href="https://github.com/reearth/reearth/blob/main/CODE_OF_CONDUCT.md"
-                  target="_blank"
-                >
+                  target="_blank">
                   Code of Conduct
                 </SectionContent>
               </Section>
@@ -109,22 +83,13 @@ const Footer: React.FC<Props> = () => {
                 <SectionContent href="https://eukarya.io/" target="_blank">
                   Website
                 </SectionContent>
-                <SectionContent
-                  href="https://www.facebook.com/EukaryaInc"
-                  target="_blank"
-                >
+                <SectionContent href="https://www.facebook.com/EukaryaInc" target="_blank">
                   Facebook
                 </SectionContent>
-                <SectionContent
-                  href="https://twitter.com/eukaryaofficial"
-                  target="_blank"
-                >
+                <SectionContent href="https://twitter.com/eukaryaofficial" target="_blank">
                   Twitter
                 </SectionContent>
-                <SectionContent
-                  href="https://reearth.io/docs/privacy-policy"
-                  target="_blank"
-                >
+                <SectionContent href="https://reearth.io/docs/privacy-policy" target="_blank">
                   Privacy Policy
                 </SectionContent>
               </Section>
