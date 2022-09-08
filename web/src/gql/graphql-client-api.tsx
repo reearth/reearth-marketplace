@@ -168,6 +168,11 @@ export type Node = {
   id: Scalars['ID'];
 };
 
+export enum NodeType {
+  Plugin = 'PLUGIN',
+  User = 'USER'
+}
+
 export type Organization = Node & Publisher & {
   __typename?: 'Organization';
   active: Scalars['Boolean'];
@@ -301,6 +306,7 @@ export type Query = {
 
 export type QueryNodeArgs = {
   id: Scalars['ID'];
+  type: NodeType;
 };
 
 
@@ -388,6 +394,7 @@ export type VersionPayload = {
 
 export type PluginQueryVariables = Exact<{
   id: Scalars['ID'];
+  type: NodeType;
 }>;
 
 
@@ -480,8 +487,8 @@ export type UpdateMeMutation = { __typename?: 'Mutation', updateMe: { __typename
 
 
 export const PluginDocument = gql`
-    query Plugin($id: ID!) {
-  node(id: $id) {
+    query Plugin($id: ID!, $type: NodeType!) {
+  node(id: $id, type: $type) {
     ... on Plugin {
       id
       images
@@ -515,6 +522,7 @@ export const PluginDocument = gql`
  * const { data, loading, error } = usePluginQuery({
  *   variables: {
  *      id: // value for 'id'
+ *      type: // value for 'type'
  *   },
  * });
  */

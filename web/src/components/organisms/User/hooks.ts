@@ -1,4 +1,4 @@
-import { useGetMeQuery } from "@marketplace/gql/graphql-client-api";
+import { useGetMeQuery } from "@marketplace/gql";
 import { useMemo } from "react";
 
 import { type Plugin } from "./";

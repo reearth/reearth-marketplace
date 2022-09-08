@@ -3,7 +3,6 @@ package gql
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
@@ -20,10 +19,9 @@ func (r *queryResolver) Me(ctx context.Context) (*gqlmodel.Me, error) {
 	return gqlmodel.ToMe(getUser(ctx)), nil
 }
 
-func (r *queryResolver) Node(ctx context.Context, idStr string) (gqlmodel.Node, error) {
-	kind, idStr, _ := strings.Cut(idStr, ":")
-	switch kind {
-	case "u":
+func (r *queryResolver) Node(ctx context.Context, idStr string, typeArg gqlmodel.NodeType) (gqlmodel.Node, error) {
+	switch typeArg {
+	case gqlmodel.NodeTypePlugin:
 		uid, err := id.UserIDFrom(idStr)
 		if err != nil {
 			return nil, err
@@ -33,7 +31,7 @@ func (r *queryResolver) Node(ctx context.Context, idStr string) (gqlmodel.Node, 
 			return nil, err
 		}
 		return gqlmodel.ToUser(u), nil
-	case "p":
+	case gqlmodel.NodeTypeUser:
 		pid, err := id.PluginIDFrom(idStr)
 		if err != nil {
 			return nil, err
