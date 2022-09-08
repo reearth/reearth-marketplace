@@ -9,7 +9,6 @@ export default function PluginInstalledList({
   accessToken,
   onInstall,
   onUninstall,
-  onNotificationChange,
 }: {
   theme?: "dark" | "light";
   lang?: string;
@@ -20,20 +19,10 @@ export default function PluginInstalledList({
   }[];
   onInstall?: (pluginId: string) => void;
   onUninstall?: (pluginId: string) => void;
-  onNotificationChange?: (
-    type: "error" | "warning" | "info" | "success",
-    text: string,
-    heading?: string,
-  ) => void;
 }) {
   return (
     <SharedProviders accessToken={accessToken} lang={lang} theme={theme}>
-      <List
-        plugins={installedPlugins}
-        onInstall={onInstall}
-        onUninstall={onUninstall}
-        onNotificationChange={onNotificationChange}
-      />
+      <List plugins={installedPlugins} onInstall={onInstall} onUninstall={onUninstall} />
     </SharedProviders>
   );
 }
