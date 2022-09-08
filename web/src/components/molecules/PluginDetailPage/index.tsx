@@ -12,6 +12,7 @@ import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import { styled } from "@marketplace/theme";
 import { useState } from "react";
+
 import { Link } from "react-router-dom";
 
 import ModalContent from "./ModalContent";
@@ -24,10 +25,12 @@ export type Props = {
   version?: string;
   likes: number;
   downloads: number;
+  description?: string;
+  readme: string;
   images: string[];
   isLiked: boolean;
   handleClickChoose: (projectId: string) => void;
-  handleClickLike: () => void;
+  handleClickLike: (isLiked: boolean) => void;
   onInstall?: (pluginId: string) => void;
 };
 
@@ -39,6 +42,8 @@ const PluginDetailPage: React.FC<Props> = ({
   version,
   images,
   likes,
+  description,
+  readme,
   downloads,
   isLiked,
   handleClickChoose,
@@ -55,7 +60,8 @@ const PluginDetailPage: React.FC<Props> = ({
           <Breadcrumb
             style={{
               paddingBottom: "24px",
-            }}>
+            }}
+          >
             <Breadcrumb.Item>
               <StyledLink to="/">Top</StyledLink>
             </Breadcrumb.Item>
@@ -65,7 +71,7 @@ const PluginDetailPage: React.FC<Props> = ({
             <Row wrap={false} style={{ width: "100%" }} justify="start">
               <Col flex={3} style={{ maxWidth: "720px" }}>
                 <Carousel autoplay>
-                  {images.map(image => (
+                  {images.map((image) => (
                     <Image
                       key={id}
                       width="100%"
@@ -78,11 +84,12 @@ const PluginDetailPage: React.FC<Props> = ({
                 <PluginDocs>
                   <Tabs defaultActiveKey="1" onChange={onTabsChange}>
                     <TabPane tab="Readme" key="1">
-                      <Markdown># Hello</Markdown>
+                      <Markdown>{readme}</Markdown>
                     </TabPane>
-                    <TabPane tab="Change log" key="2">
+                    {/* TODO: after developing function for posting changelogs */}
+                    {/* <TabPane tab="Change log" key="2">
                       Change log
-                    </TabPane>
+                    </TabPane> */}
                   </Tabs>
                 </PluginDocs>
               </Col>
@@ -91,7 +98,8 @@ const PluginDetailPage: React.FC<Props> = ({
                 style={{
                   padding: "0 24px",
                   maxWidth: "400px",
-                }}>
+                }}
+              >
                 <Title>{pluginName}</Title>
                 <LikesDownloaded justify="end">
                   <Space>
@@ -113,8 +121,12 @@ const PluginDetailPage: React.FC<Props> = ({
                       size="large"
                       ghost
                       disabled={!isLoggedIn}
-                      onClick={() => handleClickLike()}>
-                      <Icon icon="heart" style={{ color: isLiked ? "#B02838" : "" }} />
+                      onClick={() => handleClickLike(isLiked)}
+                    >
+                      <Icon
+                        icon="heart"
+                        style={{ color: isLiked ? "#B02838" : "" }}
+                      />
                     </Button>
                   </Col>
                   <Col flex="auto">
@@ -123,15 +135,21 @@ const PluginDetailPage: React.FC<Props> = ({
                       size="large"
                       block
                       onClick={() =>
-                        onInstall ? onInstall(`${pluginName}~${version}`) : setIsModalVisible(true)
+                        onInstall
+                          ? onInstall(`${pluginName}~${version}`)
+                          : setIsModalVisible(true)
                       }
-                      disabled={!isLoggedIn}>
+                      disabled={!isLoggedIn}
+                    >
                       <Icon icon="download" />
                       {onInstall ? "Install" : "Open Plugin in your project"}
                     </Button>
                   </Col>
                 </ActionButtons>
-                <Description>Description</Description>
+                <Description>
+                  <Col style={{ paddingBottom: "8px" }}>Description</Col>
+                  <Col>{description}</Col>
+                </Description>
                 <PluginInfo align="middle" justify="space-between">
                   <Col>Developer</Col>
                   <Col>{author}</Col>

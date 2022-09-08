@@ -11,6 +11,9 @@ export const PLUGIN = gql`
         downloads
         name
         icon
+        readme
+        description
+        liked
         latestVersion {
           version
         }
@@ -65,6 +68,7 @@ export const LIKE_PLUGIN = gql`
       plugin {
         id
         like
+        liked
       }
     }
   }
@@ -76,6 +80,7 @@ export const UNLIKE_PLUGIN = gql`
       plugin {
         id
         like
+        liked
       }
     }
   }
@@ -148,7 +153,12 @@ export const UPDATE_PLUGIN_VERSION = gql`
     $active: Boolean
   ) {
     updateVersion(
-      input: { pluginId: $pluginId, version: $version, description: $description, active: $active }
+      input: {
+        pluginId: $pluginId
+        version: $version
+        description: $description
+        active: $active
+      }
     ) {
       plugin {
         id

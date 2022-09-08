@@ -213,8 +213,7 @@ export type Plugin = Node & {
   images: Array<Scalars['URL']>;
   latestVersion?: Maybe<Version>;
   like: Scalars['Int'];
-  liker: Array<User>;
-  likerIds: Array<Scalars['ID']>;
+  liked: Scalars['Boolean'];
   name: Scalars['String'];
   publishedAt: Scalars['Time'];
   publisher: Publisher;
@@ -378,7 +377,6 @@ export type Version = {
   downloads: Scalars['Int'];
   publishedAt: Scalars['Time'];
   updatedAt: Scalars['Time'];
-  url?: Maybe<Scalars['String']>;
   version: Scalars['String'];
 };
 
@@ -393,7 +391,7 @@ export type PluginQueryVariables = Exact<{
 }>;
 
 
-export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' } | null };
+export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' } | null };
 
 export type SearchPluginQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -414,14 +412,14 @@ export type LikePluginMutationVariables = Exact<{
 }>;
 
 
-export type LikePluginMutation = { __typename?: 'Mutation', likePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, like: number } } };
+export type LikePluginMutation = { __typename?: 'Mutation', likePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, like: number, liked: boolean } } };
 
 export type UnlikePluginMutationVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type UnlikePluginMutation = { __typename?: 'Mutation', unlikePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, like: number } } };
+export type UnlikePluginMutation = { __typename?: 'Mutation', unlikePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, like: number, liked: boolean } } };
 
 export type UpdatePluginMutationVariables = Exact<{
   pluginId: Scalars['ID'];
@@ -467,7 +465,7 @@ export type GetMeQueryVariables = Exact<{
 }>;
 
 
-export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } } };
+export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, name: string, displayName?: string | null, description?: string | null, plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, active: boolean, publishedAt: Date, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } } };
 
 export type UpdateMeMutationVariables = Exact<{
   name?: InputMaybe<Scalars['String']>;
@@ -492,6 +490,9 @@ export const PluginDocument = gql`
       downloads
       name
       icon
+      readme
+      description
+      liked
       latestVersion {
         version
       }
@@ -589,6 +590,7 @@ export const LikePluginDocument = gql`
     plugin {
       id
       like
+      liked
     }
   }
 }
@@ -625,6 +627,7 @@ export const UnlikePluginDocument = gql`
     plugin {
       id
       like
+      liked
     }
   }
 }
@@ -843,6 +846,9 @@ export const GetMeDocument = gql`
     query GetMe($first: Int!, $after: Cursor) {
   me {
     id
+    name
+    displayName
+    description
     plugins(first: $first, after: $after) {
       nodes {
         id
@@ -851,6 +857,12 @@ export const GetMeDocument = gql`
         like
         downloads
         name
+        latestVersion {
+          version
+        }
+        active
+        publishedAt
+        updatedAt
       }
       pageInfo {
         endCursor
