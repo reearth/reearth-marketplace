@@ -1,5 +1,5 @@
-import { graphql } from "msw";
 import MockImage from "@marketplace/assets/mock/satellite.png";
+import { graphql } from "msw";
 
 export const handlers = [
   graphql.query("SearchPlugin", (_req, res, ctx) => {

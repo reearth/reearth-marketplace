@@ -1,9 +1,9 @@
-import { styled } from "@marketplace/theme";
 import Button from "@marketplace/components/atoms/Button";
 import Icon from "@marketplace/components/atoms/Icon";
 import { TextArea } from "@marketplace/components/atoms/Input";
 import Space from "@marketplace/components/atoms/Space";
 import Upload from "@marketplace/components/atoms/Upload";
+import { styled } from "@marketplace/theme";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 
 export type Props = {

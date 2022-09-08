@@ -12,5 +12,6 @@ export function AuthenticationRequiredPage({
   children,
 }: PropsWithChildren<{ accessToken?: string }>): JSX.Element | null {
   const [isAuthenticated] = useAuthenticationRequired({ accessToken }); // TODO: show error
+  // eslint-disable-next-line react/jsx-no-useless-fragment
   return isAuthenticated && children ? <>{children}</> : null;
 }

@@ -25,7 +25,7 @@ func NewUser(client *mongox.Client) repo.User {
 }
 
 func (u *userRepo) init() {
-	u.client.CreateUniqueIndex(context.Background(), []string{"oidcSub"}, []string{"oidcSub"})
+	u.client.CreateIndex(context.Background(), []string{"oidcSub"}, []string{"oidcSub"})
 }
 
 func (u *userRepo) FindOrCreate(ctx context.Context, oidcSub string) (*user.User, error) {
@@ -40,7 +40,7 @@ func (u *userRepo) FindOrCreate(ctx context.Context, oidcSub string) (*user.User
 
 	var userDoc mongodoc.UserDocument
 	newUserDoc, _ := mongodoc.NewUser(newUser)
-	if err := u.client.Collection().
+	if err := u.client.Client().
 		FindOneAndUpdate(ctx,
 			bson.M{"oidcSub": oidcSub},
 			bson.M{"$setOnInsert": newUserDoc},

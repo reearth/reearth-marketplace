@@ -5,13 +5,9 @@ import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
 import Image from "@marketplace/components/atoms/Image";
 import Space from "@marketplace/components/atoms/Space";
 import PluginsList from "@marketplace/components/molecules/PluginsList";
+import type { myDataType, Plugin } from "@marketplace/components/organisms/User";
 import { styled } from "@marketplace/theme";
 import { Link } from "react-router-dom";
-
-import type {
-  myDataType,
-  Plugin,
-} from "@marketplace/components/organisms/User";
 
 export type Props = {
   myData?: myDataType;
@@ -24,8 +20,7 @@ const UserPageContents: React.FC<Props> = ({ myData, plugins }) => {
         <Breadcrumb
           style={{
             paddingBottom: "24px",
-          }}
-        >
+          }}>
           <Breadcrumb.Item>
             <StyledLink to="/">Top</StyledLink>
           </Breadcrumb.Item>
@@ -35,9 +30,7 @@ const UserPageContents: React.FC<Props> = ({ myData, plugins }) => {
           <Image src={HeaderBanner} preview={false} />
           <UserIcon>
             <UserInitial>
-              {myData?.displayName
-                ? myData.displayName.substring(0, 1).toUpperCase()
-                : ""}
+              {myData?.displayName ? myData.displayName.substring(0, 1).toUpperCase() : ""}
             </UserInitial>
           </UserIcon>
         </HeaderBannerSpace>

@@ -1,4 +1,3 @@
-import { styled } from "@marketplace/theme";
 import Button from "@marketplace/components/atoms/Button";
 import Dropdown from "@marketplace/components/atoms/Dropdown";
 import Icon from "@marketplace/components/atoms/Icon";
@@ -6,6 +5,7 @@ import Menu, { MenuProps } from "@marketplace/components/atoms/Menu";
 import Search from "@marketplace/components/atoms/Search";
 import Space from "@marketplace/components/atoms/Space";
 import { PluginSort } from "@marketplace/components/organisms/Top/hooks";
+import { styled } from "@marketplace/theme";
 import { useState } from "react";
 
 export type Props = {

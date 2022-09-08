@@ -1,7 +1,7 @@
 import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
 import UpdatePluginPage from "@marketplace/components/molecules/UpdatePluginPage";
-import React, { useState } from "react";
 import { UploadRequestOption } from "rc-upload/lib/interface";
+import React, { useState } from "react";
 
 import useHooks from "./hooks";
 import { useParams } from "react-router-dom";
@@ -15,12 +15,11 @@ const UpdatePlugin: React.FC<Props> = () => {
     handleUpdatePluginMutation,
   } = useHooks();
 
-  const params = useParams();
-
   const [githubUrl, changeGithubUrl] = useState<string | undefined>(undefined);
   const [uploadedFile, uploadZip] = useState<FileUploadType>();
   // TODO: use Antd's file upload after backend ready
   const [uploadedImages, uploadImages] = useState<any[]>([]);
+  const params = useParams();
   const handleUploadImages = (image: UploadRequestOption) => {
     uploadImages([...uploadedImages, image.file]);
   };

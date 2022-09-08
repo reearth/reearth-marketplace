@@ -1,7 +1,8 @@
-import { styled } from "@marketplace/theme";
-import UpdatePluginContent from "./UpdatePluginContent";
 import { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
+import { styled } from "@marketplace/theme";
 import { UploadRequestOption } from "rc-upload/lib/interface";
+
+import UpdatePluginContent from "./UpdatePluginContent";
 
 export type Props = {
   pluginName: string;

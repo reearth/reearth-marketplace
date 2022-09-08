@@ -14,7 +14,7 @@ import (
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin/pluginpack"
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin/repourl"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
-	"github.com/reearth/reearthx/usecase"
+	"github.com/reearth/reearthx/usecasex"
 )
 
 type Plugin struct {
@@ -125,7 +125,7 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 	return plugin.Versioned(pl).Build()
 }
 
-func (p *Plugin) Search(ctx context.Context, user *user.User, param interfaces.SearchPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error) {
+func (p *Plugin) Search(ctx context.Context, user *user.User, param interfaces.SearchPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error) {
 	return p.pluginRepo.Search(ctx, user, &param)
 }
 
@@ -231,7 +231,7 @@ func (p *Plugin) ImageURL(ctx context.Context, name string) string {
 	return p.file.AssetsURL(ctx, name)
 }
 
-func (p *Plugin) List(ctx context.Context, uid id.UserID, param interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error) {
+func (p *Plugin) List(ctx context.Context, uid id.UserID, param interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error) {
 	return p.pluginRepo.List(ctx, uid, &param)
 }
 

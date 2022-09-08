@@ -102,7 +102,7 @@ const PackageArea: React.FC<Props> = ({
               onChange={(e) => {
                 handleChangeGithubUrl(e.target.value);
               }}
-            ></Input>
+            />
             <p>Please set your repository as public respository.</p>
           </>
         )}

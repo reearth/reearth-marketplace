@@ -19,7 +19,7 @@ import (
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
 	"github.com/reearth/reearthx/mongox"
 	"github.com/reearth/reearthx/rerror"
-	"github.com/reearth/reearthx/usecase"
+	"github.com/reearth/reearthx/usecasex"
 	"github.com/samber/lo"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -88,8 +88,8 @@ func NewPlugin(client *mongox.Client) repo.Plugin {
 }
 
 func (r *pluginRepo) init() {
-	r.pluginClient().CreateUniqueIndex(context.Background(), []string{"name", "publisherId", "publishedAt", "downloads"}, []string{"name"})
-	_, _ = r.pluginLikeClient().Collection().Indexes().CreateOne(context.Background(), mongo.IndexModel{
+	r.pluginClient().CreateIndex(context.Background(), []string{"name", "publisherId", "publishedAt", "downloads"}, []string{"name"})
+	_, _ = r.pluginLikeClient().Client().Indexes().CreateOne(context.Background(), mongo.IndexModel{
 		Keys:    bson.D{{Key: "userId", Value: 1}, {Key: "pluginId", Value: 1}},
 		Options: options.Index().SetUnique(true),
 	})
@@ -147,7 +147,7 @@ func (r *pluginRepo) Save(ctx context.Context, p *plugin.Plugin) error {
 	return r.pluginClient().SaveOne(ctx, pluginDoc.ID, pluginDoc)
 }
 
-func (r *pluginRepo) Search(ctx context.Context, user *user.User, param *interfaces.SearchPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error) {
+func (r *pluginRepo) Search(ctx context.Context, user *user.User, param *interfaces.SearchPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error) {
 	var conditions []bson.M
 	conditions = append(conditions, bson.M{
 		"active": true,
@@ -220,7 +220,7 @@ func (r *pluginRepo) Search(ctx context.Context, user *user.User, param *interfa
 			}
 		}
 	}
-	cur, err := r.pluginClient().Collection().Find(ctx, toFilter(conditions), findOption)
+	cur, err := r.pluginClient().Client().Find(ctx, toFilter(conditions), findOption)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -263,7 +263,7 @@ func (r *pluginRepo) Search(ctx context.Context, user *user.User, param *interfa
 		ps = lo.Reverse(ps)
 	}
 	if len(ps) == 0 {
-		return nil, usecase.EmptyPageInfo(), nil
+		return nil, usecasex.EmptyPageInfo(), nil
 	}
 	startCursor, err := encodeSearchCursor(sort.Key, ps[0])
 	if err != nil {
@@ -273,12 +273,12 @@ func (r *pluginRepo) Search(ctx context.Context, user *user.User, param *interfa
 	if err != nil {
 		return nil, nil, err
 	}
-	return ps, usecase.NewPageInfo(int(totalCount), startCursor, endCursor, hasNextPage, hasPreviousPage), nil
+	return ps, usecasex.NewPageInfo(int(totalCount), startCursor, endCursor, hasNextPage, hasPreviousPage), nil
 }
 
 func (r *pluginRepo) Like(ctx context.Context, user *user.User, id plugin.ID) error {
 	newPluginLikeDoc := mongodoc.NewPluginLike(user.ID(), id)
-	err := r.pluginLikeClient().Collection().FindOneAndUpdate(ctx,
+	err := r.pluginLikeClient().Client().FindOneAndUpdate(ctx,
 		bson.M{"pluginId": id.String(), "userId": user.ID()},
 		bson.M{"$setOnInsert": newPluginLikeDoc},
 		options.FindOneAndUpdate().SetUpsert(true).SetReturnDocument(options.Before),
@@ -310,7 +310,7 @@ func (r *pluginRepo) Versions(ctx context.Context, id plugin.ID) ([]*plugin.Vers
 }
 
 func (r *pluginRepo) UpdateLatest(ctx context.Context, p *plugin.Plugin) (*plugin.Plugin, error) {
-	sr := r.pluginVersionClient().Collection().FindOne(
+	sr := r.pluginVersionClient().Client().FindOne(
 		ctx,
 		bson.M{"pluginId": p.ID().String(), "active": true},
 		options.FindOne().SetSort(bson.D{{Key: "createdAt", Value: -1}}),
@@ -339,7 +339,7 @@ func (r *pluginRepo) UpdateLatest(ctx context.Context, p *plugin.Plugin) (*plugi
 	return p, nil
 }
 
-func (r *pluginRepo) List(ctx context.Context, uid id.UserID, param *interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error) {
+func (r *pluginRepo) List(ctx context.Context, uid id.UserID, param *interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error) {
 	var conditions []bson.M
 	conditions = append(conditions, bson.M{
 		"publisherId": uid.String(),
@@ -377,7 +377,7 @@ func (r *pluginRepo) List(ctx context.Context, uid id.UserID, param *interfaces.
 			}
 		}
 	}
-	cur, err := r.pluginClient().Collection().Find(ctx, toFilter(conditions), findOption)
+	cur, err := r.pluginClient().Client().Find(ctx, toFilter(conditions), findOption)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -420,7 +420,7 @@ func (r *pluginRepo) List(ctx context.Context, uid id.UserID, param *interfaces.
 		ps = lo.Reverse(ps)
 	}
 	if len(ps) == 0 {
-		return nil, usecase.EmptyPageInfo(), nil
+		return nil, usecasex.EmptyPageInfo(), nil
 	}
 	startCursor, err := encodeSearchCursor(sort.Key, ps[0])
 	if err != nil {
@@ -430,7 +430,7 @@ func (r *pluginRepo) List(ctx context.Context, uid id.UserID, param *interfaces.
 	if err != nil {
 		return nil, nil, err
 	}
-	return ps, usecase.NewPageInfo(int(totalCount), startCursor, endCursor, hasNextPage, hasPreviousPage), nil
+	return ps, usecasex.NewPageInfo(int(totalCount), startCursor, endCursor, hasNextPage, hasPreviousPage), nil
 }
 
 type searchCursor struct {
@@ -468,7 +468,7 @@ func toFilter(conditions []bson.M) bson.M {
 	}
 }
 
-func encodeSearchCursor(key string, p *plugin.VersionedPlugin) (*usecase.Cursor, error) {
+func encodeSearchCursor(key string, p *plugin.VersionedPlugin) (*usecasex.Cursor, error) {
 	var sc searchCursor
 	sc.ID = p.Plugin().ID().String()
 	switch key {
@@ -489,7 +489,7 @@ func encodeSearchCursor(key string, p *plugin.VersionedPlugin) (*usecase.Cursor,
 	if err != nil {
 		return nil, err
 	}
-	return usecase.CursorFromRef(&cur), nil
+	return usecasex.CursorFromRef(&cur), nil
 }
 
 func decodeSearchCursor(key, s string) (*searchCursor, error) {
