@@ -1,10 +1,8 @@
 import CoreWrapper from "@marketplace/components/molecules/Common/CoreWrapper";
 import PluginDetailPage from "@marketplace/components/pages/PluginDetail";
 import RootPage from "@marketplace/components/pages/Root";
-import UserPage from "@marketplace/components/pages/User";
 import { useT } from "@marketplace/i18n";
-import { useCallback } from "react";
-import { MemoryRouter as Router, Routes, Route } from "react-router-dom";
+import { useCallback, useLayoutEffect, useState } from "react";
 
 import SharedProviders from "../sharedProviders";
 
@@ -14,7 +12,7 @@ export default function LibraryExtension({
   theme,
   lang,
   accessToken,
-  selectedPluginId,
+  selectedPluginId: _,
   onInstall,
   onNotificationChange,
 }: {
@@ -39,26 +37,36 @@ export default function LibraryExtension({
     [t, onInstall, onNotificationChange],
   );
 
+  const [pluginId, setPluginId] = useState<string>();
+  useLayoutEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const pluginId = params.get("pluginId");
+    if (pluginId) {
+      setPluginId(pluginId);
+    }
+  }, []);
+
+  const handlePluginSelect = useCallback((pluginId: string) => {
+    setPluginId(pluginId);
+  }, []);
+
+  const handleBack = useCallback(() => {
+    setPluginId("");
+  }, []);
+
   return (
     <SharedProviders accessToken={accessToken} lang={lang} theme={theme}>
-      <Router initialEntries={selectedPluginId ? [`/plugins/${selectedPluginId}`] : ["/"]}>
-        <CoreWrapper>
-          <Routes>
-            <Route path="/" element={<RootPage />} />
-            <Route
-              path="/plugins/:pluginId"
-              element={
-                <PluginDetailPage
-                  selectedPluginId={selectedPluginId}
-                  accessToken={accessToken}
-                  onInstall={handleInstall}
-                />
-              }
-            />
-            <Route path="/:userId" element={<UserPage />} />
-          </Routes>
-        </CoreWrapper>
-      </Router>
+      <CoreWrapper>
+        {pluginId && (
+          <PluginDetailPage
+            selectedPluginId={pluginId}
+            accessToken={accessToken}
+            onInstall={handleInstall}
+            onBack={handleBack}
+          />
+        )}
+        {!pluginId && <RootPage onPluginSelect={handlePluginSelect} />}
+      </CoreWrapper>
     </SharedProviders>
   );
 }

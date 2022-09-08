@@ -1,11 +1,10 @@
 import Space from "@marketplace/components/atoms/Space";
 import PluginsListCard from "@marketplace/components/molecules/PluginsListCard";
-import { useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 
 export type Props = {
   loading?: boolean;
   plugins?: Plugin[];
+  onPluginSelect?: (pluginId: string) => void;
 };
 
 export type Plugin = {
@@ -18,14 +17,7 @@ export type Plugin = {
   version?: string;
 };
 
-const PluginsList: React.FC<Props> = ({ loading, plugins }) => {
-  const navigate = useNavigate();
-  const handlePluginsListCardClick = useCallback(
-    (id: string) => {
-      navigate(`/plugins/${id}`);
-    },
-    [navigate],
-  );
+const PluginsList: React.FC<Props> = ({ loading, plugins, onPluginSelect }) => {
   return (
     <Space size={[37.33, 24]} wrap>
       {plugins
@@ -40,7 +32,7 @@ const PluginsList: React.FC<Props> = ({ loading, plugins }) => {
                 cover={plugin.cover}
                 likedCount={plugin.like}
                 downloadCount={plugin.downloads}
-                onClick={() => handlePluginsListCardClick(plugin.id)}
+                onClick={() => onPluginSelect?.(plugin.id)}
               />
             );
           })

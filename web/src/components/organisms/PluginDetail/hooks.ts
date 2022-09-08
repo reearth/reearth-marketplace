@@ -102,10 +102,10 @@ export default (pluginId: string) => {
   }, [auth, modalVisible]);
 
   const onPluginInstall = useCallback(
-    (workspaceId: string, projectId: string) => {
+    (_workspaceId: string, projectId: string) => {
       location.href =
         (window.REEARTH_MARKETPLACE_CONFIG?.reearthWeb ?? "") +
-        `/settings/projects/${projectId}/plugins/plugins/${pluginId}`;
+        `/settings/projects/${projectId}/plugins?pluginId=${pluginId}`;
     },
     [pluginId],
   );

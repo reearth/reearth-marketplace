@@ -5,15 +5,17 @@ import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
 import Image from "@marketplace/components/atoms/Image";
 import Space from "@marketplace/components/atoms/Space";
 import PluginsList from "@marketplace/components/molecules/PluginsList";
-import type { myDataType, Plugin } from "@marketplace/components/organisms/User";
+import type { MyDataType, Plugin } from "@marketplace/components/organisms/User";
 import { styled } from "@marketplace/theme";
 import { Link } from "react-router-dom";
 
 export type Props = {
-  myData?: myDataType;
+  myData?: MyDataType;
   plugins?: Plugin[];
+  onPluginSelect?: (pluginId: string) => void;
 };
-const UserPageContents: React.FC<Props> = ({ myData, plugins }) => {
+
+const UserPageContents: React.FC<Props> = ({ myData, plugins, onPluginSelect }) => {
   return (
     <Wrapper>
       <InnerWrapper>
@@ -51,7 +53,7 @@ const UserPageContents: React.FC<Props> = ({ myData, plugins }) => {
           </AdditionalInfo> */}
         </DeveloperInfo>
         <MyPlugins>
-          <PluginsList plugins={plugins ? plugins : undefined} />
+          <PluginsList plugins={plugins ? plugins : undefined} onPluginSelect={onPluginSelect} />
         </MyPlugins>
       </InnerWrapper>
     </Wrapper>

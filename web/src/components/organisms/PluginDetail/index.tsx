@@ -8,12 +8,14 @@ export type Props = {
   pluginId?: string;
   accessToken?: string;
   onPluginInstall?: (pluginId: string) => void;
+  onBack?: () => void;
 };
 
 const PluginDetail: React.FC<Props> = ({
   pluginId,
   accessToken,
   onPluginInstall: onExtPluginInstall,
+  onBack,
 }) => {
   const { isAuthenticated } = useAuth(accessToken);
   const handleClickChoose = () => {};
@@ -48,6 +50,7 @@ const PluginDetail: React.FC<Props> = ({
       onPluginInstall={onPluginInstall}
       onExtPluginInstall={onExtPluginInstall}
       onToggleModal={onToggleModal}
+      onBack={onBack}
     />
   );
 };

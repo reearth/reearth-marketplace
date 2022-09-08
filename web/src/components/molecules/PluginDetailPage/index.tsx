@@ -11,7 +11,7 @@ import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import { styled } from "@marketplace/theme";
-import { Link } from "react-router-dom";
+import { useMemo } from "react";
 
 import ModalContent, { Workspace } from "./ModalContent";
 
@@ -37,6 +37,7 @@ export type Props = {
   onPluginInstall?: (workspaceId: string, projectId: string) => void;
   onExtPluginInstall?: (pluginId: string) => void;
   onToggleModal?: (shown: boolean) => void;
+  onBack?: () => void;
 };
 
 const PluginDetailPage: React.FC<Props> = ({
@@ -59,9 +60,14 @@ const PluginDetailPage: React.FC<Props> = ({
   onPluginInstall,
   onExtPluginInstall,
   onToggleModal,
+  onBack,
 }) => {
-  const onTabsChange = () => {};
-  const date = new Date(updatedDate ? updatedDate : "");
+  const date = useMemo(() => {
+    if (!updatedDate) return undefined;
+    const d = new Date(updatedDate);
+    if (isNaN(d.getTime())) return undefined;
+    return d;
+  }, [updatedDate]);
 
   return (
     <>
@@ -72,7 +78,14 @@ const PluginDetailPage: React.FC<Props> = ({
               paddingBottom: "24px",
             }}>
             <Breadcrumb.Item>
-              <StyledLink to="/">Top</StyledLink>
+              <StyledLink
+                style={{ cursor: "pointer" }}
+                onClick={e => {
+                  e.preventDefault();
+                  onBack?.();
+                }}>
+                Top
+              </StyledLink>
             </Breadcrumb.Item>
             <Breadcrumb.Item>{pluginName}</Breadcrumb.Item>
           </Breadcrumb>
@@ -96,7 +109,7 @@ const PluginDetailPage: React.FC<Props> = ({
                   ))}
                 </Carousel>
                 <PluginDocs>
-                  <Tabs defaultActiveKey="1" onChange={onTabsChange}>
+                  <Tabs defaultActiveKey="1">
                     <TabPane tab="Readme" key="1">
                       <Markdown>{readme}</Markdown>
                     </TabPane>
@@ -168,7 +181,9 @@ const PluginDetailPage: React.FC<Props> = ({
                 </PluginInfo>
                 <PluginInfo align="middle" justify="space-between">
                   <Col>Update date</Col>
-                  <Col>{`${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`}</Col>
+                  <Col>
+                    {date ? `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}` : ""}
+                  </Col>
                 </PluginInfo>
                 <ReportButton type="link" size="middle" danger>
                   <Row align="bottom" justify="space-between" wrap={false}>
@@ -228,7 +243,7 @@ const StyledLayout = styled(Layout)`
   background: transparent;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled.a`
   text-decoration: none;
 `;
 
