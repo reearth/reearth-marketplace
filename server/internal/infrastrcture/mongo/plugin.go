@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"regexp"
 	"strings"
 	"time"
@@ -181,7 +182,9 @@ func (r *pluginRepo) Search(ctx context.Context, user *user.User, param *interfa
 	if param.Liked != nil {
 		var c mongox.SliceConsumer[mongodoc.PluginLikeDocument]
 		if err := r.pluginLikeClient().Find(ctx, bson.M{"userId": user.ID().String()}, &c); err != nil {
-			return nil, nil, err
+			if !errors.Is(err, rerror.ErrNotFound) && !errors.Is(err, io.EOF) {
+				return nil, nil, err
+			}
 		}
 		likedPluginIDs := lo.Map(c.Result, func(x mongodoc.PluginLikeDocument, _ int) string { return x.PluginID })
 		conditions = append(conditions, bson.M{
