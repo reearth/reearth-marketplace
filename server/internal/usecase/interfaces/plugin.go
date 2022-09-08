@@ -8,7 +8,7 @@ import (
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
-	"github.com/reearth/reearthx/usecase"
+	"github.com/reearth/reearthx/usecasex"
 )
 
 var (
@@ -23,13 +23,13 @@ type Plugin interface {
 	Create(ctx context.Context, publisher *user.User, r io.Reader) (*plugin.VersionedPlugin, error)
 	CreateFromRepo(ctx context.Context, publisher *user.User, repo *string) (*plugin.VersionedPlugin, error)
 	Update(ctx context.Context, param UpdatePluginParam) (_ *plugin.VersionedPlugin, err error)
-	Search(ctx context.Context, user *user.User, param SearchPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error)
+	Search(ctx context.Context, user *user.User, param SearchPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error)
 	Like(ctx context.Context, user *user.User, id id.PluginID) (*plugin.VersionedPlugin, error)
 	Unlike(ctx context.Context, user *user.User, id id.PluginID) (*plugin.VersionedPlugin, error)
 	UpdateVersion(ctx context.Context, user *user.User, param UpdatePluginVersionParam) (*plugin.VersionedPlugin, error)
 	Versions(ctx context.Context, id id.PluginID) ([]*plugin.Version, error)
 	ImageURL(ctx context.Context, name string) string
-	List(ctx context.Context, uid id.UserID, param ListPluginParam) ([]*plugin.VersionedPlugin, *usecase.PageInfo, error)
+	List(ctx context.Context, uid id.UserID, param ListPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error)
 	Liked(ctx context.Context, user *user.User, id id.PluginID) (bool, error)
 	Download(ctx context.Context, id id.PluginID, version string) ([]byte, error)
 	DownloadLatest(ctx context.Context, id id.PluginID) ([]byte, error)
