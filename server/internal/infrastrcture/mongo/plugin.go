@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"regexp"
 	"strings"
 	"time"
@@ -152,7 +153,7 @@ func (r *pluginRepo) Search(ctx context.Context, user *user.User, param *interfa
 		"active": true,
 	})
 	if param.Keyword != nil {
-		keywordMatcher := bson.M{"$regex": regexp.QuoteMeta(*param.Keyword)}
+		keywordMatcher := bson.M{"$regex": regexp.QuoteMeta(*param.Keyword), "$options": "i"}
 		conditions = append(conditions, bson.M{
 			"$or": bson.A{
 				bson.M{"id": keywordMatcher},
@@ -180,8 +181,10 @@ func (r *pluginRepo) Search(ctx context.Context, user *user.User, param *interfa
 	}
 	if param.Liked != nil {
 		var c mongox.SliceConsumer[mongodoc.PluginLikeDocument]
-		if err := r.pluginLikeClient().Find(ctx, bson.M{"userId": user.ID()}, &c); err != nil {
-			return nil, nil, err
+		if err := r.pluginLikeClient().Find(ctx, bson.M{"userId": user.ID().String()}, &c); err != nil {
+			if !errors.Is(err, rerror.ErrNotFound) && !errors.Is(err, io.EOF) {
+				return nil, nil, err
+			}
 		}
 		likedPluginIDs := lo.Map(c.Result, func(x mongodoc.PluginLikeDocument, _ int) string { return x.PluginID })
 		conditions = append(conditions, bson.M{
@@ -287,7 +290,7 @@ func (r *pluginRepo) Like(ctx context.Context, user *user.User, id plugin.ID) er
 }
 
 func (r *pluginRepo) Unlike(ctx context.Context, user *user.User, id plugin.ID) error {
-	return r.pluginLikeClient().RemoveOne(ctx, bson.M{"pluginId": id.String(), "userId": user.ID()})
+	return r.pluginLikeClient().RemoveOne(ctx, bson.M{"pluginId": id.String(), "userId": user.ID().String()})
 }
 
 func (r *pluginRepo) Versions(ctx context.Context, id plugin.ID) ([]*plugin.Version, error) {

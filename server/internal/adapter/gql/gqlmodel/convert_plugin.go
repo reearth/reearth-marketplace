@@ -18,6 +18,7 @@ func ToPlugin(ctx context.Context, p *plugin.VersionedPlugin) *Plugin {
 	}
 	pid := IDFromPluginID(p.Plugin().ID())
 	return &Plugin{
+		id:          p.Plugin().ID(),
 		ID:          "p:" + string(pid),
 		Name:        p.Plugin().Name(),
 		Author:      strRef(p.Version().Author()),
