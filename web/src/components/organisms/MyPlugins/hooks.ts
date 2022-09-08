@@ -9,7 +9,7 @@ import { type Plugin } from "./";
 export default (id?: string, active?: boolean) => {
   const { data, refetch } = useGetMeQuery({
     variables: {
-      first: 0,
+      first: 50,
     },
   });
   const [updatePlugin] = useUpdatePluginMutation({

@@ -3,7 +3,7 @@ import {
   useLikePluginMutation,
   useUnlikePluginMutation,
 } from "@marketplace/gql/graphql-client-api";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 
 export default (pluginId: string) => {
   const { data, refetch } = usePluginQuery({
@@ -59,10 +59,27 @@ export default (pluginId: string) => {
             liked: data.node.liked,
             version: data.node.latestVersion?.version,
             downloads: data.node.downloads,
+            updatedAt: data.node.updatedAt,
           }
         : undefined,
     [data?.node]
   );
+
+  useEffect(() => {
+    const getMeFromReEarth = await fetch({
+      url: window.REEARTH_CONFIG.reearthApi + "/graphql",
+      method: "POST",
+      data: JSON.stringify({
+        "query": `query { me { teams { id, name, projects(first:100) { nodes { id, name } } } } }`
+      }),
+      headers: {
+        Authorization: `Bearer ${token}`
+        'Content-Type': 'application/json',
+      }
+    }).then(r => r.json());
+    console.log(getMeFromReEarth);
+  }, []);
+  
 
   return {
     plugin,

@@ -11,7 +11,12 @@ type Props = {
   onCancel: () => void;
   handleClickChoose: (projectId: string) => void;
 };
-const ModalContent: React.FC<Props> = ({ title, visible, onCancel, handleClickChoose }) => {
+const ModalContent: React.FC<Props> = ({
+  title,
+  visible,
+  onCancel,
+  handleClickChoose,
+}) => {
   const [projectId, selectProject] = useState<string>("");
   const projects = [
     {
@@ -26,13 +31,14 @@ const ModalContent: React.FC<Props> = ({ title, visible, onCancel, handleClickCh
       onCancel={onCancel}
       okText="Choose"
       okButtonProps={{ disabled: !projectId }}
-      onOk={() => handleClickChoose}>
+      onOk={() => handleClickChoose}
+    >
       <Row>
         <Col>Workspace: </Col>
       </Row>
       <Divider />
       <Row>
-        {projects.map(project => {
+        {projects.map((project) => {
           return (
             <Col span={24} key={project.id}>
               <Button onClick={() => selectProject(project.id)} block>

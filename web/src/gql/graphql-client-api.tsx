@@ -391,7 +391,7 @@ export type PluginQueryVariables = Exact<{
 }>;
 
 
-export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' } | null };
+export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' } | null };
 
 export type SearchPluginQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -447,7 +447,7 @@ export type ParsePluginMutationVariables = Exact<{
 }>;
 
 
-export type ParsePluginMutation = { __typename?: 'Mutation', parsePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, type: PluginType, name: string, author?: string | null, description?: string | null, icon?: string | null, repository?: string | null, readme: string } } };
+export type ParsePluginMutation = { __typename?: 'Mutation', parsePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, type: PluginType, name: string, author?: string | null, description?: string | null, icon?: string | null, repository?: string | null, readme: string, latestVersion?: { __typename?: 'Version', version: string } | null } } };
 
 export type UpdatePluginVersionMutationVariables = Exact<{
   pluginId: Scalars['ID'];
@@ -465,7 +465,7 @@ export type GetMeQueryVariables = Exact<{
 }>;
 
 
-export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, name: string, displayName?: string | null, description?: string | null, plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, readme: string, icon?: string | null, active: boolean, publishedAt: Date, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } } };
+export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, name: string, displayName?: string | null, description?: string | null, plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, readme: string, icon?: string | null, active: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } } };
 
 export type UpdateMeMutationVariables = Exact<{
   name?: InputMaybe<Scalars['String']>;
@@ -493,6 +493,7 @@ export const PluginDocument = gql`
       readme
       description
       liked
+      updatedAt
       latestVersion {
         version
       }
@@ -757,6 +758,9 @@ export const ParsePluginDocument = gql`
       icon
       repository
       readme
+      latestVersion {
+        version
+      }
     }
   }
 }
@@ -864,7 +868,6 @@ export const GetMeDocument = gql`
           version
         }
         active
-        publishedAt
         updatedAt
       }
       pageInfo {

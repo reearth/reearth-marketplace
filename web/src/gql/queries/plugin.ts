@@ -14,6 +14,7 @@ export const PLUGIN = gql`
         readme
         description
         liked
+        updatedAt
         latestVersion {
           version
         }
@@ -141,6 +142,9 @@ export const PARSE_PLUGIN = gql`
         icon
         repository
         readme
+        latestVersion {
+          version
+        }
       }
     }
   }

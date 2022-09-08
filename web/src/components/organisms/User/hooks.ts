@@ -6,7 +6,7 @@ import { type Plugin } from "./";
 export default () => {
   const { data } = useGetMeQuery({
     variables: {
-      first: 0,
+      first: 50,
     },
   });
 

@@ -60,6 +60,9 @@ export default () => {
               ? parsedData.parsePlugin.plugin.description
               : "",
             readme: parsedData.parsePlugin.plugin.readme,
+            version: parsedData.parsePlugin.plugin.latestVersion?.version
+              ? parsedData.parsePlugin.plugin.latestVersion?.version
+              : "",
           }
         : undefined,
     [parsedData?.parsePlugin.plugin]

@@ -19,6 +19,7 @@ const PluginDetail: React.FC<Props> = ({
   const { plugin, onLike, onUnlike } = useHooks(pluginId ? pluginId : "");
 
   const handleClickLike = (isLiked: boolean) => {
+    console.log(pluginId);
     isLiked
       ? onUnlike(pluginId ? pluginId : "")
       : onLike(pluginId ? pluginId : "");
@@ -37,6 +38,7 @@ const PluginDetail: React.FC<Props> = ({
       readme={plugin ? plugin.readme : ""}
       images={plugin ? plugin.images : []}
       downloads={plugin ? plugin.downloads : 0}
+      updatedDate={plugin ? plugin.updatedAt : undefined}
       handleClickLike={handleClickLike}
       handleClickChoose={handleClickChoose}
       onInstall={onInstall}

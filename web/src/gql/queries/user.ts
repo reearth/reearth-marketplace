@@ -21,7 +21,7 @@ export const GET_ME = gql`
             version
           }
           active
-          publishedAt
+          # publishedAt
           updatedAt
         }
         pageInfo {

@@ -20,22 +20,22 @@ const AddNewPlugin: React.FC<Props> = () => {
   const handleUploadImages = (image: UploadRequestOption) => {
     uploadImages([...uploadedImages, image.file]);
   };
-  const handleClickSave = () => {
+  const handleClickSave = async () => {
     uploadedFile
-      ? handleCreatePluginMutation({
+      ? await handleCreatePluginMutation({
           file: uploadedFile,
           repo: undefined,
         })
-      : handleCreatePluginMutation({
+      : await handleCreatePluginMutation({
           file: undefined,
           repo: githubUrl,
         });
     uploadImages.length > 0 &&
       parsedPlugin &&
-      handleUpdatePluginMutation({
+      (await handleUpdatePluginMutation({
         id: parsedPlugin.id,
         images: uploadedImages,
-      });
+      }));
   };
   const handleClickPublish = () => {
     handleUpdatePluginMutation({
@@ -62,7 +62,7 @@ const AddNewPlugin: React.FC<Props> = () => {
   return (
     <AddNewPluginPage
       pluginName={parsedPlugin ? parsedPlugin.name : ""}
-      version=""
+      version={parsedPlugin ? parsedPlugin.version : ""}
       uploadedFile={uploadedFile}
       description={parsedPlugin ? parsedPlugin.description : ""}
       githubUrl={githubUrl}
