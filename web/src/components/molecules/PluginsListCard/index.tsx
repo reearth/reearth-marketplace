@@ -5,7 +5,6 @@ import Image from "@marketplace/components/atoms/Image";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import { styled } from "@marketplace/theme";
-import Image from "@marketplace/components/atoms/Image";
 
 export type Props = {
   loading?: boolean;
