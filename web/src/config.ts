@@ -5,7 +5,7 @@ declare global {
 }
 
 export const defaultConfig: Config = {
-  marketplaceApi: import.meta.env.REEARTH_MARKETPLACE_API || "/api",
+  marketplaceApi: import.meta.env.REEARTH_API || "/api",
   authAudience: import.meta.env.REEARTH_AUTH_AUDIENCE,
   authDomain: import.meta.env.REEARTH_AUTH_DOMAIN,
   authClientId: import.meta.env.REEARTH_AUTH_CLIENT_ID,

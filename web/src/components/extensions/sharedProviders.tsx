@@ -17,9 +17,7 @@ export default function SharedProviders({
 }) {
   return (
     <I18nProvider>
-      <GqlProvider
-        accessToken={accessToken}
-        api={import.meta.env.REEARTH_MARKETPLACE_API || "/api"}>
+      <GqlProvider accessToken={accessToken} api={import.meta.env.REEARTH_API || "/api"}>
         <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </GqlProvider>
     </I18nProvider>
