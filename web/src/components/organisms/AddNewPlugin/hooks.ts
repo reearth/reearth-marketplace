@@ -3,7 +3,7 @@ import {
   useCreatePluginMutation,
   useParsePluginMutation,
   useUpdatePluginMutation,
-} from "@marketplace/gql/graphql-client-api";
+} from "@marketplace/gql";
 import { useCallback, useMemo } from "react";
 
 export default () => {

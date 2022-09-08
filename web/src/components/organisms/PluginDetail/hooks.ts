@@ -4,7 +4,8 @@ import {
   usePluginQuery,
   useLikePluginMutation,
   useUnlikePluginMutation,
-} from "@marketplace/gql/graphql-client-api";
+  NodeType,
+} from "@marketplace/gql";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default (pluginId: string) => {
@@ -13,6 +14,7 @@ export default (pluginId: string) => {
   const { data, refetch } = usePluginQuery({
     variables: {
       id: pluginId,
+      type: NodeType.Plugin,
     },
   });
 

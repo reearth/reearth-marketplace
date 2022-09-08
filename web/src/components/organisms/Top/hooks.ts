@@ -4,7 +4,7 @@ import {
   useLikePluginMutation,
   useUnlikePluginMutation,
   PluginSort,
-} from "@marketplace/gql/graphql-client-api";
+} from "@marketplace/gql";
 import { useCallback, useMemo } from "react";
 
 export { PluginSort };

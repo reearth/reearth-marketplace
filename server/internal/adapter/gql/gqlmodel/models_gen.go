@@ -169,6 +169,47 @@ type VersionPayload struct {
 	Version *Version `json:"version"`
 }
 
+type NodeType string
+
+const (
+	NodeTypePlugin NodeType = "PLUGIN"
+	NodeTypeUser   NodeType = "USER"
+)
+
+var AllNodeType = []NodeType{
+	NodeTypePlugin,
+	NodeTypeUser,
+}
+
+func (e NodeType) IsValid() bool {
+	switch e {
+	case NodeTypePlugin, NodeTypeUser:
+		return true
+	}
+	return false
+}
+
+func (e NodeType) String() string {
+	return string(e)
+}
+
+func (e *NodeType) UnmarshalGQL(v interface{}) error {
+	str, ok := v.(string)
+	if !ok {
+		return fmt.Errorf("enums must be strings")
+	}
+
+	*e = NodeType(str)
+	if !e.IsValid() {
+		return fmt.Errorf("%s is not a valid NodeType", str)
+	}
+	return nil
+}
+
+func (e NodeType) MarshalGQL(w io.Writer) {
+	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
 type PluginSort string
 
 const (
