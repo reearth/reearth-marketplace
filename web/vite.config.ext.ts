@@ -12,7 +12,7 @@ import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  envPrefix: "REEARTH_",
+  envPrefix: "REEARTH_MARKETPLACE_",
   css: {
     preprocessorOptions: {
       less: {

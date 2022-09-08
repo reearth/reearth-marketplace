@@ -9,7 +9,7 @@ import { defineConfig, type Plugin } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  envPrefix: "REEARTH_",
+  envPrefix: "REEARTH_MARKETPLACE_",
   plugins: [react(), yaml(), serverHeaders()],
   resolve: {
     alias: [{ find: "@marketplace", replacement: resolve(__dirname, "src") }],
