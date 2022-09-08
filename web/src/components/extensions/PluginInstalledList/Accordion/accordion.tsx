@@ -7,7 +7,6 @@ export type Props = {
   items?: AccordionItemType[];
   allowZeroExpanded?: boolean;
   allowMultipleExpanded?: boolean;
-  itemBgColor?: string;
 };
 
 export type AccordionItemType = {
@@ -21,7 +20,6 @@ const Accordion: React.FC<Props> = ({
   items,
   allowMultipleExpanded,
   allowZeroExpanded = true,
-  itemBgColor,
 }) => {
   return (
     <AccordionComponent
@@ -30,15 +28,7 @@ const Accordion: React.FC<Props> = ({
       data-testid="atoms-accordion"
       allowMultipleExpanded={allowMultipleExpanded}>
       {items?.map(i => {
-        return (
-          <AccordionItem
-            key={i.id}
-            id={i.id}
-            heading={i.heading}
-            content={i.content}
-            bg={itemBgColor}
-          />
-        );
+        return <AccordionItem key={i.id} id={i.id} heading={i.heading} content={i.content} />;
       })}
     </AccordionComponent>
   );
