@@ -21,7 +21,7 @@ type Me struct {
 func (*Me) IsPublisher() {}
 
 func (m *Me) ID() string {
-	return "u:" + m.id.String()
+	return m.id.String()
 }
 
 func (m *Me) Plugins(ctx context.Context, first *int, last *int, before *string, after *string) (*PluginConnection, error) {

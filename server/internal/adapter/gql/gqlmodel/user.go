@@ -21,7 +21,7 @@ func (*User) IsNode()      {}
 func (*User) IsPublisher() {}
 
 func (u *User) ID() string {
-	return "u:" + u.id.String()
+	return u.id.String()
 }
 
 func (u *User) Plugins(ctx context.Context, first *int, last *int, before *string, after *string) (*PluginConnection, error) {
