@@ -15,7 +15,7 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
       first: 50,
       // TODO: fill variables here
       keyword: searchText,
-      liked: liked ? liked : false,
+      liked: liked || undefined,
       // tags: [],
       // types: [],
       // publisher: "",
@@ -35,7 +35,7 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
       });
       await refetch();
     },
-    [likePlugin, refetch]
+    [likePlugin, refetch],
   );
 
   const onUnlike = useCallback(
@@ -47,7 +47,7 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
       });
       await refetch();
     },
-    [unlikePlugin, refetch]
+    [unlikePlugin, refetch],
   );
   console.log(data);
 
@@ -64,10 +64,10 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
                 like: p.like,
                 downloads: p.downloads,
               }
-            : undefined
+            : undefined,
         )
         .filter((p): p is Plugin => !!p),
-    [data?.plugins]
+    [data?.plugins],
   );
 
   return {
