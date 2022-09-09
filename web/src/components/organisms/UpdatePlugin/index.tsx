@@ -4,7 +4,6 @@ import { UploadRequestOption } from "rc-upload/lib/interface";
 import React, { useState } from "react";
 
 import useHooks from "./hooks";
-import { useParams } from "react-router-dom";
 
 export type Props = {
   pluginId?: string;
@@ -22,7 +21,6 @@ const UpdatePlugin: React.FC<Props> = ({ pluginId }) => {
   const [uploadedFile, uploadZip] = useState<FileUploadType>();
   // TODO: use Antd's file upload after backend ready
   const [uploadedImages, uploadImages] = useState<any[]>([]);
-  const params = useParams();
   const handleUploadImages = (image: UploadRequestOption) => {
     uploadImages([...uploadedImages, image.file]);
   };
