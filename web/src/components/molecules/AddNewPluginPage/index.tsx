@@ -9,6 +9,8 @@ export type Props = {
   description: string;
   version: string;
   githubUrl?: string;
+  isSaveLoading: boolean;
+  isPublishLoading: boolean;
   handleChangeGithubUrl: (url: string) => void;
   handleParsePlugin: (file?: FileUploadType) => void;
   handleClickSave: () => void;
@@ -20,6 +22,8 @@ const AddNewPluginPage: React.FC<Props> = ({
   description,
   version,
   githubUrl,
+  isSaveLoading,
+  isPublishLoading,
   handleChangeGithubUrl,
   handleParsePlugin,
   handleClickSave,
@@ -33,6 +37,8 @@ const AddNewPluginPage: React.FC<Props> = ({
         description={description}
         version={version}
         githubUrl={githubUrl}
+        isSaveLoading={isSaveLoading}
+        isPublishLoading={isPublishLoading}
         handleChangeGithubUrl={handleChangeGithubUrl}
         handleParsePlugin={handleParsePlugin}
         handleClickSave={handleClickSave}
