@@ -19,7 +19,7 @@ export default () => {
         },
       });
     },
-    [createPluginMutation],
+    [createPluginMutation]
   );
 
   const handleParsePluginMutation = useCallback(
@@ -31,7 +31,7 @@ export default () => {
         },
       });
     },
-    [parsePluginMutation],
+    [parsePluginMutation]
   );
 
   const handleUpdatePluginMutation = useCallback(
@@ -44,7 +44,7 @@ export default () => {
         },
       });
     },
-    [updatePluginMutation],
+    [updatePluginMutation]
   );
 
   const parsedPlugin = useMemo(
@@ -63,7 +63,7 @@ export default () => {
               : "",
           }
         : undefined,
-    [parsedData?.parsePlugin.plugin],
+    [parsedData?.parsePlugin.plugin]
   );
 
   return {

@@ -19,9 +19,8 @@ export default () => {
             description: data.me ? data.me.description : "",
           }
         : undefined,
-    [data?.me],
+    [data?.me]
   );
-
   const plugins = useMemo(
     () =>
       data?.me.plugins.nodes
@@ -36,10 +35,10 @@ export default () => {
                 downloads: p.downloads,
                 author: p.author ? p.author : "",
               }
-            : undefined,
+            : undefined
         )
         .filter((p): p is Plugin => !!p),
-    [data?.me.plugins.nodes],
+    [data?.me.plugins.nodes]
   );
 
   return {

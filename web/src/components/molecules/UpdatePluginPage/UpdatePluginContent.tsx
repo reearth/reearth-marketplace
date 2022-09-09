@@ -66,7 +66,8 @@ const UpdatePluginContent: React.FC<Props> = ({
         defaultActiveKey={currentTab}
         tabBarStyle={{ margin: 0 }}
         activeKey={currentTab}
-        onChange={handleClickDetailSetting}>
+        onChange={handleClickDetailSetting}
+      >
         <TabPane tab="Package" key="1">
           <PackageArea
             githubUrl={githubUrl}

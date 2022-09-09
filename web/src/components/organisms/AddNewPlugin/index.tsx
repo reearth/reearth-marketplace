@@ -2,8 +2,8 @@ import AddNewPluginPage from "@marketplace/components/molecules/AddNewPluginPage
 import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { useState } from "react";
-
 import useHooks from "./hooks";
+import Message from "@marketplace/components/atoms/Message";
 
 export type Props = {};
 const AddNewPlugin: React.FC<Props> = () => {
@@ -36,20 +36,23 @@ const AddNewPlugin: React.FC<Props> = () => {
       (await handleUpdatePluginMutation({
         id: parsedPlugin.id,
         images: uploadedImages,
-      }));
+        active: false,
+      }).catch(Message.error("Something went wrong on saving ")));
   };
-  const handleClickPublish = () => {
-    handleUpdatePluginMutation({
+  const handleClickPublish = async () => {
+    await handleUpdatePluginMutation({
       id: parsedPlugin ? parsedPlugin.id : "",
-    });
+      images: uploadedImages,
+      active: true,
+    }).catch(Message.error("Something went wrong on your publishment "));
   };
   // When Github Url Input
-  const handleChangeGithubUrl = (url: string) => {
+  const handleChangeGithubUrl = async (url: string) => {
     changeGithubUrl(url);
-    handleParsePluginMutation({
+    await handleParsePluginMutation({
       file: undefined,
       repo: url,
-    });
+    }).catch(Message.error("Something went wrong on your URL "));
   };
   // When Zip File Uploaded
   const handleParsePlugin = (file?: FileUploadType) => {
@@ -57,14 +60,13 @@ const AddNewPlugin: React.FC<Props> = () => {
     handleParsePluginMutation({
       file: file,
       repo: undefined,
-    });
+    }).catch(Message.error("Something went wrong on your file "));
   };
 
   return (
     <AddNewPluginPage
       pluginName={parsedPlugin ? parsedPlugin.name : ""}
       version={parsedPlugin ? parsedPlugin.version : ""}
-      uploadedFile={uploadedFile}
       description={parsedPlugin ? parsedPlugin.description : ""}
       githubUrl={githubUrl}
       handleChangeGithubUrl={handleChangeGithubUrl}

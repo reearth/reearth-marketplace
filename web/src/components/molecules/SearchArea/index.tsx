@@ -26,38 +26,39 @@ export type Props = {
 //   },
 // ];
 
-const orderMenuItems: Array<{ label: string; key: number; value: PluginSort }> = [
-  {
-    label: "ダウンロード数降順",
-    key: 1,
-    value: PluginSort.DownloadsAsc,
-  },
-  {
-    label: "ダウンロード数昇順",
-    key: 2,
-    value: PluginSort.DownloadsDesc,
-  },
-  {
-    label: "名前降順",
-    key: 3,
-    value: PluginSort.NameAsc,
-  },
-  {
-    label: "名前昇順",
-    key: 4,
-    value: PluginSort.NameDesc,
-  },
-  {
-    label: "公開日降順",
-    key: 5,
-    value: PluginSort.PublishedatAsc,
-  },
-  {
-    label: "公開日昇順",
-    key: 6,
-    value: PluginSort.PublishedatDesc,
-  },
-];
+const orderMenuItems: Array<{ label: string; key: number; value: PluginSort }> =
+  [
+    {
+      label: "ダウンロード数降順",
+      key: 1,
+      value: PluginSort.DownloadsAsc,
+    },
+    {
+      label: "ダウンロード数昇順",
+      key: 2,
+      value: PluginSort.DownloadsDesc,
+    },
+    {
+      label: "名前降順",
+      key: 3,
+      value: PluginSort.NameAsc,
+    },
+    {
+      label: "名前昇順",
+      key: 4,
+      value: PluginSort.NameDesc,
+    },
+    {
+      label: "公開日降順",
+      key: 5,
+      value: PluginSort.PublishedatAsc,
+    },
+    {
+      label: "公開日昇順",
+      key: 6,
+      value: PluginSort.PublishedatDesc,
+    },
+  ];
 
 const SearchArea: React.FC<Props> = ({
   onSearch,
@@ -73,12 +74,14 @@ const SearchArea: React.FC<Props> = ({
   //   updateDisplayMenuState(Number(e.key));
   // };
 
-  const handleOrderMenuClick: MenuProps["onClick"] = e => {
+  const handleOrderMenuClick: MenuProps["onClick"] = (e) => {
     updateOrderMenuState(Number(e.key));
   };
 
   // const displayMenu = <Menu onClick={handleDisplayMenuClick} items={displayMenuItems} />;
-  const orderMenu = <Menu onClick={handleOrderMenuClick} items={orderMenuItems} />;
+  const orderMenu = (
+    <Menu onClick={handleOrderMenuClick} items={orderMenuItems} />
+  );
 
   return (
     <StyledSpace size={16}>
@@ -103,7 +106,8 @@ const SearchArea: React.FC<Props> = ({
       {isLoggedIn ? (
         <Button
           onClick={() => handleFavButtonClick(!isFavSelected)}
-          style={{ color: isFavSelected ? "#f57c4b" : "" }}>
+          style={{ color: isFavSelected ? "#f57c4b" : "" }}
+        >
           <Space size="small">
             お気に入り
             <Icon icon="heart" />
