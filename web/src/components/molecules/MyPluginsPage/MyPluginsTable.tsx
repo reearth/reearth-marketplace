@@ -23,7 +23,7 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
       title: "Plugin Name",
       dataIndex: "name",
       key: "name",
-      render: text => <BoldTitle>{text}</BoldTitle>,
+      render: (text) => <BoldTitle>{text}</BoldTitle>,
     },
     {
       title: "Status",
@@ -62,7 +62,7 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
       title: "Action",
       key: "action",
       dataIndex: "id",
-      render: id => {
+      render: (id) => {
         return (
           <Row justify="space-around" style={{ maxWidth: "200px" }}>
             {/* <Col>
@@ -85,11 +85,11 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
                 />
               </Popover>
             </Col>
-            <Col>
+            {/* <Col>
               <Popover content="setting">
                 <Button type="link" size="middle" icon={<Icon icon="setting" />} />
               </Popover>
-            </Col>
+            </Col> */}
           </Row>
         );
       },
