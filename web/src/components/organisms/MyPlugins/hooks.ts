@@ -1,4 +1,4 @@
-import { useGetMeQuery, useUpdatePluginMutation } from "@marketplace/gql/graphql-client-api";
+import { useGetMeQuery, useUpdatePluginMutation } from "@marketplace/gql";
 import { useCallback, useMemo } from "react";
 
 import { type Plugin } from "./";

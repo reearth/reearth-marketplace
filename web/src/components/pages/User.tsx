@@ -1,12 +1,14 @@
 import { AuthenticationRequiredPage } from "@marketplace/auth";
 import UserOrganism from "@marketplace/components/organisms/User";
 
-export type Props = {};
+export type Props = {
+  onPluginSelect?: (pluginId: string) => void;
+};
 
-const User: React.FC<Props> = () => {
+const User: React.FC<Props> = ({ onPluginSelect }) => {
   return (
     <AuthenticationRequiredPage>
-      <UserOrganism />
+      <UserOrganism onPluginSelect={onPluginSelect} />
     </AuthenticationRequiredPage>
   );
 };

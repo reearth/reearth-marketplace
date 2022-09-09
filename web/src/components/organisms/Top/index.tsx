@@ -6,9 +6,10 @@ import useHooks from "./hooks";
 
 export type Props = {
   showBanner?: boolean;
+  onPluginSelect?: (pluginId: string) => void;
 };
 
-const Top: React.FC<Props> = ({ showBanner }) => {
+const Top: React.FC<Props> = ({ showBanner, onPluginSelect }) => {
   const { isAuthenticated } = useAuth();
   const [searchText, updateSearchText] = useState<string>("");
   const [isFavSelected, toggleLiked] = useState<boolean>(false);
@@ -27,6 +28,7 @@ const Top: React.FC<Props> = ({ showBanner }) => {
       isLoggedIn={isAuthenticated}
       handleFavButtonClick={handleFavButtonClick}
       isFavSelected={isFavSelected}
+      onPluginSelect={onPluginSelect}
     />
   );
 };

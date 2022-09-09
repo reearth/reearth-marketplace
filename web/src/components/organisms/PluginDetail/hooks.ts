@@ -1,10 +1,6 @@
 import { useAuth } from "@marketplace/auth";
 import { Workspace } from "@marketplace/components/molecules/PluginDetailPage";
-import {
-  usePluginQuery,
-  useLikePluginMutation,
-  useUnlikePluginMutation,
-} from "@marketplace/gql/graphql-client-api";
+import { usePluginQuery, useLikePluginMutation, useUnlikePluginMutation } from "@marketplace/gql";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 export default (pluginId: string) => {
@@ -43,7 +39,6 @@ export default (pluginId: string) => {
     },
     [unlikePlugin, refetch],
   );
-  console.log(data);
 
   const plugin = useMemo(
     () =>
@@ -100,10 +95,10 @@ export default (pluginId: string) => {
   }, [auth, modalVisible]);
 
   const onPluginInstall = useCallback(
-    (workspaceId: string, projectId: string) => {
+    (_workspaceId: string, projectId: string) => {
       location.href =
         (window.REEARTH_MARKETPLACE_CONFIG?.reearthWeb ?? "") +
-        `/settings/projects/${projectId}/plugins/plugins/${pluginId}`;
+        `/settings/projects/${projectId}/plugins?pluginId=${pluginId}`;
     },
     [pluginId],
   );

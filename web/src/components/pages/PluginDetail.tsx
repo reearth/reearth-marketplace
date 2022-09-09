@@ -5,15 +5,17 @@ export type Props = {
   selectedPluginId?: string;
   accessToken?: string;
   onInstall?: (pluginId: string) => void;
+  onBack?: () => void;
 };
 
-const PluginDetail: React.FC<Props> = ({ selectedPluginId, accessToken, onInstall }) => {
+const PluginDetail: React.FC<Props> = ({ selectedPluginId, accessToken, onInstall, onBack }) => {
   const { pluginId } = useParams();
   return (
     <PluginDetailOrg
       pluginId={selectedPluginId ?? pluginId}
       accessToken={accessToken}
       onPluginInstall={onInstall}
+      onBack={onBack}
     />
   );
 };

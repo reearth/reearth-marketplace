@@ -71,7 +71,6 @@ const SearchArea: React.FC<Props> = ({
   const [_, updateOrderMenuState] = useState(1);
 
   // const handleDisplayMenuClick: MenuProps["onClick"] = (e) => {
-  //   console.log("click", e);
   //   updateDisplayMenuState(Number(e.key));
   // };
 

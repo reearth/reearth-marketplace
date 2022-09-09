@@ -10,6 +10,7 @@ import (
 type User interface {
 	Update(ctx context.Context, user *user.User, param UpdateUserParam) (*user.User, error)
 	FindByID(ctx context.Context, id id.UserID) (*user.User, error)
+	FindByIDs(ctx context.Context, ids []id.UserID) ([]*user.User, error)
 }
 
 type UpdateUserParam struct {

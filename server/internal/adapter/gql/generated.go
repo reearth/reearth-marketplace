@@ -151,8 +151,8 @@ type ComplexityRoot struct {
 
 	Query struct {
 		Me      func(childComplexity int) int
-		Node    func(childComplexity int, id string) int
-		Nodes   func(childComplexity int, ids []string) int
+		Node    func(childComplexity int, id string, typeArg gqlmodel.NodeType) int
+		Nodes   func(childComplexity int, ids []string, typeArg gqlmodel.NodeType) int
 		Plugins func(childComplexity int, input gqlmodel.PluginsInput) int
 	}
 
@@ -199,8 +199,8 @@ type MutationResolver interface {
 }
 type QueryResolver interface {
 	Me(ctx context.Context) (*gqlmodel.Me, error)
-	Node(ctx context.Context, id string) (gqlmodel.Node, error)
-	Nodes(ctx context.Context, ids []string) ([]gqlmodel.Node, error)
+	Node(ctx context.Context, id string, typeArg gqlmodel.NodeType) (gqlmodel.Node, error)
+	Nodes(ctx context.Context, ids []string, typeArg gqlmodel.NodeType) ([]gqlmodel.Node, error)
 	Plugins(ctx context.Context, input gqlmodel.PluginsInput) (*gqlmodel.PluginConnection, error)
 }
 
@@ -761,7 +761,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Node(childComplexity, args["id"].(string)), true
+		return e.complexity.Query.Node(childComplexity, args["id"].(string), args["type"].(gqlmodel.NodeType)), true
 
 	case "Query.nodes":
 		if e.complexity.Query.Nodes == nil {
@@ -773,7 +773,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Query.Nodes(childComplexity, args["ids"].([]string)), true
+		return e.complexity.Query.Nodes(childComplexity, args["ids"].([]string), args["type"].(gqlmodel.NodeType)), true
 
 	case "Query.plugins":
 		if e.complexity.Query.Plugins == nil {
@@ -999,6 +999,11 @@ interface Node {
   id: ID!
 }
 
+enum NodeType {
+  PLUGIN
+  USER
+}
+
 enum PluginType {
   REEARTH
   REEARTH_CMS
@@ -1125,8 +1130,8 @@ type Me implements Publisher {
 # Queries except "me" do not require access tokens
 type Query {
   me: Me!
-  node(id: ID!): Node
-  nodes(ids: [ID!]!): [Node!]!
+  node(id: ID!, type: NodeType!): Node
+  nodes(ids: [ID!]!, type: NodeType!): [Node!]!
   plugins(input: PluginsInput!): PluginConnection!
 }
 
@@ -1609,6 +1614,15 @@ func (ec *executionContext) field_Query_node_args(ctx context.Context, rawArgs m
 		}
 	}
 	args["id"] = arg0
+	var arg1 gqlmodel.NodeType
+	if tmp, ok := rawArgs["type"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
+		arg1, err = ec.unmarshalNNodeType2githubᚗcomᚋreearthᚋreearthᚑmarketplaceᚋserverᚋinternalᚋadapterᚋgqlᚋgqlmodelᚐNodeType(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["type"] = arg1
 	return args, nil
 }
 
@@ -1624,6 +1638,15 @@ func (ec *executionContext) field_Query_nodes_args(ctx context.Context, rawArgs 
 		}
 	}
 	args["ids"] = arg0
+	var arg1 gqlmodel.NodeType
+	if tmp, ok := rawArgs["type"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("type"))
+		arg1, err = ec.unmarshalNNodeType2githubᚗcomᚋreearthᚋreearthᚑmarketplaceᚋserverᚋinternalᚋadapterᚋgqlᚋgqlmodelᚐNodeType(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["type"] = arg1
 	return args, nil
 }
 
@@ -5076,7 +5099,7 @@ func (ec *executionContext) _Query_node(ctx context.Context, field graphql.Colle
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Node(rctx, fc.Args["id"].(string))
+		return ec.resolvers.Query().Node(rctx, fc.Args["id"].(string), fc.Args["type"].(gqlmodel.NodeType))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -5128,7 +5151,7 @@ func (ec *executionContext) _Query_nodes(ctx context.Context, field graphql.Coll
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Nodes(rctx, fc.Args["ids"].([]string))
+		return ec.resolvers.Query().Nodes(rctx, fc.Args["ids"].([]string), fc.Args["type"].(gqlmodel.NodeType))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -10260,6 +10283,16 @@ func (ec *executionContext) marshalNNode2ᚕgithubᚗcomᚋreearthᚋreearthᚑm
 	}
 
 	return ret
+}
+
+func (ec *executionContext) unmarshalNNodeType2githubᚗcomᚋreearthᚋreearthᚑmarketplaceᚋserverᚋinternalᚋadapterᚋgqlᚋgqlmodelᚐNodeType(ctx context.Context, v interface{}) (gqlmodel.NodeType, error) {
+	var res gqlmodel.NodeType
+	err := res.UnmarshalGQL(v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNNodeType2githubᚗcomᚋreearthᚋreearthᚑmarketplaceᚋserverᚋinternalᚋadapterᚋgqlᚋgqlmodelᚐNodeType(ctx context.Context, sel ast.SelectionSet, v gqlmodel.NodeType) graphql.Marshaler {
+	return v
 }
 
 func (ec *executionContext) marshalNOrganization2ᚕᚖgithubᚗcomᚋreearthᚋreearthᚑmarketplaceᚋserverᚋinternalᚋadapterᚋgqlᚋgqlmodelᚐOrganizationᚄ(ctx context.Context, sel ast.SelectionSet, v []*gqlmodel.Organization) graphql.Marshaler {

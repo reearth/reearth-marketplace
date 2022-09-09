@@ -6,8 +6,11 @@ import React, { useState } from "react";
 import useHooks from "./hooks";
 import { useParams } from "react-router-dom";
 
-export type Props = {};
-const UpdatePlugin: React.FC<Props> = () => {
+export type Props = {
+  pluginId?: string;
+};
+
+const UpdatePlugin: React.FC<Props> = ({ pluginId }) => {
   const {
     parsedPlugin,
     handleParsePluginMutation,
@@ -36,24 +39,15 @@ const UpdatePlugin: React.FC<Props> = () => {
           repo: githubUrl,
         })
       : null;
-    console.log(uploadedImages.length);
     uploadImages.length > 0 &&
       (await handleUpdatePluginMutation({
-        id: parsedPlugin
-          ? parsedPlugin.id
-          : params.pluginId
-          ? params.pluginId
-          : "",
+        id: parsedPlugin ? parsedPlugin.id : pluginId || "",
         images: uploadedImages,
       }));
   };
   const handleClickPublish = () => {
     handleUpdatePluginMutation({
-      id: parsedPlugin
-        ? parsedPlugin.id
-        : params.pluginId
-        ? params.pluginId
-        : "",
+      id: parsedPlugin ? parsedPlugin.id : pluginId || "",
       active: true,
       images: uploadedImages,
     });

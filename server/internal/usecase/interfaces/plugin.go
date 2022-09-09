@@ -18,6 +18,7 @@ var (
 
 type Plugin interface {
 	FindByID(ctx context.Context, id id.PluginID) (*plugin.VersionedPlugin, error)
+	FindByIDs(ctx context.Context, ids []id.PluginID) ([]*plugin.VersionedPlugin, error)
 	Parse(ctx context.Context, publisher *user.User, r io.Reader) (*plugin.VersionedPlugin, error)
 	ParseFromRepo(ctx context.Context, publisher *user.User, repo *string) (*plugin.VersionedPlugin, error)
 	Create(ctx context.Context, publisher *user.User, r io.Reader) (*plugin.VersionedPlugin, error)
@@ -29,13 +30,14 @@ type Plugin interface {
 	UpdateVersion(ctx context.Context, user *user.User, param UpdatePluginVersionParam) (*plugin.VersionedPlugin, error)
 	Versions(ctx context.Context, id id.PluginID) ([]*plugin.Version, error)
 	ImageURL(ctx context.Context, name string) string
-	List(ctx context.Context, uid id.UserID, param ListPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error)
+	List(ctx context.Context, uid *id.UserID, param ListPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error)
 	Liked(ctx context.Context, user *user.User, id id.PluginID) (bool, error)
 	Download(ctx context.Context, id id.PluginID, version string) ([]byte, error)
 	DownloadLatest(ctx context.Context, id id.PluginID) ([]byte, error)
 }
 
 type UpdatePluginParam struct {
+	Publisher   *user.User
 	PluginID    id.PluginID
 	Active      *bool
 	Images      []io.ReadSeeker

@@ -16,7 +16,6 @@ import (
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin"
-	"github.com/reearth/reearth-marketplace/server/pkg/user"
 	"github.com/reearth/reearthx/mongox"
 	"github.com/reearth/reearthx/rerror"
 	"github.com/reearth/reearthx/usecasex"
@@ -30,11 +29,11 @@ type pluginRepo struct {
 	client *mongox.Client
 }
 
-func (r *pluginRepo) Liked(ctx context.Context, user *user.User, id plugin.ID) (bool, error) {
+func (r *pluginRepo) Liked(ctx context.Context, user id.UserID, id plugin.ID) (bool, error) {
 	var c mongox.SliceConsumer[mongodoc.PluginLikeDocument]
 	err := r.pluginLikeClient().FindOne(
 		ctx,
-		bson.M{"userId": user.ID().String(), "pluginId": id.String()},
+		bson.M{"userId": user.String(), "pluginId": id.String()},
 		&c,
 	)
 	if err == nil {
@@ -48,13 +47,20 @@ func (r *pluginRepo) Liked(ctx context.Context, user *user.User, id plugin.ID) (
 
 func (r *pluginRepo) FindByVersion(ctx context.Context, id plugin.ID, version string) (*plugin.VersionedPlugin, error) {
 	var pc mongodoc.PluginConsumer
-	if err := r.pluginClient().FindOne(ctx, bson.M{"id": id}, &pc); err != nil {
+	if err := r.pluginClient().FindOne(ctx, bson.M{
+		"id": id.String(),
+	}, &pc); err != nil {
 		return nil, err
 	}
+
 	var pvc mongox.SliceConsumer[mongodoc.PluginVersionDocument]
-	if err := r.pluginVersionClient().FindOne(ctx, bson.M{"pluginId": id, "version": version}, &pvc); err != nil {
+	if err := r.pluginVersionClient().FindOne(ctx, bson.M{
+		"pluginId": id.String(),
+		"version":  version,
+	}, &pvc); err != nil {
 		return nil, err
 	}
+
 	pvd := pvc.Result[0]
 	return plugin.Versioned(pc.Rows[0]).
 		Version(pvd.Version).
@@ -136,10 +142,26 @@ func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) (err
 
 func (r *pluginRepo) FindByID(ctx context.Context, id plugin.ID) (*plugin.Plugin, error) {
 	var consumer mongodoc.PluginConsumer
-	if err := r.pluginClient().FindOne(ctx, bson.M{"id": id.String()}, &consumer); err != nil {
+	if err := r.pluginClient().FindOne(ctx, bson.M{
+		"id": id.String(),
+	}, &consumer); err != nil {
 		return nil, err
 	}
 	return consumer.Rows[0], nil
+}
+
+func (r *pluginRepo) FindByIDs(ctx context.Context, ids []plugin.ID) ([]*plugin.Plugin, error) {
+	var consumer mongodoc.PluginConsumer
+	if err := r.pluginClient().Find(ctx, bson.M{
+		"id": bson.M{
+			"$in": lo.Map(ids, func(id plugin.ID, _ int) string {
+				return id.String()
+			}),
+		},
+	}, &consumer); err != nil {
+		return nil, err
+	}
+	return consumer.Rows, nil
 }
 
 func (r *pluginRepo) Save(ctx context.Context, p *plugin.Plugin) error {
@@ -147,7 +169,7 @@ func (r *pluginRepo) Save(ctx context.Context, p *plugin.Plugin) error {
 	return r.pluginClient().SaveOne(ctx, pluginDoc.ID, pluginDoc)
 }
 
-func (r *pluginRepo) Search(ctx context.Context, user *user.User, param *interfaces.SearchPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error) {
+func (r *pluginRepo) Search(ctx context.Context, user *id.UserID, param *interfaces.SearchPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error) {
 	var conditions []bson.M
 	conditions = append(conditions, bson.M{
 		"active": true,
@@ -179,9 +201,9 @@ func (r *pluginRepo) Search(ctx context.Context, user *user.User, param *interfa
 			"type": bson.M{"$in": param.Types},
 		})
 	}
-	if param.Liked != nil {
+	if param.Liked != nil && user != nil {
 		var c mongox.SliceConsumer[mongodoc.PluginLikeDocument]
-		if err := r.pluginLikeClient().Find(ctx, bson.M{"userId": user.ID().String()}, &c); err != nil {
+		if err := r.pluginLikeClient().Find(ctx, bson.M{"userId": user.String()}, &c); err != nil {
 			if !errors.Is(err, rerror.ErrNotFound) && !errors.Is(err, io.EOF) {
 				return nil, nil, err
 			}
@@ -276,10 +298,10 @@ func (r *pluginRepo) Search(ctx context.Context, user *user.User, param *interfa
 	return ps, usecasex.NewPageInfo(int(totalCount), startCursor, endCursor, hasNextPage, hasPreviousPage), nil
 }
 
-func (r *pluginRepo) Like(ctx context.Context, user *user.User, id plugin.ID) error {
-	newPluginLikeDoc := mongodoc.NewPluginLike(user.ID(), id)
+func (r *pluginRepo) Like(ctx context.Context, user id.UserID, id plugin.ID) error {
+	newPluginLikeDoc := mongodoc.NewPluginLike(user, id)
 	err := r.pluginLikeClient().Client().FindOneAndUpdate(ctx,
-		bson.M{"pluginId": id.String(), "userId": user.ID()},
+		bson.M{"pluginId": id.String(), "userId": user.String()},
 		bson.M{"$setOnInsert": newPluginLikeDoc},
 		options.FindOneAndUpdate().SetUpsert(true).SetReturnDocument(options.Before),
 	).Err()
@@ -289,8 +311,8 @@ func (r *pluginRepo) Like(ctx context.Context, user *user.User, id plugin.ID) er
 	return fmt.Errorf("duplicated like")
 }
 
-func (r *pluginRepo) Unlike(ctx context.Context, user *user.User, id plugin.ID) error {
-	return r.pluginLikeClient().RemoveOne(ctx, bson.M{"pluginId": id.String(), "userId": user.ID().String()})
+func (r *pluginRepo) Unlike(ctx context.Context, user id.UserID, id plugin.ID) error {
+	return r.pluginLikeClient().RemoveOne(ctx, bson.M{"pluginId": id.String(), "userId": user.String()})
 }
 
 func (r *pluginRepo) Versions(ctx context.Context, id plugin.ID) ([]*plugin.Version, error) {

@@ -8,6 +8,7 @@ export type PluginItemProps = {
   version?: string;
   author?: string;
   isInstalled?: boolean;
+  updatable?: boolean;
   onInstall?: () => void;
   onUninstall?: () => void;
 };
@@ -19,6 +20,7 @@ const PluginAccordionItemHeader: React.FC<PluginItemProps> = ({
   version,
   author,
   isInstalled,
+  updatable,
   onInstall,
   onUninstall,
 }) => {
@@ -39,7 +41,11 @@ const PluginAccordionItemHeader: React.FC<PluginItemProps> = ({
         </InfoWrapper>
       </InnerWrapper>
       <ButtonWrapper>
-        <Button onClick={isInstalled ? () => onInstall?.() : undefined}>{t("Update")}</Button>
+        <Button
+          disabled={!updatable}
+          onClick={updatable && isInstalled ? () => onInstall?.() : undefined}>
+          {t("Update")}
+        </Button>
         <Button onClick={isInstalled ? () => onUninstall?.() : undefined}>{t("Uninstall")}</Button>
       </ButtonWrapper>
     </Wrapper>

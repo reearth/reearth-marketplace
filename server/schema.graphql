@@ -6,6 +6,11 @@ interface Node {
   id: ID!
 }
 
+enum NodeType {
+  PLUGIN
+  USER
+}
+
 enum PluginType {
   REEARTH
   REEARTH_CMS
@@ -132,8 +137,8 @@ type Me implements Publisher {
 # Queries except "me" do not require access tokens
 type Query {
   me: Me!
-  node(id: ID!): Node
-  nodes(ids: [ID!]!): [Node!]!
+  node(id: ID!, type: NodeType!): Node
+  nodes(ids: [ID!]!, type: NodeType!): [Node!]!
   plugins(input: PluginsInput!): PluginConnection!
 }
 

@@ -3,7 +3,7 @@ import {
   useCreatePluginMutation,
   useParsePluginMutation,
   useUpdatePluginMutation,
-} from "@marketplace/gql/graphql-client-api";
+} from "@marketplace/gql";
 import { useCallback, useMemo } from "react";
 
 export default () => {
@@ -36,7 +36,6 @@ export default () => {
 
   const handleUpdatePluginMutation = useCallback(
     async (data: { id: string; images?: string[]; active?: boolean }) => {
-      console.log("images:", data.images);
       await updatePluginMutation({
         variables: {
           pluginId: data.id,

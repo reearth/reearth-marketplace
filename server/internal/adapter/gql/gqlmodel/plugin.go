@@ -58,5 +58,5 @@ func (p *Plugin) Publisher(ctx context.Context) (Publisher, error) {
 }
 
 func (p *Plugin) PublisherID() string {
-	return "u:" + p.publisherID.String()
+	return p.publisherID.String()
 }

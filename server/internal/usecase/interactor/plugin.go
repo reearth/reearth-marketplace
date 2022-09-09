@@ -15,6 +15,7 @@ import (
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin/repourl"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
 	"github.com/reearth/reearthx/usecasex"
+	"github.com/reearth/reearthx/util"
 )
 
 type Plugin struct {
@@ -41,11 +42,23 @@ func (p *Plugin) FindByID(ctx context.Context, id id.PluginID) (*plugin.Versione
 	return plugin.Versioned(pl).Build()
 }
 
+func (i *Plugin) FindByIDs(ctx context.Context, uids []id.PluginID) ([]*plugin.VersionedPlugin, error) {
+	res, err := i.pluginRepo.FindByIDs(ctx, uids)
+	if err != nil {
+		return nil, err
+	}
+	return util.TryMap(res, func(pl *plugin.Plugin) (*plugin.VersionedPlugin, error) { return plugin.Versioned(pl).Build() })
+}
+
 func (p *Plugin) FindByVersion(ctx context.Context, id id.PluginID, version string) (*plugin.VersionedPlugin, error) {
 	return p.pluginRepo.FindByVersion(ctx, id, version)
 }
 
 func (p *Plugin) Parse(ctx context.Context, publisher *user.User, r io.Reader) (*plugin.VersionedPlugin, error) {
+	if publisher == nil {
+		return nil, interfaces.ErrOperationDenied
+	}
+
 	pkg, err := packageFromZip(r)
 	if err != nil {
 		return nil, err
@@ -54,6 +67,10 @@ func (p *Plugin) Parse(ctx context.Context, publisher *user.User, r io.Reader) (
 }
 
 func (p *Plugin) ParseFromRepo(ctx context.Context, publisher *user.User, repo *string) (*plugin.VersionedPlugin, error) {
+	if publisher == nil {
+		return nil, interfaces.ErrOperationDenied
+	}
+
 	pkg, err := p.fetchFromRepo(ctx, repo)
 	if err != nil {
 		return nil, err
@@ -62,6 +79,10 @@ func (p *Plugin) ParseFromRepo(ctx context.Context, publisher *user.User, repo *
 }
 
 func (p *Plugin) Create(ctx context.Context, publisher *user.User, r io.Reader) (*plugin.VersionedPlugin, error) {
+	if publisher == nil {
+		return nil, interfaces.ErrOperationDenied
+	}
+
 	pkg, err := packageFromZip(r)
 	if err != nil {
 		return nil, err
@@ -70,6 +91,10 @@ func (p *Plugin) Create(ctx context.Context, publisher *user.User, r io.Reader) 
 }
 
 func (p *Plugin) CreateFromRepo(ctx context.Context, publisher *user.User, repo *string) (*plugin.VersionedPlugin, error) {
+	if publisher == nil {
+		return nil, interfaces.ErrOperationDenied
+	}
+
 	pkg, err := p.fetchFromRepo(ctx, repo)
 	if err != nil {
 		return nil, err
@@ -78,6 +103,10 @@ func (p *Plugin) CreateFromRepo(ctx context.Context, publisher *user.User, repo 
 }
 
 func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam) (_ *plugin.VersionedPlugin, err error) {
+	if param.Publisher == nil {
+		return nil, interfaces.ErrOperationDenied
+	}
+
 	tx, err := p.transaction.Begin()
 	if err != nil {
 		return nil, err
@@ -126,10 +155,14 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 }
 
 func (p *Plugin) Search(ctx context.Context, user *user.User, param interfaces.SearchPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error) {
-	return p.pluginRepo.Search(ctx, user, &param)
+	return p.pluginRepo.Search(ctx, user.IDRef(), &param)
 }
 
 func (p *Plugin) Like(ctx context.Context, user *user.User, id id.PluginID) (_ *plugin.VersionedPlugin, err error) {
+	if user == nil {
+		return nil, interfaces.ErrOperationDenied
+	}
+
 	tx, err := p.transaction.Begin()
 	if err != nil {
 		return nil, err
@@ -146,7 +179,7 @@ func (p *Plugin) Like(ctx context.Context, user *user.User, id id.PluginID) (_ *
 		return nil, err
 	}
 
-	if err := p.pluginRepo.Like(ctx, user, id); err != nil {
+	if err := p.pluginRepo.Like(ctx, user.ID(), id); err != nil {
 		return nil, err
 	}
 
@@ -160,6 +193,10 @@ func (p *Plugin) Like(ctx context.Context, user *user.User, id id.PluginID) (_ *
 }
 
 func (p *Plugin) Unlike(ctx context.Context, user *user.User, id id.PluginID) (*plugin.VersionedPlugin, error) {
+	if user == nil {
+		return nil, interfaces.ErrOperationDenied
+	}
+
 	tx, err := p.transaction.Begin()
 	if err != nil {
 		return nil, err
@@ -176,7 +213,7 @@ func (p *Plugin) Unlike(ctx context.Context, user *user.User, id id.PluginID) (*
 		return nil, err
 	}
 
-	if err := p.pluginRepo.Unlike(ctx, user, id); err != nil {
+	if err := p.pluginRepo.Unlike(ctx, user.ID(), id); err != nil {
 		return nil, err
 	}
 
@@ -190,6 +227,10 @@ func (p *Plugin) Unlike(ctx context.Context, user *user.User, id id.PluginID) (*
 }
 
 func (p *Plugin) UpdateVersion(ctx context.Context, user *user.User, param interfaces.UpdatePluginVersionParam) (_ *plugin.VersionedPlugin, err error) {
+	if user == nil {
+		return nil, interfaces.ErrOperationDenied
+	}
+
 	tx, err := p.transaction.Begin()
 	if err != nil {
 		return nil, err
@@ -231,12 +272,19 @@ func (p *Plugin) ImageURL(ctx context.Context, name string) string {
 	return p.file.AssetsURL(ctx, name)
 }
 
-func (p *Plugin) List(ctx context.Context, uid id.UserID, param interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error) {
-	return p.pluginRepo.List(ctx, uid, &param)
+func (p *Plugin) List(ctx context.Context, u *id.UserID, param interfaces.ListPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error) {
+	if u == nil {
+		return nil, nil, interfaces.ErrOperationDenied
+	}
+
+	return p.pluginRepo.List(ctx, *u, &param)
 }
 
 func (p *Plugin) Liked(ctx context.Context, user *user.User, id id.PluginID) (bool, error) {
-	return p.pluginRepo.Liked(ctx, user, id)
+	if user == nil {
+		return false, nil
+	}
+	return p.pluginRepo.Liked(ctx, user.ID(), id)
 }
 
 func (p *Plugin) Download(ctx context.Context, id id.PluginID, version string) ([]byte, error) {
@@ -292,6 +340,10 @@ func (p *Plugin) download(ctx context.Context, vp *plugin.VersionedPlugin) (_ []
 }
 
 func (p *Plugin) create(ctx context.Context, publisher *user.User, pkg *pluginpack.Package) (_ *plugin.VersionedPlugin, err error) {
+	if publisher == nil {
+		return nil, interfaces.ErrOperationDenied
+	}
+
 	vp, err := pluginpack.ToPlugin(ctx, pkg, publisher.ID())
 	if err != nil {
 		return nil, err

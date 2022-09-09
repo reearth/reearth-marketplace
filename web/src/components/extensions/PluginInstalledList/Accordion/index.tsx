@@ -1,4 +1,4 @@
-import { useGetMeQuery } from "@marketplace/gql/graphql-client-api";
+import { usePluginsQuery } from "@marketplace/gql";
 import { useMemo } from "react";
 
 import Accordion from "./accordion";
@@ -12,6 +12,7 @@ export type PluginItem = {
   isInstalled: boolean;
   bodyMarkdown?: string;
   thumbnailUrl?: string;
+  updatable?: boolean;
 };
 
 export type PluginAccordionProps = {
@@ -30,18 +31,18 @@ const PluginAccordion: React.FC<PluginAccordionProps> = ({
   onInstall,
   onUninstall,
 }) => {
-  const { data } = useGetMeQuery({
+  const { data } = usePluginsQuery({
     variables: {
-      first: 50,
+      ids: plugins?.map((p) => p.id) ?? [],
     },
+    skip: !plugins?.length,
   });
 
   const installedPlugins: PluginItem[] | undefined = useMemo(
     () =>
-      data?.me.plugins.nodes
-        .filter((mp) => plugins?.find((p) => mp?.id === p.id))
+      data?.nodes
         .map((p): PluginItem | undefined =>
-          p
+          p && p.__typename === "Plugin"
             ? {
                 pluginId: `${p.id}~${
                   p.latestVersion ? p.latestVersion.version : "x.x.x"
@@ -51,11 +52,14 @@ const PluginAccordion: React.FC<PluginAccordionProps> = ({
                 isInstalled: true,
                 bodyMarkdown: p.readme,
                 thumbnailUrl: p.icon ?? "",
+                updatable:
+                  p.latestVersion !==
+                  plugins?.find((q) => q.id === p.id)?.version,
               }
             : undefined
         )
         .filter((p): p is PluginItem => !!p),
-    [data?.me.plugins.nodes, plugins]
+    [data?.nodes, plugins]
   );
 
   return installedPlugins ? (
@@ -73,6 +77,7 @@ const PluginAccordion: React.FC<PluginAccordionProps> = ({
               version={version}
               author={p.author}
               isInstalled={p.isInstalled}
+              updatable={p.updatable}
               onInstall={() => onInstall?.(p.pluginId)}
               onUninstall={() => onUninstall?.(p.pluginId)}
             />

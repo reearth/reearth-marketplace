@@ -168,6 +168,11 @@ export type Node = {
   id: Scalars['ID'];
 };
 
+export enum NodeType {
+  Plugin = 'PLUGIN',
+  User = 'USER'
+}
+
 export type Organization = Node & Publisher & {
   __typename?: 'Organization';
   active: Scalars['Boolean'];
@@ -301,11 +306,13 @@ export type Query = {
 
 export type QueryNodeArgs = {
   id: Scalars['ID'];
+  type: NodeType;
 };
 
 
 export type QueryNodesArgs = {
   ids: Array<Scalars['ID']>;
+  type: NodeType;
 };
 
 
@@ -392,6 +399,13 @@ export type PluginQueryVariables = Exact<{
 
 
 export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' } | null };
+
+export type PluginsQueryVariables = Exact<{
+  ids: Array<Scalars['ID']> | Scalars['ID'];
+}>;
+
+
+export type PluginsQuery = { __typename?: 'Query', nodes: Array<{ __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' }> };
 
 export type SearchPluginQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -481,7 +495,7 @@ export type UpdateMeMutation = { __typename?: 'Mutation', updateMe: { __typename
 
 export const PluginDocument = gql`
     query Plugin($id: ID!) {
-  node(id: $id) {
+  node(id: $id, type: PLUGIN) {
     ... on Plugin {
       id
       images
@@ -529,6 +543,56 @@ export function usePluginLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Plu
 export type PluginQueryHookResult = ReturnType<typeof usePluginQuery>;
 export type PluginLazyQueryHookResult = ReturnType<typeof usePluginLazyQuery>;
 export type PluginQueryResult = Apollo.QueryResult<PluginQuery, PluginQueryVariables>;
+export const PluginsDocument = gql`
+    query Plugins($ids: [ID!]!) {
+  nodes(ids: $ids, type: PLUGIN) {
+    ... on Plugin {
+      id
+      images
+      author
+      like
+      downloads
+      name
+      icon
+      readme
+      description
+      liked
+      updatedAt
+      latestVersion {
+        version
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __usePluginsQuery__
+ *
+ * To run a query within a React component, call `usePluginsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePluginsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePluginsQuery({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function usePluginsQuery(baseOptions: Apollo.QueryHookOptions<PluginsQuery, PluginsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<PluginsQuery, PluginsQueryVariables>(PluginsDocument, options);
+      }
+export function usePluginsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PluginsQuery, PluginsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<PluginsQuery, PluginsQueryVariables>(PluginsDocument, options);
+        }
+export type PluginsQueryHookResult = ReturnType<typeof usePluginsQuery>;
+export type PluginsLazyQueryHookResult = ReturnType<typeof usePluginsLazyQuery>;
+export type PluginsQueryResult = Apollo.QueryResult<PluginsQuery, PluginsQueryVariables>;
 export const SearchPluginDocument = gql`
     query SearchPlugin($first: Int!, $keyword: String, $liked: Boolean, $tags: [String!], $types: [PluginType!], $publisher: ID, $sort: PluginSort, $after: Cursor) {
   plugins(

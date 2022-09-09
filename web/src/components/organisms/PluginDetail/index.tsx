@@ -1,6 +1,6 @@
 import { useAuth } from "@marketplace/auth";
 import PluginDetailPage from "@marketplace/components/molecules/PluginDetailPage";
-import React from "react";
+import React, { useCallback } from "react";
 
 import useHooks from "./hooks";
 
@@ -8,25 +8,29 @@ export type Props = {
   pluginId?: string;
   accessToken?: string;
   onPluginInstall?: (pluginId: string) => void;
+  onBack?: () => void;
 };
 
 const PluginDetail: React.FC<Props> = ({
   pluginId,
   accessToken,
   onPluginInstall: onExtPluginInstall,
+  onBack,
 }) => {
   const { isAuthenticated } = useAuth(accessToken);
   const handleClickChoose = () => {};
   const { plugin, workspaces, modalVisible, onLike, onUnlike, onToggleModal, onPluginInstall } =
     useHooks(pluginId ? pluginId : "");
 
-  const handleClickLike = (isLiked: boolean) => {
-    console.log(pluginId);
-    isLiked ? onUnlike(pluginId ? pluginId : "") : onLike(pluginId ? pluginId : "");
-  };
+  const handleClickLike = useCallback(
+    (isLiked: boolean) => {
+      if (!pluginId) return;
+      isLiked ? onUnlike(pluginId) : onLike(pluginId);
+    },
+    [onLike, onUnlike, pluginId],
+  );
   return (
     <PluginDetailPage
-      // TODO: isLiked をconnect
       isLiked={plugin ? plugin.liked : false}
       isLoggedIn={isAuthenticated}
       id={plugin ? plugin.id : ""}
@@ -46,6 +50,7 @@ const PluginDetail: React.FC<Props> = ({
       onPluginInstall={onPluginInstall}
       onExtPluginInstall={onExtPluginInstall}
       onToggleModal={onToggleModal}
+      onBack={onBack}
     />
   );
 };

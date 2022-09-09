@@ -10,14 +10,27 @@ import RootPage from "@marketplace/components/pages/Root";
 import UpdatePlugin from "@marketplace/components/pages/UpdatePlugin";
 import UserPage from "@marketplace/components/pages/User";
 import { Provider as ThemeProvider } from "@marketplace/theme";
-import { BrowserRouter as Router, useRoutes } from "react-router-dom";
+import { useCallback } from "react";
+import { BrowserRouter as Router, useNavigate, useRoutes } from "react-router-dom";
 
 const AppRoutes = () => {
+  const navigate = useNavigate();
+  const handlePluginSelect = useCallback(
+    (id: string) => {
+      navigate(`/plugins/${id}`);
+    },
+    [navigate],
+  );
+
+  const handleBack = useCallback(() => {
+    navigate("/");
+  }, [navigate]);
+
   return useRoutes([
-    { path: "/", element: <RootPage showBanner /> },
-    { path: "/plugins/:pluginId", element: <PluginDetailPage /> },
+    { path: "/", element: <RootPage showBanner onPluginSelect={handlePluginSelect} /> },
+    { path: "/plugins/:pluginId", element: <PluginDetailPage onBack={handleBack} /> },
     // TODO: Since we don't have api for calling others' plugins, put "mypage" instead of userid
-    { path: "/mypage", element: <UserPage /> },
+    { path: "/mypage", element: <UserPage onPluginSelect={handlePluginSelect} /> },
     {
       path: "/:userId/publisher-registration",
       element: <PublisherRegistration />,

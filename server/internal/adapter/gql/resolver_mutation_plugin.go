@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"strings"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel"
@@ -58,8 +57,9 @@ func (r *mutationResolver) UpdatePlugin(ctx context.Context, input gqlmodel.Upda
 		return nil, fmt.Errorf("invalid plugin id: %w", err)
 	}
 	p, err := usecases(ctx).Plugin.Update(ctx, interfaces.UpdatePluginParam{
-		PluginID: pluginID,
-		Active:   input.Active,
+		Publisher: getUser(ctx),
+		PluginID:  pluginID,
+		Active:    input.Active,
 		Images: lo.Map(input.Images, func(x *graphql.Upload, _ int) io.ReadSeeker {
 			return x.File
 		}),
@@ -132,9 +132,5 @@ func (r *mutationResolver) DeleteVersion(ctx context.Context, input gqlmodel.Del
 }
 
 func pluginIDFrom(goid string) (id.PluginID, error) {
-	kind, pid, _ := strings.Cut(goid, ":")
-	if kind != "p" {
-		return id.PluginID{}, fmt.Errorf("invalid global object id: %s", goid)
-	}
-	return id.PluginIDFrom(pid)
+	return id.PluginIDFrom(goid)
 }

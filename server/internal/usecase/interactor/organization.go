@@ -25,6 +25,10 @@ func NewOrganization(r *repo.Container) interfaces.Organization {
 }
 
 func (o *Organization) Create(ctx context.Context, u *user.User, param *interfaces.CreateOrganizationParam) (_ *user.Organization, err error) {
+	if u == nil {
+		return nil, interfaces.ErrOperationDenied
+	}
+
 	description := ""
 	if param.Description != nil {
 		description = *param.Description

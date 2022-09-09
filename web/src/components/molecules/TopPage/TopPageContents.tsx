@@ -10,6 +10,7 @@ export type Props = {
   isLoggedIn: boolean;
   isFavSelected: boolean;
   handleFavButtonClick: (isFaved: boolean) => void;
+  onPluginSelect?: (pluginId: string) => void;
 };
 
 const TopPageContents: React.FC<Props> = ({
@@ -18,6 +19,7 @@ const TopPageContents: React.FC<Props> = ({
   isLoggedIn,
   isFavSelected,
   handleFavButtonClick,
+  onPluginSelect,
 }) => {
   return (
     <Wrapper>
@@ -27,7 +29,7 @@ const TopPageContents: React.FC<Props> = ({
         handleFavButtonClick={handleFavButtonClick}
         isFavSelected={isFavSelected}
       />
-      <PluginsList plugins={plugins} />
+      <PluginsList plugins={plugins} onPluginSelect={onPluginSelect} />
     </Wrapper>
   );
 };

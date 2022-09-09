@@ -4,16 +4,21 @@ import React from "react";
 
 import useHooks from "./hooks";
 
-export type Props = {};
+export type Props = {
+  onPluginSelect?: (pluginId: string) => void;
+};
+
 export type { Plugin };
-export type myDataType = {
+
+export type MyDataType = {
   id: string;
   description?: string | null;
   displayName?: string | null;
 };
-const User: React.FC<Props> = () => {
+
+const User: React.FC<Props> = ({ onPluginSelect }) => {
   const { myData, plugins } = useHooks();
-  return <UserPage myData={myData} plugins={plugins} />;
+  return <UserPage myData={myData} plugins={plugins} onPluginSelect={onPluginSelect} />;
 };
 
 export default User;
