@@ -17,6 +17,8 @@ export type Props = {
   version: string;
   description: string;
   githubUrl?: string;
+  isSaveLoading: boolean;
+  isPublishLoading: boolean;
   handleChangeGithubUrl: (url: string) => void;
   handleParsePlugin: (file?: FileUploadType) => void;
   handleClickSave: () => void;
@@ -29,6 +31,8 @@ const AddNewPluginContent: React.FC<Props> = ({
   version,
   description,
   githubUrl,
+  isSaveLoading,
+  isPublishLoading,
   handleChangeGithubUrl,
   handleParsePlugin,
   handleClickSave,
@@ -52,10 +56,20 @@ const AddNewPluginContent: React.FC<Props> = ({
         </Col>
         <Col>
           <Space size="middle">
-            <Button type="default" size="large" onClick={handleClickSave}>
+            <Button
+              type="default"
+              size="large"
+              onClick={handleClickSave}
+              loading={isSaveLoading}
+            >
               Save
             </Button>
-            <Button type="primary" size="large" onClick={handleClickPublish}>
+            <Button
+              type="primary"
+              size="large"
+              onClick={handleClickPublish}
+              loading={isPublishLoading}
+            >
               Publish
             </Button>
           </Space>

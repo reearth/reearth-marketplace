@@ -3,7 +3,6 @@ import type { FileUploadType } from "@marketplace/components/molecules/AddNewPlu
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { useState } from "react";
 import useHooks from "./hooks";
-import Message from "@marketplace/components/atoms/Message";
 
 export type Props = {};
 const AddNewPlugin: React.FC<Props> = () => {
@@ -14,6 +13,8 @@ const AddNewPlugin: React.FC<Props> = () => {
     handleUpdatePluginMutation,
   } = useHooks();
 
+  const [isSaveLoading, toggleLoadingSave] = useState<boolean>(false);
+  const [isPublishLoading, toggleLoadingPublish] = useState<boolean>(false);
   const [githubUrl, changeGithubUrl] = useState<string | undefined>(undefined);
   const [uploadedFile, uploadZip] = useState<FileUploadType>();
   // TODO: use Antd's file upload after backend ready
@@ -22,6 +23,7 @@ const AddNewPlugin: React.FC<Props> = () => {
     uploadImages([...uploadedImages, image.file]);
   };
   const handleClickSave = async () => {
+    toggleLoadingSave(true);
     uploadedFile
       ? await handleCreatePluginMutation({
           file: uploadedFile,
@@ -37,14 +39,17 @@ const AddNewPlugin: React.FC<Props> = () => {
         id: parsedPlugin.id,
         images: uploadedImages,
         active: false,
-      }).catch(Message.error("Something went wrong on saving ")));
+      }));
+    toggleLoadingSave(false);
   };
   const handleClickPublish = async () => {
+    toggleLoadingPublish(true);
     await handleUpdatePluginMutation({
       id: parsedPlugin ? parsedPlugin.id : "",
       images: uploadedImages,
       active: true,
-    }).catch(Message.error("Something went wrong on your publishment "));
+    });
+    toggleLoadingPublish(false);
   };
   // When Github Url Input
   const handleChangeGithubUrl = async (url: string) => {
@@ -52,7 +57,7 @@ const AddNewPlugin: React.FC<Props> = () => {
     await handleParsePluginMutation({
       file: undefined,
       repo: url,
-    }).catch(Message.error("Something went wrong on your URL "));
+    });
   };
   // When Zip File Uploaded
   const handleParsePlugin = (file?: FileUploadType) => {
@@ -60,7 +65,7 @@ const AddNewPlugin: React.FC<Props> = () => {
     handleParsePluginMutation({
       file: file,
       repo: undefined,
-    }).catch(Message.error("Something went wrong on your file "));
+    });
   };
 
   return (
@@ -69,6 +74,8 @@ const AddNewPlugin: React.FC<Props> = () => {
       version={parsedPlugin ? parsedPlugin.version : ""}
       description={parsedPlugin ? parsedPlugin.description : ""}
       githubUrl={githubUrl}
+      isSaveLoading={isSaveLoading}
+      isPublishLoading={isPublishLoading}
       handleChangeGithubUrl={handleChangeGithubUrl}
       handleParsePlugin={handleParsePlugin}
       handleClickSave={handleClickSave}
