@@ -1,3 +1,4 @@
+import Message from "@marketplace/components/atoms/Message";
 import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
 import {
   useCreatePluginMutation,
@@ -5,7 +6,6 @@ import {
   useUpdatePluginMutation,
 } from "@marketplace/gql";
 import { useCallback, useMemo } from "react";
-import Message from "@marketplace/components/atoms/Message";
 
 export default () => {
   const [parsePluginMutation, { data: parsedData }] = useParsePluginMutation();
@@ -22,7 +22,7 @@ export default () => {
         onError: () => Message.error(`Something went wrong on saving`),
       });
     },
-    [createPluginMutation]
+    [createPluginMutation],
   );
 
   const handleParsePluginMutation = useCallback(
@@ -33,13 +33,10 @@ export default () => {
           repo: data.repo && data.repo,
         },
         onCompleted: () => Message.success("Your file is successfully loaded"),
-        onError: () =>
-          Message.error(
-            `Something went wrong on your ${data.file ? "File" : "URL"}`
-          ),
+        onError: () => Message.error(`Something went wrong on your ${data.file ? "File" : "URL"}`),
       });
     },
-    [parsePluginMutation]
+    [parsePluginMutation],
   );
 
   const handleUpdatePluginMutation = useCallback(
@@ -54,7 +51,7 @@ export default () => {
         onError: () => Message.error(`Something went wrong on updating`),
       });
     },
-    [updatePluginMutation]
+    [updatePluginMutation],
   );
 
   const parsedPlugin = useMemo(
@@ -73,7 +70,7 @@ export default () => {
               : "",
           }
         : undefined,
-    [parsedData?.parsePlugin.plugin]
+    [parsedData?.parsePlugin.plugin],
   );
 
   return {

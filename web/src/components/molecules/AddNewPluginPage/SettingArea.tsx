@@ -12,12 +12,7 @@ export type Props = {
   description: string;
   handleUploadImages: (image: UploadRequestOption) => void;
 };
-const SettingArea: React.FC<Props> = ({
-  pluginName,
-  version,
-  description,
-  handleUploadImages,
-}) => {
+const SettingArea: React.FC<Props> = ({ pluginName, version, description, handleUploadImages }) => {
   return (
     <Wrapper>
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
@@ -32,12 +27,11 @@ const SettingArea: React.FC<Props> = ({
         <Upload
           listType="picture"
           accept="image/png, image/jpeg, image/jpg"
-          customRequest={(image) => {
+          customRequest={image => {
             handleUploadImages(image);
           }}
           defaultFileList={[]}
-          multiple
-        >
+          multiple>
           <Button icon={<Icon icon="upload" />} type="primary" ghost>
             Upload Image
           </Button>

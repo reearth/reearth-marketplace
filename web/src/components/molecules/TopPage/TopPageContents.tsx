@@ -1,6 +1,4 @@
-import PluginsList, {
-  Plugin,
-} from "@marketplace/components/molecules/PluginsList";
+import PluginsList, { Plugin } from "@marketplace/components/molecules/PluginsList";
 import SearchArea from "@marketplace/components/molecules/SearchArea";
 import { styled } from "@marketplace/theme";
 
