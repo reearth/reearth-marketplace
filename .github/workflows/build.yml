@@ -54,7 +54,7 @@ jobs:
       - info
     if: needs.info.outputs.name || needs.info.outputs.tag
     env:
-      ARTIFACTS_SERVER: server/dist #TODO: fix here
+      # ARTIFACTS_SERVER: server/dist #TODO: fix here
       ARTIFACTS_WEB: reearth-web_${{ needs.info.outputs.name }}.tar.gz
     steps:
       - name: Release nightly/rc
@@ -81,7 +81,7 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           #TODO: サーバー側のartifactを修正
-          artifacts: ${{ env.ARTIFACTS_SERVER }},${{ env.ARTIFACTS_WEB }}
+          artifacts: ${{ env.ARTIFACTS_WEB }}
           commit: ${{ github.sha }}
           name: ${{ needs.info.outputs.tag }}
           tag: ${{ needs.info.outputs.tag }}
