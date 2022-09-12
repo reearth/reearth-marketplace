@@ -7,7 +7,7 @@ export type PluginItemProps = {
   title?: string;
   version?: string;
   author?: string;
-  isInstalled?: boolean;
+  installed?: boolean;
   updatable?: boolean;
   onInstall?: () => void;
   onUninstall?: () => void;
@@ -19,7 +19,7 @@ const PluginAccordionItemHeader: React.FC<PluginItemProps> = ({
   title,
   version,
   author,
-  isInstalled,
+  installed,
   updatable,
   onInstall,
   onUninstall,
@@ -43,10 +43,10 @@ const PluginAccordionItemHeader: React.FC<PluginItemProps> = ({
       <ButtonWrapper>
         <Button
           disabled={!updatable}
-          onClick={updatable && isInstalled ? () => onInstall?.() : undefined}>
+          onClick={updatable && installed ? () => onInstall?.() : undefined}>
           {t("Update")}
         </Button>
-        <Button onClick={isInstalled ? () => onUninstall?.() : undefined}>{t("Uninstall")}</Button>
+        <Button onClick={installed ? () => onUninstall?.() : undefined}>{t("Uninstall")}</Button>
       </ButtonWrapper>
     </Wrapper>
   );
@@ -126,6 +126,12 @@ const Button = styled.button`
   :hover {
     color: ${({ theme }) => theme.main.text};
     border-color: ${({ theme }) => theme.main.text};
+  }
+
+  :disabled {
+    cursor: no-drop;
+    color: ${({ theme }) => theme.main.weakText};
+    border-color: ${({ theme }) => theme.main.weakText};
   }
 `;
 

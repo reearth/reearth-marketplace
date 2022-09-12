@@ -12,14 +12,17 @@ export default function LibraryExtension({
   theme,
   lang,
   accessToken,
-  selectedPluginId: _,
+  installedPlugins,
   onInstall,
   onNotificationChange,
 }: {
   theme?: "dark" | "light";
   lang?: string;
   accessToken?: string;
-  selectedPluginId?: string;
+  installedPlugins?: {
+    id: string;
+    version: string;
+  }[];
   onInstall?: (pluginId: string) => void;
   onNotificationChange?: (
     type: "error" | "warning" | "info" | "success",
@@ -61,6 +64,7 @@ export default function LibraryExtension({
           <PluginDetailPage
             selectedPluginId={pluginId}
             accessToken={accessToken}
+            installedPlugins={installedPlugins}
             onInstall={handleInstall}
             onBack={handleBack}
           />
