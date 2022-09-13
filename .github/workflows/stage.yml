@@ -11,7 +11,7 @@ jobs:
       - name: git config
         env:
           GPT_USER: ${{ secrets.GPT_USER }}
-        run:
+        run: |
           git config --global user.name $GPT_USER
           git config --global pull.rebase false
       - uses: actions/checkout@v3
