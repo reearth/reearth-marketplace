@@ -149,7 +149,7 @@ jobs:
           github_token: ${{ secrets.GPT }}
           workflow: ci.yml
           workflow_conclusion: success
-          branch: main
+          branch: ${{ github.event.workflow_run.head_branch }}
           name: reearth-marketplace-web
           check_artifacts: true
       - name: Extract
@@ -173,7 +173,7 @@ jobs:
       - name: Save imaged to artifact
         uses: actions/upload-artifact@v2
         with:
-          name: '[ -n "$TAG" ] && echo reearth-marketplace_${{ steps.options.outputs.tags }} || echo reearth-marketplace_${{ steps.options.outputs.name }}'
+          name: '[ -n $TA" ] && echo reearth-marketplace_${{ steps.options.outputs.tags }} || echo reearth-marketplace_${{ steps.options.outputs.name }}'
           path: reearth-marketplace.tar.gz
           if-no-files-found: error
 # TODO: invoke deploy test env if name == "nightly" with workflow_call event
