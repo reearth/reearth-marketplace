@@ -57,6 +57,18 @@ jobs:
       # ARTIFACTS_SERVER: server/dist #TODO: fix here
       ARTIFACTS_WEB: reearth-web_${{ needs.info.outputs.name }}.tar.gz
     steps:
+      - name: get latest web artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ secrets.GPT }}
+          workflow: ci.yml
+          workflow_conclusion: success
+          branch: ${{ github.event.workflow_run.head_branch }}
+          name: reearth-marketplace-web
+          check_artifacts: true
+          search_artifacts: true
+      - name: rename artifact
+        run: vm reearth-marketplace-web.tar.gz $ARTIFACTS_WEB
       - name: Release nightly/rc
         if: needs.info.outputs.name
         uses: ncipollo/release-action@v1
