@@ -63,7 +63,8 @@ jobs:
         with:
           allowUpdates: true
           artifactErrorsFailBuild	: true
-          artifacts: ${{ env.ARTIFACTS_SERVER }},${{ env.ARTIFACTS_WEB }}
+          artifacts: ${{ env.ARTIFACTS_WEB }}
+          # artifacts: ${{ env.ARTIFACTS_SERVER }},${{ env.ARTIFACTS_WEB }}
           commit: ${{ github.sha }}
           name: ${{ needs.info.outputs.name }}
           tag: ${{ needs.info.outputs.name }}
