@@ -80,7 +80,7 @@ jobs:
       - name: Build extension
         run: yarn build:ext
       - name: Pack
-        if: ${{ github.ref == 'refs/heads/main' }}
+        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release'
         run: mv dist reearth-marketplace-web && tar -zcvf reearth-marketplace-web.tar.gz reearth-marketplace-web
       - uses: actions/upload-artifact@v3
         if: ${{ github.ref == 'refs/heads/main' }}
