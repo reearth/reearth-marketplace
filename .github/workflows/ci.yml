@@ -4,11 +4,16 @@ on:
   push:
     branches:
       - main
+      - release
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   ci_pre:
     name: CI pre
     runs-on: ubuntu-latest
+    if: github.event_name != 'push' || !startsWith(github.event.head_commit.message, 'v')
     outputs:
       web: ${{ steps.web.outputs.any_changed }}
       server: ${{ steps.server.outputs.any_changed }}
@@ -75,6 +80,7 @@ jobs:
       - name: Build extension
         run: yarn build:ext
       - name: Pack
+        if: ${{ github.ref == 'refs/heads/main' }}
         run: mv dist reearth-marketplace-web && tar -zcvf reearth-marketplace-web.tar.gz reearth-marketplace-web
       - uses: actions/upload-artifact@v3
         if: ${{ github.ref == 'refs/heads/main' }}
