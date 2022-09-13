@@ -68,7 +68,7 @@ jobs:
           check_artifacts: true
           search_artifacts: true
       - name: rename artifact
-        run: vm reearth-marketplace-web.tar.gz $ARTIFACTS_WEB
+        run: mv reearth-marketplace-web.tar.gz $ARTIFACTS_WEB
       - name: Release nightly/rc
         if: needs.info.outputs.name
         uses: ncipollo/release-action@v1
