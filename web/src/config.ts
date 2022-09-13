@@ -23,9 +23,7 @@ export async function loadConfig() {
   let config: any = {};
   try {
     const res = await fetch(
-      `${
-        window.REEARTH_CONFIG?.marketplaceUrl?.replace(/\/$/, "") ?? ""
-      }/reearth_config.json`
+      `${window.REEARTH_CONFIG?.marketplaceUrl?.replace(/\/$/, "") ?? ""}/reearth_config.json`,
     );
     if (res.status === 200) config = await res.json();
   } catch (err) {

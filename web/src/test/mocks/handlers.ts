@@ -49,7 +49,7 @@ export const handlers = [
           ],
           totalCount: 4,
         },
-      })
+      }),
     );
   }),
   graphql.query("Plugin", (_req, res, ctx) => {
@@ -72,7 +72,7 @@ export const handlers = [
           },
           images: [`${MockImage}`, `${MockImage}`],
         },
-      })
+      }),
     );
   }),
   graphql.query("GetMe", (_req, res, ctx) => {
@@ -153,7 +153,7 @@ export const handlers = [
             totalCount: 4,
           },
         },
-      })
+      }),
     );
   }),
   graphql.mutation("CreatePlugin", (_req, res, ctx) => {
@@ -164,7 +164,7 @@ export const handlers = [
         name: "Satellite Plugin",
         version: "v1.0.0",
         images: [],
-      })
+      }),
     );
   }),
   graphql.mutation("ParsePlugin", (_req, res, ctx) => {
@@ -186,7 +186,7 @@ export const handlers = [
             images: [],
           },
         },
-      })
+      }),
     );
   }),
   graphql.mutation("UpdatePlugin", (_req, res, ctx) => {
@@ -201,7 +201,7 @@ export const handlers = [
             images: [],
           },
         },
-      })
+      }),
     );
   }),
   graphql.mutation("LikePlugin", (_req, res, ctx) => {
@@ -215,7 +215,7 @@ export const handlers = [
             liked: false,
           },
         },
-      })
+      }),
     );
   }),
   graphql.mutation("UnlikePlugin", (_req, res, ctx) => {
@@ -230,7 +230,7 @@ export const handlers = [
             liked: false,
           },
         },
-      })
+      }),
     );
   }),
   graphql.mutation("UpdatePlugin", (_req, res, ctx) => {
@@ -245,7 +245,7 @@ export const handlers = [
             images: [],
           },
         },
-      })
+      }),
     );
   }),
   graphql.mutation("LikePlugin", (_req, res, ctx) => {
@@ -259,7 +259,7 @@ export const handlers = [
             liked: false,
           },
         },
-      })
+      }),
     );
   }),
   graphql.mutation("UnlikePlugin", (_req, res, ctx) => {
@@ -274,7 +274,7 @@ export const handlers = [
             liked: false,
           },
         },
-      })
+      }),
     );
   }),
 ];

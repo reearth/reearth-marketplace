@@ -32,6 +32,7 @@ export type Props = {
   isLiked: boolean;
   workspaces?: Workspace[];
   modalVisible?: boolean;
+  installed?: boolean;
   handleClickChoose: (projectId: string) => void;
   handleClickLike: (isLiked: boolean) => void;
   onPluginInstall?: (workspaceId: string, projectId: string) => void;
@@ -55,6 +56,7 @@ const PluginDetailPage: React.FC<Props> = ({
   isLiked,
   workspaces,
   modalVisible,
+  installed,
   handleClickChoose,
   handleClickLike,
   onPluginInstall,
@@ -161,9 +163,13 @@ const PluginDetailPage: React.FC<Props> = ({
                           ? onExtPluginInstall(`${id}~${version}`)
                           : onToggleModal?.(true)
                       }
-                      disabled={!isLoggedIn}>
+                      disabled={!isLoggedIn || installed}>
                       <Icon icon="download" />
-                      {onExtPluginInstall ? "Install" : "Open Plugin in your project"}
+                      {installed
+                        ? "Already installed"
+                        : onExtPluginInstall
+                        ? "Install"
+                        : "Open Plugin in your project"}
                     </Button>
                   </Col>
                 </ActionButtons>

@@ -9,7 +9,7 @@ export type PluginItem = {
   pluginId: string;
   title: string;
   author: string;
-  isInstalled: boolean;
+  installed: boolean;
   bodyMarkdown?: string;
   thumbnailUrl?: string;
   updatable?: boolean;
@@ -33,7 +33,7 @@ const PluginAccordion: React.FC<PluginAccordionProps> = ({
 }) => {
   const { data } = usePluginsQuery({
     variables: {
-      ids: plugins?.map((p) => p.id) ?? [],
+      ids: plugins?.map(p => p.id) ?? [],
     },
     skip: !plugins?.length,
   });
@@ -44,29 +44,27 @@ const PluginAccordion: React.FC<PluginAccordionProps> = ({
         .map((p): PluginItem | undefined =>
           p && p.__typename === "Plugin"
             ? {
-                pluginId: `${p.id}~${
-                  p.latestVersion ? p.latestVersion.version : "x.x.x"
-                }`,
+                pluginId: `${p.id}~${p.latestVersion ? p.latestVersion.version : "x.x.x"}`,
                 title: p.name,
                 author: p.author ?? "",
-                isInstalled: true,
+                installed: true,
                 bodyMarkdown: p.readme,
                 thumbnailUrl: p.icon ?? "",
                 updatable:
-                  p.latestVersion !==
-                  plugins?.find((q) => q.id === p.id)?.version,
+                  !!p.latestVersion?.version &&
+                  p.latestVersion.version !== plugins?.find(q => q.id === p.id)?.version,
               }
-            : undefined
+            : undefined,
         )
         .filter((p): p is PluginItem => !!p),
-    [data?.nodes, plugins]
+    [data?.nodes, plugins],
   );
 
   return installedPlugins ? (
     <Accordion
       className={className}
       allowMultipleExpanded
-      items={installedPlugins?.map((p) => {
+      items={installedPlugins?.map(p => {
         const version = p.pluginId.split("~")[1] ?? "x.x.x";
         return {
           id: p.title,
@@ -76,15 +74,13 @@ const PluginAccordion: React.FC<PluginAccordionProps> = ({
               title={p.title}
               version={version}
               author={p.author}
-              isInstalled={p.isInstalled}
+              installed={p.installed}
               updatable={p.updatable}
               onInstall={() => onInstall?.(p.pluginId)}
               onUninstall={() => onUninstall?.(p.pluginId)}
             />
           ),
-          content: (
-            <PluginAccordionItemBody>{p.bodyMarkdown}</PluginAccordionItemBody>
-          ),
+          content: <PluginAccordionItemBody>{p.bodyMarkdown}</PluginAccordionItemBody>,
         };
       })}
     />

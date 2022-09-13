@@ -3,7 +3,12 @@ import { Workspace } from "@marketplace/components/molecules/PluginDetailPage";
 import { usePluginQuery, useLikePluginMutation, useUnlikePluginMutation } from "@marketplace/gql";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-export default (pluginId: string) => {
+export type Plugin = {
+  id: string;
+  version: string;
+};
+
+export default (pluginId: string, installedPlugins?: Plugin[]) => {
   const auth = useAuth();
 
   const { data, refetch } = usePluginQuery({
@@ -11,6 +16,7 @@ export default (pluginId: string) => {
       id: pluginId,
     },
   });
+  const currentPlugin = data?.node?.__typename === "Plugin" && data.node;
 
   const [likePlugin] = useLikePluginMutation({ variables: { id: pluginId } });
   const [unlikePlugin] = useUnlikePluginMutation({
@@ -42,26 +48,29 @@ export default (pluginId: string) => {
 
   const plugin = useMemo(
     () =>
-      data?.node?.__typename === "Plugin"
+      currentPlugin
         ? {
-            id: data.node.id,
-            name: data.node.name,
-            cover: data.node.images[0],
-            author: data.node.author ? data.node.author : "",
-            like: data.node.like,
-            images: data.node.images,
-            // TODO: where is publishDate?
-            // publishData:
-            description: data.node.description ? data.node.description : "",
-            icon: null,
-            readme: data.node.readme,
-            liked: data.node.liked,
-            version: data.node.latestVersion?.version,
-            downloads: data.node.downloads,
-            updatedAt: data.node.updatedAt,
+            id: currentPlugin.id,
+            name: currentPlugin.name,
+            cover: currentPlugin.images[0],
+            author: currentPlugin.author || "",
+            like: currentPlugin.like,
+            images: currentPlugin.images,
+            description: currentPlugin.description || "",
+            readme: currentPlugin.readme,
+            liked: currentPlugin.liked,
+            version: currentPlugin.latestVersion?.version,
+            downloads: currentPlugin.downloads,
+            updatedAt: currentPlugin.updatedAt,
+            installed:
+              installedPlugins &&
+              installedPlugins.findIndex(
+                p =>
+                  p.id === currentPlugin.id && p.version === currentPlugin.latestVersion?.version,
+              ) >= 0,
           }
         : undefined,
-    [data?.node],
+    [currentPlugin, installedPlugins],
   );
 
   const [modalVisible, onToggleModal] = useState(false);

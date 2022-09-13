@@ -1,9 +1,10 @@
+import Message from "@marketplace/components/atoms/Message";
 import AddNewPluginPage from "@marketplace/components/molecules/AddNewPluginPage";
 import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { useState } from "react";
+
 import useHooks from "./hooks";
-import Message from "@marketplace/components/atoms/Message";
 
 export type Props = {};
 const AddNewPlugin: React.FC<Props> = () => {
