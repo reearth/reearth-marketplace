@@ -93,22 +93,16 @@ const SearchArea: React.FC<Props> = ({
         </Button>
       </Dropdown> */}
       <Dropdown overlay={orderMenu}>
-        <Button>
-          <Space size="small">
-            順番
-            <Icon icon="downOutlined" />
-          </Space>
-        </Button>
+        <StyledButton>
+          順番
+          <Icon icon="downOutlined" style={{ fontSize: "8px" }} />
+        </StyledButton>
       </Dropdown>
       {isLoggedIn ? (
-        <Button
-          onClick={() => handleFavButtonClick(!isFavSelected)}
-          style={{ color: isFavSelected ? "#f57c4b" : "" }}>
-          <Space size="small">
-            お気に入り
-            <Icon icon="heart" />
-          </Space>
-        </Button>
+        <StyledButton onClick={() => handleFavButtonClick(!isFavSelected)}>
+          お気に入り
+          <Icon icon="heart" />
+        </StyledButton>
       ) : null}
     </StyledSpace>
   );
@@ -121,6 +115,11 @@ const StyledSpace = styled(Space)`
 
 const StyledSearch = styled(Search)`
   width: 432px;
+`;
+
+const StyledButton = styled(Button)`
+  border-radius: 8px;
+  color: ${({ theme }) => theme.main.weakText};
 `;
 
 export default SearchArea;
