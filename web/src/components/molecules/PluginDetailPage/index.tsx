@@ -77,7 +77,6 @@ const PluginDetailPage: React.FC<Props> = ({
     if (isNaN(d.getTime())) return undefined;
     return d;
   }, [updatedDate]);
-  console.log(images, "images");
 
   return (
     <>
