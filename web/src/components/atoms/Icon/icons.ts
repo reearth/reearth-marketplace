@@ -3,6 +3,7 @@ import {
   DownloadOutlined,
   DownOutlined,
   HeartOutlined,
+  HeartFilled,
   CloudUploadOutlined,
   CaretDownOutlined,
   UserOutlined,
@@ -23,7 +24,8 @@ import {
 
 export default {
   downOutlined: DownOutlined,
-  heart: HeartOutlined,
+  heartOutlined: HeartOutlined,
+  heartFilled: HeartFilled,
   download: DownloadOutlined,
   arrowDown: ArrowDownOutlined,
   arrowRight: ArrowRightOutlined,
