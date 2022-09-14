@@ -259,6 +259,9 @@ const InnerWrapper = styled.div`
   .ant-breadcrumb-link,
   .ant-breadcrumb li a {
     color: ${({ theme }) => theme.main.text};
+    user-select: none;
+  }
+  .ant-breadcrumb li a {
     :hover {
       color: ${({ theme }) => theme.main.weakText};
     }

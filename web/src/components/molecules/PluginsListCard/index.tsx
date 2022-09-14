@@ -1,5 +1,4 @@
 import NoPluginCover from "@marketplace/assets/noPluginCover.png";
-import Button from "@marketplace/components/atoms/Button";
 import Card, { Meta } from "@marketplace/components/atoms/Card";
 import Icon from "@marketplace/components/atoms/Icon";
 import Image from "@marketplace/components/atoms/Image";
@@ -45,17 +44,13 @@ const PluginsListCard: React.FC<Props> = ({
       <Row justify="space-between" align="top">
         <AuthorName>{author}</AuthorName>
         <Space size="small">
-          <Row justify="start">
-            <Button type="text" size="small" onClick={onClick}>
-              <Icon icon="heart" />
-              <LikedNum>{likedCount}</LikedNum>
-            </Button>
+          <Row align="middle">
+            <StyledIcon icon="heartOutlined" />
+            <LikedNum>{likedCount}</LikedNum>
           </Row>
-          <Row justify="start">
-            <Space size="small">
-              <Icon icon="arrowDown" />
-              <LikedNum>{downloadCount}</LikedNum>
-            </Space>
+          <Row align="middle">
+            <StyledIcon icon="arrowDown" />
+            <LikedNum>{downloadCount}</LikedNum>
           </Row>
         </Space>
       </Row>
@@ -88,6 +83,10 @@ const StyledMeta = styled(Meta)`
   * {
     color: ${({ theme }) => theme.main.text};
   }
+`;
+
+const StyledIcon = styled(Icon)`
+  margin-right: 2px;
 `;
 
 export default PluginsListCard;
