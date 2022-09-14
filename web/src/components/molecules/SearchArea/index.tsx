@@ -120,7 +120,7 @@ const StyledSpace = styled(Space)`
 `;
 
 const StyledSearch = styled(Search)`
-  max-width: 432px;
+  width: 432px;
 `;
 
 export default SearchArea;
