@@ -30,7 +30,7 @@ const PluginsListCard: React.FC<Props> = ({
       loading={loading}
       cover={
         <StyledImage
-          alt="example"
+          alt="plugin cover image"
           src={
             cover
               ? cover
