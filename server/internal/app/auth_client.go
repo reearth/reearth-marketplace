@@ -3,6 +3,7 @@ package app
 import (
 	"github.com/labstack/echo/v4"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter"
+	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 )
 
 func authMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
@@ -13,7 +14,11 @@ func authMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
 
 			au := adapter.GetAuthInfo(ctx)
 			if au != nil {
-				u, err := cfg.Repos.User.FindOrCreate(ctx, au.Sub)
+				u, err := cfg.Repos.User.FindOrCreate(ctx, repo.AuthInfo{
+					Sub:   au.Sub,
+					Iss:   au.Iss,
+					Token: au.Token,
+				})
 				if err != nil {
 					return err
 				}

@@ -1,6 +1,12 @@
 package user
 
 import (
+	"encoding/binary"
+	"fmt"
+	"io"
+	"math/rand"
+	"regexp"
+
 	"golang.org/x/text/language"
 )
 
@@ -47,4 +53,24 @@ func (u *User) SetLang(lang language.Tag) {
 
 func (u *User) AddOrganization(organizationID OrganizationID) {
 	u.organizations.AddUniq(organizationID)
+}
+
+var urlSafeRe = regexp.MustCompile("^[a-zA-Z0-9._~-]+$")
+
+func IsSafeName(name string) bool {
+	return urlSafeRe.MatchString(name)
+}
+
+func RandomName(randReader io.Reader, n int) (string, error) {
+	var seed [8]byte
+	if _, err := io.ReadFull(randReader, seed[:]); err != nil {
+		return "", fmt.Errorf("read rand: %w", err)
+	}
+	rng := rand.New(rand.NewSource(int64(binary.LittleEndian.Uint64(seed[:]))))
+	alphabet := "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789._~-"
+	b := make([]byte, n)
+	for i := range b {
+		b[i] = alphabet[rng.Intn(len(alphabet))]
+	}
+	return string(b), nil
 }
