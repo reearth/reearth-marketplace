@@ -36,6 +36,7 @@ jobs:
         run: gsutil -m -h "Cache-Control:no-store" rsync -x "^reearth_config\\.json$" -dr reearth-marketplace-web/ $GCS_DEST
   deploy_server:
     runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion != 'failure' && github.event.repository.full_name == 'reearth/reearth-marketplace'
     permissions:
       contents: read
       id-token: write
