@@ -14,12 +14,9 @@ import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import { styled } from "@marketplace/theme";
 import { useMemo } from "react";
 
-import ModalContent, { Workspace } from "./ModalContent";
-
 export type { Workspace, Project } from "./ModalContent";
 
 export type Props = {
-  isLoggedIn: boolean;
   plugin: {
     id: string;
     name: string;
@@ -35,24 +32,17 @@ export type Props = {
     updatedAt: Date;
     installed: boolean | undefined;
   };
-  workspaces?: Workspace[];
-  modalVisible?: boolean;
-  handleClickChoose: (projectId: string) => void;
+  isLoggedIn: boolean;
   handleClickLike: (isLiked: boolean) => void;
-  onPluginInstall?: (workspaceId: string, projectId: string) => void;
   onExtPluginInstall?: (pluginId: string) => void;
   onToggleModal?: (shown: boolean) => void;
   onBack?: () => void;
 };
 
 const PluginDetailPage: React.FC<Props> = ({
-  isLoggedIn,
   plugin,
-  workspaces,
-  modalVisible,
-  handleClickChoose,
+  isLoggedIn,
   handleClickLike,
-  onPluginInstall,
   onExtPluginInstall,
   onToggleModal,
   onBack,
@@ -227,14 +217,6 @@ const PluginDetailPage: React.FC<Props> = ({
           </StyledLayout>
         </InnerWrapper>
       </Wrapper>
-      <ModalContent
-        title="Choose one project to open this plugin"
-        visible={modalVisible ?? false}
-        handleClickChoose={handleClickChoose}
-        workspaces={workspaces}
-        onCancel={() => onToggleModal?.(false)}
-        onPluginInstall={onPluginInstall}
-      />
     </>
   );
 };
@@ -307,7 +289,7 @@ const ReportButton = styled(Button)`
   margintop: 12;
 `;
 
-const Description = styled.p`
+const Description = styled.div`
   margin: 24px 0;
   font-size: 16px;
 `;

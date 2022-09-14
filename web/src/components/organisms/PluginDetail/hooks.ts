@@ -103,7 +103,7 @@ export default (pluginId: string, installedPlugins?: Plugin[]) => {
     })();
   }, [auth, modalVisible]);
 
-  const onPluginInstall = useCallback(
+  const handleOpenPluginInReearth = useCallback(
     (_workspaceId: string, projectId: string) => {
       location.href =
         (window.REEARTH_MARKETPLACE_CONFIG?.reearthWeb ?? "") +
@@ -119,6 +119,6 @@ export default (pluginId: string, installedPlugins?: Plugin[]) => {
     onLike,
     onUnlike,
     onToggleModal,
-    onPluginInstall,
+    handleOpenPluginInReearth,
   };
 };
