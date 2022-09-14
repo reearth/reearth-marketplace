@@ -133,8 +133,9 @@ const StyledSearch = styled(Search)`
 const StyledButton = styled(Button)`
   border-radius: 8px;
   color: ${({ theme }) => theme.main.weakText};
+  font-weight: bold;
   background: transparent;
-  border: 0.5px solid ${({ theme }) => theme.main.border};
+  border: 1px solid ${({ theme }) => theme.main.border};
 
   :hover {
     background: transparent;
