@@ -177,7 +177,7 @@ const PluginDetailPage: React.FC<Props> = ({
                     </Button>
                   </Col>
                   <Col flex="auto">
-                    <Button
+                    <InstallButton
                       type="primary"
                       size="large"
                       block
@@ -193,7 +193,7 @@ const PluginDetailPage: React.FC<Props> = ({
                         : onExtPluginInstall
                         ? "Install"
                         : "Open Plugin in your project"}
-                    </Button>
+                    </InstallButton>
                   </Col>
                 </ActionButtons>
                 <Description>
@@ -292,6 +292,12 @@ const LikesDownloaded = styled(Row)`
 `;
 
 const ActionButtons = styled(Row)``;
+
+const InstallButton = styled(Button)`
+  .ant-btn-block {
+    background: transparent;
+  }
+`;
 
 const ReportButton = styled(Button)`
   padding: 0;
