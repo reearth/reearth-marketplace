@@ -9,6 +9,10 @@ const lightTheme: Theme = {
     lightBackground: "#D0D0D0",
     border: "#8B8B8B",
   },
+  footer: {
+    text: "#c7c5c5",
+    textHover: "#FFFFFF",
+  },
 };
 
 export default lightTheme;

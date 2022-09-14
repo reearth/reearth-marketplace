@@ -1,5 +1,4 @@
 import Top from "@marketplace/components/organisms/Top";
-import React from "react";
 
 export type Props = {
   showBanner?: boolean;

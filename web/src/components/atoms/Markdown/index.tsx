@@ -78,6 +78,10 @@ const Wrapper = styled.div<{ styles?: Typography; dark: boolean }>`
     background-color: ${({ dark }) => color(dark ? "#161b22" : "#f6f8fa", 0.1, dark)};
   }
 
+  img {
+    max-width: 346px;
+  }
+
   table td,
   table th {
     border-color: ${({ dark }) => color(dark ? "#3b434b" : "#dfe2e5", 0.1, dark)};

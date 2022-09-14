@@ -41,6 +41,7 @@ export default function LibraryExtension({
   );
 
   const [pluginId, setPluginId] = useState<string>();
+
   useLayoutEffect(() => {
     const params = new URLSearchParams(location.search);
     const pluginId = params.get("pluginId");

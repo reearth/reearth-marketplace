@@ -7,4 +7,8 @@ export type Theme = {
     lightBackground: string;
     border: string;
   };
+  footer: {
+    text: string;
+    textHover: string;
+  };
 };

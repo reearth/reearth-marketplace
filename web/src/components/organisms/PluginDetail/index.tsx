@@ -37,19 +37,8 @@ const PluginDetail: React.FC<Props> = ({
 
   return plugin ? (
     <PluginDetailPage
-      isLiked={plugin.liked ?? false}
       isLoggedIn={isAuthenticated}
-      id={plugin?.id}
-      pluginName={plugin.name}
-      version={plugin.version}
-      author={plugin.author}
-      likes={plugin.like}
-      description={plugin.description}
-      readme={plugin.readme}
-      images={plugin.images}
-      downloads={plugin.downloads}
-      updatedDate={plugin.updatedAt}
-      installed={plugin.installed}
+      plugin={plugin}
       workspaces={workspaces}
       modalVisible={modalVisible}
       handleClickLike={handleClickLike}

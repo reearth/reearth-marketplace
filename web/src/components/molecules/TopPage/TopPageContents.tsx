@@ -4,18 +4,18 @@ import { styled } from "@marketplace/theme";
 
 export type Props = {
   plugins?: Plugin[];
-  onSearch: (text: string) => void;
   isLoggedIn: boolean;
   isFavSelected: boolean;
+  onSearch: (text: string) => void;
   handleFavButtonClick: (isFaved: boolean) => void;
   onPluginSelect?: (pluginId: string) => void;
 };
 
 const TopPageContents: React.FC<Props> = ({
   plugins,
-  onSearch,
   isLoggedIn,
   isFavSelected,
+  onSearch,
   handleFavButtonClick,
   onPluginSelect,
 }) => {
@@ -35,7 +35,6 @@ const TopPageContents: React.FC<Props> = ({
 const Wrapper = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding-top: 48px;
   padding-bottom: 72px;
   background: transparent;
 `;

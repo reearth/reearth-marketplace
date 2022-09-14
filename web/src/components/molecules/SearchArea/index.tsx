@@ -93,22 +93,16 @@ const SearchArea: React.FC<Props> = ({
         </Button>
       </Dropdown> */}
       <Dropdown overlay={orderMenu}>
-        <Button>
-          <Space size="small">
-            順番
-            <Icon icon="downOutlined" />
-          </Space>
-        </Button>
+        <StyledButton>
+          順番
+          <Icon icon="downOutlined" style={{ fontSize: "8px" }} />
+        </StyledButton>
       </Dropdown>
       {isLoggedIn ? (
-        <Button
-          onClick={() => handleFavButtonClick(!isFavSelected)}
-          style={{ color: isFavSelected ? "#f57c4b" : "" }}>
-          <Space size="small">
-            お気に入り
-            <Icon icon="heart" />
-          </Space>
-        </Button>
+        <StyledButton onClick={() => handleFavButtonClick(!isFavSelected)}>
+          お気に入り
+          <Icon icon="heart" />
+        </StyledButton>
       ) : null}
     </StyledSpace>
   );
@@ -120,7 +114,33 @@ const StyledSpace = styled(Space)`
 `;
 
 const StyledSearch = styled(Search)`
-  max-width: 432px;
+  width: 432px;
+  color: ${({ theme }) => theme.main.weakText};
+
+  * {
+    background: transparent;
+  }
+
+  :hover {
+    background: transparent;
+  }
+
+  .ant-input-affix-wrapper,
+  .ant-input-search-button {
+    border: 1px solid ${({ theme }) => theme.main.border};
+  }
+`;
+
+const StyledButton = styled(Button)`
+  border-radius: 8px;
+  color: ${({ theme }) => theme.main.weakText};
+  font-weight: bold;
+  background: transparent;
+  border: 1px solid ${({ theme }) => theme.main.border};
+
+  :hover {
+    background: transparent;
+  }
 `;
 
 export default SearchArea;

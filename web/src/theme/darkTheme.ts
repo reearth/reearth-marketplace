@@ -9,6 +9,10 @@ const darkTheme: Theme = {
     lightBackground: "#232226",
     border: "#4A4A4A",
   },
+  footer: {
+    text: "#c7c5c5",
+    textHover: "#FFFFFF",
+  },
 };
 
 export default darkTheme;
