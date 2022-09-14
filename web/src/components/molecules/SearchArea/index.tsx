@@ -115,11 +115,30 @@ const StyledSpace = styled(Space)`
 
 const StyledSearch = styled(Search)`
   width: 432px;
+
+  * {
+    background: transparent;
+  }
+
+  :hover {
+    background: transparent;
+  }
+
+  .ant-input-affix-wrapper,
+  .ant-input-search-button {
+    border: 1px solid ${({ theme }) => theme.main.border};
+  }
 `;
 
 const StyledButton = styled(Button)`
   border-radius: 8px;
   color: ${({ theme }) => theme.main.weakText};
+  background: transparent;
+  border: 0.5px solid ${({ theme }) => theme.main.border};
+
+  :hover {
+    background: transparent;
+  }
 `;
 
 export default SearchArea;
