@@ -115,6 +115,7 @@ const StyledSpace = styled(Space)`
 
 const StyledSearch = styled(Search)`
   width: 432px;
+  color: ${({ theme }) => theme.main.weakText};
 
   * {
     background: transparent;

@@ -20,6 +20,7 @@ const Wrapper = styled.section`
   background-size: cover;
   background-repeat: no-repeat;
   color: #fff;
+  margin-bottom: 48px;
 `;
 const Contents = styled.div`
   max-width: 1200px;
@@ -30,4 +31,5 @@ const Title = styled.h1`
   color: #fff;
 `;
 const Desc = styled.p``;
+
 export default TitleBar;
