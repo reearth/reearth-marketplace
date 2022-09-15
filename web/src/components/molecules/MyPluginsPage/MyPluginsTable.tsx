@@ -1,6 +1,7 @@
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Icon from "@marketplace/components/atoms/Icon";
+import Loading from "@marketplace/components/atoms/Loading";
 import Popover from "@marketplace/components/atoms/Popover";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
@@ -97,7 +98,11 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
   ];
   return (
     <Wrapper>
-      <Table columns={columns} dataSource={data} />
+      <Table
+        columns={columns}
+        dataSource={data}
+        loading={!data && { indicator: <Loading size="md" height={200} /> }}
+      />
     </Wrapper>
   );
 };
