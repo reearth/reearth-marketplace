@@ -21,6 +21,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
       - name: fetch tags
         run: git fetch --prune --unshallow --tags
       - name: Get info
@@ -55,7 +57,7 @@ jobs:
     if: needs.info.outputs.name || needs.info.outputs.new_tag
     env:
       # ARTIFACTS_SERVER: server/dist #TODO: fix here
-      ARTIFACTS_WEB: reearth-web_${{ needs.info.outputs.name }}.tar.gz
+      ARTIFACTS_WEB: reearth-marketplace-web_${{ needs.info.outputs.name }}.tar.gz
     steps:
       - name: get latest web artifact
         uses: dawidd6/action-download-artifact@v2
