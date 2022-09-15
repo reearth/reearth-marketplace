@@ -94,11 +94,11 @@ func NewPlugin(client *mongox.Client) repo.Plugin {
 }
 
 func (r *pluginRepo) init() {
-	r.pluginClient().CreateIndex(context.Background(), []string{"name", "publisherId", "publishedAt", "downloads"}, []string{"name"})
-	_, _ = r.pluginLikeClient().Client().Indexes().CreateOne(context.Background(), mongo.IndexModel{
+	r.pluginClient().CreateIndex(context.Background(), []string{"publisherId", "publishedAt", "downloads"}, []string{"name"})
+	lo.Must(r.pluginLikeClient().Client().Indexes().CreateOne(context.Background(), mongo.IndexModel{
 		Keys:    bson.D{{Key: "userId", Value: 1}, {Key: "pluginId", Value: 1}},
 		Options: options.Index().SetUnique(true),
-	})
+	}))
 }
 
 func (r *pluginRepo) pluginClient() *mongox.ClientCollection {
