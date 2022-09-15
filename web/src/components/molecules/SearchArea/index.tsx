@@ -50,32 +50,32 @@ const SearchArea: React.FC<Props> = ({
 
   const orderMenuItems: Array<{ label: string; key: number; value: PluginSort }> = [
     {
-      label: t("Downloads Ascending"),
+      label: t("Downloads Asc"),
       key: 1,
       value: PluginSort.DownloadsAsc,
     },
     {
-      label: t("Downloads Descending"),
+      label: t("Downloads Desc"),
       key: 2,
       value: PluginSort.DownloadsDesc,
     },
     {
-      label: t("Name Ascending"),
+      label: t("Name Asc"),
       key: 3,
       value: PluginSort.NameAsc,
     },
     {
-      label: t("Name Descending"),
+      label: t("Name Desc"),
       key: 4,
       value: PluginSort.NameDesc,
     },
     {
-      label: t("Published Ascending"),
+      label: t("Published Asc"),
       key: 5,
       value: PluginSort.PublishedatAsc,
     },
     {
-      label: t("Published Descending"),
+      label: t("Published Desc"),
       key: 6,
       value: PluginSort.PublishedatDesc,
     },
@@ -103,7 +103,7 @@ const SearchArea: React.FC<Props> = ({
       {isLoggedIn ? (
         <StyledButton onClick={() => handleFavButtonClick(!isFavSelected)}>
           {t("Liked")}
-          <Icon icon="heart" />
+          <Icon icon="heartOutlined" />
         </StyledButton>
       ) : null}
     </StyledSpace>
