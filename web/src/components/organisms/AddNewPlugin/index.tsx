@@ -61,7 +61,9 @@ const AddNewPlugin: React.FC<Props> = () => {
     await handleParsePluginMutation({
       file: undefined,
       repo: url,
-    }).catch(Message.error(t("Something went wrong on your URL ")));
+    }).catch(
+      Message.error(t("Something might be wrong with your URL. Please check and try again.")),
+    );
   };
   // When Zip File Uploaded
   const handleParsePlugin = (file?: FileUploadType) => {
@@ -69,7 +71,9 @@ const AddNewPlugin: React.FC<Props> = () => {
     handleParsePluginMutation({
       file: file,
       repo: undefined,
-    }).catch(Message.error(t("Something went wrong on your file ")));
+    }).catch(
+      Message.error(t("Something might be wrong with your URl. Please check and try again.")),
+    );
   };
 
   return (

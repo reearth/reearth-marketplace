@@ -56,7 +56,7 @@ const ModalContent: React.FC<Props> = ({
             {t("Choose one project to open this plugin")}
           </Row>
           <Row gutter={20} align="middle">
-            <Col>{t("Workspace:")}</Col>
+            <Col>{t("Workspace")}:</Col>
             <Col>
               <Select
                 loading={!workspaceOptions}
