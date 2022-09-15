@@ -170,13 +170,14 @@ jobs:
         run: mkdir reearth
       - name: Save docker image
         run: docker save ${{ steps.options.outputs.tags }} | gzip > reearth-marketplace.tar.gz
-      # - name: Save imaged to artifact
-      #   uses: actions/upload-artifact@v2
-      #   env:
-      #     TAG: ${{ needs.info.outputs.tag_short }}
-      #     NAME: ${{ needs.info.outputs.name }}
-      #   with:
-      #     name: '[ -n $TAG ] && echo reearth-marketplace_$TAG || echo reearth-marketplace_$'
-      #     path: reearth-marketplace.tar.gz
-      #     if-no-files-found: error
+      - name: Save imaged to artifact
+        uses: actions/upload-artifact@v2
+        # env:
+        #   TAG: ${{ needs.info.outputs.tag_short }}
+        #   NAME: ${{ needs.info.outputs.name }}
+        with:
+          name: reearth-marketplace
+          # name: '[ -n $TAG ] && echo reearth-marketplace_$TAG || echo reearth-marketplace_$'
+          path: reearth-marketplace.tar.gz
+          if-no-files-found: error
 # TODO: invoke deploy test env if name == "nightly" with workflow_call event
