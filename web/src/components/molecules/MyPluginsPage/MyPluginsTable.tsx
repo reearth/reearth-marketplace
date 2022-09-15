@@ -81,7 +81,7 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
                 <Button
                   type="link"
                   size="middle"
-                  icon={<Icon icon="rocket" />}
+                  icon={<UpdateIcon icon="arrowRightDouble" />}
                   onClick={() => navigate(`/myplugins/${id}/update`)}
                 />
               </Popover>
@@ -113,6 +113,10 @@ const Wrapper = styled.div`
 
 const BoldTitle = styled.p`
   font-weight: bold;
+`;
+
+const UpdateIcon = styled(Icon)`
+  transform: rotate(0.75turn);
 `;
 
 export default MyPluginsTable;
