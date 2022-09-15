@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.3.0 - 2022-09-15
+
 ## 0.2.0 - 2022-09-15
 
 ## 0.1.1 - 2022-09-15
