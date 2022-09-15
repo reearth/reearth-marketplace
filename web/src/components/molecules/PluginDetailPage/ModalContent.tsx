@@ -1,5 +1,4 @@
 import Col from "@marketplace/components/atoms/Col";
-import Divider from "@marketplace/components/atoms/Divider";
 import List from "@marketplace/components/atoms/List";
 import Loading from "@marketplace/components/atoms/Loading";
 import Modal from "@marketplace/components/atoms/Modal";
@@ -50,50 +49,53 @@ const ModalContent: React.FC<Props> = ({
   return (
     <Modal
       title={
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          Choose one project to open this plugin
-        </div>
+        <>
+          <Row justify="center" style={{ margin: "24px 0" }}>
+            Choose one project to open this plugin
+          </Row>
+          <Row gutter={20} align="middle">
+            <Col>Workspace: </Col>
+            <Col>
+              <Select
+                loading={!workspaceOptions}
+                value={workspaceId}
+                style={{ width: 250 }}
+                onChange={selectWorkspace}>
+                {workspaceOptions}
+              </Select>
+            </Col>
+          </Row>
+        </>
       }
       width="756px"
       visible={visible}
       onCancel={handleCancel}
       okText="Choose"
       okButtonProps={{ disabled: !workspaceId }}
-      bodyStyle={{ padding: "20px 32px" }}
+      bodyStyle={{ padding: "20px 32px", maxHeight: "582px", overflow: "scroll" }}
       onOk={() => onOpenPluginInReearth?.(workspaceId, projectId)}>
       {workspaces && workspaces.length > 0 ? (
-        <>
-          <Row gutter={20} align="middle">
-            <Col>Workspace: </Col>
-            <Col>
-              <Select loading={!workspaceOptions} style={{ width: 250 }} onChange={selectWorkspace}>
-                {workspaceOptions}
-              </Select>
-            </Col>
-          </Row>
-          <Divider />
-          {workspaceId && (
-            <List
-              dataSource={
-                workspaceId
-                  ? workspaces
-                      ?.find(ws => ws.id === workspaceId)
-                      ?.projects.map(prj => {
-                        return {
-                          id: prj.id,
-                          name: prj.name,
-                        };
-                      })
-                  : []
-              }
-              renderItem={prj => (
-                <ListItem selected={prj.id === projectId} onClick={() => selectProject?.(prj.id)}>
-                  {prj.name}
-                </ListItem>
-              )}
-            />
-          )}
-        </>
+        workspaceId && (
+          <List
+            dataSource={
+              workspaceId
+                ? workspaces
+                    ?.find(ws => ws.id === workspaceId)
+                    ?.projects.map(prj => {
+                      return {
+                        id: prj.id,
+                        name: prj.name,
+                      };
+                    })
+                : []
+            }
+            renderItem={prj => (
+              <ListItem selected={prj.id === projectId} onClick={() => selectProject?.(prj.id)}>
+                {prj.name}
+              </ListItem>
+            )}
+          />
+        )
       ) : (
         <Loading height={100} />
       )}
