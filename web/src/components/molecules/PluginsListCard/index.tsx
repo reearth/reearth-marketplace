@@ -4,6 +4,7 @@ import Icon from "@marketplace/components/atoms/Icon";
 import Image from "@marketplace/components/atoms/Image";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
 export type Props = {
@@ -25,12 +26,13 @@ const PluginsListCard: React.FC<Props> = ({
   name,
   onClick,
 }) => {
+  const t = useT();
   return (
     <StyledCard
       loading={loading}
       cover={
         <StyledImage
-          alt="plugin cover image"
+          alt={t("alt-plugin-cover-image")}
           src={cover ? cover : NoPluginCover}
           style={{ borderRadius: "4px" }}
           preview={false}

@@ -3,6 +3,7 @@ import Col from "@marketplace/components/atoms/Col";
 import Icon from "@marketplace/components/atoms/Icon";
 import Row from "@marketplace/components/atoms/Row";
 import type { Plugin } from "@marketplace/components/organisms/MyPlugins";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 import { useNavigate } from "react-router-dom";
 
@@ -14,17 +15,19 @@ export type Props = {
 };
 
 const MyPluginsPage: React.FC<Props> = ({ plugins, handlePublishClick }) => {
+  const t = useT();
   const navigate = useNavigate();
+
   return (
     <Wrapper>
       <TitleArea justify="space-between" align="middle">
         <Col>
-          <Title>My Plugins</Title>
+          <Title>{t("My Plugins")}</Title>
         </Col>
         <Col>
           <Button type="primary" onClick={() => navigate("/myplugins/new")}>
             <Icon icon="plus" />
-            New Plugin
+            {t("New Plugin")}
           </Button>
         </Col>
       </TitleArea>

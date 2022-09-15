@@ -7,6 +7,7 @@ import Radio, { RadioChangeEvent } from "@marketplace/components/atoms/Radio";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Upload, { Dragger, RcFile } from "@marketplace/components/atoms/Upload";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 import { useState } from "react";
 
@@ -23,19 +24,23 @@ const PackageArea: React.FC<Props> = ({
   handleParsePlugin,
   handleChangeGithubUrl,
 }) => {
+  const t = useT();
+
   const [currentRadio, changeRadio] = useState<"Upload from local" | "GitHub repository">(
     "Upload from local",
   );
+
   const handleChangeRadio = (e: RadioChangeEvent) => {
     changeRadio(e.target.value);
   };
+
   return (
     <Wrapper>
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
         <Row justify="end">
           <Col>
             <Button type="primary" onClick={handleClickDetailSetting}>
-              Details Setting
+              {t("Details Setting")}
               <Icon icon="arrowRight" />
             </Button>
           </Col>
@@ -43,8 +48,8 @@ const PackageArea: React.FC<Props> = ({
         <Row justify="start">
           <Col>
             <Radio.Group onChange={handleChangeRadio} value={currentRadio}>
-              <Radio.Button value="Upload from local">Upload from local</Radio.Button>
-              <Radio.Button value="GitHub repository">GitHub repository</Radio.Button>
+              <Radio.Button value="Upload from local">{t("Upload from local")}</Radio.Button>
+              <Radio.Button value="GitHub repository">{t("GitHub repository")}</Radio.Button>
             </Radio.Group>
           </Col>
         </Row>
@@ -67,15 +72,15 @@ const PackageArea: React.FC<Props> = ({
               onChange={info => {
                 const { status } = info.file;
                 if (status === "done") {
-                  Message.success(`${info.file.name} file uploaded successfully.`);
+                  Message.success(`${info.file.name} ${t("file uploaded successfully.")}`);
                 } else if (status === "error") {
-                  Message.error(`${info.file.name} file upload failed.`);
+                  Message.error(`${info.file.name} ${t("file upload failed.")}`);
                 }
               }}>
               <p className="ant-upload-drag-icon">
                 <Icon icon="inbox" />
               </p>
-              <p className="ant-upload-hint">Click or drag file to this area to upload</p>
+              <p className="ant-upload-hint">{t("Click or drag file to this area to upload")}</p>
             </Dragger>
           </UploadArea>
         ) : (
@@ -87,7 +92,7 @@ const PackageArea: React.FC<Props> = ({
                 handleChangeGithubUrl(e.target.value);
               }}
             />
-            <p>Please set your repository as public respository.</p>
+            <p>{t("Please set your repository as public respository.")}</p>
           </>
         )}
       </Space>

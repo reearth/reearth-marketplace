@@ -5,6 +5,7 @@ import Menu, { MenuProps } from "@marketplace/components/atoms/Menu";
 import Search from "@marketplace/components/atoms/Search";
 import Space from "@marketplace/components/atoms/Space";
 import { PluginSort } from "@marketplace/components/organisms/Top/hooks";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 import { useState } from "react";
 
@@ -26,45 +27,13 @@ export type Props = {
 //   },
 // ];
 
-const orderMenuItems: Array<{ label: string; key: number; value: PluginSort }> = [
-  {
-    label: "ダウンロード数降順",
-    key: 1,
-    value: PluginSort.DownloadsAsc,
-  },
-  {
-    label: "ダウンロード数昇順",
-    key: 2,
-    value: PluginSort.DownloadsDesc,
-  },
-  {
-    label: "名前降順",
-    key: 3,
-    value: PluginSort.NameAsc,
-  },
-  {
-    label: "名前昇順",
-    key: 4,
-    value: PluginSort.NameDesc,
-  },
-  {
-    label: "公開日降順",
-    key: 5,
-    value: PluginSort.PublishedatAsc,
-  },
-  {
-    label: "公開日昇順",
-    key: 6,
-    value: PluginSort.PublishedatDesc,
-  },
-];
-
 const SearchArea: React.FC<Props> = ({
   onSearch,
   isLoggedIn,
   isFavSelected,
   handleFavButtonClick,
 }) => {
+  const t = useT();
   // TODO: onSearchへのソートの渡し方
   // const [displayMenuState, updateDisplayMenuState] = useState(1);
   const [_, updateOrderMenuState] = useState(1);
@@ -78,11 +47,44 @@ const SearchArea: React.FC<Props> = ({
   };
 
   // const displayMenu = <Menu onClick={handleDisplayMenuClick} items={displayMenuItems} />;
+
+  const orderMenuItems: Array<{ label: string; key: number; value: PluginSort }> = [
+    {
+      label: t("Downloads Ascending"),
+      key: 1,
+      value: PluginSort.DownloadsAsc,
+    },
+    {
+      label: t("Downloads Descending"),
+      key: 2,
+      value: PluginSort.DownloadsDesc,
+    },
+    {
+      label: t("Name Ascending"),
+      key: 3,
+      value: PluginSort.NameAsc,
+    },
+    {
+      label: t("Name Descending"),
+      key: 4,
+      value: PluginSort.NameDesc,
+    },
+    {
+      label: t("Published Ascending"),
+      key: 5,
+      value: PluginSort.PublishedatAsc,
+    },
+    {
+      label: t("Published Descending"),
+      key: 6,
+      value: PluginSort.PublishedatDesc,
+    },
+  ];
   const orderMenu = <Menu onClick={handleOrderMenuClick} items={orderMenuItems} />;
 
   return (
     <StyledSpace size={16}>
-      <StyledSearch placeholder="search text" allowClear onSearch={onSearch} />
+      <StyledSearch placeholder={t("search text")} allowClear onSearch={onSearch} />
       {/* TODO: implement this after tag function is coming */}
       {/* <Dropdown overlay={displayMenu}>
         <Button>
@@ -94,13 +96,13 @@ const SearchArea: React.FC<Props> = ({
       </Dropdown> */}
       <Dropdown overlay={orderMenu}>
         <StyledButton>
-          順番
+          {t("Order")}
           <Icon icon="downOutlined" style={{ fontSize: "8px" }} />
         </StyledButton>
       </Dropdown>
       {isLoggedIn ? (
         <StyledButton onClick={() => handleFavButtonClick(!isFavSelected)}>
-          お気に入り
+          {t("Liked")}
           <Icon icon="heart" />
         </StyledButton>
       ) : null}

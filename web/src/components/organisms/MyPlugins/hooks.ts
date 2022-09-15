@@ -9,6 +9,7 @@ export default (id?: string, active?: boolean) => {
       first: 50,
     },
   });
+
   const [updatePlugin] = useUpdatePluginMutation({
     variables: { pluginId: id ? id : "", active: active },
   });
@@ -25,6 +26,7 @@ export default (id?: string, active?: boolean) => {
     },
     [updatePlugin, refetch],
   );
+
   const plugins = useMemo(
     () =>
       data?.me.plugins.nodes

@@ -5,9 +5,11 @@ import {
   useParsePluginMutation,
   useUpdatePluginMutation,
 } from "@marketplace/gql";
+import { useT } from "@marketplace/i18n";
 import { useCallback, useMemo } from "react";
 
 export default () => {
+  const t = useT();
   const [parsePluginMutation, { data: parsedData }] = useParsePluginMutation();
   const [createPluginMutation] = useCreatePluginMutation();
   const [updatePluginMutation] = useUpdatePluginMutation();
@@ -18,8 +20,8 @@ export default () => {
           file: data.file,
           repo: data.repo,
         },
-        onCompleted: () => Message.success("Your file is successfully saved"),
-        onError: () => Message.error(`Something went wrong on saving`),
+        onCompleted: () => Message.success(t("Your file was successfully saved!")),
+        onError: () => Message.error(t("Something went wrong during the save.")),
       });
     },
     [createPluginMutation],
@@ -32,8 +34,8 @@ export default () => {
           file: data.file && data.file,
           repo: data.repo && data.repo,
         },
-        onCompleted: () => Message.success("Your file is successfully loaded"),
-        onError: () => Message.error(`Something went wrong on your ${data.file ? "File" : "URL"}`),
+        onCompleted: () => Message.success(t("Your file was successfully loaded!")),
+        onError: () => Message.error(t("Something is wrong with the file you tried to upload.")),
       });
     },
     [parsePluginMutation],
@@ -47,8 +49,8 @@ export default () => {
           active: data.active,
           images: data.images,
         },
-        onCompleted: () => Message.success("Your file is successfully updated"),
-        onError: () => Message.error(`Something went wrong on updating`),
+        onCompleted: () => Message.success(t("Your file was successfully updated!")),
+        onError: () => Message.error(t("Something went wrong with the update.")),
       });
     },
     [updatePluginMutation],
