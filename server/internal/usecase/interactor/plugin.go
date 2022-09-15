@@ -2,6 +2,7 @@ package interactor
 
 import (
 	"context"
+	"fmt"
 	"io"
 	"net/http"
 	"net/url"
@@ -121,6 +122,9 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 	pl, err := p.pluginRepo.FindByID(ctx, param.PluginID)
 	if err != nil {
 		return nil, err
+	}
+	if pl.PublisherID().Compare(param.Publisher.ID()) != 0 {
+		return nil, fmt.Errorf("cannot update other's plugin")
 	}
 	if param.Active != nil {
 		pl.SetActive(*param.Active)
