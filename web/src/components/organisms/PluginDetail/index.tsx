@@ -43,7 +43,7 @@ const PluginDetail: React.FC<Props> = ({
     [onLike, onUnlike, pluginId],
   );
 
-  return plugin ? (
+  return (
     <>
       <PluginDetailPage
         isLoggedIn={isAuthenticated}
@@ -60,7 +60,7 @@ const PluginDetail: React.FC<Props> = ({
         onOpenPluginInReearth={handleOpenPluginInReearth}
       />
     </>
-  ) : null;
+  );
 };
 
 export default PluginDetail;
