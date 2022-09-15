@@ -22,7 +22,7 @@ func NewOrganization(client *mongox.Client) repo.Organization {
 }
 
 func (r *organizationRepo) init() {
-	r.client.CreateIndex(context.Background(), []string{"name"}, []string{"name"})
+	r.client.CreateIndex(context.Background(), nil, []string{"name"})
 }
 
 func (r *organizationRepo) Save(ctx context.Context, organization *user.Organization) error {
