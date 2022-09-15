@@ -1,5 +1,4 @@
 import MyPluginsPage from "@marketplace/components/molecules/MyPluginsPage";
-import React from "react";
 
 import useHooks from "./hooks";
 

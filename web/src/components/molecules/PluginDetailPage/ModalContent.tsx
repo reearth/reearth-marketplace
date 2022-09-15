@@ -1,17 +1,18 @@
-import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Divider from "@marketplace/components/atoms/Divider";
+import List from "@marketplace/components/atoms/List";
+import Loading from "@marketplace/components/atoms/Loading";
 import Modal from "@marketplace/components/atoms/Modal";
 import Row from "@marketplace/components/atoms/Row";
-import { useState } from "react";
+import Select, { Option } from "@marketplace/components/atoms/Select";
+import { styled } from "@marketplace/theme";
+import { useCallback, useState } from "react";
 
 type Props = {
-  title: string;
   visible: boolean;
   workspaces?: Workspace[];
-  onPluginInstall?: (workspaceId: string, projectId: string) => void;
+  onOpenPluginInReearth?: (workspaceId: string, projectId: string) => void;
   onCancel: () => void;
-  handleClickChoose: (projectId: string) => void;
 };
 
 export type Workspace = {
@@ -26,54 +27,92 @@ export type Project = {
 };
 
 const ModalContent: React.FC<Props> = ({
-  title,
   visible,
   workspaces,
   onCancel,
-  onPluginInstall,
-  handleClickChoose,
+  onOpenPluginInReearth,
 }) => {
   const [workspaceId, selectWorkspace] = useState<string>("");
+  const [projectId, selectProject] = useState<string>("");
+
+  const workspaceOptions = workspaces?.map(ws => (
+    <Option key={ws.id} value={ws.id}>
+      {ws.name}
+    </Option>
+  ));
+
+  const handleCancel = useCallback(() => {
+    selectWorkspace("");
+    selectProject("");
+    onCancel();
+  }, [onCancel]);
 
   return (
     <Modal
-      title={title}
+      title={
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          Choose one project to open this plugin
+        </div>
+      }
+      width="756px"
       visible={visible}
-      onCancel={onCancel}
+      onCancel={handleCancel}
       okText="Choose"
       okButtonProps={{ disabled: !workspaceId }}
-      onOk={() => handleClickChoose}>
-      <Row>
-        <Col>
-          Workspace: {(workspaceId && workspaces?.find(ws => ws.id === workspaceId)?.name) || "-"}
-        </Col>
-        {workspaces?.map(ws => (
-          <button
-            key={ws.id}
-            onClick={() => {
-              selectWorkspace(ws.id);
-            }}>
-            {ws.name}
-          </button>
-        ))}
-      </Row>
-      <Divider />
-      <Row>
-        {workspaceId &&
-          workspaces
-            ?.find(ws => ws.id === workspaceId)
-            ?.projects.map(prj => {
-              return (
-                <Col span={24} key={prj.id}>
-                  <Button onClick={() => onPluginInstall?.(workspaceId, prj.id)} block>
-                    {prj.name}
-                  </Button>
-                </Col>
-              );
-            })}
-      </Row>
+      bodyStyle={{ padding: "20px 32px" }}
+      onOk={() => onOpenPluginInReearth?.(workspaceId, projectId)}>
+      {workspaces && workspaces.length > 0 ? (
+        <>
+          <Row gutter={20} align="middle">
+            <Col>Workspace: </Col>
+            <Col>
+              <Select loading={!workspaceOptions} style={{ width: 250 }} onChange={selectWorkspace}>
+                {workspaceOptions}
+              </Select>
+            </Col>
+          </Row>
+          <Divider />
+          {workspaceId && (
+            <List
+              dataSource={
+                workspaceId
+                  ? workspaces
+                      ?.find(ws => ws.id === workspaceId)
+                      ?.projects.map(prj => {
+                        return {
+                          id: prj.id,
+                          name: prj.name,
+                        };
+                      })
+                  : []
+              }
+              renderItem={prj => (
+                <ListItem selected={prj.id === projectId} onClick={() => selectProject?.(prj.id)}>
+                  {prj.name}
+                </ListItem>
+              )}
+            />
+          )}
+        </>
+      ) : (
+        <Loading height={100} />
+      )}
     </Modal>
   );
 };
 
 export default ModalContent;
+
+const ListItem = styled(List.Item)<{ selected?: boolean }>`
+  margin: 0 12px 10px 12px;
+  cursor: pointer;
+  background: ${({ selected }) => (selected ? "#1890ff" : "#F0F0F0")};
+  ${({ selected }) => selected && "color: white;"}
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
+  padding: 12px 20px;
+
+  :hover {
+    background: #1890ff;
+    color: white;
+  }
+`;

@@ -19,7 +19,7 @@ export type Plugin = {
 
 const PluginsList: React.FC<Props> = ({ loading, plugins, onPluginSelect }) => {
   return (
-    <Space size={[37.33, 24]} wrap>
+    <Space size={[30, 18]} wrap>
       {plugins
         ? plugins.map((plugin: Plugin) => {
             return (

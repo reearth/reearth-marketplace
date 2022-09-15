@@ -1,3 +1,4 @@
+import Loading from "@marketplace/components/atoms/Loading";
 import PluginsList, { Plugin } from "@marketplace/components/molecules/PluginsList";
 import SearchArea from "@marketplace/components/molecules/SearchArea";
 import { styled } from "@marketplace/theme";
@@ -27,7 +28,11 @@ const TopPageContents: React.FC<Props> = ({
         handleFavButtonClick={handleFavButtonClick}
         isFavSelected={isFavSelected}
       />
-      <PluginsList plugins={plugins} onPluginSelect={onPluginSelect} />
+      {plugins ? (
+        <PluginsList plugins={plugins} onPluginSelect={onPluginSelect} />
+      ) : (
+        <Loading height={400} />
+      )}
     </Wrapper>
   );
 };

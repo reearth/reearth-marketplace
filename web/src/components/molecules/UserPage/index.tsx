@@ -3,6 +3,7 @@ import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
 // import Button from "@marketplace/components/atoms/Button";
 // import Icon from "@marketplace/components/atoms/Icon";
 import Image from "@marketplace/components/atoms/Image";
+import Loading from "@marketplace/components/atoms/Loading";
 import Space from "@marketplace/components/atoms/Space";
 import PluginsList from "@marketplace/components/molecules/PluginsList";
 import type { MyDataType, Plugin } from "@marketplace/components/organisms/User";
@@ -36,25 +37,34 @@ const UserPageContents: React.FC<Props> = ({ myData, plugins, onPluginSelect }) 
             </UserInitial>
           </UserIcon>
         </HeaderBannerSpace>
-        <DeveloperInfo size="small" direction="vertical">
-          <Title>{myData ? myData.displayName : ""}</Title>
-          <Description>{myData ? myData.description : ""}</Description>
-          {/* <AdditionalInfo>
+        {myData ? (
+          <>
+            <DeveloperInfo size="small" direction="vertical">
+              <Title>{myData ? myData.displayName : ""}</Title>
+              <Description>{myData ? myData.description : ""}</Description>
+              {/* <AdditionalInfo>
             <StyledButton type="link" size="middle" href="">
-              <Icon icon="desktop" />
-              https://hoge.com
+            <Icon icon="desktop" />
+            https://hoge.com
             </StyledButton>
-          </AdditionalInfo>
-          <AdditionalInfo>
+            </AdditionalInfo>
+            <AdditionalInfo>
             <StyledButton type="link" size="middle" href="">
-              <Icon icon="email" />
-              https://hoge.com
+            <Icon icon="email" />
+            https://hoge.com
             </StyledButton>
           </AdditionalInfo> */}
-        </DeveloperInfo>
-        <MyPlugins>
-          <PluginsList plugins={plugins ? plugins : undefined} onPluginSelect={onPluginSelect} />
-        </MyPlugins>
+            </DeveloperInfo>
+            <MyPlugins>
+              <PluginsList
+                plugins={plugins ? plugins : undefined}
+                onPluginSelect={onPluginSelect}
+              />
+            </MyPlugins>
+          </>
+        ) : (
+          <Loading height={400} />
+        )}
       </InnerWrapper>
     </Wrapper>
   );

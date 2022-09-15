@@ -62,8 +62,15 @@ const PluginsListCard: React.FC<Props> = ({
 const StyledCard = styled(Card)`
   background: ${({ theme }) => theme.main.background};
   color: ${({ theme }) => theme.main.text};
-  width: 272px;
+  width: 260px;
+  padding: 6px;
   cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.3s;
+
+  :hover {
+    box-shadow: 0px 3px 8px ${({ theme }) => theme.main.shadow};
+  }
 `;
 
 const StyledImage = styled(Image)`
