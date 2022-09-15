@@ -1,6 +1,7 @@
 package app
 
 import (
+	nhttp "net/http"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -9,6 +10,12 @@ import (
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearthx/rerror"
 )
+
+func Ping() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return c.JSON(nhttp.StatusOK, "pong")
+	}
+}
 
 func DownloadPlugin() echo.HandlerFunc {
 	return func(c echo.Context) error {
