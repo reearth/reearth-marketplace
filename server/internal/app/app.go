@@ -28,9 +28,10 @@ func initEcho(cfg *ServerConfig) *echo.Echo {
 	)
 	e.Use(UsecaseMiddleware(cfg.Repos, cfg.Gateways))
 	e.POST("/api/graphql", GraphqlAPI(cfg.Config.GraphQL))
-	e.GET("/api/plugins/:id/:version", DownloadPlugin())
-	e.GET("/api/plugins/:id/latest.zip", DownloadPluginLatest())
-
+	pluginAPI := e.Group("/api/plugins/:id")
+	pluginAPI.Use(serverAuthMiddleware(cfg))
+	pluginAPI.GET("/:version", DownloadPlugin())
+	pluginAPI.GET("/latest.zip", DownloadPluginLatest())
 	return e
 }
 
