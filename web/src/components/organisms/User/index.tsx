@@ -1,6 +1,5 @@
 import type { Plugin } from "@marketplace/components/molecules/PluginsList";
 import UserPage from "@marketplace/components/molecules/UserPage";
-import React from "react";
 
 import useHooks from "./hooks";
 
