@@ -16,7 +16,7 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
-    if: github.ref == "refs/heads/release"
+    if: github.ref == 'refs/heads/release'
     steps:
       - name: git config
         env:
