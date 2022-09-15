@@ -20,6 +20,7 @@ import {
   PaperClipOutlined,
   DeleteOutlined,
   ArrowRightOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 
 export default {
@@ -44,4 +45,5 @@ export default {
   inbox: InboxOutlined,
   paperClip: PaperClipOutlined,
   delete: DeleteOutlined,
+  loading: LoadingOutlined,
 };
