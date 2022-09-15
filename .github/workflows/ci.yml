@@ -13,7 +13,6 @@ jobs:
   ci_pre:
     name: CI pre
     runs-on: ubuntu-latest
-    if: github.event_name != 'push' || !startsWith(github.event.head_commit.message, 'v')
     outputs:
       web: ${{ steps.web.outputs.any_changed }}
       server: ${{ steps.server.outputs.any_changed }}
@@ -29,6 +28,9 @@ jobs:
             .github/workflows/ci.yml
             .github/workflows/build.yml
             .github/workflows/deploy.yml
+            .github/workflows/stage.yml
+            .github/workflows/release.yml
+            CHANGELOG.md
             web/**
             .eslintignore
       - name: Get server changed files
@@ -39,6 +41,9 @@ jobs:
             .github/workflows/ci.yml
             .github/workflows/build.yml
             .github/workflows/deploy.yml
+            .github/workflows/stage.yml
+            .github/workflows/release.yml
+            CHANGELOG.md
             server/**
   ci_web:
     name: CI web
