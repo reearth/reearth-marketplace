@@ -5,6 +5,7 @@ export const GET_ME = gql`
     me {
       id
       name
+      lang
       displayName
       description
       plugins(first: $first, after: $after) {
