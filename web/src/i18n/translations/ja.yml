@@ -1,63 +1,61 @@
-Re:Earth Plugin Marketplace: ''
-Make Re:Earth the way you want it: ''
-Update: ''
-Uninstall: ''
-You successfully updated your plugin: ''
-Success: ''
-Plugins List: ''
-New Plugin: ''
-Save: ''
-Publish: ''
-Details Setting: ''
-Upload from local: ''
-GitHub repository: ''
-file uploaded successfully.: ''
-file upload failed.: ''
-Click or drag file to this area to upload: ''
-Please set your repository as public respository.: ''
-Plugin Name: ''
-Version: ''
-Description: ''
-Images: ''
-Upload Image: ''
-Auto: ''
-Profile: ''
-My Plugins: ''
-Log Out: ''
-Log In: ''
-Re:Earth Marketplace: ''
-Status: ''
-Published: ''
-Not Published: ''
-Updated Date: ''
-Update this plugin: ''
-Top: ''
-Readme: ''
-Already installed: ''
-Install: ''
-Open Plugin in your project: ''
-Developer: ''
-Update date: ''
-Report this plugin: ''
-Choose one project to open this plugin: ''
-Workspace: ''
-Choose: ''
-alt-plugin-cover-image: ''
-Downloads Asc: ''
-Downloads Desc: ''
-Name Asc: ''
-Name Desc: ''
-Published Asc: ''
-Published Desc: ''
-search text: ''
-Order: ''
-Liked: ''
-Your file was successfully saved!: ''
-Something went wrong during the save.: ''
-Your file was successfully loaded!: ''
-Something is wrong with the file you tried to upload.: ''
-Your file was successfully updated!: ''
-Something went wrong with the update.: ''
-Something might be wrong with your URL. Please check and try again.: ''
-Something might be wrong with your URl. Please check and try again.: ''
-Developer Registration: ''
+Re:Earth Marketplace: "Re: Earth マーケットプレイス"
+Make Re:Earth the way you want it: "あなただけのRe: Earthを作りましょう"
+Update: "プラグインを更新"
+Uninstall: "アンインストール"
+You successfully updated your plugin: "プラグインの更新に成功しました"
+Success: "成功しました"
+Plugins List: "プラグインリスト"
+New Plugin: "新規プラグインの追加"
+Save: "一時保存"
+Publish: "公開"
+Details Setting: "詳細設定"
+Upload from local: "ローカルからアップロード"
+GitHub repository: "GitHubのレポジトリ"
+file uploaded successfully.: "ファイルのアップロードが成功しました"
+file upload failed.: "ファイルのアップロードに失敗しました"
+Click or drag file to this area to upload: "クリックまたはドラッグしてアップロードするファイルを追加"
+Please set your repository as public respository.: "レポジトリをPublicにするのをお忘れなく。"
+Plugin Name: "プラグイン名"
+Version: "バージョン"
+Description: "詳細"
+Images: "画像"
+Upload Image: "画像の追加"
+Auto: "自動"
+Profile: "プロフィール"
+My Plugins: "マイプラグイn"
+Log Out: "ログアウト"
+Log In: "ログイン"
+Status: "公開状態"
+Published: "公開中"
+Not Published: "非公開"
+Updated Date: "最終更新日"
+Update this plugin: "このプラグインを更新する"
+Top: "トップ"
+Readme: "README"
+Already installed: "既にインストールされています"
+Install: "インストール"
+Open Plugin in your project: "このプラグインをプロジェクトに追加"
+Developer: "開発者"
+Update date: "最終更新日"
+Report this plugin: "このプラグインを通報"
+Choose one project to open this plugin: "プラグインを追加するプロジェクトを１つ選んでください"
+Workspace: "ワークスペース"
+Choose: "選択"
+alt-plugin-cover-image: "プラグインの画像"
+Downloads Asc: "ダウンロード数降順"
+Downloads Desc: "ダウンロード数昇順"
+Name Asc: "名前降順"
+Name Desc: "名前昇順"
+Published Asc: "公開日降順"
+Published Desc: "公開日昇順"
+search text: "キーワードを入力"
+Order: "表示順"
+Liked: "お気に入り済"
+Your file was successfully saved!: "ファイルが正常に保存されました！"
+Something went wrong during the save.: "ファイルの保存時に問題が発生しました"
+Your file was successfully loaded!: "ファイルが正常に読み込まれました"
+Something is wrong with the file you tried to upload.: "ファイルのアップロード時に問題が発生しました"
+Your file was successfully updated!: "ファイルが正常に更新されました"
+Something went wrong with the update.: "プラグインの更新時に問題が発生しました"
+Something might be wrong with your URL. Please check and try again.: "URLに問題があります。もう一度お試しください。"
+Developer Registration: "開発者登録"

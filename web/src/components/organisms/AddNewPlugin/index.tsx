@@ -62,7 +62,9 @@ const AddNewPlugin: React.FC<Props> = () => {
       file: undefined,
       repo: url,
     }).catch(
-      Message.error(t("Something might be wrong with your URL. Please check and try again.")),
+      Message.error(
+        t("Something might be wrong with your URL. Please check and try again.")
+      )
     );
   };
   // When Zip File Uploaded
@@ -72,7 +74,9 @@ const AddNewPlugin: React.FC<Props> = () => {
       file: file,
       repo: undefined,
     }).catch(
-      Message.error(t("Something might be wrong with your URl. Please check and try again.")),
+      Message.error(
+        t("Something might be wrong with your URL. Please check and try again.")
+      )
     );
   };
 
