@@ -14,13 +14,14 @@ import (
 )
 
 type Config struct {
-	Port    string `default:"8080" envconfig:"PORT"`
-	DB      string `default:"mongodb://localhost"`
-	Auth    AuthConfig
-	GCS     GCSConfig
-	GraphQL GraphQLConfig
-	Origins []string
-	Debug   bool
+	Port           string `default:"8080" envconfig:"PORT"`
+	DB             string `default:"mongodb://localhost"`
+	Auth           AuthConfig
+	MachineAuthSub string
+	GCS            GCSConfig
+	GraphQL        GraphQLConfig
+	Origins        []string
+	Debug          bool
 }
 
 func Start(debug bool, version string) error {
