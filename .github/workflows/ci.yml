@@ -13,6 +13,7 @@ jobs:
   ci_pre:
     name: CI pre
     runs-on: ubuntu-latest
+    if: github.event_name != 'push' || !startsWith(github.event.head_commit.message, 'v')
     outputs:
       web: ${{ steps.web.outputs.any_changed }}
       server: ${{ steps.server.outputs.any_changed }}

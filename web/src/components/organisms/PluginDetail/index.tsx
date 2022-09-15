@@ -1,5 +1,6 @@
 import { useAuth } from "@marketplace/auth";
 import PluginDetailPage from "@marketplace/components/molecules/PluginDetailPage";
+import ModalContent from "@marketplace/components/molecules/PluginDetailPage/ModalContent";
 import React, { useCallback } from "react";
 
 import useHooks from "./hooks";
@@ -23,9 +24,16 @@ const PluginDetail: React.FC<Props> = ({
   onBack,
 }) => {
   const { isAuthenticated } = useAuth(accessToken);
-  const handleClickChoose = () => {};
-  const { plugin, workspaces, modalVisible, onLike, onUnlike, onToggleModal, onPluginInstall } =
-    useHooks(pluginId ? pluginId : "", installedPlugins);
+
+  const {
+    plugin,
+    workspaces,
+    modalVisible,
+    onLike,
+    onUnlike,
+    onToggleModal,
+    handleOpenPluginInReearth,
+  } = useHooks(pluginId ? pluginId : "", installedPlugins);
 
   const handleClickLike = useCallback(
     (isLiked: boolean) => {
@@ -35,20 +43,24 @@ const PluginDetail: React.FC<Props> = ({
     [onLike, onUnlike, pluginId],
   );
 
-  return plugin ? (
-    <PluginDetailPage
-      isLoggedIn={isAuthenticated}
-      plugin={plugin}
-      workspaces={workspaces}
-      modalVisible={modalVisible}
-      handleClickLike={handleClickLike}
-      handleClickChoose={handleClickChoose}
-      onPluginInstall={onPluginInstall}
-      onExtPluginInstall={onExtPluginInstall}
-      onToggleModal={onToggleModal}
-      onBack={onBack}
-    />
-  ) : null;
+  return (
+    <>
+      <PluginDetailPage
+        isLoggedIn={isAuthenticated}
+        plugin={plugin}
+        handleClickLike={handleClickLike}
+        onExtPluginInstall={onExtPluginInstall}
+        onToggleModal={onToggleModal}
+        onBack={onBack}
+      />
+      <ModalContent
+        visible={modalVisible ?? false}
+        workspaces={workspaces}
+        onCancel={() => onToggleModal?.(false)}
+        onOpenPluginInReearth={handleOpenPluginInReearth}
+      />
+    </>
+  );
 };
 
 export default PluginDetail;

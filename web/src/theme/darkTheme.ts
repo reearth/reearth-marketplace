@@ -8,6 +8,7 @@ const darkTheme: Theme = {
     background: "#171618",
     lightBackground: "#232226",
     border: "#4A4A4A",
+    shadow: "#fafafa3d",
   },
   footer: {
     text: "#c7c5c5",

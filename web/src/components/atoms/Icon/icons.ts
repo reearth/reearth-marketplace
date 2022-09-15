@@ -1,5 +1,7 @@
 import {
   ArrowDownOutlined,
+  ArrowRightOutlined,
+  DoubleRightOutlined,
   DownloadOutlined,
   DownOutlined,
   HeartOutlined,
@@ -19,16 +21,17 @@ import {
   InboxOutlined,
   PaperClipOutlined,
   DeleteOutlined,
-  ArrowRightOutlined,
+  LoadingOutlined,
 } from "@ant-design/icons";
 
 export default {
+  arrowDown: ArrowDownOutlined,
+  arrowRight: ArrowRightOutlined,
+  arrowRightDouble: DoubleRightOutlined,
   downOutlined: DownOutlined,
   heartOutlined: HeartOutlined,
   heartFilled: HeartFilled,
   download: DownloadOutlined,
-  arrowDown: ArrowDownOutlined,
-  arrowRight: ArrowRightOutlined,
   upload: CloudUploadOutlined,
   downFilled: CaretDownOutlined,
   user: UserOutlined,
@@ -44,4 +47,5 @@ export default {
   inbox: InboxOutlined,
   paperClip: PaperClipOutlined,
   delete: DeleteOutlined,
+  loading: LoadingOutlined,
 };

@@ -8,6 +8,7 @@ const lightTheme: Theme = {
     background: "transparent",
     lightBackground: "#D0D0D0",
     border: "#8B8B8B",
+    shadow: "#0000003d",
   },
   footer: {
     text: "#c7c5c5",

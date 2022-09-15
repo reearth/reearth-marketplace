@@ -6,6 +6,7 @@ export type Theme = {
     background: string;
     lightBackground: string;
     border: string;
+    shadow: string;
   };
   footer: {
     text: string;
