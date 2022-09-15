@@ -2,39 +2,27 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"os/signal"
 
-	"github.com/kelseyhightower/envconfig"
 	"github.com/labstack/echo/v4"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/gateway"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearthx/log"
 )
 
-type Config struct {
-	Port           string `default:"8080" envconfig:"PORT"`
-	DB             string `default:"mongodb://localhost"`
-	Auth           AuthConfig
-	MachineAuthSub string
-	GCS            GCSConfig
-	GraphQL        GraphQLConfig
-	Origins        []string
-	Debug          bool
-}
-
 func Start(debug bool, version string) error {
 	ctx := context.Background()
 
-	var c Config
-	if err := envconfig.Process("REEARTH_MARKETPLACE", &c); err != nil {
-		return fmt.Errorf("load a config from env: %w", err)
+	c, err := LoadConfig()
+	if err != nil {
+		return err
 	}
-	repos, gateways := initReposAndGateways(ctx, &c, debug)
+
+	repos, gateways := initReposAndGateways(ctx, c, debug)
 
 	NewServer(ctx, &ServerConfig{
-		Config:   &c,
+		Config:   c,
 		Debug:    debug,
 		Repos:    repos,
 		Gateways: gateways,

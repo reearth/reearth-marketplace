@@ -6,7 +6,17 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
+	"github.com/reearth/reearthx/appx"
 )
+
+// Validate the access token and inject the user clams into ctx
+func jwtEchoMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
+	mw, err := appx.AuthMiddleware(cfg.Config.AuthProviders(), adapter.ContextAuthInfo, true)
+	if err != nil {
+		panic(err)
+	}
+	return echo.WrapMiddleware(mw)
+}
 
 func authMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
@@ -38,7 +48,7 @@ func serverAuthMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
 			req := c.Request()
 			ctx := req.Context()
 
-			if sub := cfg.Config.MachineAuthSub; sub != "" {
+			if sub := cfg.Config.Auth_M2M.Sub; sub != "" {
 				ai := adapter.GetAuthInfo(ctx)
 				if ai == nil || ai.Sub != sub {
 					return c.NoContent(http.StatusUnauthorized)
