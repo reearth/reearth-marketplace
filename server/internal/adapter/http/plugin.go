@@ -27,7 +27,6 @@ func (c *PluginController) DownloadPlugin(ctx context.Context, input DownloadPlu
 	return c.usecase.Download(ctx, input.PluginID, input.Version)
 }
 
-// DryDonwloadPlugin only increases the download count.
 func (c *PluginController) IncreasePluginDownloadCount(ctx context.Context, input DownloadPluginInput) error {
 	return c.usecase.IncreaseDownloadCount(ctx, input.PluginID, input.Version)
 }
