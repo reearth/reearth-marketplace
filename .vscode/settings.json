@@ -1,7 +1,5 @@
 {
-  "go.testEnvVars": {
-    // "REEARTH_CMS_DB": "mongodb://localhost"
-  },
+  "go.testEnvFile": "${workspaceRoot}/.env",
   "yaml.schemas": {
     "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.yml"
   }

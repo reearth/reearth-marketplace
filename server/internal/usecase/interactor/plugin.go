@@ -36,16 +36,16 @@ func NewPlugin(r *repo.Container, gr *gateway.Container) interfaces.Plugin {
 
 var pluginPackageSizeLimit int64 = 10 * 1024 * 1024
 
-func (p *Plugin) FindByID(ctx context.Context, id id.PluginID) (*plugin.VersionedPlugin, error) {
-	pl, err := p.pluginRepo.FindByID(ctx, id)
+func (p *Plugin) FindByID(ctx context.Context, id id.PluginID, user *id.UserID) (*plugin.VersionedPlugin, error) {
+	pl, err := p.pluginRepo.FindByID(ctx, id, user)
 	if err != nil {
 		return nil, err
 	}
 	return plugin.Versioned(pl).Build()
 }
 
-func (i *Plugin) FindByIDs(ctx context.Context, uids []id.PluginID) ([]*plugin.VersionedPlugin, error) {
-	res, err := i.pluginRepo.FindByIDs(ctx, uids)
+func (i *Plugin) FindByIDs(ctx context.Context, uids []id.PluginID, user *id.UserID) ([]*plugin.VersionedPlugin, error) {
+	res, err := i.pluginRepo.FindByIDs(ctx, uids, user)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 		}
 	}()
 
-	pl, err := p.pluginRepo.FindByID(ctx, param.PluginID)
+	pl, err := p.pluginRepo.FindByID(ctx, param.PluginID, param.Publisher.IDRef())
 	if err != nil {
 		return nil, err
 	}
@@ -187,7 +187,7 @@ func (p *Plugin) Like(ctx context.Context, user *user.User, id id.PluginID) (_ *
 		}
 	}()
 
-	pl, err := p.pluginRepo.FindByID(ctx, id)
+	pl, err := p.pluginRepo.FindByID(ctx, id, user.IDRef())
 	if err != nil {
 		return nil, err
 	}
@@ -221,7 +221,7 @@ func (p *Plugin) Unlike(ctx context.Context, user *user.User, id id.PluginID) (*
 		}
 	}()
 
-	pl, err := p.pluginRepo.FindByID(ctx, id)
+	pl, err := p.pluginRepo.FindByID(ctx, id, user.IDRef())
 	if err != nil {
 		return nil, err
 	}
@@ -317,7 +317,7 @@ func (p *Plugin) Download(ctx context.Context, id id.PluginID, version string) (
 }
 
 func (p *Plugin) DownloadLatest(ctx context.Context, id id.PluginID) ([]byte, error) {
-	pl, err := p.pluginRepo.FindByID(ctx, id)
+	pl, err := p.pluginRepo.FindByID(ctx, id, nil)
 	if err != nil {
 		return nil, err
 	}
