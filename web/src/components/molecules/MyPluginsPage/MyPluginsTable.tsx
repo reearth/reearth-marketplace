@@ -8,6 +8,7 @@ import Space from "@marketplace/components/atoms/Space";
 import Switch from "@marketplace/components/atoms/Switch";
 import Table from "@marketplace/components/atoms/Table";
 import type { Plugin } from "@marketplace/components/organisms/MyPlugins";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 import type { ColumnsType } from "antd/es/table";
 import { useNavigate } from "react-router-dom";
@@ -18,16 +19,18 @@ export type Props = {
 };
 
 const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
+  const t = useT();
   const navigate = useNavigate();
+
   const columns: ColumnsType<Plugin> = [
     {
-      title: "Plugin Name",
+      title: t("Plugin Name"),
       dataIndex: "name",
       key: "name",
       render: text => <BoldTitle>{text}</BoldTitle>,
     },
     {
-      title: "Status",
+      title: t("Status"),
       dataIndex: "active",
       key: "active",
       render: (active, plugin) => (
@@ -40,18 +43,18 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
                 onClick={() => handlePublishClick(plugin.id, active)}
               />
             </Col>
-            <Col>{active ? "Published" : "Not Published"}</Col>
+            <Col>{active ? t("Published") : t("Not Published")}</Col>
           </Space>
         </Row>
       ),
     },
     {
-      title: "Version",
+      title: t("Version"),
       dataIndex: "version",
       key: "version",
     },
     {
-      title: "Updated Date",
+      title: t("Updated Date"),
       dataIndex: "updateAt",
       key: "updateAt",
       render: (date: Date) => {
@@ -77,7 +80,7 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
               </Popover>
             </Col> */}
             <Col>
-              <Popover content="Update this plugin">
+              <Popover content={t("Update this plugin")}>
                 <Button
                   type="link"
                   size="middle"

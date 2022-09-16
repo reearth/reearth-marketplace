@@ -3,6 +3,7 @@ import Icon from "@marketplace/components/atoms/Icon";
 import { TextArea } from "@marketplace/components/atoms/Input";
 import Space from "@marketplace/components/atoms/Space";
 import Upload from "@marketplace/components/atoms/Upload";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 
@@ -13,17 +14,19 @@ export type Props = {
   handleUploadImages: (image: UploadRequestOption) => void;
 };
 const SettingArea: React.FC<Props> = ({ pluginName, version, description, handleUploadImages }) => {
+  const t = useT();
+
   return (
     <Wrapper>
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
-        <Title>Plugin Name</Title>
+        <Title>{t("Plugin Name")}</Title>
         <PluginInfo>{pluginName}</PluginInfo>
-        <Title>Version</Title>
+        <Title>{t("Version")}</Title>
         <PluginInfo>{version}</PluginInfo>
 
-        <Title>Description</Title>
+        <Title>{t("Description")}</Title>
         <StyledTextArea rows={4} defaultValue={description} />
-        <Title>Images</Title>
+        <Title>{t("Images")}</Title>
         <Upload
           listType="picture"
           accept="image/png, image/jpeg, image/jpg"
@@ -33,7 +36,7 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, description, handle
           defaultFileList={[]}
           multiple>
           <Button icon={<Icon icon="upload" />} type="primary" ghost>
-            Upload Image
+            {t("Upload Image")}
           </Button>
         </Upload>
       </Space>

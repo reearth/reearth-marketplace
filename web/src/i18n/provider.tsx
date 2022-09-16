@@ -1,8 +1,32 @@
-import { ReactNode } from "react";
+import { useAuth } from "@marketplace/auth";
+import { useGetMeQuery } from "@marketplace/gql";
+import { ReactNode, useEffect } from "react";
 import { I18nextProvider } from "react-i18next";
 
 import i18n from "./i18n";
 
+const getBrowserLanguage = () => {
+  const lang = navigator.language;
+  if (lang.includes("ja")) {
+    return "ja";
+  } else {
+    return "en";
+  }
+};
+
 export default function Provider({ children }: { children?: ReactNode }) {
+  const { isAuthenticated } = useAuth();
+  const { data } = useGetMeQuery({
+    variables: {
+      first: 50,
+    },
+    skip: !isAuthenticated,
+  });
+  const locale = data?.me.lang;
+
+  useEffect(() => {
+    i18n.changeLanguage(locale === "und" ? getBrowserLanguage() : locale);
+  }, [locale]);
+
   return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;
 }

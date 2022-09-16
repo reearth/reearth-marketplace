@@ -1,6 +1,7 @@
 import Message from "@marketplace/components/atoms/Message";
 import AddNewPluginPage from "@marketplace/components/molecules/AddNewPluginPage";
 import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
+import { useT } from "@marketplace/i18n";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { useState } from "react";
 
@@ -8,6 +9,7 @@ import useHooks from "./hooks";
 
 export type Props = {};
 const AddNewPlugin: React.FC<Props> = () => {
+  const t = useT();
   const {
     parsedPlugin,
     handleParsePluginMutation,
@@ -59,7 +61,9 @@ const AddNewPlugin: React.FC<Props> = () => {
     await handleParsePluginMutation({
       file: undefined,
       repo: url,
-    }).catch(Message.error("Something went wrong on your URL "));
+    }).catch(
+      Message.error(t("Something might be wrong with your URL. Please check and try again.")),
+    );
   };
   // When Zip File Uploaded
   const handleParsePlugin = (file?: FileUploadType) => {
@@ -67,7 +71,9 @@ const AddNewPlugin: React.FC<Props> = () => {
     handleParsePluginMutation({
       file: file,
       repo: undefined,
-    }).catch(Message.error("Something went wrong on your file "));
+    }).catch(
+      Message.error(t("Something might be wrong with your URl. Please check and try again.")),
+    );
   };
 
   return (

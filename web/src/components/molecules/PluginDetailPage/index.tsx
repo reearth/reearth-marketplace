@@ -12,6 +12,7 @@ import Markdown from "@marketplace/components/atoms/Markdown";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 import { useMemo } from "react";
 
@@ -48,6 +49,7 @@ const PluginDetailPage: React.FC<Props> = ({
   onToggleModal,
   onBack,
 }) => {
+  const t = useT();
   const {
     id,
     name: pluginName,
@@ -85,7 +87,7 @@ const PluginDetailPage: React.FC<Props> = ({
                   e.preventDefault();
                   onBack?.();
                 }}>
-                Top
+                {t("Top")}
               </StyledLink>
             </Breadcrumb.Item>
             <Breadcrumb.Item>{pluginName}</Breadcrumb.Item>
@@ -123,7 +125,7 @@ const PluginDetailPage: React.FC<Props> = ({
                   </Carousel>
                   <PluginDocs>
                     <Tabs defaultActiveKey="1">
-                      <TabPane tab="Readme" key="1">
+                      <TabPane tab={t("Readme")} key="1">
                         <Markdown>{readme}</Markdown>
                       </TabPane>
                       {/* TODO: after developing function for posting changelogs */}
@@ -181,34 +183,34 @@ const PluginDetailPage: React.FC<Props> = ({
                         disabled={!isLoggedIn || installed}>
                         <Icon icon="download" />
                         {installed
-                          ? "Already installed"
+                          ? t("Already installed")
                           : onExtPluginInstall
-                          ? "Install"
-                          : "Open Plugin in your project"}
+                          ? t("Install")
+                          : t("Open Plugin in your project")}
                       </InstallButton>
                     </Col>
                   </ActionButtons>
                   <Description>
-                    <Col style={{ paddingBottom: "8px" }}>Description</Col>
+                    <Col style={{ paddingBottom: "8px" }}>{t("Description")}</Col>
                     <Col>{description}</Col>
                   </Description>
                   <PluginInfo align="middle" justify="space-between">
-                    <Col>Developer</Col>
+                    <Col>{t("Developer")}</Col>
                     <Col>{author}</Col>
                   </PluginInfo>
                   <PluginInfo align="middle" justify="space-between">
-                    <Col>Version</Col>
+                    <Col>{t("Version")}</Col>
                     <Col>v{version}</Col>
                   </PluginInfo>
                   <PluginInfo align="middle" justify="space-between">
-                    <Col>Update date</Col>
+                    <Col>{t("Update date")}</Col>
                     <Col>
                       {date ? `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}` : ""}
                     </Col>
                   </PluginInfo>
                   <ReportButton type="link" size="middle" danger>
                     <Row align="bottom" justify="space-between" wrap={false}>
-                      <Col>Report this plugin</Col>
+                      <Col>{t("Report this plugin")}</Col>
                       <Col span={4}>
                         <Icon icon="exclamation" />
                       </Col>

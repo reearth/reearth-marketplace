@@ -7,6 +7,7 @@ import Loading from "@marketplace/components/atoms/Loading";
 import Space from "@marketplace/components/atoms/Space";
 import PluginsList from "@marketplace/components/molecules/PluginsList";
 import type { MyDataType, Plugin } from "@marketplace/components/organisms/User";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 import { Link } from "react-router-dom";
 
@@ -17,6 +18,8 @@ export type Props = {
 };
 
 const UserPageContents: React.FC<Props> = ({ myData, plugins, onPluginSelect }) => {
+  const t = useT();
+
   return (
     <Wrapper>
       <InnerWrapper>
@@ -25,7 +28,7 @@ const UserPageContents: React.FC<Props> = ({ myData, plugins, onPluginSelect }) 
             paddingBottom: "24px",
           }}>
           <Breadcrumb.Item>
-            <StyledLink to="/">Top</StyledLink>
+            <StyledLink to="/">{t("Top")}</StyledLink>
           </Breadcrumb.Item>
           <Breadcrumb.Item>{myData ? myData.displayName : ""}</Breadcrumb.Item>
         </Breadcrumb>

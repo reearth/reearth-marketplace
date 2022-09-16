@@ -1,7 +1,7 @@
 import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
 import UpdatePluginPage from "@marketplace/components/molecules/UpdatePluginPage";
 import { UploadRequestOption } from "rc-upload/lib/interface";
-import React, { useState } from "react";
+import { useState } from "react";
 
 import useHooks from "./hooks";
 

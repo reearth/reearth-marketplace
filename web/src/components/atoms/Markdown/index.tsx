@@ -1,5 +1,5 @@
 import { styled } from "@marketplace/theme";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 import tinycolor from "tinycolor2";

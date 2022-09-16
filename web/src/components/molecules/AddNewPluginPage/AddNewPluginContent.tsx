@@ -4,6 +4,7 @@ import Col from "@marketplace/components/atoms/Col";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { useState } from "react";
@@ -39,6 +40,7 @@ const AddNewPluginContent: React.FC<Props> = ({
   handleClickPublish,
   handleUploadImages,
 }) => {
+  const t = useT();
   const [currentTab, updateTab] = useState<"1" | "2">("1");
   const handleClickDetailSetting = () => {
     updateTab(currentTab === "1" ? "2" : "1");
@@ -49,22 +51,22 @@ const AddNewPluginContent: React.FC<Props> = ({
         <Col>
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Link to="/myplugins">Plugins List</Link>
+              <Link to="/myplugins">{t("Plugins List")}</Link>
             </Breadcrumb.Item>
-            <Breadcrumb.Item>New Plugin</Breadcrumb.Item>
+            <Breadcrumb.Item>{t("New Plugin")}</Breadcrumb.Item>
           </Breadcrumb>
         </Col>
         <Col>
           <Space size="middle">
             <Button type="default" size="large" onClick={handleClickSave} loading={isSaveLoading}>
-              Save
+              {t("Save")}
             </Button>
             <Button
               type="primary"
               size="large"
               onClick={handleClickPublish}
               loading={isPublishLoading}>
-              Publish
+              {t("Publish")}
             </Button>
           </Space>
         </Col>
