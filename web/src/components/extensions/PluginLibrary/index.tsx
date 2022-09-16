@@ -70,7 +70,7 @@ export default function LibraryExtension({
             onBack={handleBack}
           />
         )}
-        {!pluginId && <RootPage onPluginSelect={handlePluginSelect} />}
+        {!pluginId && <RootPage accessToken={accessToken} onPluginSelect={handlePluginSelect} />}
       </CoreWrapper>
     </SharedProviders>
   );

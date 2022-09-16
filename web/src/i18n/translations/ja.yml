@@ -17,7 +17,6 @@ Click or drag file to this area to upload: ''
 Please set your repository as public respository.: ''
 Plugin Name: プラグイン名
 Version: バージョン
-Description: 説明
 Images: イメージ
 Upload Image: イメージをアップロード
 Community: コミュニティ
@@ -63,6 +62,7 @@ Readme: リードミー
 Already installed: インストールされています
 Install: インストール
 Open Plugin in your project: プロジェクトで開く
+Description: 説明
 Developer: デベロッパー
 Update date: アップデート日
 Report this plugin: ''
