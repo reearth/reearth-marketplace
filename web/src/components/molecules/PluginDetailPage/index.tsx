@@ -162,7 +162,7 @@ const PluginDetailPage: React.FC<Props> = ({
                         size="large"
                         ghost
                         disabled={!isLoggedIn}
-                        onClick={() => isLiked && handleClickLike(isLiked)}>
+                        onClick={() => handleClickLike(!!isLiked)}>
                         {isLiked ? (
                           <Icon icon="heartFilled" style={{ color: "#B02838" }} />
                         ) : (

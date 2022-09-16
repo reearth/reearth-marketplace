@@ -8,22 +8,23 @@ import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
 export type Props = {
-  loading?: boolean;
-  cover?: string;
-  author: string;
-  likedCount: number;
-  downloadCount: number;
   name: string;
-  id: string;
+  author: string;
+  cover?: string;
+  likedCount: number;
+  personallyLiked?: boolean;
+  downloadCount: number;
+  loading?: boolean;
   onClick?: () => void;
 };
 const PluginsListCard: React.FC<Props> = ({
-  loading,
-  cover,
-  author,
-  likedCount,
-  downloadCount,
   name,
+  author,
+  cover,
+  likedCount,
+  personallyLiked,
+  downloadCount,
+  loading,
   onClick,
 }) => {
   const t = useT();
@@ -46,10 +47,10 @@ const PluginsListCard: React.FC<Props> = ({
       <Row justify="space-between" align="top">
         <AuthorName>{author}</AuthorName>
         <Space size="small">
-          <Row align="middle">
+          <LikedRow align="middle" personallyLiked={personallyLiked}>
             <StyledIcon icon="heartOutlined" />
-            <LikedNum>{likedCount}</LikedNum>
-          </Row>
+            <span>{likedCount}</span>
+          </LikedRow>
           <Row align="middle">
             <StyledIcon icon="arrowDown" />
             <LikedNum>{downloadCount}</LikedNum>
@@ -86,6 +87,10 @@ const AuthorName = styled.p`
 
 const LikedNum = styled.span`
   color: ${({ theme }) => theme.main.text};
+`;
+
+const LikedRow = styled(Row)<{ personallyLiked?: boolean }>`
+  color: ${({ theme, personallyLiked }) => (personallyLiked ? "#B02838" : theme.main.text)};
 `;
 
 const StyledMeta = styled(Meta)`

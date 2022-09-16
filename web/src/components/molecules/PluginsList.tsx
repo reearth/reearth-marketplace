@@ -2,8 +2,8 @@ import Space from "@marketplace/components/atoms/Space";
 import PluginsListCard from "@marketplace/components/molecules/PluginsListCard";
 
 export type Props = {
-  loading?: boolean;
   plugins?: Plugin[];
+  loading?: boolean;
   onPluginSelect?: (pluginId: string) => void;
 };
 
@@ -13,25 +13,26 @@ export type Plugin = {
   cover: string;
   author: string;
   like: number;
+  liked?: boolean;
   downloads: number;
   version?: string;
 };
 
-const PluginsList: React.FC<Props> = ({ loading, plugins, onPluginSelect }) => {
+const PluginsList: React.FC<Props> = ({ plugins, loading, onPluginSelect }) => {
   return (
     <Space size={[30, 18]} wrap>
       {plugins
         ? plugins.map((plugin: Plugin) => {
             return (
               <PluginsListCard
-                id={plugin.id}
                 key={plugin.id}
                 name={plugin.name}
                 author={plugin.author}
-                loading={loading}
                 cover={plugin.cover}
                 likedCount={plugin.like}
+                personallyLiked={plugin.liked}
                 downloadCount={plugin.downloads}
+                loading={loading}
                 onClick={() => onPluginSelect?.(plugin.id)}
               />
             );

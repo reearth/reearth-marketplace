@@ -14,6 +14,7 @@ export const GET_ME = gql`
           images
           author
           like
+          liked
           downloads
           name
           readme

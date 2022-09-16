@@ -1,3 +1,4 @@
+import { useAuth } from "@marketplace/auth/hooks";
 import { type Plugin } from "@marketplace/components/molecules/TopPage";
 import {
   useSearchPluginQuery,
@@ -10,6 +11,8 @@ import { useCallback, useMemo } from "react";
 export { PluginSort };
 
 export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
+  const { isAuthenticated } = useAuth();
+
   const { data, refetch } = useSearchPluginQuery({
     variables: {
       first: 50,
@@ -60,6 +63,7 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
                 cover: p.images[0],
                 author: p.author ? p.author : "",
                 like: p.like,
+                liked: p.liked,
                 downloads: p.downloads,
               }
             : undefined,
@@ -70,6 +74,7 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
 
   return {
     plugins,
+    isAuthenticated,
     onLike,
     onUnlike,
   };
