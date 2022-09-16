@@ -53,16 +53,16 @@ func (f *fileRepo) UploadPlugin(ctx context.Context, vid id.VersionID, content [
 	}
 
 	w := object.NewWriter(ctx)
+	defer func() {
+		_ = w.Close()
+	}()
 	if _, err := w.Write(content); err != nil {
-		return gateway.ErrFailedToUploadFile
-	}
-	if err := w.Close(); err != nil {
 		return gateway.ErrFailedToUploadFile
 	}
 	return nil
 }
 
-func (f *fileRepo) DownloadPlugin(ctx context.Context, vid id.VersionID) ([]byte, error) {
+func (f *fileRepo) DownloadPlugin(ctx context.Context, vid id.VersionID) (io.ReadCloser, error) {
 	client, err := storage.NewClient(ctx)
 	if err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (f *fileRepo) DownloadPlugin(ctx context.Context, vid id.VersionID) ([]byte
 	if err != nil {
 		return nil, err
 	}
-	return io.ReadAll(r)
+	return r, nil
 }
 
 func (f *fileRepo) UploadImage(ctx context.Context, image io.ReadSeeker) (string, error) {

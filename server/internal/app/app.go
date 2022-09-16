@@ -32,7 +32,7 @@ func initEcho(cfg *ServerConfig) *echo.Echo {
 	pluginAPI := e.Group("/api/plugins/:id")
 	pluginAPI.Use(serverAuthMiddleware(cfg))
 	pluginAPI.GET("/:version", DownloadPlugin())
-	pluginAPI.GET("/latest.zip", DownloadPluginLatest())
+	pluginAPI.POST("/:version/download", IncreasePluginDownloadCount())
 	return e
 }
 

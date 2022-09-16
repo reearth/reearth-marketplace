@@ -308,15 +308,15 @@ func (p *Plugin) Liked(ctx context.Context, user *user.User, id id.PluginID) (bo
 	return p.pluginRepo.Liked(ctx, user.ID(), id)
 }
 
-func (p *Plugin) Download(ctx context.Context, id id.PluginID, version string) ([]byte, error) {
+func (p *Plugin) Download(ctx context.Context, id id.PluginID, version string) (io.ReadCloser, error) {
 	vp, err := p.pluginRepo.FindByVersion(ctx, id, version)
 	if err != nil {
 		return nil, err
 	}
-	return p.download(ctx, vp)
+	return p.download(ctx, vp, false)
 }
 
-func (p *Plugin) DownloadLatest(ctx context.Context, id id.PluginID) ([]byte, error) {
+func (p *Plugin) DownloadLatest(ctx context.Context, id id.PluginID) (io.ReadCloser, error) {
 	pl, err := p.pluginRepo.FindByID(ctx, id, nil)
 	if err != nil {
 		return nil, err
@@ -325,10 +325,19 @@ func (p *Plugin) DownloadLatest(ctx context.Context, id id.PluginID) ([]byte, er
 	if err != nil {
 		return nil, err
 	}
-	return p.download(ctx, vp)
+	return p.download(ctx, vp, false)
 }
 
-func (p *Plugin) download(ctx context.Context, vp *plugin.VersionedPlugin) (_ []byte, err error) {
+func (p *Plugin) IncreaseDownloadCount(ctx context.Context, id id.PluginID, version string) error {
+	vp, err := p.pluginRepo.FindByVersion(ctx, id, version)
+	if err != nil {
+		return err
+	}
+	_, err = p.download(ctx, vp, true)
+	return err
+}
+
+func (p *Plugin) download(ctx context.Context, vp *plugin.VersionedPlugin, onlyIncrease bool) (_ io.ReadCloser, err error) {
 	tx, err := p.transaction.Begin()
 	if err != nil {
 		return nil, err
@@ -352,11 +361,15 @@ func (p *Plugin) download(ctx context.Context, vp *plugin.VersionedPlugin) (_ []
 	if err := p.pluginRepo.SaveVersion(ctx, vp2.Version()); err != nil {
 		return nil, err
 	}
+	tx.Commit()
+	if onlyIncrease {
+		return nil, nil
+	}
+
 	b, err := p.file.DownloadPlugin(ctx, vp2.Version().ID())
 	if err != nil {
 		return nil, err
 	}
-	tx.Commit()
 	return b, nil
 }
 

@@ -39,14 +39,21 @@ func DownloadPlugin() echo.HandlerFunc {
 		if err != nil {
 			return err
 		}
-		return c.Blob(200, "application/zip", output.Content)
+		defer func() {
+			_ = output.Close()
+		}()
+		return c.Stream(200, "application/zip", output)
 	}
 }
 
-func DownloadPluginLatest() echo.HandlerFunc {
+func IncreasePluginDownloadCount() echo.HandlerFunc {
 	return func(c echo.Context) error {
 		idStr := c.Param("id")
 		if idStr == "" {
+			return rerror.ErrNotFound
+		}
+		version := strings.TrimSuffix(c.Param("version"), ".zip")
+		if version == "" {
 			return rerror.ErrNotFound
 		}
 		pid, err := id.PluginIDFrom(idStr)
@@ -54,13 +61,13 @@ func DownloadPluginLatest() echo.HandlerFunc {
 			return rerror.ErrNotFound
 		}
 		pc := pluginController(c)
-		output, err := pc.DownloadPluginLatest(c.Request().Context(), http.DownloadPluginLatestInput{
+		if err := pc.IncreasePluginDownloadCount(c.Request().Context(), http.DownloadPluginInput{
 			PluginID: pid,
-		})
-		if err != nil {
+			Version:  version,
+		}); err != nil {
 			return err
 		}
-		return c.Blob(200, "application/zip", output.Content)
+		return c.NoContent(200)
 	}
 }
 
