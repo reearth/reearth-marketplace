@@ -74,6 +74,7 @@ export const SEARCH_PLUGIN = gql`
         images
         author
         like
+        liked
         downloads
         name
       }
