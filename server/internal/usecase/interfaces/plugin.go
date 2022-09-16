@@ -17,8 +17,8 @@ var (
 )
 
 type Plugin interface {
-	FindByID(ctx context.Context, id id.PluginID) (*plugin.VersionedPlugin, error)
-	FindByIDs(ctx context.Context, ids []id.PluginID) ([]*plugin.VersionedPlugin, error)
+	FindByID(ctx context.Context, user *user.User, id id.PluginID) (*plugin.VersionedPlugin, error)
+	FindByIDs(ctx context.Context, user *user.User, ids []id.PluginID) ([]*plugin.VersionedPlugin, error)
 	Parse(ctx context.Context, publisher *user.User, r io.Reader) (*plugin.VersionedPlugin, error)
 	ParseFromRepo(ctx context.Context, publisher *user.User, repo *string) (*plugin.VersionedPlugin, error)
 	Create(ctx context.Context, publisher *user.User, r io.Reader) (*plugin.VersionedPlugin, error)

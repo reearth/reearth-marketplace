@@ -36,19 +36,32 @@ func NewPlugin(r *repo.Container, gr *gateway.Container) interfaces.Plugin {
 
 var pluginPackageSizeLimit int64 = 10 * 1024 * 1024
 
-func (p *Plugin) FindByID(ctx context.Context, id id.PluginID) (*plugin.VersionedPlugin, error) {
+func (p *Plugin) FindByID(ctx context.Context, user *user.User, id id.PluginID) (*plugin.VersionedPlugin, error) {
 	pl, err := p.pluginRepo.FindByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
+	if !pl.Active() {
+		if user != nil && pl.PublisherID().Compare(user.ID()) != 0 {
+			return nil, nil
+		}
+	}
 	return plugin.Versioned(pl).Build()
 }
 
-func (i *Plugin) FindByIDs(ctx context.Context, uids []id.PluginID) ([]*plugin.VersionedPlugin, error) {
-	res, err := i.pluginRepo.FindByIDs(ctx, uids)
+func (p *Plugin) FindByIDs(ctx context.Context, user *user.User, uids []id.PluginID) ([]*plugin.VersionedPlugin, error) {
+	res, err := p.pluginRepo.FindByIDs(ctx, uids)
 	if err != nil {
 		return nil, err
 	}
+	res = util.Filter(res, func(pl *plugin.Plugin) bool {
+		if !pl.Active() {
+			if user != nil && pl.PublisherID().Compare(user.ID()) != 0 {
+				return false
+			}
+		}
+		return true
+	})
 	return util.TryMap(res, func(pl *plugin.Plugin) (*plugin.VersionedPlugin, error) { return plugin.Versioned(pl).Build() })
 }
 
