@@ -419,7 +419,7 @@ export type SearchPluginQueryVariables = Exact<{
 }>;
 
 
-export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
+export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, liked: boolean, downloads: number, name: string } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
 
 export type LikePluginMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -479,7 +479,7 @@ export type GetMeQueryVariables = Exact<{
 }>;
 
 
-export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, name: string, lang?: any | null, displayName?: string | null, description?: string | null, plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, readme: string, icon?: string | null, active: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } } };
+export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, name: string, lang?: any | null, displayName?: string | null, description?: string | null, plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, liked: boolean, downloads: number, name: string, readme: string, icon?: string | null, active: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } } };
 
 export type UpdateMeMutationVariables = Exact<{
   name?: InputMaybe<Scalars['String']>;
@@ -603,6 +603,7 @@ export const SearchPluginDocument = gql`
       images
       author
       like
+      liked
       downloads
       name
     }
@@ -925,6 +926,7 @@ export const GetMeDocument = gql`
         images
         author
         like
+        liked
         downloads
         name
         readme
