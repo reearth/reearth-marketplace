@@ -2,7 +2,7 @@ Re:Earth Plugin Marketplace: Re:Earthプラグインマーケットプレイス
 Make Re:Earth the way you want it: あなたのRe:Earthをもっと自由に
 Update: アップデート
 Uninstall: アンインストール
-You successfully updated your plugin.: 'プラグインのアップデートが完了しました。'
+You successfully updated your plugin.: プラグインのアップデートが完了しました。
 Success: ''
 Plugins List: プラグイン一覧
 New Plugin: 新しいプラグイン
@@ -11,7 +11,7 @@ Publish: 公開
 Details Setting: 詳細設定
 Upload from local: PCからアップロード
 GitHub repository: GitHubレポジトリ
-' is not a zip file.': 'はZipファイルではありません。'
+' is not a zip file.': はZipファイルではありません。
 File uploaded successfully.: ファイルのアップロードされました。
 File upload failed.: ファイルのアップロードに失敗しました。
 Click or drag file to this area to upload: ''
@@ -21,6 +21,33 @@ Version: バージョン
 Description: 説明
 Images: イメージ
 Upload Image: イメージをアップロード
+Community: 'コミュニティ'
+Discord: ''
+Discussion: ''
+Events: 'エベント'
+Support: 'サポート'
+https://docs2.reearth.io/getting-started: 'https://docs2.reearth.io/ja/getting-started'
+Getting Started: 'Re:Earthをはじめよう'
+https://docs2.reearth.io/reference: 'https://docs2.reearth.io/ja/reference'
+Reference: '参考'
+https://docs.reearth.io/developer-guide/intro/about: 'https://docs.reearth.io/ja/developer-guide/intro/about'
+Developer Guide: 'デベロッパーガイド'
+https://docs.reearth.io/tutorial/home: 'https://docs.reearth.io/ja/tutorial/home'
+Tutorial: 'チュートリアル'
+https://reearth.io/docs/terms-of-use: 'https://reearth.io/ja/docs/terms-of-use'
+Terms of Use: '利用規約'
+Developers: 'デベロッパー'
+Github: ''
+Road Maps: ''
+Changelog: ''
+Code of Conduct: ''
+Company: '会社'
+Website: 'サイト'
+Facebook: ''
+https://twitter.com/eukarya_EN: 'https://twitter.com/eukaryaofficial'
+Twitter: ''
+https://reearth.io/docs/privacy-policy: 'https://reearth.io/ja/docs/privacy-policy'
+Privacy Policy: 'プライバシーポリシー'
 Auto: 自動
 Profile: プロファイル
 My Plugins: マイプラグイン
@@ -34,7 +61,7 @@ Updated Date: アップデート日
 Update this plugin: アップデートする
 Top: トップ
 Readme: リードミー
-Already installed: 'インストールされています'
+Already installed: インストールされています
 Install: インストール
 Open Plugin in your project: プロジェクトで開く
 Developer: デベロッパー
