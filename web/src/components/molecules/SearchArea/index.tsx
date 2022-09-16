@@ -101,7 +101,9 @@ const SearchArea: React.FC<Props> = ({
         </StyledButton>
       </Dropdown>
       {isLoggedIn ? (
-        <StyledButton onClick={() => handleFavButtonClick(!isFavSelected)}>
+        <StyledButton
+          isFavSelected={isFavSelected}
+          onClick={() => handleFavButtonClick(!isFavSelected)}>
           {t("Liked")}
           <Icon icon="heartOutlined" />
         </StyledButton>
@@ -129,19 +131,24 @@ const StyledSearch = styled(Search)`
 
   .ant-input-affix-wrapper,
   .ant-input-search-button {
-    border: 1px solid ${({ theme }) => theme.main.border};
+    border-color: 1px solid ${({ theme }) => theme.main.border};
   }
 `;
 
-const StyledButton = styled(Button)`
+const StyledButton = styled(Button)<{ isFavSelected?: boolean }>`
   border-radius: 8px;
   color: ${({ theme }) => theme.main.weakText};
   font-weight: bold;
   background: transparent;
-  border: 1px solid ${({ theme }) => theme.main.border};
+  border: 1px solid ${({ theme, isFavSelected }) => (isFavSelected ? "red" : theme.main.border)};
 
   :hover {
     background: transparent;
+  }
+
+  :focus {
+    ${({ theme, isFavSelected }) => !isFavSelected && `border: 1px solid ${theme.main.border};`}
+    ${({ theme, isFavSelected }) => !isFavSelected && `color: ${theme.main.border};`}
   }
 `;
 
