@@ -168,7 +168,9 @@ func (d *PluginDocument) Model() (*plugin.Plugin, error) {
 		PublishedAt(d.PublishedAt).
 		Readme(d.Readme).
 		Icon(d.Icon).
-		UpdatedAt(d.UpdatedAt).CreatedAt(d.CreatedAt).Checksum(""). // TODO: fill
+		UpdatedAt(d.UpdatedAt).
+		CreatedAt(d.CreatedAt).
+		Checksum(""). // TODO: fill
 		Build()
 	if err != nil {
 		return nil, err

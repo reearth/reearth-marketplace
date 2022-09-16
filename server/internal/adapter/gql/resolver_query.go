@@ -39,7 +39,7 @@ func (r *queryResolver) Node(ctx context.Context, idStr string, typeArg gqlmodel
 		if err != nil {
 			return nil, err
 		}
-		p, err := usecases(ctx).Plugin.FindByID(ctx, pid)
+		p, err := usecases(ctx).Plugin.FindByID(ctx, pid, getUser(ctx).IDRef())
 		if err != nil {
 			return nil, err
 		}
@@ -65,7 +65,7 @@ func (r *queryResolver) Nodes(ctx context.Context, ids []string, typeArg gqlmode
 		if err != nil {
 			return nil, err
 		}
-		p, err := usecases(ctx).Plugin.FindByIDs(ctx, pid)
+		p, err := usecases(ctx).Plugin.FindByIDs(ctx, pid, getUser(ctx).IDRef())
 		if err != nil {
 			return nil, err
 		}
