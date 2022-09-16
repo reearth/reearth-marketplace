@@ -64,7 +64,7 @@ const PackageArea: React.FC<Props> = ({
               beforeUpload={file => {
                 const isZip = file.type === "application/zip";
                 if (!isZip) {
-                  Message.error(`${file.name} is not a zip file`);
+                  Message.error(`${file.name}${t(" is not a zip file.")}`);
                 }
                 return isZip || Upload.LIST_IGNORE;
               }}
@@ -72,9 +72,9 @@ const PackageArea: React.FC<Props> = ({
               onChange={info => {
                 const { status } = info.file;
                 if (status === "done") {
-                  Message.success(`${info.file.name} ${t("file uploaded successfully.")}`);
+                  Message.success(`${info.file.name} ${t("File uploaded successfully.")}`);
                 } else if (status === "error") {
-                  Message.error(`${info.file.name} ${t("file upload failed.")}`);
+                  Message.error(`${info.file.name} ${t("File upload failed.")}`);
                 }
               }}>
               <p className="ant-upload-drag-icon">

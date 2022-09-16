@@ -1,57 +1,58 @@
-Re:Earth Plugin Marketplace: ''
-Make Re:Earth the way you want it: ''
-Update: ''
-Uninstall: ''
-You successfully updated your plugin: ''
+Re:Earth Plugin Marketplace: Re:Earthプラグインマーケットプレイス
+Make Re:Earth the way you want it: あなたのRe:Earthをもっと自由に
+Update: アップデート
+Uninstall: アンインストール
+You successfully updated your plugin.: 'プラグインのアップデートが完了しました。'
 Success: ''
-Plugins List: ''
-New Plugin: ''
-Save: ''
-Publish: ''
-Details Setting: ''
-Upload from local: ''
-GitHub repository: ''
-file uploaded successfully.: ''
-file upload failed.: ''
+Plugins List: プラグイン一覧
+New Plugin: 新しいプラグイン
+Save: 保存
+Publish: 公開
+Details Setting: 詳細設定
+Upload from local: PCからアップロード
+GitHub repository: GitHubレポジトリ
+' is not a zip file.': 'はZipファイルではありません。'
+File uploaded successfully.: ファイルのアップロードされました。
+File upload failed.: ファイルのアップロードに失敗しました。
 Click or drag file to this area to upload: ''
 Please set your repository as public respository.: ''
-Plugin Name: ''
-Version: ''
-Description: ''
-Images: ''
-Upload Image: ''
-Auto: ''
-Profile: ''
-My Plugins: ''
-Log Out: ''
-Log In: ''
-Re:Earth Marketplace: ''
-Status: ''
-Published: ''
-Not Published: ''
-Updated Date: ''
-Update this plugin: ''
-Top: ''
-Readme: ''
+Plugin Name: プラグイン名
+Version: バージョン
+Description: 説明
+Images: イメージ
+Upload Image: イメージをアップロード
+Auto: 自動
+Profile: プロファイル
+My Plugins: マイプラグイン
+Log Out: ログアウト
+Log In: ログイン
+Re:Earth Marketplace: Re:Earthマーケットプレイス
+Status: ステータス
+Published: 公開済み
+Not Published: 非公開
+Updated Date: アップデート日
+Update this plugin: アップデートする
+Top: トップ
+Readme: リードミー
 Already installed: ''
-Install: ''
-Open Plugin in your project: ''
-Developer: ''
-Update date: ''
+Install: インストール
+Open Plugin in your project: プロジェクトで開く
+Developer: デベロッパー
+Update date: アップデート日
 Report this plugin: ''
-Choose one project to open this plugin: ''
-Workspace: ''
-Choose: ''
-alt-plugin-cover-image: ''
+Choose one project to open this plugin: プラグインを開きたい
+Workspace: ワークスペース
+Choose: 選択
+alt-plugin-cover-image: alt-プラグイン-カバー-イメージ
 Downloads Asc: ''
 Downloads Desc: ''
 Name Asc: ''
 Name Desc: ''
 Published Asc: ''
 Published Desc: ''
-search text: ''
-Order: ''
-Liked: ''
+search text: 検索
+Order: 順番
+Liked: お気に入り
 Your file was successfully saved!: ''
 Something went wrong during the save.: ''
 Your file was successfully loaded!: ''
