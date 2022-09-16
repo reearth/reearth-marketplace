@@ -1,89 +1,90 @@
-Re:Earth Marketplace: "Re: Earth マーケットプレイス"
-Make Re:Earth the way you want it: "あなただけのRe: Earthを作りましょう"
-Update: "プラグインを更新"
-Uninstall: "アンインストール"
-You successfully updated your plugin: "プラグインの更新に成功しました"
-Success: "成功しました"
-Plugins List: "プラグイン一覧"
-New Plugin: "新規プラグインの追加"
-Save: "一時保存"
-Publish: "公開"
-Details Setting: "詳細設定"
-Upload from local: "PCからアップロード"
-GitHub repository: "GitHubレポジトリ"
-" is not a zip file.": はZipファイルではありません。
-File uploaded successfully.: "ファイルのアップロードが成功しました"
-File upload failed.: "ファイルのアップロードに失敗しました"
-Click or drag file to this area to upload: "クリックまたはドラッグしてアップロードするファイルを追加"
-Please set your repository as public respository.: "レポジトリをPublicにするのをお忘れなく。"
-Plugin Name: "プラグイン名"
-Version: "バージョン"
-Description: "詳細"
-Images: "画像"
-Upload Image: "画像の追加"
-Community: "コミュニティ"
-Discord: ""
-Discussion: ""
-Events: "イベント"
-Support: "サポート"
-https://docs2.reearth.io/getting-started: "https://docs2.reearth.io/ja/getting-started"
-Getting Started: "Re:Earthをはじめよう"
-https://docs2.reearth.io/reference: "https://docs2.reearth.io/ja/reference"
-Reference: "参考"
-https://docs.reearth.io/developer-guide/intro/about: "https://docs.reearth.io/ja/developer-guide/intro/about"
-Developer Guide: "デベロッパーガイド"
-https://docs.reearth.io/tutorial/home: "https://docs.reearth.io/ja/tutorial/home"
-Tutorial: "チュートリアル"
-https://reearth.io/docs/terms-of-use: "https://reearth.io/ja/docs/terms-of-use"
-Terms of Use: "利用規約"
-Developers: "開発者"
-Github: ""
-Road Maps: "ロードマップ"
-Changelog: ""
-Code of Conduct: ""
-Company: "会社情報"
-Website: ""
-Facebook: ""
-https://twitter.com/eukarya_EN: "https://twitter.com/eukaryaofficial"
-Twitter: ""
-https://reearth.io/docs/privacy-policy: "https://reearth.io/ja/docs/privacy-policy"
-Privacy Policy: "プライバシーポリシー"
-Auto: "自動"
-Profile: "プロフィール"
-My Plugins: "マイプラグイン"
-Log Out: "ログアウト"
-Log In: "ログイン"
-Status: "公開状態"
-Published: "公開中"
-Not Published: "非公開"
-Updated Date: "最終更新日"
-Update this plugin: "このプラグインを更新する"
-Top: "トップ"
-Readme: "README"
-Already installed: "既にインストールされています"
-Install: "インストール"
-Open Plugin in your project: "このプラグインをプロジェクトに追加"
-Developer: "開発者"
-Update date: "最終更新日"
-Report this plugin: "このプラグインを通報"
-Choose one project to open this plugin: "プラグインを追加するプロジェクトを１つ選んでください"
-Workspace: "ワークスペース"
-Choose: "選択"
-alt-plugin-cover-image: "プラグインの画像"
-Downloads Asc: "ダウンロード数昇順"
-Downloads Desc: "ダウンロード数降順"
-Name Asc: "名前昇順"
-Name Desc: "名前降順"
-Published Asc: "公開日昇順"
-Published Desc: "公開日降順"
-search text: "キーワードを入力"
-Order: "表示順"
-Liked: "お気に入り済"
-Your file was successfully saved!: "ファイルが正常に保存されました！"
-Something went wrong during the save.: "ファイルの保存時に問題が発生しました"
-Your file was successfully loaded!: "ファイルが正常に読み込まれました"
-Something is wrong with the file you tried to upload.: "ファイルのアップロード時に問題が発生しました"
-Your file was successfully updated!: "ファイルが正常に更新されました"
-Something went wrong with the update.: "プラグインの更新時に問題が発生しました"
-Something might be wrong with your URL. Please check and try again.: "URLに問題があります。もう一度お試しください。"
-Developer Registration: "開発者登録"
+Re:Earth Marketplace: 'Re: Earth マーケットプレイス'
+Make Re:Earth the way you want it: 'あなただけのRe: Earthを作りましょう'
+Update: プラグインを更新
+Uninstall: アンインストール
+You successfully updated your plugin.: ''
+Success: 成功しました
+Plugins List: プラグイン一覧
+New Plugin: 新規プラグインの追加
+Save: 一時保存
+Publish: 公開
+Details Setting: 詳細設定
+Upload from local: PCからアップロード
+GitHub repository: GitHubレポジトリ
+' is not a zip file.': はZipファイルではありません。
+File uploaded successfully.: ファイルのアップロードが成功しました
+File upload failed.: ファイルのアップロードに失敗しました
+Click or drag file to this area to upload: クリックまたはドラッグしてアップロードするファイルを追加
+Please set your repository as public respository.: レポジトリをPublicにするのをお忘れなく。
+Plugin Name: プラグイン名
+Version: バージョン
+Description: 詳細
+Images: 画像
+Upload Image: 画像の追加
+Community: コミュニティ
+Discord: ''
+Discussion: ''
+Events: イベント
+Support: サポート
+https://docs2.reearth.io/getting-started: https://docs2.reearth.io/ja/getting-started
+Getting Started: Re:Earthをはじめよう
+https://docs2.reearth.io/reference: https://docs2.reearth.io/ja/reference
+Reference: 参考
+https://docs.reearth.io/developer-guide/intro/about: https://docs.reearth.io/ja/developer-guide/intro/about
+Developer Guide: デベロッパーガイド
+https://docs.reearth.io/tutorial/home: https://docs.reearth.io/ja/tutorial/home
+Tutorial: チュートリアル
+https://reearth.io/docs/terms-of-use: https://reearth.io/ja/docs/terms-of-use
+Terms of Use: 利用規約
+Developers: 開発者
+Github: ''
+Road Maps: ロードマップ
+Changelog: ''
+Code of Conduct: ''
+Company: 会社情報
+Website: ''
+Facebook: ''
+https://twitter.com/eukarya_EN: https://twitter.com/eukaryaofficial
+Twitter: ''
+https://reearth.io/docs/privacy-policy: https://reearth.io/ja/docs/privacy-policy
+Privacy Policy: プライバシーポリシー
+Auto: 自動
+Profile: プロフィール
+My Plugins: マイプラグイン
+Log Out: ログアウト
+Log In: ログイン
+Status: 公開状態
+Published: 公開中
+Not Published: 非公開
+Updated Date: 最終更新日
+Update this plugin: このプラグインを更新する
+Top: トップ
+Readme: README
+Already installed: 既にインストールされています
+Install: インストール
+Open Plugin in your project: このプラグインをプロジェクトに追加
+Developer: 開発者
+Update date: 最終更新日
+Report this plugin: このプラグインを通報
+Choose one project to open this plugin: プラグインを追加するプロジェクトを１つ選んでください
+Workspace: ワークスペース
+Choose: 選択
+alt-plugin-cover-image: プラグインの画像
+Downloads Asc: ダウンロード数昇順
+Downloads Desc: ダウンロード数降順
+Name Asc: 名前昇順
+Name Desc: 名前降順
+Published Asc: 公開日昇順
+Published Desc: 公開日降順
+search text: キーワードを入力
+Order: 表示順
+Liked: お気に入り済
+Your file was successfully saved!: ファイルが正常に保存されました！
+Something went wrong during the save.: ファイルの保存時に問題が発生しました
+Your file was successfully loaded!: ファイルが正常に読み込まれました
+Something is wrong with the file you tried to upload.: ファイルのアップロード時に問題が発生しました
+Your file was successfully updated!: ファイルが正常に更新されました
+Something went wrong with the update.: プラグインの更新時に問題が発生しました
+Something might be wrong with your URL. Please check and try again.: URLに問題があります。もう一度お試しください。
+Something might be wrong with your URl. Please check and try again.: ''
+Developer Registration: 開発者登録
