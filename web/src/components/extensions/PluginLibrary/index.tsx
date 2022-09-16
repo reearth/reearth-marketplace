@@ -35,7 +35,7 @@ export default function LibraryExtension({
   const handleInstall = useCallback(
     (id: string) => {
       onInstall?.(id);
-      onNotificationChange?.("success", t("You successfully updated your plugin"), t("Success"));
+      onNotificationChange?.("success", t("You successfully updated your plugin."), t("Success"));
     },
     [t, onInstall, onNotificationChange],
   );

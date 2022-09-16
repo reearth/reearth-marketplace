@@ -208,7 +208,12 @@ const PluginDetailPage: React.FC<Props> = ({
                       {date ? `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}` : ""}
                     </Col>
                   </PluginInfo>
-                  <ReportButton type="link" size="middle" danger>
+                  <ReportButton
+                    type="link"
+                    size="middle"
+                    danger
+                    href={window.REEARTH_MARKETPLACE_CONFIG?.reportUrl}
+                    target="_blank">
                     <Row align="bottom" justify="space-between" wrap={false}>
                       <Col>{t("Report this plugin")}</Col>
                       <Col span={4}>

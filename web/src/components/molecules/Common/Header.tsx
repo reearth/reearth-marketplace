@@ -20,12 +20,19 @@ export type Props = {
   logout?: () => void;
   onLangUpdate?: (lang: Lang) => Promise<void>;
 };
-const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, onLangUpdate }) => {
+const Header: React.FC<Props> = ({
+  username,
+  lang,
+  isLoggedIn,
+  login,
+  logout,
+  onLangUpdate,
+}) => {
   const t = useT();
   const navigate = useNavigate();
 
   // const [currentLang, updateLang] = useState<Lang | undefined>(lang);
-  const handleLangMenuClick: MenuProps["onClick"] = e => {
+  const handleLangMenuClick: MenuProps["onClick"] = (e) => {
     // updateLang(e.key as Lang);
     onLangUpdate?.(e.key as Lang);
   };
@@ -99,15 +106,16 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
     <Wrapper>
       <Row align="middle" style={{ height: "100%" }} justify="space-between">
         <Col>
-          <Title onClick={() => navigate("/")}>{t("Re:Earth Marketplace")}</Title>
+          <Title onClick={() => navigate("/")}>
+            {t("Re:Earth Marketplace")}
+          </Title>
         </Col>
         <Col>
           <Space size="middle">
             <div
-              style={{ padding: "10px", display: "flex" }}
-              // type="link"
-              // size="small"
-              onClick={() => navigate("/myplugins/new")}>
+              style={{ padding: "10px", display: "flex", cursor: "pointer" }}
+              onClick={() => navigate("/myplugins/new")}
+            >
               <Icon icon="upload" style={{ fontSize: "20px" }} />
             </div>
             {/* TODO: Dots Nine is needed? */}
@@ -117,7 +125,7 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
             </Space>
           </Button> */}
             <Dropdown overlay={langMenu}>
-              <Space size="small">
+              <Space size="small" style={{ cursor: "pointer" }}>
                 {DisplayLang[lang]}
                 <Icon icon="downFilled" />
               </Space>

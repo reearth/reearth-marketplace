@@ -5,6 +5,15 @@ import { I18nextProvider } from "react-i18next";
 
 import i18n from "./i18n";
 
+const getBrowserLanguage = () => {
+  const lang = navigator.language;
+  if (lang.includes("ja")) {
+    return "ja";
+  } else {
+    return "en";
+  }
+};
+
 export default function Provider({ children }: { children?: ReactNode }) {
   const { isAuthenticated } = useAuth();
   const { data } = useGetMeQuery({
@@ -16,7 +25,7 @@ export default function Provider({ children }: { children?: ReactNode }) {
   const locale = data?.me.lang;
 
   useEffect(() => {
-    i18n.changeLanguage(locale === "und" ? undefined : locale);
+    i18n.changeLanguage(locale === "und" ? getBrowserLanguage() : locale);
   }, [locale]);
 
   return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>;

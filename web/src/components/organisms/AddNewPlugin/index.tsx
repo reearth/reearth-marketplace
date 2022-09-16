@@ -75,7 +75,7 @@ const AddNewPlugin: React.FC<Props> = () => {
       repo: undefined,
     }).catch(
       Message.error(
-        t("Something might be wrong with your URL. Please check and try again.")
+        t("Something might be wrong with your URl. Please check and try again.")
       )
     );
   };
