@@ -25,7 +25,7 @@ func authMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
 			ctx := req.Context()
 
 			au := adapter.GetAuthInfo(ctx)
-			if au != nil {
+			if au != nil && (cfg.Config.Auth_M2M.Sub == "" || au.Sub != cfg.Config.Auth_M2M.Sub) {
 				u, err := cfg.Repos.User.FindOrCreate(ctx, repo.AuthInfo{
 					Sub:   au.Sub,
 					Iss:   au.Iss,
