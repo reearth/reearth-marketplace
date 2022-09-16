@@ -120,9 +120,11 @@ func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) (err
 		return fmt.Errorf("find plugin: %w", err)
 	}
 	if len(pc.Result) > 0 {
-		if p.Plugin().PublisherID().String() != pc.Result[0].PublisherID {
+		pl := pc.Result[0]
+		if p.Plugin().PublisherID().String() != pl.PublisherID {
 			return fmt.Errorf("plugin id already used")
 		}
+		pluginDoc.Active = pl.Active
 	}
 	if err := r.pluginClient().SaveOne(ctx, pluginDoc.ID, pluginDoc); err != nil {
 		return fmt.Errorf("save plugin: %w", err)
