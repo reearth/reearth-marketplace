@@ -76,8 +76,10 @@ func (p *Plugin) Like() int64 {
 	return p.like
 }
 
-func (p *Plugin) SetActive(active bool) {
+func (p *Plugin) SetActive(active bool) (changed bool) {
+	old := p.active
 	p.active = active
+	return old != active
 }
 
 func (p *Plugin) SetTags(tags []string) {
@@ -98,6 +100,10 @@ func (p *Plugin) LatestVersion() *PartialVersion {
 
 func (p *Plugin) SetLatestVersion(latestVersion *PartialVersion) {
 	p.latestVersion = latestVersion
+}
+
+func (p *Plugin) SetUpdatedAt(updatedAt time.Time) {
+	p.updatedAt = updatedAt
 }
 
 type Version struct {
@@ -123,8 +129,10 @@ func (v *Version) Active() bool {
 	return v.active
 }
 
-func (v *Version) SetActive(active bool) {
+func (v *Version) SetActive(active bool) (changed bool) {
+	old := v.active
 	v.active = active
+	return old != active
 }
 
 // PartialVersion is a subset type of Version for de-normalization.
@@ -162,8 +170,10 @@ func (v *PartialVersion) Description() string {
 	return v.description
 }
 
-func (v *PartialVersion) SetDescription(description string) {
+func (v *PartialVersion) SetDescription(description string) (changed bool) {
+	old := v.description
 	v.description = description
+	return old != description
 }
 
 func (v *PartialVersion) Readme() string {
@@ -188,6 +198,10 @@ func (v *PartialVersion) CreatedAt() time.Time {
 
 func (v *PartialVersion) UpdatedAt() time.Time {
 	return v.updatedAt
+}
+
+func (v *PartialVersion) SetUpdatedAt(updatedAt time.Time) {
+	v.updatedAt = updatedAt
 }
 
 type VersionedPlugin struct {

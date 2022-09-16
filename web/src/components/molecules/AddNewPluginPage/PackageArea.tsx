@@ -6,7 +6,7 @@ import Message from "@marketplace/components/atoms/Message";
 import Radio, { RadioChangeEvent } from "@marketplace/components/atoms/Radio";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
-import Upload, { Dragger, RcFile } from "@marketplace/components/atoms/Upload";
+import { Dragger, RcFile } from "@marketplace/components/atoms/Upload";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 import { useState } from "react";
@@ -65,13 +65,6 @@ const PackageArea: React.FC<Props> = ({
               accept=".zip"
               maxCount={1}
               multiple={false}
-              beforeUpload={(file) => {
-                const isZip = file.type === "application/zip";
-                if (!isZip) {
-                  Message.error(`${file.name}${t(" is not a zip file.")}`);
-                }
-                return isZip || Upload.LIST_IGNORE;
-              }}
               customRequest={(info) => handleParsePlugin(info.file)}
               onChange={(info) => {
                 const { status } = info.file;

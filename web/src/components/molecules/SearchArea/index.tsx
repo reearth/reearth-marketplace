@@ -100,12 +100,14 @@ const SearchArea: React.FC<Props> = ({
           <Icon icon="downOutlined" style={{ fontSize: "8px" }} />
         </StyledButton>
       </Dropdown>
-      {isLoggedIn ? (
-        <StyledButton onClick={() => handleFavButtonClick(!isFavSelected)}>
+      {isLoggedIn && (
+        <StyledButton
+          isFavSelected={isFavSelected}
+          onClick={() => handleFavButtonClick(!isFavSelected)}>
           {t("Liked")}
           <Icon icon="heartOutlined" />
         </StyledButton>
-      ) : null}
+      )}
     </StyledSpace>
   );
 };
@@ -129,19 +131,25 @@ const StyledSearch = styled(Search)`
 
   .ant-input-affix-wrapper,
   .ant-input-search-button {
-    border: 1px solid ${({ theme }) => theme.main.border};
+    border: 1px solid ${({ theme }) => theme.main.weakText};
   }
 `;
 
-const StyledButton = styled(Button)`
-  border-radius: 8px;
-  color: ${({ theme }) => theme.main.weakText};
+const StyledButton = styled(Button)<{ isFavSelected?: boolean }>`
   font-weight: bold;
   background: transparent;
-  border: 1px solid ${({ theme }) => theme.main.border};
+  color: ${({ theme, isFavSelected }) => (isFavSelected ? "#1890ff" : theme.main.weakText)};
+  border: 1px solid
+    ${({ theme, isFavSelected }) => (isFavSelected ? "#1890ff" : theme.main.weakText)};
+  border-radius: 8px;
 
   :hover {
     background: transparent;
+  }
+
+  :focus {
+    ${({ theme, isFavSelected }) => !isFavSelected && `border: 1px solid ${theme.main.weakText};`}
+    ${({ theme, isFavSelected }) => !isFavSelected && `color: ${theme.main.weakText};`}
   }
 `;
 

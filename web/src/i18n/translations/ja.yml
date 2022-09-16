@@ -11,14 +11,12 @@ Publish: 公開
 Details Setting: 詳細設定
 Upload from local: PCからアップロード
 GitHub repository: GitHubレポジトリ
-' is not a zip file.': はZipファイルではありません。
 File uploaded successfully.: ファイルのアップロードが成功しました
 File upload failed.: ファイルのアップロードに失敗しました
 Click or drag file to this area to upload: クリックまたはドラッグしてアップロードするファイルを追加
 Please set your repository as public respository.: レポジトリをPublicにするのをお忘れなく。
 Plugin Name: プラグイン名
 Version: バージョン
-Description: 詳細
 Images: 画像
 Upload Image: 画像の追加
 Community: コミュニティ
@@ -52,7 +50,7 @@ Auto: 自動
 Profile: プロフィール
 My Plugins: マイプラグイン
 Log Out: ログアウト
-Log In: ログイン
+Log in: ''
 Status: 公開状態
 Published: 公開中
 Not Published: 非公開
@@ -63,6 +61,7 @@ Readme: README
 Already installed: 既にインストールされています
 Install: インストール
 Open Plugin in your project: このプラグインをプロジェクトに追加
+Description: 詳細
 Developer: 開発者
 Update date: 最終更新日
 Report this plugin: このプラグインを通報

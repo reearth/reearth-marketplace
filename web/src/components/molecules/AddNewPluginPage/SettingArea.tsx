@@ -1,6 +1,6 @@
 import Button from "@marketplace/components/atoms/Button";
 import Icon from "@marketplace/components/atoms/Icon";
-import { TextArea } from "@marketplace/components/atoms/Input";
+// import { TextArea } from "@marketplace/components/atoms/Input";
 import Space from "@marketplace/components/atoms/Space";
 import Upload from "@marketplace/components/atoms/Upload";
 import { useT } from "@marketplace/i18n";
@@ -13,7 +13,7 @@ export type Props = {
   description: string;
   handleUploadImages: (image: UploadRequestOption) => void;
 };
-const SettingArea: React.FC<Props> = ({ pluginName, version, description, handleUploadImages }) => {
+const SettingArea: React.FC<Props> = ({ pluginName, version, handleUploadImages }) => {
   const t = useT();
 
   return (
@@ -24,8 +24,8 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, description, handle
         <Title>{t("Version")}</Title>
         <PluginInfo>{version}</PluginInfo>
 
-        <Title>{t("Description")}</Title>
-        <StyledTextArea rows={4} defaultValue={description} />
+        {/* <Title>{t("Description")}</Title>
+        <StyledTextArea rows={4} defaultValue={description} /> */}
         <Title>{t("Images")}</Title>
         <Upload
           listType="picture"
@@ -59,8 +59,8 @@ const PluginInfo = styled.h1`
   font-weight: bold;
 `;
 
-const StyledTextArea = styled(TextArea)`
-  width: 100%;
-`;
+// const StyledTextArea = styled(TextArea)`
+//   width: 100%;
+// `;
 
 export default SettingArea;

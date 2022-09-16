@@ -10,8 +10,8 @@ import { useCallback, useMemo } from "react";
 
 export { PluginSort };
 
-export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
-  const { isAuthenticated } = useAuth();
+export default (searchText?: string, sort?: PluginSort, liked?: boolean, accessToken?: string) => {
+  const { isAuthenticated } = useAuth(accessToken);
 
   const { data, refetch } = useSearchPluginQuery({
     variables: {

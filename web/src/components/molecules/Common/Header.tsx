@@ -6,7 +6,6 @@ import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-// import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export type Lang = "en" | "ja" | "und";
@@ -31,9 +30,7 @@ const Header: React.FC<Props> = ({
   const t = useT();
   const navigate = useNavigate();
 
-  // const [currentLang, updateLang] = useState<Lang | undefined>(lang);
   const handleLangMenuClick: MenuProps["onClick"] = (e) => {
-    // updateLang(e.key as Lang);
     onLangUpdate?.(e.key as Lang);
   };
 
@@ -64,7 +61,7 @@ const Header: React.FC<Props> = ({
     />
   );
 
-  const userMenu = isLoggedIn ? (
+  const userMenu = (
     <Menu
       theme="dark"
       items={[
@@ -88,18 +85,6 @@ const Header: React.FC<Props> = ({
         },
       ]}
     />
-  ) : (
-    <Menu
-      theme="dark"
-      items={[
-        {
-          label: t("Log In"),
-          key: 1,
-          icon: <Icon icon="user" style={{ paddingRight: "5px" }} />,
-          onClick: login,
-        },
-      ]}
-    />
   );
 
   return (
@@ -112,12 +97,14 @@ const Header: React.FC<Props> = ({
         </Col>
         <Col>
           <Space size="middle">
-            <div
-              style={{ padding: "10px", display: "flex", cursor: "pointer" }}
-              onClick={() => navigate("/myplugins/new")}
-            >
-              <Icon icon="upload" style={{ fontSize: "20px" }} />
-            </div>
+            {isLoggedIn && (
+              <div
+                style={{ padding: "10px", display: "flex", cursor: "pointer" }}
+                onClick={() => navigate("/myplugins/new")}
+              >
+                <Icon icon="upload" style={{ fontSize: "20px" }} />
+              </div>
+            )}
             {/* TODO: Dots Nine is needed? */}
             {/* <Button>
             <Space size="small">
@@ -130,13 +117,17 @@ const Header: React.FC<Props> = ({
                 <Icon icon="downFilled" />
               </Space>
             </Dropdown>
-            <Dropdown overlay={userMenu}>
-              <Space size="small" style={{ cursor: "pointer" }}>
-                <NameIcon>{username?.charAt(0).toUpperCase()}</NameIcon>
-                {username}
-                <Icon icon="downFilled" />
-              </Space>
-            </Dropdown>
+            {isLoggedIn ? (
+              <Dropdown overlay={userMenu}>
+                <Space size="small" style={{ cursor: "pointer" }}>
+                  <NameIcon>{username?.charAt(0).toUpperCase()}</NameIcon>
+                  {username}
+                  <Icon icon="downFilled" />
+                </Space>
+              </Dropdown>
+            ) : (
+              <LoginWrapper onClick={login}>{t("Log in")}</LoginWrapper>
+            )}
           </Space>
         </Col>
       </Row>
@@ -165,6 +156,12 @@ const NameIcon = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const LoginWrapper = styled.div`
+  padding: 4px;
+  display: flex;
+  cursor: pointer;
 `;
 
 export default Header;
