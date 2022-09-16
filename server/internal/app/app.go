@@ -30,7 +30,7 @@ func initEcho(cfg *ServerConfig) *echo.Echo {
 	e.POST("/api/graphql", GraphqlAPI(cfg.Config.GraphQL))
 	e.GET("/api/ping", Ping())
 	pluginAPI := e.Group("/api/plugins/:id")
-	pluginAPI.Use(serverAuthMiddleware(cfg))
+	pluginAPI.Use(serverAuthMiddleware(&cfg.Config.Auth_M2M))
 	pluginAPI.GET("/:version", DownloadPlugin())
 	pluginAPI.POST("/:version/download", IncreasePluginDownloadCount())
 	return e
