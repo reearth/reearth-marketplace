@@ -34,8 +34,6 @@ export default () => {
           file: data.file && data.file,
           repo: data.repo && data.repo,
         },
-        onCompleted: () => Message.success(t("Your file was successfully loaded!")),
-        onError: () => Message.error(t("Something is wrong with the file you tried to upload.")),
       });
     },
     [parsePluginMutation],

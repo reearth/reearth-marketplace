@@ -21,7 +21,7 @@ export type Props = {
   isSaveLoading: boolean;
   isPublishLoading: boolean;
   handleChangeGithubUrl: (url: string) => void;
-  handleParsePlugin: (file?: FileUploadType) => void;
+  handleParsePlugin: (file?: FileUploadType) => Promise<void>;
   handleClickSave: () => void;
   handleClickPublish: () => void;
   handleUploadImages: (image: UploadRequestOption) => void;

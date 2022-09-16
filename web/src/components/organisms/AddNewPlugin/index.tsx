@@ -23,9 +23,11 @@ const AddNewPlugin: React.FC<Props> = () => {
   const [uploadedFile, uploadZip] = useState<FileUploadType>();
   // TODO: use Antd's file upload after backend ready
   const [uploadedImages, uploadImages] = useState<any[]>([]);
+
   const handleUploadImages = (image: UploadRequestOption) => {
     uploadImages([...uploadedImages, image.file]);
   };
+
   const handleClickSave = async () => {
     toggleLoadingSave(true);
     uploadedFile
@@ -46,6 +48,7 @@ const AddNewPlugin: React.FC<Props> = () => {
       }));
     toggleLoadingSave(false);
   };
+
   const handleClickPublish = async () => {
     toggleLoadingPublish(true);
     await handleUpdatePluginMutation({
@@ -55,6 +58,7 @@ const AddNewPlugin: React.FC<Props> = () => {
     });
     toggleLoadingPublish(false);
   };
+
   // When Github Url Input
   const handleChangeGithubUrl = async (url: string) => {
     changeGithubUrl(url);
@@ -65,15 +69,14 @@ const AddNewPlugin: React.FC<Props> = () => {
       Message.error(t("Something might be wrong with your URL. Please check and try again.")),
     );
   };
+
   // When Zip File Uploaded
-  const handleParsePlugin = (file?: FileUploadType) => {
+  const handleParsePlugin = async (file?: FileUploadType) => {
     uploadZip(file);
-    handleParsePluginMutation({
+    await handleParsePluginMutation({
       file: file,
       repo: undefined,
-    }).catch(
-      Message.error(t("Something might be wrong with your URl. Please check and try again.")),
-    );
+    });
   };
 
   return (
