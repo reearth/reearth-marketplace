@@ -104,9 +104,7 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
         <Col>
           <Space size="middle">
             <div
-              style={{ padding: "10px", display: "flex" }}
-              // type="link"
-              // size="small"
+              style={{ padding: "10px", display: "flex", cursor: "pointer" }}
               onClick={() => navigate("/myplugins/new")}>
               <Icon icon="upload" style={{ fontSize: "20px" }} />
             </div>
@@ -117,7 +115,7 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
             </Space>
           </Button> */}
             <Dropdown overlay={langMenu}>
-              <Space size="small">
+              <Space size="small" style={{ cursor: "pointer" }}>
                 {DisplayLang[lang]}
                 <Icon icon="downFilled" />
               </Space>
