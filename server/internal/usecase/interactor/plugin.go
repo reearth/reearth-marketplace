@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/gateway"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
@@ -126,8 +127,11 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 	if pl.PublisherID().Compare(param.Publisher.ID()) != 0 {
 		return nil, fmt.Errorf("cannot update other's plugin")
 	}
+	updated := false
 	if param.Active != nil {
-		pl.SetActive(*param.Active)
+		if pl.SetActive(*param.Active) {
+			updated = true
+		}
 	}
 	if len(param.DeletedTags) > 0 || len(param.NewTags) > 0 {
 		var tags []string
@@ -136,6 +140,7 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 		}
 		tags = applyTagsDiff(tags, pl.Tags(), param.DeletedTags, param.NewTags)
 		pl.SetTags(tags)
+		updated = true
 	}
 
 	if len(param.Images) > 0 {
@@ -148,6 +153,10 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 			imgNames = append(imgNames, imageName)
 		}
 		pl.SetImages(imgNames)
+		updated = true
+	}
+	if updated {
+		pl.SetUpdatedAt(time.Now())
 	}
 
 	if err := p.pluginRepo.Save(ctx, pl); err != nil {
@@ -251,11 +260,19 @@ func (p *Plugin) UpdateVersion(ctx context.Context, user *user.User, param inter
 		return nil, err
 	}
 	v := vp.Version()
+	updated := false
 	if param.Active != nil {
-		v.SetActive(*param.Active)
+		if v.SetActive(*param.Active) {
+			updated = true
+		}
 	}
 	if param.Description != nil {
-		v.SetDescription(*param.Description)
+		if v.SetDescription(*param.Description) {
+			updated = true
+		}
+	}
+	if updated {
+		v.SetUpdatedAt(time.Now())
 	}
 	if err := p.pluginRepo.SaveVersion(ctx, v); err != nil {
 		return nil, err

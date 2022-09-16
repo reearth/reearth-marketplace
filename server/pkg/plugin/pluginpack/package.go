@@ -123,7 +123,7 @@ func ToPlugin(ctx context.Context, pkg *Package, publisherID plugin.PublisherID)
 		Icon(iconURL).
 		CreatedAt(now).
 		UpdatedAt(now).
-		PublishedAt(time.Time{}).
+		PublishedAt(now).
 		Checksum(pkg.checksum).
 		Build()
 	if err != nil {
@@ -143,7 +143,7 @@ func ToPlugin(ctx context.Context, pkg *Package, publisherID plugin.PublisherID)
 	}
 	vp, err := plugin.Versioned(p).
 		Downloads(0).
-		Active(false).
+		Active(true).
 		Build()
 	if err != nil {
 		return nil, fmt.Errorf("versioned: %w", err)
