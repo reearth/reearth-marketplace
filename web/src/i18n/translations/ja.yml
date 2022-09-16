@@ -11,7 +11,6 @@ Publish: 公開
 Details Setting: 詳細設定
 Upload from local: PCからアップロード
 GitHub repository: GitHubレポジトリ
-' is not a zip file.': はZipファイルではありません。
 File uploaded successfully.: ファイルのアップロードされました。
 File upload failed.: ファイルのアップロードに失敗しました。
 Click or drag file to this area to upload: ''
@@ -53,7 +52,7 @@ Profile: プロファイル
 My Plugins: マイプラグイン
 Log Out: ログアウト
 Re:Earth Marketplace: Re:Earthマーケットプレイス
-Log in: 'ログイン'
+Log in: ログイン
 Status: ステータス
 Published: 公開済み
 Not Published: 非公開
