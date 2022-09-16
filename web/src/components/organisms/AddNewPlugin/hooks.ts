@@ -13,6 +13,7 @@ export default () => {
   const [parsePluginMutation, { data: parsedData }] = useParsePluginMutation();
   const [createPluginMutation] = useCreatePluginMutation();
   const [updatePluginMutation] = useUpdatePluginMutation();
+
   const handleCreatePluginMutation = useCallback(
     async (data: { file?: FileUploadType; repo?: string }) => {
       await createPluginMutation({
@@ -20,8 +21,6 @@ export default () => {
           file: data.file,
           repo: data.repo,
         },
-        onCompleted: () => Message.success(t("Your file was successfully saved!")),
-        onError: () => Message.error(t("Something went wrong during the save.")),
       });
     },
     [createPluginMutation],

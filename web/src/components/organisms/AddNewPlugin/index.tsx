@@ -30,30 +30,32 @@ const AddNewPlugin: React.FC<Props> = () => {
 
   const handleClickSave = async () => {
     toggleLoadingSave(true);
-    uploadedFile
-      ? await handleCreatePluginMutation({
-          file: uploadedFile,
-          repo: undefined,
-        })
-      : await handleCreatePluginMutation({
-          file: undefined,
-          repo: githubUrl,
-        });
-    uploadImages.length > 0 &&
-      parsedPlugin &&
-      (await handleUpdatePluginMutation({
+    if (uploadedFile) {
+      await handleCreatePluginMutation({
+        file: uploadedFile,
+        repo: undefined,
+      });
+    } else if (githubUrl) {
+      await handleCreatePluginMutation({
+        file: undefined,
+        repo: githubUrl,
+      });
+    }
+    if (parsedPlugin && uploadImages.length > 0) {
+      await handleUpdatePluginMutation({
         id: parsedPlugin.id,
         images: uploadedImages,
-        active: false,
-      }));
+        // active: false,
+      });
+    }
     toggleLoadingSave(false);
   };
 
   const handleClickPublish = async () => {
     toggleLoadingPublish(true);
     await handleUpdatePluginMutation({
-      id: parsedPlugin ? parsedPlugin.id : "",
-      images: uploadedImages,
+      id: parsedPlugin?.id ?? "",
+      // images: uploadedImages,
       active: true,
     });
     toggleLoadingPublish(false);
