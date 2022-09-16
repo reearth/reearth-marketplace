@@ -5,14 +5,15 @@ import useHooks from "./hooks";
 
 export type Props = {
   showBanner?: boolean;
+  accessToken?: string;
   onPluginSelect?: (pluginId: string) => void;
 };
 
-const Top: React.FC<Props> = ({ showBanner, onPluginSelect }) => {
+const Top: React.FC<Props> = ({ showBanner, accessToken, onPluginSelect }) => {
   const [searchText, updateSearchText] = useState<string>("");
   const [isFavSelected, toggleLiked] = useState<boolean>(false);
 
-  const { plugins, isAuthenticated } = useHooks(searchText, undefined, isFavSelected);
+  const { plugins, isAuthenticated } = useHooks(searchText, undefined, isFavSelected, accessToken);
 
   const handleSearch = useCallback((text: string) => {
     updateSearchText(text);
