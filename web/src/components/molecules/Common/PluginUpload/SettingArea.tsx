@@ -15,9 +15,17 @@ export type Props = {
   pluginName: string;
   version: string;
   description: string;
+  uploadedImages: any[];
+  onBack: () => void;
   handleUploadImages: (images: (RcFile | undefined)[]) => void;
 };
-const SettingArea: React.FC<Props> = ({ pluginName, version, handleUploadImages }) => {
+const SettingArea: React.FC<Props> = ({
+  pluginName,
+  version,
+  uploadedImages,
+  onBack,
+  handleUploadImages,
+}) => {
   const t = useT();
 
   const uploadProps: UploadProps = {
@@ -25,7 +33,7 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, handleUploadImages 
     listType: "picture",
     accept: "image/png, image/jpeg, image/jpg",
     multiple: true,
-    defaultFileList: [],
+    defaultFileList: uploadedImages,
     customRequest: async options => {
       options.onSuccess?.("Ok");
     },
@@ -42,6 +50,7 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, handleUploadImages 
 
   return (
     <Wrapper>
+      <Button onClick={onBack}>{t("Back")}</Button>
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
         <Title>{t("Plugin Name")}</Title>
         <PluginInfo>{pluginName}</PluginInfo>

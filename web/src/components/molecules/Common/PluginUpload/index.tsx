@@ -18,6 +18,7 @@ export type Props = {
   pluginName: string;
   description: string;
   version: string;
+  uploadedImages: any[];
   githubUrl?: string;
   isSaveLoading: boolean;
   isPublishLoading: boolean;
@@ -32,6 +33,7 @@ const PluginUpload: React.FC<Props> = ({
   pluginName,
   version,
   description,
+  uploadedImages,
   githubUrl,
   isSaveLoading,
   isPublishLoading,
@@ -42,9 +44,9 @@ const PluginUpload: React.FC<Props> = ({
   handleUploadImages,
 }) => {
   const t = useT();
-  const [currentTab, updateTab] = useState<"1" | "2">("1");
-  const handleClickDetailSetting = () => {
-    updateTab(currentTab === "1" ? "2" : "1");
+  const [currentTab, updateTab] = useState<1 | 2>(1);
+  const handlePageChange = () => {
+    updateTab(currentTab === 1 ? 2 : 1);
   };
   return (
     <Wrapper>
@@ -64,7 +66,7 @@ const PluginUpload: React.FC<Props> = ({
                 size="large"
                 onClick={onPluginSave}
                 loading={isSaveLoading}
-                disabled={currentTab !== "2"}>
+                disabled={currentTab !== 2}>
                 {t("Save")}
               </Button>
               <Button
@@ -72,34 +74,30 @@ const PluginUpload: React.FC<Props> = ({
                 size="large"
                 onClick={handleClickPublish}
                 loading={isPublishLoading}
-                disabled={currentTab !== "2"}>
+                disabled={currentTab !== 2}>
                 {t("Save & Publish")}
               </Button>
             </Space>
           </Col>
         </TopRow>
-        <Tabs
-          defaultActiveKey={currentTab}
-          tabBarStyle={{ margin: 0 }}
-          activeKey={currentTab}
-          onChange={handleClickDetailSetting}>
-          <TabPane tab="Package" key="1">
-            <PackageArea
-              githubUrl={githubUrl}
-              handleChangeGithubUrl={handleChangeGithubUrl}
-              handleClickDetailSetting={handleClickDetailSetting}
-              handleParsePlugin={handleParsePlugin}
-            />
-          </TabPane>
-          <TabPane tab="Setting" key="2">
-            <SettingArea
-              pluginName={pluginName}
-              version={version}
-              description={description}
-              handleUploadImages={handleUploadImages}
-            />
-          </TabPane>
-        </Tabs>
+        {currentTab === 1 && (
+          <PackageArea
+            githubUrl={githubUrl}
+            handleChangeGithubUrl={handleChangeGithubUrl}
+            onPageChange={pluginName !== "" ? handlePageChange : undefined}
+            handleParsePlugin={handleParsePlugin}
+          />
+        )}
+        {currentTab === 2 && (
+          <SettingArea
+            pluginName={pluginName}
+            version={version}
+            description={description}
+            uploadedImages={uploadedImages}
+            onBack={handlePageChange}
+            handleUploadImages={handleUploadImages}
+          />
+        )}
       </ContentWrapper>
     </Wrapper>
   );

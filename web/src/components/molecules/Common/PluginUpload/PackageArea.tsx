@@ -16,13 +16,13 @@ export type FileUploadType = string | RcFile | Blob;
 
 export type Props = {
   githubUrl?: string;
-  handleClickDetailSetting: () => void;
+  onPageChange?: () => void;
   handleParsePlugin: (file?: FileUploadType) => Promise<void>;
   handleChangeGithubUrl: (url: string) => void;
 };
 const PackageArea: React.FC<Props> = ({
   githubUrl,
-  handleClickDetailSetting,
+  onPageChange,
   handleParsePlugin,
   handleChangeGithubUrl,
 }) => {
@@ -67,7 +67,7 @@ const PackageArea: React.FC<Props> = ({
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
         <Row justify="end">
           <Col>
-            <Button type="primary" onClick={handleClickDetailSetting}>
+            <Button type="primary" onClick={onPageChange} disabled={!onPageChange}>
               {t("Details Setting")}
               <Icon icon="arrowRight" />
             </Button>

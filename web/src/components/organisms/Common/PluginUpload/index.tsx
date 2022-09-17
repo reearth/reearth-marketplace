@@ -112,6 +112,7 @@ const AddNewPlugin: React.FC<Props> = ({ newPlugin }) => {
       pluginName={parsedPlugin ? parsedPlugin.name : ""}
       version={parsedPlugin ? parsedPlugin.version : ""}
       description={parsedPlugin ? parsedPlugin.description : ""}
+      uploadedImages={uploadedImages}
       githubUrl={githubUrl}
       isSaveLoading={isSaveLoading}
       isPublishLoading={isPublishLoading}
