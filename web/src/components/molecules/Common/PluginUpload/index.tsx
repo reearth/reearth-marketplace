@@ -48,62 +48,75 @@ const PluginUpload: React.FC<Props> = ({
   };
   return (
     <Wrapper>
-      <TopRow align="middle" justify="space-between">
-        <Col>
-          <Breadcrumb
-            rootLink="/myplugins"
-            rootName={t("Plugins List")}
-            currentName={t("New Plugin")}
-          />
-        </Col>
-        <Col>
-          <Space size="middle">
-            <Button type="default" size="large" onClick={onPluginSave} loading={isSaveLoading}>
-              {t("Save")}
-            </Button>
-            <Button
-              type="primary"
-              size="large"
-              onClick={handleClickPublish}
-              loading={isPublishLoading}>
-              {t("Save & Publish")}
-            </Button>
-          </Space>
-        </Col>
-      </TopRow>
-      <Tabs
-        defaultActiveKey={currentTab}
-        tabBarStyle={{ margin: 0 }}
-        activeKey={currentTab}
-        onChange={handleClickDetailSetting}>
-        <TabPane tab="Package" key="1">
-          <PackageArea
-            githubUrl={githubUrl}
-            handleChangeGithubUrl={handleChangeGithubUrl}
-            handleClickDetailSetting={handleClickDetailSetting}
-            handleParsePlugin={handleParsePlugin}
-          />
-        </TabPane>
-        <TabPane tab="Setting" key="2">
-          <SettingArea
-            pluginName={pluginName}
-            version={version}
-            description={description}
-            handleUploadImages={handleUploadImages}
-          />
-        </TabPane>
-      </Tabs>
+      <ContentWrapper>
+        <TopRow align="middle" justify="space-between">
+          <Col>
+            <Breadcrumb
+              rootLink="/myplugins"
+              rootName={t("Plugins List")}
+              currentName={t("New Plugin")}
+            />
+          </Col>
+          <Col>
+            <Space size="middle">
+              <Button
+                type="default"
+                size="large"
+                onClick={onPluginSave}
+                loading={isSaveLoading}
+                disabled={currentTab !== "2"}>
+                {t("Save")}
+              </Button>
+              <Button
+                type="primary"
+                size="large"
+                onClick={handleClickPublish}
+                loading={isPublishLoading}
+                disabled={currentTab !== "2"}>
+                {t("Save & Publish")}
+              </Button>
+            </Space>
+          </Col>
+        </TopRow>
+        <Tabs
+          defaultActiveKey={currentTab}
+          tabBarStyle={{ margin: 0 }}
+          activeKey={currentTab}
+          onChange={handleClickDetailSetting}>
+          <TabPane tab="Package" key="1">
+            <PackageArea
+              githubUrl={githubUrl}
+              handleChangeGithubUrl={handleChangeGithubUrl}
+              handleClickDetailSetting={handleClickDetailSetting}
+              handleParsePlugin={handleParsePlugin}
+            />
+          </TabPane>
+          <TabPane tab="Setting" key="2">
+            <SettingArea
+              pluginName={pluginName}
+              version={version}
+              description={description}
+              handleUploadImages={handleUploadImages}
+            />
+          </TabPane>
+        </Tabs>
+      </ContentWrapper>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
-  max-width: 1200px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
   height: 100%;
   background: rgba(250, 250, 250, 1);
-  margin: 0 auto;
   padding-top: 48px;
   padding-bottom: 72px;
+`;
+
+const ContentWrapper = styled.div`
+  width: 1200px;
 `;
 
 const TopRow = styled(Row)`
