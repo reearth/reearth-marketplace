@@ -158,7 +158,7 @@ func NewVersionID(pid PluginID, version string) (VersionID, error) {
 
 func VersionIDFrom(id string) (VersionID, error) {
 	id, version, ok := strings.Cut(id, versionSeparator)
-	if ok {
+	if !ok {
 		return VersionID{}, ErrInvalidID
 	}
 	pid, err := NewPluginID(id)
