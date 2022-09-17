@@ -76,10 +76,7 @@ const PluginDetailPage: React.FC<Props> = ({
   return (
     <Wrapper>
       <InnerWrapper>
-        <Breadcrumb
-          style={{
-            paddingBottom: "24px",
-          }}>
+        <Breadcrumb>
           <Breadcrumb.Item>
             <StyledLink
               style={{ cursor: "pointer" }}

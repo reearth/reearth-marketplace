@@ -1,7 +1,16 @@
+import { useState } from "react";
+
+import Button from "@marketplace/components/atoms/Button";
+import Col from "@marketplace/components/atoms/Col";
+import Row from "@marketplace/components/atoms/Row";
+import Space from "@marketplace/components/atoms/Space";
+import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
+import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
-import AddNewPluginContent, { RcFile as RcFileType } from "./AddNewPluginContent";
-import { FileUploadType } from "./PackageArea";
+import PackageArea, { FileUploadType } from "./PackageArea";
+import SettingArea, { RcFile as RcFileType } from "./SettingArea";
 
 export type RcFile = RcFileType;
 
@@ -18,10 +27,11 @@ export type Props = {
   handleClickPublish: () => void;
   handleUploadImages: (images: (RcFile | undefined)[]) => void;
 };
-const AddNewPluginPage: React.FC<Props> = ({
+
+const PluginEditingContent: React.FC<Props> = ({
   pluginName,
-  description,
   version,
+  description,
   githubUrl,
   isSaveLoading,
   isPublishLoading,
@@ -31,28 +41,74 @@ const AddNewPluginPage: React.FC<Props> = ({
   handleClickPublish,
   handleUploadImages,
 }) => {
+  const t = useT();
+  const [currentTab, updateTab] = useState<"1" | "2">("1");
+  const handleClickDetailSetting = () => {
+    updateTab(currentTab === "1" ? "2" : "1");
+  };
   return (
     <Wrapper>
-      <AddNewPluginContent
-        pluginName={pluginName}
-        description={description}
-        version={version}
-        githubUrl={githubUrl}
-        isSaveLoading={isSaveLoading}
-        isPublishLoading={isPublishLoading}
-        handleChangeGithubUrl={handleChangeGithubUrl}
-        handleParsePlugin={handleParsePlugin}
-        onPluginSave={onPluginSave}
-        handleClickPublish={handleClickPublish}
-        handleUploadImages={handleUploadImages}
-      />
+      <TopRow align="middle" justify="space-between">
+        <Col>
+          <Breadcrumb
+            rootLink="/myplugins"
+            rootName={t("Plugins List")}
+            currentName={t("New Plugin")}
+          />
+        </Col>
+        <Col>
+          <Space size="middle">
+            <Button type="default" size="large" onClick={onPluginSave} loading={isSaveLoading}>
+              {t("Save")}
+            </Button>
+            <Button
+              type="primary"
+              size="large"
+              onClick={handleClickPublish}
+              loading={isPublishLoading}>
+              {t("Save & Publish")}
+            </Button>
+          </Space>
+        </Col>
+      </TopRow>
+      <Tabs
+        defaultActiveKey={currentTab}
+        tabBarStyle={{ margin: 0 }}
+        activeKey={currentTab}
+        onChange={handleClickDetailSetting}>
+        <TabPane tab="Package" key="1">
+          <PackageArea
+            githubUrl={githubUrl}
+            handleChangeGithubUrl={handleChangeGithubUrl}
+            handleClickDetailSetting={handleClickDetailSetting}
+            handleParsePlugin={handleParsePlugin}
+          />
+        </TabPane>
+        <TabPane tab="Setting" key="2">
+          <SettingArea
+            pluginName={pluginName}
+            version={version}
+            description={description}
+            handleUploadImages={handleUploadImages}
+          />
+        </TabPane>
+      </Tabs>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
+  max-width: 1200px;
   height: 100%;
   background: rgba(250, 250, 250, 1);
+  margin: 0 auto;
+  padding-top: 48px;
+  padding-bottom: 72px;
 `;
 
-export default AddNewPluginPage;
+const TopRow = styled(Row)`
+  padding: 0;
+  margin-bottom: 32px;
+`;
+
+export default PluginEditingContent;

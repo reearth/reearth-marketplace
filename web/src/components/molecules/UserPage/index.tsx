@@ -24,16 +24,16 @@ const UserPageContents: React.FC<Props> = ({ myData, plugins, onPluginSelect }) 
   return (
     <Wrapper>
       <InnerWrapper>
-        <Breadcrumb
-          style={{
-            paddingBottom: "24px",
-          }}>
+        <Breadcrumb>
           <Breadcrumb.Item>
             <StyledLink to="/">{t("Top")}</StyledLink>
           </Breadcrumb.Item>
           <Breadcrumb.Item>{myData ? myData.displayName : ""}</Breadcrumb.Item>
         </Breadcrumb>
-        <HeaderBannerSpace>
+        <HeaderBannerSpace
+          style={{
+            paddingTop: "24px",
+          }}>
           <Image src={HeaderBanner} preview={false} />
           <UserIcon>
             <UserInitial>

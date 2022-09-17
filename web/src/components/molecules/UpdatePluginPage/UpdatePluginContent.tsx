@@ -1,17 +1,17 @@
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 
-import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
+import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
 import PackageArea, {
   FileUploadType,
 } from "@marketplace/components/molecules/Common/PluginEditing/PackageArea";
 import SettingArea from "@marketplace/components/molecules/Common/PluginEditing/SettingArea";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
 // TODO: merge with Add New Plugin
@@ -37,6 +37,7 @@ const UpdatePluginContent: React.FC<Props> = ({
   handleClickPublish,
   handleUploadImages,
 }) => {
+  const t = useT();
   const [currentTab, updateTab] = useState<"1" | "2">("1");
   const handleClickDetailSetting = () => {
     updateTab(currentTab === "1" ? "2" : "1");
@@ -45,12 +46,11 @@ const UpdatePluginContent: React.FC<Props> = ({
     <Wrapper>
       <TopRow align="middle" justify="space-between">
         <Col>
-          <Breadcrumb>
-            <Breadcrumb.Item>
-              <Link to="/myplugins">Plugins List</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Update Plugin</Breadcrumb.Item>
-          </Breadcrumb>
+          <Breadcrumb
+            rootLink="/myplugins"
+            rootName={t("Plugins List")}
+            currentName={t("Update Plugin")}
+          />
         </Col>
         <Col>
           <Space size="middle">
