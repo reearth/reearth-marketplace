@@ -120,9 +120,11 @@ func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) (err
 		return fmt.Errorf("find plugin: %w", err)
 	}
 	if len(pc.Result) > 0 {
-		if p.Plugin().PublisherID().String() != pc.Result[0].PublisherID {
+		pl := pc.Result[0]
+		if p.Plugin().PublisherID().String() != pl.PublisherID {
 			return fmt.Errorf("plugin id already used")
 		}
+		pluginDoc.Active = pl.Active
 	}
 	if err := r.pluginClient().SaveOne(ctx, pluginDoc.ID, pluginDoc); err != nil {
 		return fmt.Errorf("save plugin: %w", err)
@@ -140,25 +142,54 @@ func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) (err
 	return nil
 }
 
-func (r *pluginRepo) FindByID(ctx context.Context, id plugin.ID) (*plugin.Plugin, error) {
+func (r *pluginRepo) FindByID(ctx context.Context, id plugin.ID, user *id.UserID) (*plugin.Plugin, error) {
 	var consumer mongodoc.PluginConsumer
-	if err := r.pluginClient().FindOne(ctx, bson.M{
-		"id": id.String(),
-	}, &consumer); err != nil {
+	f := bson.M{
+		"id":     id.String(),
+		"active": true,
+	}
+	if user != nil {
+		f = bson.M{
+			"$or": bson.A{
+				f,
+				bson.M{
+					"id":          id.String(),
+					"publisherId": user.String(),
+				},
+			},
+		}
+	}
+	if err := r.pluginClient().FindOne(ctx, f, &consumer); err != nil {
 		return nil, err
 	}
 	return consumer.Rows[0], nil
 }
 
-func (r *pluginRepo) FindByIDs(ctx context.Context, ids []plugin.ID) ([]*plugin.Plugin, error) {
+func (r *pluginRepo) FindByIDs(ctx context.Context, ids []plugin.ID, user *id.UserID) ([]*plugin.Plugin, error) {
 	var consumer mongodoc.PluginConsumer
-	if err := r.pluginClient().Find(ctx, bson.M{
+	idStrings := lo.Map(ids, func(id plugin.ID, _ int) string {
+		return id.String()
+	})
+	f := bson.M{
 		"id": bson.M{
-			"$in": lo.Map(ids, func(id plugin.ID, _ int) string {
-				return id.String()
-			}),
+			"$in": idStrings,
 		},
-	}, &consumer); err != nil {
+		"active": true,
+	}
+	if user != nil {
+		f = bson.M{
+			"$or": bson.A{
+				f,
+				bson.M{
+					"id": bson.M{
+						"$in": idStrings,
+					},
+					"publisherId": user.String(),
+				},
+			},
+		}
+	}
+	if err := r.pluginClient().Find(ctx, f, &consumer); err != nil {
 		return nil, err
 	}
 	return consumer.Rows, nil

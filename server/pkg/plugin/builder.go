@@ -5,6 +5,7 @@ import (
 
 	"github.com/blang/semver"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
+	"github.com/samber/lo"
 )
 
 type Builder struct {
@@ -73,6 +74,10 @@ func (b *Builder) Build() (*Plugin, error) {
 		return nil, b.err
 	}
 	return &b.p, nil
+}
+
+func (b *Builder) MustBuild() *Plugin {
+	return lo.Must(b.Build())
 }
 
 type VersionedBuilder struct {
