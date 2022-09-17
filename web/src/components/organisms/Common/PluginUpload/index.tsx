@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 
 import Message from "@marketplace/components/atoms/Message";
-import AddNewPluginPage, { RcFile } from "@marketplace/components/molecules/Common/PluginEditing";
-import type { FileUploadType } from "@marketplace/components/molecules/Common/PluginEditing/PackageArea";
+import AddNewPluginPage, { RcFile } from "@marketplace/components/molecules/Common/PluginUpload";
+import type { FileUploadType } from "@marketplace/components/molecules/Common/PluginUpload/PackageArea";
 import { useT } from "@marketplace/i18n";
 
 import useHooks from "./hooks";
@@ -10,6 +10,7 @@ import useHooks from "./hooks";
 export type Props = {
   newPlugin?: boolean;
 };
+
 const AddNewPlugin: React.FC<Props> = ({ newPlugin }) => {
   const t = useT();
   const {

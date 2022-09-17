@@ -1,6 +1,6 @@
 import { UploadRequestOption } from "rc-upload/lib/interface";
 
-import { FileUploadType } from "@marketplace/components/molecules/Common/PluginEditing/PackageArea";
+import { FileUploadType } from "@marketplace/components/molecules/Common/PluginUpload/PackageArea";
 import { styled } from "@marketplace/theme";
 
 import UpdatePluginContent from "./UpdatePluginContent";

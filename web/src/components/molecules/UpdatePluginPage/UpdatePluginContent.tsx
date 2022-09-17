@@ -9,8 +9,8 @@ import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
 import PackageArea, {
   FileUploadType,
-} from "@marketplace/components/molecules/Common/PluginEditing/PackageArea";
-import SettingArea from "@marketplace/components/molecules/Common/PluginEditing/SettingArea";
+} from "@marketplace/components/molecules/Common/PluginUpload/PackageArea";
+import SettingArea from "@marketplace/components/molecules/Common/PluginUpload/SettingArea";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
@@ -55,10 +55,10 @@ const UpdatePluginContent: React.FC<Props> = ({
         <Col>
           <Space size="middle">
             <Button type="default" size="large" onClick={handleClickSave}>
-              Save
+              {t("Save")}
             </Button>
             <Button type="primary" size="large" onClick={handleClickPublish}>
-              Publish
+              {t("Publish")}
             </Button>
           </Space>
         </Col>

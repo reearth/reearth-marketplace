@@ -1,5 +1,5 @@
 import { AuthenticationRequiredPage } from "@marketplace/auth";
-import PluginEditing from "@marketplace/components/organisms/Common/PluginEditing";
+import PluginEditing from "@marketplace/components/organisms/Common/PluginUpload";
 
 export type Props = {};
 

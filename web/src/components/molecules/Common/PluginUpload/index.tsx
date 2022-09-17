@@ -28,7 +28,7 @@ export type Props = {
   handleUploadImages: (images: (RcFile | undefined)[]) => void;
 };
 
-const PluginEditingContent: React.FC<Props> = ({
+const PluginUpload: React.FC<Props> = ({
   pluginName,
   version,
   description,
@@ -111,4 +111,4 @@ const TopRow = styled(Row)`
   margin-bottom: 32px;
 `;
 
-export default PluginEditingContent;
+export default PluginUpload;
