@@ -4,7 +4,6 @@ import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
-import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
