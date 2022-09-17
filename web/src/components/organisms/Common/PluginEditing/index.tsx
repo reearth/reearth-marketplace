@@ -1,13 +1,15 @@
 import Message from "@marketplace/components/atoms/Message";
-import AddNewPluginPage, { RcFile } from "@marketplace/components/molecules/AddNewPluginPage";
-import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
+import AddNewPluginPage, { RcFile } from "@marketplace/components/molecules/Common/PluginEditing";
+import type { FileUploadType } from "@marketplace/components/molecules/Common/PluginEditing/PackageArea";
 import { useT } from "@marketplace/i18n";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import useHooks from "./hooks";
 
-export type Props = {};
-const AddNewPlugin: React.FC<Props> = () => {
+export type Props = {
+  newPlugin?: boolean;
+};
+const AddNewPlugin: React.FC<Props> = ({ newPlugin }) => {
   const t = useT();
   const {
     parsedPlugin,
@@ -27,7 +29,7 @@ const AddNewPlugin: React.FC<Props> = () => {
     uploadImages(images);
   };
 
-  const handleClickSave = async () => {
+  const handlePluginCreation = useCallback(async () => {
     toggleLoadingSave(true);
     if (uploadedFile) {
       await handleCreatePluginMutation({
@@ -47,16 +49,38 @@ const AddNewPlugin: React.FC<Props> = () => {
       });
     }
     toggleLoadingSave(false);
-  };
+  }, [
+    githubUrl,
+    parsedPlugin,
+    uploadedFile,
+    uploadedImages,
+    handleCreatePluginMutation,
+    handleUpdatePluginMutation,
+  ]);
+
+  const handlePluginUpdate = useCallback(async () => {
+    toggleLoadingSave(true);
+    if (parsedPlugin) {
+      await handleUpdatePluginMutation({
+        id: parsedPlugin.id,
+        images: uploadedImages,
+      });
+    }
+    toggleLoadingSave(false);
+  }, [parsedPlugin, uploadedImages, handleUpdatePluginMutation]);
 
   const handleClickPublish = async () => {
     toggleLoadingSave(true);
     toggleLoadingPublish(true);
-    await handleClickSave();
-    await handleUpdatePluginMutation({
-      id: parsedPlugin?.id ?? "",
-      active: true,
-    });
+    if (newPlugin) {
+      await handlePluginCreation();
+    }
+    if (parsedPlugin) {
+      await handleUpdatePluginMutation({
+        id: parsedPlugin.id,
+        active: true,
+      });
+    }
     toggleLoadingSave(false);
     toggleLoadingPublish(false);
   };
@@ -91,7 +115,7 @@ const AddNewPlugin: React.FC<Props> = () => {
       isPublishLoading={isPublishLoading}
       handleChangeGithubUrl={handleChangeGithubUrl}
       handleParsePlugin={handleParsePlugin}
-      handleClickSave={handleClickSave}
+      onPluginSave={newPlugin ? handlePluginCreation : handlePluginUpdate}
       handleClickPublish={handleClickPublish}
       handleUploadImages={handleUploadImages}
     />

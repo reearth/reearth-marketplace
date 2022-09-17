@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
@@ -6,8 +9,6 @@ import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { useState } from "react";
-import { Link } from "react-router-dom";
 
 import PackageArea, { FileUploadType } from "./PackageArea";
 import SettingArea, { RcFile as RcFileType } from "./SettingArea";
@@ -23,7 +24,7 @@ export type Props = {
   isPublishLoading: boolean;
   handleChangeGithubUrl: (url: string) => void;
   handleParsePlugin: (file?: FileUploadType) => Promise<void>;
-  handleClickSave: () => void;
+  onPluginSave: () => void;
   handleClickPublish: () => void;
   handleUploadImages: (images: (RcFile | undefined)[]) => void;
 };
@@ -37,7 +38,7 @@ const AddNewPluginContent: React.FC<Props> = ({
   isPublishLoading,
   handleChangeGithubUrl,
   handleParsePlugin,
-  handleClickSave,
+  onPluginSave,
   handleClickPublish,
   handleUploadImages,
 }) => {
@@ -59,7 +60,7 @@ const AddNewPluginContent: React.FC<Props> = ({
         </Col>
         <Col>
           <Space size="middle">
-            <Button type="default" size="large" onClick={handleClickSave} loading={isSaveLoading}>
+            <Button type="default" size="large" onClick={onPluginSave} loading={isSaveLoading}>
               {t("Save")}
             </Button>
             <Button

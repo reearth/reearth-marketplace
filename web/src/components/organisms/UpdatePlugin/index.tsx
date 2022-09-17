@@ -1,9 +1,8 @@
-import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
+import type { FileUploadType } from "@marketplace/components/molecules/Common/PluginEditing/PackageArea";
 import UpdatePluginPage from "@marketplace/components/molecules/UpdatePluginPage";
+import useHooks from "@marketplace/components/organisms/Common/PluginEditing/hooks";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { useState } from "react";
-
-import useHooks from "./hooks";
 
 export type Props = {
   pluginId?: string;

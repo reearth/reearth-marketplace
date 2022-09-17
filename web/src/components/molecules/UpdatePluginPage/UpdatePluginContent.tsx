@@ -6,8 +6,8 @@ import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import PackageArea, {
   FileUploadType,
-} from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
-import SettingArea from "@marketplace/components/molecules/AddNewPluginPage/SettingArea";
+} from "@marketplace/components/molecules/Common/PluginEditing/PackageArea";
+import SettingArea from "@marketplace/components/molecules/Common/PluginEditing/SettingArea";
 import { styled } from "@marketplace/theme";
 import { UploadRequestOption } from "rc-upload/lib/interface";
 import { useState } from "react";

@@ -14,7 +14,7 @@ export type Props = {
   isPublishLoading: boolean;
   handleChangeGithubUrl: (url: string) => void;
   handleParsePlugin: (file?: FileUploadType) => Promise<void>;
-  handleClickSave: () => void;
+  onPluginSave: () => void;
   handleClickPublish: () => void;
   handleUploadImages: (images: (RcFile | undefined)[]) => void;
 };
@@ -27,7 +27,7 @@ const AddNewPluginPage: React.FC<Props> = ({
   isPublishLoading,
   handleChangeGithubUrl,
   handleParsePlugin,
-  handleClickSave,
+  onPluginSave,
   handleClickPublish,
   handleUploadImages,
 }) => {
@@ -42,7 +42,7 @@ const AddNewPluginPage: React.FC<Props> = ({
         isPublishLoading={isPublishLoading}
         handleChangeGithubUrl={handleChangeGithubUrl}
         handleParsePlugin={handleParsePlugin}
-        handleClickSave={handleClickSave}
+        onPluginSave={onPluginSave}
         handleClickPublish={handleClickPublish}
         handleUploadImages={handleUploadImages}
       />

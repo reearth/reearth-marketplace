@@ -1,5 +1,5 @@
 import Message from "@marketplace/components/atoms/Message";
-import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
+import type { FileUploadType } from "@marketplace/components/molecules/Common/PluginEditing/PackageArea";
 import {
   useCreatePluginMutation,
   useParsePluginMutation,
