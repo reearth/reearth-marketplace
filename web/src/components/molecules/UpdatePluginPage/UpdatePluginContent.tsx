@@ -1,3 +1,7 @@
+import { UploadRequestOption } from "rc-upload/lib/interface";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
 import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
@@ -9,9 +13,6 @@ import PackageArea, {
 } from "@marketplace/components/molecules/Common/PluginEditing/PackageArea";
 import SettingArea from "@marketplace/components/molecules/Common/PluginEditing/SettingArea";
 import { styled } from "@marketplace/theme";
-import { UploadRequestOption } from "rc-upload/lib/interface";
-import { useState } from "react";
-import { Link } from "react-router-dom";
 
 // TODO: merge with Add New Plugin
 export type Props = {

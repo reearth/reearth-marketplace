@@ -1,6 +1,7 @@
+import { useParams } from "react-router-dom";
+
 import { AuthenticationRequiredPage } from "@marketplace/auth";
 import UpdatePluginOrg from "@marketplace/components/organisms/UpdatePlugin";
-import { useParams } from "react-router-dom";
 
 export type Props = {};
 const UpdatePlugin: React.FC<Props> = () => {

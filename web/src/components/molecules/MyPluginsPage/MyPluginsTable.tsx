@@ -1,3 +1,6 @@
+import type { ColumnsType } from "antd/es/table";
+import { useNavigate } from "react-router-dom";
+
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Icon from "@marketplace/components/atoms/Icon";
@@ -10,8 +13,6 @@ import Table from "@marketplace/components/atoms/Table";
 import type { Plugin } from "@marketplace/components/organisms/MyPlugins";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import type { ColumnsType } from "antd/es/table";
-import { useNavigate } from "react-router-dom";
 
 export type Props = {
   data?: Plugin[];

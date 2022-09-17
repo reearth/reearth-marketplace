@@ -1,5 +1,6 @@
-import { useGetMeQuery } from "@marketplace/gql";
 import { useMemo } from "react";
+
+import { useGetMeQuery } from "@marketplace/gql";
 
 import { type Plugin } from "./";
 

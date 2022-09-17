@@ -1,8 +1,9 @@
+import { useCallback, useState } from "react";
+
 import Message from "@marketplace/components/atoms/Message";
 import AddNewPluginPage, { RcFile } from "@marketplace/components/molecules/Common/PluginEditing";
 import type { FileUploadType } from "@marketplace/components/molecules/Common/PluginEditing/PackageArea";
 import { useT } from "@marketplace/i18n";
-import { useCallback, useState } from "react";
 
 import useHooks from "./hooks";
 

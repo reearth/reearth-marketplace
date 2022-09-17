@@ -1,9 +1,10 @@
 import { ApolloProvider, ApolloClient, ApolloLink, InMemoryCache } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
+import { createUploadLink } from "apollo-upload-client";
+
 import { useAuth } from "@marketplace/auth";
 import { useError } from "@marketplace/state";
-import { createUploadLink } from "apollo-upload-client";
 
 type Props = {
   children?: React.ReactNode;

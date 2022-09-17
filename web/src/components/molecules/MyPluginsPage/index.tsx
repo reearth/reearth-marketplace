@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Icon from "@marketplace/components/atoms/Icon";
@@ -5,7 +7,6 @@ import Row from "@marketplace/components/atoms/Row";
 import type { Plugin } from "@marketplace/components/organisms/MyPlugins";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { useNavigate } from "react-router-dom";
 
 import MyPluginsTable from "./MyPluginsTable";
 

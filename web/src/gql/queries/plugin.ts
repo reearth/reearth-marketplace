@@ -3,6 +3,7 @@ import { gql } from "@apollo/client";
 export const PLUGIN = gql`
   query Plugin($id: ID!) {
     node(id: $id, type: PLUGIN) {
+      id
       ... on Plugin {
         id
         images
@@ -26,6 +27,7 @@ export const PLUGIN = gql`
 export const PLUGINS = gql`
   query Plugins($ids: [ID!]!) {
     nodes(ids: $ids, type: PLUGIN) {
+      id
       ... on Plugin {
         id
         images

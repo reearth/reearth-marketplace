@@ -1,5 +1,6 @@
-import { useGetMeQuery, useUpdatePluginMutation } from "@marketplace/gql";
 import { useCallback, useMemo } from "react";
+
+import { useGetMeQuery, useUpdatePluginMutation } from "@marketplace/gql";
 
 import { type Plugin } from "./";
 

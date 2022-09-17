@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Icon from "@marketplace/components/atoms/Icon";
@@ -9,7 +11,6 @@ import Space from "@marketplace/components/atoms/Space";
 import { Dragger, RcFile, UploadProps } from "@marketplace/components/atoms/Upload";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { useState } from "react";
 
 export type FileUploadType = string | RcFile | Blob;
 

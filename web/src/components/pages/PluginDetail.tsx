@@ -1,5 +1,6 @@
-import PluginDetailOrg from "@marketplace/components/organisms/PluginDetail";
 import { useParams } from "react-router-dom";
+
+import PluginDetailOrg from "@marketplace/components/organisms/PluginDetail";
 
 export type Props = {
   selectedPluginId?: string;
