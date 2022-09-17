@@ -1,20 +1,44 @@
 import Button from "@marketplace/components/atoms/Button";
 import Icon from "@marketplace/components/atoms/Icon";
 // import { TextArea } from "@marketplace/components/atoms/Input";
+import Message from "@marketplace/components/atoms/Message";
 import Space from "@marketplace/components/atoms/Space";
-import Upload from "@marketplace/components/atoms/Upload";
+import Upload, { UploadProps, RcFile as RcFileType } from "@marketplace/components/atoms/Upload";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { UploadRequestOption } from "rc-upload/lib/interface";
+
+export type FileUploadType = string | RcFile | Blob;
+
+export type RcFile = RcFileType;
 
 export type Props = {
   pluginName: string;
   version: string;
   description: string;
-  handleUploadImages: (image: UploadRequestOption) => void;
+  handleUploadImages: (images: (RcFile | undefined)[]) => void;
 };
 const SettingArea: React.FC<Props> = ({ pluginName, version, handleUploadImages }) => {
   const t = useT();
+
+  const uploadProps: UploadProps = {
+    name: "images",
+    listType: "picture",
+    accept: "image/png, image/jpeg, image/jpg",
+    multiple: true,
+    defaultFileList: [],
+    customRequest: async options => {
+      options.onSuccess?.("Ok");
+    },
+    onChange(info) {
+      const { status } = info.file;
+      if (status === "done" || status === "removed") {
+        handleUploadImages(info.fileList.map(f => f.originFileObj).filter(f2 => !!f2));
+        Message.success(`${info.file.name} ${t("Image uploaded successfully.")}`);
+      } else if (status === "error") {
+        Message.error(`${info.file.name} ${t("Image upload failed.")}`);
+      }
+    },
+  };
 
   return (
     <Wrapper>
@@ -27,14 +51,7 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, handleUploadImages 
         {/* <Title>{t("Description")}</Title>
         <StyledTextArea rows={4} defaultValue={description} /> */}
         <Title>{t("Images")}</Title>
-        <Upload
-          listType="picture"
-          accept="image/png, image/jpeg, image/jpg"
-          customRequest={image => {
-            handleUploadImages(image);
-          }}
-          defaultFileList={[]}
-          multiple>
+        <Upload {...uploadProps}>
           <Button icon={<Icon icon="upload" />} type="primary" ghost>
             {t("Upload Image")}
           </Button>

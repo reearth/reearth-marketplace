@@ -6,13 +6,13 @@ import Message from "@marketplace/components/atoms/Message";
 import Radio, { RadioChangeEvent } from "@marketplace/components/atoms/Radio";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
-import { Dragger, RcFile } from "@marketplace/components/atoms/Upload";
+import { Dragger, RcFile, UploadProps } from "@marketplace/components/atoms/Upload";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import type { UploadProps } from "antd";
 import { useState } from "react";
 
 export type FileUploadType = string | RcFile | Blob;
+
 export type Props = {
   githubUrl?: string;
   handleClickDetailSetting: () => void;

@@ -6,12 +6,13 @@ import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { UploadRequestOption } from "rc-upload/lib/interface";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import PackageArea, { FileUploadType } from "./PackageArea";
-import SettingArea from "./SettingArea";
+import SettingArea, { RcFile as RcFileType } from "./SettingArea";
+
+export type RcFile = RcFileType;
 
 export type Props = {
   pluginName: string;
@@ -24,7 +25,7 @@ export type Props = {
   handleParsePlugin: (file?: FileUploadType) => Promise<void>;
   handleClickSave: () => void;
   handleClickPublish: () => void;
-  handleUploadImages: (image: UploadRequestOption) => void;
+  handleUploadImages: (images: (RcFile | undefined)[]) => void;
 };
 
 const AddNewPluginContent: React.FC<Props> = ({

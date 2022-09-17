@@ -46,7 +46,17 @@ export default () => {
           active: data.active,
           images: data.images,
         },
-        onCompleted: () => Message.success(t("Your file was successfully updated!")),
+        onCompleted: () => {
+          if (data.active !== undefined) {
+            if (data.active) {
+              Message.success(t("Your file was successfully published!"));
+            } else {
+              Message.success(t("Your file was successfully unpublished!"));
+            }
+          } else {
+            Message.success(t("Your file was successfully updated!"));
+          }
+        },
         onError: () => Message.error(t("Something went wrong with the update.")),
       });
     },

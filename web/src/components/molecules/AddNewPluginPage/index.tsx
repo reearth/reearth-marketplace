@@ -1,8 +1,9 @@
 import { styled } from "@marketplace/theme";
-import { UploadRequestOption } from "rc-upload/lib/interface";
 
-import AddNewPluginContent from "./AddNewPluginContent";
+import AddNewPluginContent, { RcFile as RcFileType } from "./AddNewPluginContent";
 import { FileUploadType } from "./PackageArea";
+
+export type RcFile = RcFileType;
 
 export type Props = {
   pluginName: string;
@@ -15,7 +16,7 @@ export type Props = {
   handleParsePlugin: (file?: FileUploadType) => Promise<void>;
   handleClickSave: () => void;
   handleClickPublish: () => void;
-  handleUploadImages: (image: UploadRequestOption) => void;
+  handleUploadImages: (images: (RcFile | undefined)[]) => void;
 };
 const AddNewPluginPage: React.FC<Props> = ({
   pluginName,

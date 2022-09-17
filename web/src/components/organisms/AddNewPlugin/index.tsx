@@ -1,8 +1,7 @@
 import Message from "@marketplace/components/atoms/Message";
-import AddNewPluginPage from "@marketplace/components/molecules/AddNewPluginPage";
+import AddNewPluginPage, { RcFile } from "@marketplace/components/molecules/AddNewPluginPage";
 import type { FileUploadType } from "@marketplace/components/molecules/AddNewPluginPage/PackageArea";
 import { useT } from "@marketplace/i18n";
-import { UploadRequestOption } from "rc-upload/lib/interface";
 import { useState } from "react";
 
 import useHooks from "./hooks";
@@ -24,8 +23,8 @@ const AddNewPlugin: React.FC<Props> = () => {
   // TODO: use Antd's file upload after backend ready
   const [uploadedImages, uploadImages] = useState<any[]>([]);
 
-  const handleUploadImages = (image: UploadRequestOption) => {
-    uploadImages([...uploadedImages, image.file]);
+  const handleUploadImages = (images: (RcFile | undefined)[]) => {
+    uploadImages(images);
   };
 
   const handleClickSave = async () => {
@@ -45,19 +44,20 @@ const AddNewPlugin: React.FC<Props> = () => {
       await handleUpdatePluginMutation({
         id: parsedPlugin.id,
         images: uploadedImages,
-        // active: false,
       });
     }
     toggleLoadingSave(false);
   };
 
   const handleClickPublish = async () => {
+    toggleLoadingSave(true);
     toggleLoadingPublish(true);
+    await handleClickSave();
     await handleUpdatePluginMutation({
       id: parsedPlugin?.id ?? "",
-      // images: uploadedImages,
       active: true,
     });
+    toggleLoadingSave(false);
     toggleLoadingPublish(false);
   };
 
