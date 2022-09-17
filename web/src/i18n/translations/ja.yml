@@ -7,14 +7,16 @@ Success: ''
 Plugins List: プラグイン一覧
 New Plugin: 新しいプラグイン
 Save: 保存
-Publish: 公開
+Save & Publish: 保存と公開
+File uploaded successfully.: ファイルのアップロードされました。
+File upload failed.: ファイルのアップロードに失敗しました。
 Details Setting: 詳細設定
 Upload from local: PCからアップロード
 GitHub repository: GitHubレポジトリ
-File uploaded successfully.: ファイルのアップロードされました。
-File upload failed.: ファイルのアップロードに失敗しました。
 Click or drag file to this area to upload: ''
 Please set your repository as public respository.: ''
+Image uploaded successfully.: ''
+Image upload failed.: ''
 Plugin Name: プラグイン名
 Version: バージョン
 Images: イメージ
@@ -79,12 +81,9 @@ Published Desc: ''
 search text: 検索
 Order: 順番
 Liked: お気に入り
-Your file was successfully saved!: ''
-Something went wrong during the save.: ''
-Your file was successfully loaded!: ''
-Something is wrong with the file you tried to upload.: ''
+Your file was successfully published!: ''
+Your file was successfully unpublished!: ''
 Your file was successfully updated!: ''
 Something went wrong with the update.: ''
 Something might be wrong with your URL. Please check and try again.: ''
-Something might be wrong with your URl. Please check and try again.: ''
 Developer Registration: ''

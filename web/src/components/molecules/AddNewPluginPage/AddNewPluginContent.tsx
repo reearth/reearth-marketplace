@@ -67,7 +67,7 @@ const AddNewPluginContent: React.FC<Props> = ({
               size="large"
               onClick={handleClickPublish}
               loading={isPublishLoading}>
-              {t("Publish")}
+              {t("Save & Publish")}
             </Button>
           </Space>
         </Col>
