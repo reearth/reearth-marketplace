@@ -6,7 +6,7 @@ export type Props = {};
 const AddNewPlugin: React.FC<Props> = () => {
   return (
     <AuthenticationRequiredPage>
-      <PluginEditing newPlugin />
+      <PluginEditing />
     </AuthenticationRequiredPage>
   );
 };

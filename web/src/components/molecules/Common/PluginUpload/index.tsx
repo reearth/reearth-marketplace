@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
@@ -14,6 +14,7 @@ import SettingArea, { RcFile as RcFileType } from "./SettingArea";
 export type RcFile = RcFileType;
 
 export type Props = {
+  currentPluginId?: string;
   pluginName: string;
   description: string;
   version: string;
@@ -28,6 +29,7 @@ export type Props = {
 };
 
 const PluginUpload: React.FC<Props> = ({
+  currentPluginId,
   pluginName,
   version,
   description,
@@ -42,9 +44,11 @@ const PluginUpload: React.FC<Props> = ({
 }) => {
   const t = useT();
   const [currentTab, updateTab] = useState<1 | 2>(1);
-  const handlePageChange = () => {
+
+  const handlePageChange = useCallback(() => {
     updateTab(currentTab === 1 ? 2 : 1);
-  };
+  }, [currentTab]);
+
   return (
     <Wrapper>
       <ContentWrapper>
@@ -53,7 +57,7 @@ const PluginUpload: React.FC<Props> = ({
             <Breadcrumb
               rootLink="/myplugins"
               rootName={t("Plugins List")}
-              currentName={t("New Plugin")}
+              currentName={currentPluginId ? t("Update Plugin") : t("New Plugin")}
             />
           </Col>
           <Col>

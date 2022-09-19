@@ -1,17 +1,19 @@
 import { useCallback, useState } from "react";
 
 import Message from "@marketplace/components/atoms/Message";
-import AddNewPluginPage, { RcFile } from "@marketplace/components/molecules/Common/PluginUpload";
+import PluginUploadMolecule, {
+  RcFile,
+} from "@marketplace/components/molecules/Common/PluginUpload";
 import type { FileUploadType } from "@marketplace/components/molecules/Common/PluginUpload/PackageArea";
 import { useT } from "@marketplace/i18n";
 
 import useHooks from "./hooks";
 
 export type Props = {
-  newPlugin?: boolean;
+  pluginId?: string;
 };
 
-const AddNewPlugin: React.FC<Props> = ({ newPlugin }) => {
+const PluginUpload: React.FC<Props> = ({ pluginId }) => {
   const t = useT();
 
   const {
@@ -20,7 +22,7 @@ const AddNewPlugin: React.FC<Props> = ({ newPlugin }) => {
     handleParsePluginMutation,
     handleCreatePluginMutation,
     handleUpdatePluginMutation,
-  } = useHooks();
+  } = useHooks({ pluginId });
 
   const [githubUrl, changeGithubUrl] = useState<string | undefined>(undefined);
   const [uploadedFile, uploadZip] = useState<FileUploadType>();
@@ -69,7 +71,7 @@ const AddNewPlugin: React.FC<Props> = ({ newPlugin }) => {
 
   const handleClickPublish = useCallback(async () => {
     if (parsedPlugin) {
-      if (newPlugin) {
+      if (!pluginId) {
         await handlePluginCreation();
       }
       await handleUpdatePluginMutation({
@@ -77,7 +79,7 @@ const AddNewPlugin: React.FC<Props> = ({ newPlugin }) => {
         active: true,
       });
     }
-  }, [newPlugin, parsedPlugin, handlePluginCreation, handleUpdatePluginMutation]);
+  }, [pluginId, parsedPlugin, handlePluginCreation, handleUpdatePluginMutation]);
 
   // When Github Url Input
   const handleChangeGithubUrl = useCallback(
@@ -106,15 +108,16 @@ const AddNewPlugin: React.FC<Props> = ({ newPlugin }) => {
   );
 
   const handlePluginSave = useCallback(async () => {
-    if (newPlugin) {
+    if (!pluginId) {
       await handlePluginCreation();
     } else {
       await handlePluginUpdate();
     }
-  }, [newPlugin, handlePluginCreation, handlePluginUpdate]);
+  }, [pluginId, handlePluginCreation, handlePluginUpdate]);
 
   return (
-    <AddNewPluginPage
+    <PluginUploadMolecule
+      currentPluginId={pluginId}
       pluginName={parsedPlugin ? parsedPlugin.name : ""}
       version={parsedPlugin ? parsedPlugin.version : ""}
       description={parsedPlugin ? parsedPlugin.description : ""}
@@ -130,4 +133,4 @@ const AddNewPlugin: React.FC<Props> = ({ newPlugin }) => {
   );
 };
 
-export default AddNewPlugin;
+export default PluginUpload;

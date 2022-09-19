@@ -10,7 +10,7 @@ import {
 } from "@marketplace/gql";
 import { useT } from "@marketplace/i18n";
 
-export default () => {
+export default ({ pluginId }: { pluginId?: string }) => {
   const t = useT();
   const navigate = useNavigate();
 
@@ -76,24 +76,29 @@ export default () => {
     [parsePluginMutation],
   );
 
-  const parsedPlugin = useMemo(
-    () =>
-      parsedData?.parsePlugin.plugin.__typename === "Plugin"
-        ? {
-            id: parsedData.parsePlugin.plugin.id,
-            name: parsedData.parsePlugin.plugin.name,
-            author: parsedData.parsePlugin.plugin.author,
-            description: parsedData.parsePlugin.plugin.description
-              ? parsedData.parsePlugin.plugin.description
-              : "",
-            readme: parsedData.parsePlugin.plugin.readme,
-            version: parsedData.parsePlugin.plugin.latestVersion?.version
-              ? parsedData.parsePlugin.plugin.latestVersion?.version
-              : "",
-          }
-        : undefined,
-    [parsedData?.parsePlugin.plugin],
-  );
+  const parsedPlugin = useMemo(() => {
+    if (parsedData?.parsePlugin.plugin.__typename === "Plugin") {
+      if (parsedData.parsePlugin.plugin.id === pluginId) {
+        return {
+          id: parsedData.parsePlugin.plugin.id,
+          name: parsedData.parsePlugin.plugin.name,
+          author: parsedData.parsePlugin.plugin.author,
+          description: parsedData.parsePlugin.plugin.description
+            ? parsedData.parsePlugin.plugin.description
+            : "",
+          readme: parsedData.parsePlugin.plugin.readme,
+          version: parsedData.parsePlugin.plugin.latestVersion?.version
+            ? parsedData.parsePlugin.plugin.latestVersion?.version
+            : "",
+        };
+      } else {
+        Message.error(
+          t("The plugin you uploaded is different from the one you are trying to update."),
+        );
+      }
+    }
+    return undefined;
+  }, [t, pluginId, parsedData?.parsePlugin.plugin]);
 
   return {
     parsedPlugin,
