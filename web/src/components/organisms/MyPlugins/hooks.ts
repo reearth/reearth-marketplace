@@ -1,5 +1,6 @@
-import { useGetMeQuery, useUpdatePluginMutation } from "@marketplace/gql";
 import { useCallback, useMemo } from "react";
+
+import { useGetMeQuery, useUpdatePluginMutation } from "@marketplace/gql";
 
 import { type Plugin } from "./";
 
@@ -9,11 +10,12 @@ export default (id?: string, active?: boolean) => {
       first: 50,
     },
   });
+
   const [updatePlugin] = useUpdatePluginMutation({
     variables: { pluginId: id ? id : "", active: active },
   });
 
-  const onToggleActive = useCallback(
+  const handleTogglePublish = useCallback(
     async (id: string, active: boolean) => {
       await updatePlugin({
         variables: {
@@ -25,6 +27,7 @@ export default (id?: string, active?: boolean) => {
     },
     [updatePlugin, refetch],
   );
+
   const plugins = useMemo(
     () =>
       data?.me.plugins.nodes
@@ -45,6 +48,6 @@ export default (id?: string, active?: boolean) => {
 
   return {
     plugins,
-    onToggleActive,
+    handleTogglePublish,
   };
 };

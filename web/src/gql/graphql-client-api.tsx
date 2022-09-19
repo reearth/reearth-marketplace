@@ -398,14 +398,14 @@ export type PluginQueryVariables = Exact<{
 }>;
 
 
-export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' } | null };
+export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization', id: string } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User', id: string } | null };
 
 export type PluginsQueryVariables = Exact<{
   ids: Array<Scalars['ID']> | Scalars['ID'];
 }>;
 
 
-export type PluginsQuery = { __typename?: 'Query', nodes: Array<{ __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' }> };
+export type PluginsQuery = { __typename?: 'Query', nodes: Array<{ __typename?: 'Organization', id: string } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User', id: string }> };
 
 export type SearchPluginQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -419,7 +419,7 @@ export type SearchPluginQueryVariables = Exact<{
 }>;
 
 
-export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
+export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, liked: boolean, downloads: number, name: string } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
 
 export type LikePluginMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -479,7 +479,7 @@ export type GetMeQueryVariables = Exact<{
 }>;
 
 
-export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, name: string, displayName?: string | null, description?: string | null, plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, readme: string, icon?: string | null, active: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } } };
+export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, name: string, lang?: any | null, displayName?: string | null, description?: string | null, plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, liked: boolean, downloads: number, name: string, readme: string, icon?: string | null, active: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } } };
 
 export type UpdateMeMutationVariables = Exact<{
   name?: InputMaybe<Scalars['String']>;
@@ -496,6 +496,7 @@ export type UpdateMeMutation = { __typename?: 'Mutation', updateMe: { __typename
 export const PluginDocument = gql`
     query Plugin($id: ID!) {
   node(id: $id, type: PLUGIN) {
+    id
     ... on Plugin {
       id
       images
@@ -546,6 +547,7 @@ export type PluginQueryResult = Apollo.QueryResult<PluginQuery, PluginQueryVaria
 export const PluginsDocument = gql`
     query Plugins($ids: [ID!]!) {
   nodes(ids: $ids, type: PLUGIN) {
+    id
     ... on Plugin {
       id
       images
@@ -603,6 +605,7 @@ export const SearchPluginDocument = gql`
       images
       author
       like
+      liked
       downloads
       name
     }
@@ -916,6 +919,7 @@ export const GetMeDocument = gql`
   me {
     id
     name
+    lang
     displayName
     description
     plugins(first: $first, after: $after) {
@@ -924,6 +928,7 @@ export const GetMeDocument = gql`
         images
         author
         like
+        liked
         downloads
         name
         readme

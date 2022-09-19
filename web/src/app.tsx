@@ -6,11 +6,11 @@ import { Provider as I18nProvider } from "@marketplace/i18n";
 export default function App() {
   return (
     <Auth0Provider>
-      <I18nProvider>
-        <GqlProvider>
+      <GqlProvider>
+        <I18nProvider>
           <MarketplaceCore />
-        </GqlProvider>
-      </I18nProvider>
+        </I18nProvider>
+      </GqlProvider>
     </Auth0Provider>
   );
 }

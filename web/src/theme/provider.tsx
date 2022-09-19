@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@emotion/react";
-import { useCurrentTheme } from "@marketplace/state";
 import { ReactNode, useEffect } from "react";
+
+import { useCurrentTheme } from "@marketplace/state";
 
 import darkTheme from "./darkTheme";
 // import GlobalStyle from "./globalstyle";

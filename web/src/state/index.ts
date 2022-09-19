@@ -6,3 +6,6 @@ export const useError = () => useAtom(error);
 
 const currentTheme = atom<"light" | "dark">("dark");
 export const useCurrentTheme = () => useAtom(currentTheme);
+
+const currentLang = atom<"en" | "ja" | "und">("und");
+export const useCurrentLang = () => useAtom(currentLang);

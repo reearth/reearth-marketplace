@@ -1,5 +1,3 @@
-import Icon from "@marketplace/components/atoms/Icon";
-import { styled } from "@marketplace/theme";
 import {
   AccordionItem as AccordionItemComponent,
   AccordionItemButton,
@@ -7,6 +5,9 @@ import {
   AccordionItemPanel,
   AccordionItemState,
 } from "react-accessible-accordion";
+
+import Icon from "@marketplace/components/atoms/Icon";
+import { styled } from "@marketplace/theme";
 
 export type Props = {
   className?: string;

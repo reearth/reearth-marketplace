@@ -1,16 +1,15 @@
+import { useMemo } from "react";
+
+import { useAuth } from "@marketplace/auth/hooks";
 import { type Plugin } from "@marketplace/components/molecules/TopPage";
-import {
-  useSearchPluginQuery,
-  useLikePluginMutation,
-  useUnlikePluginMutation,
-  PluginSort,
-} from "@marketplace/gql";
-import { useCallback, useMemo } from "react";
+import { useSearchPluginQuery, PluginSort } from "@marketplace/gql";
 
 export { PluginSort };
 
-export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
-  const { data, refetch } = useSearchPluginQuery({
+export default (searchText?: string, sort?: PluginSort, liked?: boolean, accessToken?: string) => {
+  const { isAuthenticated } = useAuth(accessToken);
+
+  const { data } = useSearchPluginQuery({
     variables: {
       first: 50,
       keyword: searchText,
@@ -23,32 +22,6 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
     },
   });
 
-  const [likePlugin] = useLikePluginMutation();
-  const [unlikePlugin] = useUnlikePluginMutation();
-  const onLike = useCallback(
-    async (id: string) => {
-      await likePlugin({
-        variables: {
-          id,
-        },
-      });
-      await refetch();
-    },
-    [likePlugin, refetch],
-  );
-
-  const onUnlike = useCallback(
-    async (id: string) => {
-      await unlikePlugin({
-        variables: {
-          id,
-        },
-      });
-      await refetch();
-    },
-    [unlikePlugin, refetch],
-  );
-
   const plugins = useMemo(
     () =>
       data?.plugins.nodes
@@ -60,6 +33,7 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
                 cover: p.images[0],
                 author: p.author ? p.author : "",
                 like: p.like,
+                liked: p.liked,
                 downloads: p.downloads,
               }
             : undefined,
@@ -70,7 +44,6 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean) => {
 
   return {
     plugins,
-    onLike,
-    onUnlike,
+    isAuthenticated,
   };
 };

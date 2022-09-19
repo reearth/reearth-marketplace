@@ -1,5 +1,6 @@
-import { useGetMeQuery } from "@marketplace/gql";
 import { useMemo } from "react";
+
+import { useGetMeQuery } from "@marketplace/gql";
 
 import { type Plugin } from "./";
 
@@ -15,7 +16,7 @@ export default () => {
       data?.me.__typename === "Me"
         ? {
             id: data.me.id,
-            displayName: data.me ? data.me.displayName : "",
+            displayName: data.me.displayName || data.me.name || "",
             description: data.me ? data.me.description : "",
           }
         : undefined,

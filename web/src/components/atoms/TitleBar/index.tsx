@@ -1,13 +1,15 @@
 import HeaderBanner from "@marketplace/assets/header.png";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
 export type Props = {};
 const TitleBar: React.FC<Props> = () => {
+  const t = useT();
   return (
     <Wrapper>
       <Contents>
-        <Title>Re: Earthプラグインマーケットプレイス</Title>
-        <Desc>あなたのRe: Earthをもっと自由に</Desc>
+        <Title>{t("Re:Earth Marketplace")}</Title>
+        <Desc>{t("Make Re:Earth the way you want it")}</Desc>
       </Contents>
     </Wrapper>
   );

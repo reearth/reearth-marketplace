@@ -1,7 +1,8 @@
+import { useCallback } from "react";
+
 import { useAuth } from "@marketplace/auth";
 import PluginDetailPage from "@marketplace/components/molecules/PluginDetailPage";
 import ModalContent from "@marketplace/components/molecules/PluginDetailPage/ModalContent";
-import React, { useCallback } from "react";
 
 import useHooks from "./hooks";
 

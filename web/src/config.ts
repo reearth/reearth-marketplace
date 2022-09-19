@@ -14,6 +14,7 @@ export const defaultConfig: Config = {
   authClientId: import.meta.env.REEARTH_MARKETPLACE_AUTH_CLIENT_ID,
   reearthApi: import.meta.env.REEARTH_MARKETPLACE_REEARTH_API,
   reearthWeb: import.meta.env.REEARTH_MARKETPLACE_REEARTH_WEB,
+  reportUrl: import.meta.env.REEARTH_MARKETPLACE_REPORT_URL,
 };
 
 export async function loadConfig() {

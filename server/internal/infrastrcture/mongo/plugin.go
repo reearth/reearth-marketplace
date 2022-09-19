@@ -94,11 +94,11 @@ func NewPlugin(client *mongox.Client) repo.Plugin {
 }
 
 func (r *pluginRepo) init() {
-	r.pluginClient().CreateIndex(context.Background(), []string{"name", "publisherId", "publishedAt", "downloads"}, []string{"name"})
-	_, _ = r.pluginLikeClient().Client().Indexes().CreateOne(context.Background(), mongo.IndexModel{
+	r.pluginClient().CreateIndex(context.Background(), []string{"publisherId", "publishedAt", "downloads"}, []string{"name"})
+	lo.Must(r.pluginLikeClient().Client().Indexes().CreateOne(context.Background(), mongo.IndexModel{
 		Keys:    bson.D{{Key: "userId", Value: 1}, {Key: "pluginId", Value: 1}},
 		Options: options.Index().SetUnique(true),
-	})
+	}))
 }
 
 func (r *pluginRepo) pluginClient() *mongox.ClientCollection {
@@ -113,19 +113,22 @@ func (r *pluginRepo) pluginLikeClient() *mongox.ClientCollection {
 	return r.client.WithCollection("plugin_like")
 }
 
-func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) (err error) {
+func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) error {
 	pluginDoc, pluginVersionDoc := mongodoc.NewVersionedPlugin(p)
-	var pc mongox.SliceConsumer[mongodoc.PluginDocument]
-	if err := r.pluginClient().FindOne(ctx, bson.M{"id": pluginDoc.ID}, &pc); err != nil && !errors.Is(err, rerror.ErrNotFound) {
-		return fmt.Errorf("find plugin: %w", err)
+	res := r.pluginClient().Client().FindOneAndUpdate(ctx,
+		bson.M{"id": pluginDoc.ID},
+		bson.M{"$setOnInsert": pluginDoc},
+		options.FindOneAndUpdate().SetUpsert(true).SetReturnDocument(options.After),
+	)
+	if err := res.Err(); err != nil {
+		return fmt.Errorf("find or insert plugin: %w", err)
 	}
-	if len(pc.Result) > 0 {
-		if p.Plugin().PublisherID().String() != pc.Result[0].PublisherID {
-			return fmt.Errorf("plugin id already used")
-		}
+	var pd mongodoc.PluginDocument
+	if err := res.Decode(&pd); err != nil {
+		return fmt.Errorf("decode plugin(id=%s): %w", pluginDoc.ID, err)
 	}
-	if err := r.pluginClient().SaveOne(ctx, pluginDoc.ID, pluginDoc); err != nil {
-		return fmt.Errorf("save plugin: %w", err)
+	if p.Plugin().PublisherID().String() != pd.PublisherID {
+		return fmt.Errorf("plugin id already used")
 	}
 	var pvc mongox.SliceConsumer[mongodoc.PluginVersionDocument]
 	if err := r.pluginVersionClient().FindOne(ctx, bson.M{"id": pluginVersionDoc.ID}, &pvc); err != nil && !errors.Is(err, rerror.ErrNotFound) {
@@ -140,25 +143,54 @@ func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) (err
 	return nil
 }
 
-func (r *pluginRepo) FindByID(ctx context.Context, id plugin.ID) (*plugin.Plugin, error) {
+func (r *pluginRepo) FindByID(ctx context.Context, id plugin.ID, user *id.UserID) (*plugin.Plugin, error) {
 	var consumer mongodoc.PluginConsumer
-	if err := r.pluginClient().FindOne(ctx, bson.M{
-		"id": id.String(),
-	}, &consumer); err != nil {
+	f := bson.M{
+		"id":     id.String(),
+		"active": true,
+	}
+	if user != nil {
+		f = bson.M{
+			"$or": bson.A{
+				f,
+				bson.M{
+					"id":          id.String(),
+					"publisherId": user.String(),
+				},
+			},
+		}
+	}
+	if err := r.pluginClient().FindOne(ctx, f, &consumer); err != nil {
 		return nil, err
 	}
 	return consumer.Rows[0], nil
 }
 
-func (r *pluginRepo) FindByIDs(ctx context.Context, ids []plugin.ID) ([]*plugin.Plugin, error) {
+func (r *pluginRepo) FindByIDs(ctx context.Context, ids []plugin.ID, user *id.UserID) ([]*plugin.Plugin, error) {
 	var consumer mongodoc.PluginConsumer
-	if err := r.pluginClient().Find(ctx, bson.M{
+	idStrings := lo.Map(ids, func(id plugin.ID, _ int) string {
+		return id.String()
+	})
+	f := bson.M{
 		"id": bson.M{
-			"$in": lo.Map(ids, func(id plugin.ID, _ int) string {
-				return id.String()
-			}),
+			"$in": idStrings,
 		},
-	}, &consumer); err != nil {
+		"active": true,
+	}
+	if user != nil {
+		f = bson.M{
+			"$or": bson.A{
+				f,
+				bson.M{
+					"id": bson.M{
+						"$in": idStrings,
+					},
+					"publisherId": user.String(),
+				},
+			},
+		}
+	}
+	if err := r.pluginClient().Find(ctx, f, &consumer); err != nil {
 		return nil, err
 	}
 	return consumer.Rows, nil
@@ -338,22 +370,20 @@ func (r *pluginRepo) UpdateLatest(ctx context.Context, p *plugin.Plugin) (*plugi
 		options.FindOne().SetSort(bson.D{{Key: "createdAt", Value: -1}}),
 	)
 	if err := sr.Err(); err != nil {
-		if !errors.Is(sr.Err(), mongo.ErrNoDocuments) {
-			return nil, err
+		if errors.Is(sr.Err(), mongo.ErrNoDocuments) {
+			return nil, fmt.Errorf("plugin must have at least one active version")
 		}
-		pv, _ := plugin.NewPartialVersion().Version("0.0.0").Build()
-		p.SetLatestVersion(pv)
-	} else {
-		var d mongodoc.PluginVersionDocument
-		if err := sr.Decode(&d); err != nil {
-			return nil, err
-		}
-		v, err := d.Model()
-		if err != nil {
-			return nil, err
-		}
-		p.SetLatestVersion(&v.PartialVersion)
+		return nil, err
 	}
+	var d mongodoc.PluginVersionDocument
+	if err := sr.Decode(&d); err != nil {
+		return nil, err
+	}
+	v, err := d.Model()
+	if err != nil {
+		return nil, err
+	}
+	p.SetLatestVersion(&v.PartialVersion)
 
 	if err := r.Save(ctx, p); err != nil {
 		return nil, err

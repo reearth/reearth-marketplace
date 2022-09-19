@@ -3,85 +3,87 @@ import Col from "@marketplace/components/atoms/Col";
 import Image from "@marketplace/components/atoms/Image";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
 export type Props = {};
 const Footer: React.FC<Props> = () => {
+  const t = useT();
   return (
     <Wrapper>
       <FooterMenu>
         <Row justify="space-between" style={{ margin: "47px 0 37px 0" }}>
           <Col style={{ maxWidth: "300px" }}>
-            <SectionTitle>Community</SectionTitle>
+            <SectionTitle>{t("Community")}</SectionTitle>
             <Section direction="vertical">
               <SectionContent href="https://discord.gg/XJhYkQQDAu" target="_blank">
-                Discord
+                {t("Discord")}
               </SectionContent>
               <SectionContent href="https://github.com/reearth/reearth/discussions" target="_blank">
-                Discussion
+                {t("Discussion")}
               </SectionContent>
               <SectionContent href="https://reearth.io/blog/tags/event" target="_blank">
-                Events
+                {t("Events")}
               </SectionContent>
             </Section>
           </Col>
           <Col style={{ maxWidth: "300px" }}>
-            <SectionTitle>Support</SectionTitle>
+            <SectionTitle>{t("Support")}</SectionTitle>
             <Section direction="vertical">
-              <SectionContent href="https://docs2.reearth.io/getting-started" target="_blank">
-                Getting Started
+              <SectionContent href={t("https://docs2.reearth.io/getting-started")} target="_blank">
+                {t("Getting Started")}
               </SectionContent>
-              <SectionContent href="https://docs2.reearth.io/reference" target="_blank">
-                Reference
+              <SectionContent href={t("https://docs2.reearth.io/reference")} target="_blank">
+                {t("Reference")}
               </SectionContent>
               <SectionContent
-                href="https://docs.reearth.io/developer-guide/intro/about"
+                href={t("https://docs.reearth.io/developer-guide/intro/about")}
                 target="_blank">
-                Developer Guide
+                {t("Developer Guide")}
               </SectionContent>
-              <SectionContent href="https://docs.reearth.io/tutorial/home" target="_blank">
-                Tutorial
+              <SectionContent href={t("https://docs.reearth.io/tutorial/home")} target="_blank">
+                {t("Tutorial")}
               </SectionContent>
-              <SectionContent href="https://reearth.io/docs/terms-of-use" target="_blank">
-                Terms of Use
+              <SectionContent href={t("https://reearth.io/docs/terms-of-use")} target="_blank">
+                {t("Terms of Use")}
               </SectionContent>
             </Section>
           </Col>
           <Col style={{ maxWidth: "300px" }}>
-            <SectionTitle>Developers</SectionTitle>
+            <SectionTitle>{t("Developers")}</SectionTitle>
             <Section direction="vertical">
               <SectionContent href="https://github.com/reearth/reearth" target="_blank">
-                Github
+                {t("Github")}
               </SectionContent>
               <SectionContent href="https://github.com/reearth/reearth/projects/1" target="_blank">
-                Road Maps
+                {t("Roadmap")}
               </SectionContent>
               <SectionContent
                 href="https://github.com/reearth/reearth/blob/main/CHANGELOG.md"
                 target="_blank">
-                Changelog
+                {t("Changelog")}
               </SectionContent>
               <SectionContent
                 href="https://github.com/reearth/reearth/blob/main/CODE_OF_CONDUCT.md"
                 target="_blank">
-                Code of Conduct
+                {t("Code of Conduct")}
               </SectionContent>
             </Section>
           </Col>
           <Col style={{ maxWidth: "300px" }}>
-            <SectionTitle>Company</SectionTitle>
+            <SectionTitle>{t("Company")}</SectionTitle>
             <Section direction="vertical">
               <SectionContent href="https://eukarya.io/" target="_blank">
-                Website
+                {t("Website")}
               </SectionContent>
               <SectionContent href="https://www.facebook.com/EukaryaInc" target="_blank">
-                Facebook
+                {t("Facebook")}
               </SectionContent>
-              <SectionContent href="https://twitter.com/eukaryaofficial" target="_blank">
-                Twitter
+              <SectionContent href={t("https://twitter.com/eukarya_EN")} target="_blank">
+                {t("Twitter")}
               </SectionContent>
-              <SectionContent href="https://reearth.io/docs/privacy-policy" target="_blank">
-                Privacy Policy
+              <SectionContent href={t("https://reearth.io/docs/privacy-policy")} target="_blank">
+                {t("Privacy Policy")}
               </SectionContent>
             </Section>
           </Col>

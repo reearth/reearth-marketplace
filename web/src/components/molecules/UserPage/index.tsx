@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import HeaderBanner from "@marketplace/assets/header.png";
 import Breadcrumb from "@marketplace/components/atoms/Breadcrumb";
 // import Button from "@marketplace/components/atoms/Button";
@@ -7,8 +9,8 @@ import Loading from "@marketplace/components/atoms/Loading";
 import Space from "@marketplace/components/atoms/Space";
 import PluginsList from "@marketplace/components/molecules/PluginsList";
 import type { MyDataType, Plugin } from "@marketplace/components/organisms/User";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { Link } from "react-router-dom";
 
 export type Props = {
   myData?: MyDataType;
@@ -17,19 +19,21 @@ export type Props = {
 };
 
 const UserPageContents: React.FC<Props> = ({ myData, plugins, onPluginSelect }) => {
+  const t = useT();
+
   return (
     <Wrapper>
       <InnerWrapper>
-        <Breadcrumb
-          style={{
-            paddingBottom: "24px",
-          }}>
+        <Breadcrumb>
           <Breadcrumb.Item>
-            <StyledLink to="/">Top</StyledLink>
+            <StyledLink to="/">{t("Top")}</StyledLink>
           </Breadcrumb.Item>
           <Breadcrumb.Item>{myData ? myData.displayName : ""}</Breadcrumb.Item>
         </Breadcrumb>
-        <HeaderBannerSpace>
+        <HeaderBannerSpace
+          style={{
+            paddingTop: "24px",
+          }}>
           <Image src={HeaderBanner} preview={false} />
           <UserIcon>
             <UserInitial>

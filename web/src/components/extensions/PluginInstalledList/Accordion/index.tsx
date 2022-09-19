@@ -1,5 +1,6 @@
-import { usePluginsQuery } from "@marketplace/gql";
 import { useMemo } from "react";
+
+import { usePluginsQuery } from "@marketplace/gql";
 
 import Accordion from "./accordion";
 import PluginAccordionItemBody from "./body";

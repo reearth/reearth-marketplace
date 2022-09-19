@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"net/url"
+	"time"
 
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/gateway"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
@@ -35,16 +36,16 @@ func NewPlugin(r *repo.Container, gr *gateway.Container) interfaces.Plugin {
 
 var pluginPackageSizeLimit int64 = 10 * 1024 * 1024
 
-func (p *Plugin) FindByID(ctx context.Context, id id.PluginID) (*plugin.VersionedPlugin, error) {
-	pl, err := p.pluginRepo.FindByID(ctx, id)
+func (p *Plugin) FindByID(ctx context.Context, id id.PluginID, user *id.UserID) (*plugin.VersionedPlugin, error) {
+	pl, err := p.pluginRepo.FindByID(ctx, id, user)
 	if err != nil {
 		return nil, err
 	}
 	return plugin.Versioned(pl).Build()
 }
 
-func (i *Plugin) FindByIDs(ctx context.Context, uids []id.PluginID) ([]*plugin.VersionedPlugin, error) {
-	res, err := i.pluginRepo.FindByIDs(ctx, uids)
+func (i *Plugin) FindByIDs(ctx context.Context, uids []id.PluginID, user *id.UserID) ([]*plugin.VersionedPlugin, error) {
+	res, err := i.pluginRepo.FindByIDs(ctx, uids, user)
 	if err != nil {
 		return nil, err
 	}
@@ -119,15 +120,18 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 		}
 	}()
 
-	pl, err := p.pluginRepo.FindByID(ctx, param.PluginID)
+	pl, err := p.pluginRepo.FindByID(ctx, param.PluginID, param.Publisher.IDRef())
 	if err != nil {
 		return nil, err
 	}
 	if pl.PublisherID().Compare(param.Publisher.ID()) != 0 {
 		return nil, fmt.Errorf("cannot update other's plugin")
 	}
+	updated := false
 	if param.Active != nil {
-		pl.SetActive(*param.Active)
+		if pl.SetActive(*param.Active) {
+			updated = true
+		}
 	}
 	if len(param.DeletedTags) > 0 || len(param.NewTags) > 0 {
 		var tags []string
@@ -136,6 +140,7 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 		}
 		tags = applyTagsDiff(tags, pl.Tags(), param.DeletedTags, param.NewTags)
 		pl.SetTags(tags)
+		updated = true
 	}
 
 	if len(param.Images) > 0 {
@@ -148,6 +153,10 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 			imgNames = append(imgNames, imageName)
 		}
 		pl.SetImages(imgNames)
+		updated = true
+	}
+	if updated {
+		pl.SetUpdatedAt(time.Now())
 	}
 
 	if err := p.pluginRepo.Save(ctx, pl); err != nil {
@@ -178,7 +187,7 @@ func (p *Plugin) Like(ctx context.Context, user *user.User, id id.PluginID) (_ *
 		}
 	}()
 
-	pl, err := p.pluginRepo.FindByID(ctx, id)
+	pl, err := p.pluginRepo.FindByID(ctx, id, user.IDRef())
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +221,7 @@ func (p *Plugin) Unlike(ctx context.Context, user *user.User, id id.PluginID) (*
 		}
 	}()
 
-	pl, err := p.pluginRepo.FindByID(ctx, id)
+	pl, err := p.pluginRepo.FindByID(ctx, id, user.IDRef())
 	if err != nil {
 		return nil, err
 	}
@@ -251,11 +260,19 @@ func (p *Plugin) UpdateVersion(ctx context.Context, user *user.User, param inter
 		return nil, err
 	}
 	v := vp.Version()
+	updated := false
 	if param.Active != nil {
-		v.SetActive(*param.Active)
+		if v.SetActive(*param.Active) {
+			updated = true
+		}
 	}
 	if param.Description != nil {
-		v.SetDescription(*param.Description)
+		if v.SetDescription(*param.Description) {
+			updated = true
+		}
+	}
+	if updated {
+		v.SetUpdatedAt(time.Now())
 	}
 	if err := p.pluginRepo.SaveVersion(ctx, v); err != nil {
 		return nil, err
@@ -291,16 +308,16 @@ func (p *Plugin) Liked(ctx context.Context, user *user.User, id id.PluginID) (bo
 	return p.pluginRepo.Liked(ctx, user.ID(), id)
 }
 
-func (p *Plugin) Download(ctx context.Context, id id.PluginID, version string) ([]byte, error) {
+func (p *Plugin) Download(ctx context.Context, id id.PluginID, version string) (io.ReadCloser, error) {
 	vp, err := p.pluginRepo.FindByVersion(ctx, id, version)
 	if err != nil {
 		return nil, err
 	}
-	return p.download(ctx, vp)
+	return p.download(ctx, vp, false)
 }
 
-func (p *Plugin) DownloadLatest(ctx context.Context, id id.PluginID) ([]byte, error) {
-	pl, err := p.pluginRepo.FindByID(ctx, id)
+func (p *Plugin) DownloadLatest(ctx context.Context, id id.PluginID) (io.ReadCloser, error) {
+	pl, err := p.pluginRepo.FindByID(ctx, id, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -308,10 +325,19 @@ func (p *Plugin) DownloadLatest(ctx context.Context, id id.PluginID) ([]byte, er
 	if err != nil {
 		return nil, err
 	}
-	return p.download(ctx, vp)
+	return p.download(ctx, vp, false)
 }
 
-func (p *Plugin) download(ctx context.Context, vp *plugin.VersionedPlugin) (_ []byte, err error) {
+func (p *Plugin) IncreaseDownloadCount(ctx context.Context, id id.PluginID, version string) error {
+	vp, err := p.pluginRepo.FindByVersion(ctx, id, version)
+	if err != nil {
+		return err
+	}
+	_, err = p.download(ctx, vp, true)
+	return err
+}
+
+func (p *Plugin) download(ctx context.Context, vp *plugin.VersionedPlugin, onlyIncrease bool) (_ io.ReadCloser, err error) {
 	tx, err := p.transaction.Begin()
 	if err != nil {
 		return nil, err
@@ -335,11 +361,15 @@ func (p *Plugin) download(ctx context.Context, vp *plugin.VersionedPlugin) (_ []
 	if err := p.pluginRepo.SaveVersion(ctx, vp2.Version()); err != nil {
 		return nil, err
 	}
+	tx.Commit()
+	if onlyIncrease {
+		return nil, nil
+	}
+
 	b, err := p.file.DownloadPlugin(ctx, vp2.Version().ID())
 	if err != nil {
 		return nil, err
 	}
-	tx.Commit()
 	return b, nil
 }
 

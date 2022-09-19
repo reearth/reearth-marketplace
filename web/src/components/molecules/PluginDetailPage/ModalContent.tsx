@@ -1,11 +1,13 @@
+import { useCallback, useState } from "react";
+
 import Col from "@marketplace/components/atoms/Col";
 import List from "@marketplace/components/atoms/List";
 import Loading from "@marketplace/components/atoms/Loading";
 import Modal from "@marketplace/components/atoms/Modal";
 import Row from "@marketplace/components/atoms/Row";
 import Select, { Option } from "@marketplace/components/atoms/Select";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { useCallback, useState } from "react";
 
 type Props = {
   visible: boolean;
@@ -31,6 +33,7 @@ const ModalContent: React.FC<Props> = ({
   onCancel,
   onOpenPluginInReearth,
 }) => {
+  const t = useT();
   const [workspaceId, selectWorkspace] = useState<string>("");
   const [projectId, selectProject] = useState<string>("");
 
@@ -51,10 +54,10 @@ const ModalContent: React.FC<Props> = ({
       title={
         <>
           <Row justify="center" style={{ margin: "24px 0" }}>
-            Choose one project to open this plugin
+            {t("Choose one project to open this plugin")}
           </Row>
           <Row gutter={20} align="middle">
-            <Col>Workspace: </Col>
+            <Col>{t("Workspace")}:</Col>
             <Col>
               <Select
                 loading={!workspaceOptions}
@@ -70,7 +73,7 @@ const ModalContent: React.FC<Props> = ({
       width="756px"
       visible={visible}
       onCancel={handleCancel}
-      okText="Choose"
+      okText={t("Choose")}
       okButtonProps={{ disabled: !workspaceId }}
       bodyStyle={{ padding: "20px 32px", maxHeight: "582px", overflow: "scroll" }}
       onOk={() => onOpenPluginInReearth?.(workspaceId, projectId)}>

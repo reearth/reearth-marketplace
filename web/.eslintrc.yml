@@ -1,10 +1,62 @@
 extends:
   - reearth
 root: true
+rules:
+  import/order:
+    - warn
+    - pathGroups:
+      - pattern: '@marketplace/**'
+        group: external
+        position: after
+      pathGroupsExcludedImportTypes: ["builtin"]
+      newlines-between: always
+      alphabetize:
+        order: asc
+        caseInsensitive: true
 overrides:
   - files:
-      - .storybook/main.js
-      - TEMP.js
+      - i18next-parser.config.js
+    extends:
+      - reearth/commonjs
+  - files:
+      - src/gql/queries/*.ts
+      - src/gql/fragments/*.ts
+    plugins:
+      - graphql
+    rules:
+      graphql/capitalized-type-name:
+        - error
+        - env: apollo
+      graphql/no-deprecated-fields:
+        - error
+        - env: apollo
+      graphql/required-fields:
+        - error
+        - env: apollo
+          requiredFields:
+            - id
+  - files:
+      - src/**/*.graphql
+    plugins:
+      - graphql
+    rules:
+      graphql/template-strings:
+        - error
+        - env: literal
+      graphql/capitalized-type-name:
+        - error
+        - env: literal
+      graphql/no-deprecated-fields:
+        - error
+        - env: literal
+      graphql/required-fields:
+        - error
+        - env: literal
+          requiredFields:
+            - id
+  - files:
+        - .storybook/main.js
+        - TEMP.js
     extends:
       - reearth/commonjs
       - reearth/node
