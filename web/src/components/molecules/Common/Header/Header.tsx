@@ -105,14 +105,14 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
               <Icon icon="" />
             </Space>
           </Button> */}
-            <Dropdown overlay={langMenu} trigger={["click"]} placement="bottomCenter">
+            <Dropdown overlay={langMenu} trigger={["click"]} placement="bottom">
               <Space size="small" style={{ cursor: "pointer" }}>
                 {DisplayLang[lang]}
                 <Icon icon="downFilled" />
               </Space>
             </Dropdown>
             {isLoggedIn ? (
-              <Dropdown overlay={userMenu} trigger={["click"]} placement="bottomCenter">
+              <Dropdown overlay={userMenu} trigger={["click"]} placement="bottom">
                 <UserWrapper>
                   <NameIcon>{username?.charAt(0).toUpperCase()}</NameIcon>
                   <UserName>{username}</UserName>
