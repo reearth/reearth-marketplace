@@ -32,8 +32,8 @@ type Plugin interface {
 	ImageURL(ctx context.Context, name string) string
 	List(ctx context.Context, uid *id.UserID, param ListPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error)
 	Liked(ctx context.Context, user *user.User, id id.PluginID) (bool, error)
-	Download(ctx context.Context, id id.PluginID, version string) ([]byte, error)
-	DownloadLatest(ctx context.Context, id id.PluginID) ([]byte, error)
+	Download(ctx context.Context, id id.PluginID, version string) (io.ReadCloser, error)
+	IncreaseDownloadCount(ctx context.Context, id id.PluginID, version string) error
 }
 
 type UpdatePluginParam struct {
