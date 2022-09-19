@@ -19,8 +19,7 @@ export type Props = {
   version: string;
   uploadedImages: any[];
   githubUrl?: string;
-  isSaveLoading: boolean;
-  isPublishLoading: boolean;
+  isLoading: boolean;
   handleChangeGithubUrl: (url: string) => void;
   handleParsePlugin: (file?: FileUploadType) => Promise<void>;
   onPluginSave: () => void;
@@ -34,8 +33,7 @@ const PluginUpload: React.FC<Props> = ({
   description,
   uploadedImages,
   githubUrl,
-  isSaveLoading,
-  isPublishLoading,
+  isLoading,
   handleChangeGithubUrl,
   handleParsePlugin,
   onPluginSave,
@@ -64,7 +62,7 @@ const PluginUpload: React.FC<Props> = ({
                 type="default"
                 size="large"
                 onClick={onPluginSave}
-                loading={isSaveLoading}
+                loading={isLoading}
                 disabled={currentTab !== 2}>
                 {t("Save")}
               </Button>
@@ -72,7 +70,7 @@ const PluginUpload: React.FC<Props> = ({
                 type="primary"
                 size="large"
                 onClick={handleClickPublish}
-                loading={isPublishLoading}
+                loading={isLoading}
                 disabled={currentTab !== 2}>
                 {t("Save & Publish")}
               </Button>

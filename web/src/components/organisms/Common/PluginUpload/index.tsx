@@ -13,26 +13,25 @@ export type Props = {
 
 const AddNewPlugin: React.FC<Props> = ({ newPlugin }) => {
   const t = useT();
+
   const {
     parsedPlugin,
+    isLoading,
     handleParsePluginMutation,
     handleCreatePluginMutation,
     handleUpdatePluginMutation,
   } = useHooks();
 
-  const [isSaveLoading, toggleLoadingSave] = useState<boolean>(false);
-  const [isPublishLoading, toggleLoadingPublish] = useState<boolean>(false);
   const [githubUrl, changeGithubUrl] = useState<string | undefined>(undefined);
   const [uploadedFile, uploadZip] = useState<FileUploadType>();
   // TODO: use Antd's file upload after backend ready
   const [uploadedImages, uploadImages] = useState<any[]>([]);
 
-  const handleUploadImages = (images: (RcFile | undefined)[]) => {
+  const handleUploadImages = useCallback((images: (RcFile | undefined)[]) => {
     uploadImages(images);
-  };
+  }, []);
 
   const handlePluginCreation = useCallback(async () => {
-    toggleLoadingSave(true);
     if (uploadedFile) {
       await handleCreatePluginMutation({
         file: uploadedFile,
@@ -50,7 +49,6 @@ const AddNewPlugin: React.FC<Props> = ({ newPlugin }) => {
         images: uploadedImages,
       });
     }
-    toggleLoadingSave(false);
   }, [
     githubUrl,
     parsedPlugin,
@@ -61,51 +59,59 @@ const AddNewPlugin: React.FC<Props> = ({ newPlugin }) => {
   ]);
 
   const handlePluginUpdate = useCallback(async () => {
-    toggleLoadingSave(true);
     if (parsedPlugin) {
       await handleUpdatePluginMutation({
         id: parsedPlugin.id,
         images: uploadedImages,
       });
     }
-    toggleLoadingSave(false);
   }, [parsedPlugin, uploadedImages, handleUpdatePluginMutation]);
 
-  const handleClickPublish = async () => {
-    toggleLoadingSave(true);
-    toggleLoadingPublish(true);
-    if (newPlugin) {
-      await handlePluginCreation();
-    }
+  const handleClickPublish = useCallback(async () => {
     if (parsedPlugin) {
+      if (newPlugin) {
+        await handlePluginCreation();
+      }
       await handleUpdatePluginMutation({
         id: parsedPlugin.id,
         active: true,
       });
     }
-    toggleLoadingSave(false);
-    toggleLoadingPublish(false);
-  };
+  }, [newPlugin, parsedPlugin, handlePluginCreation, handleUpdatePluginMutation]);
 
   // When Github Url Input
-  const handleChangeGithubUrl = async (url: string) => {
-    changeGithubUrl(url);
-    await handleParsePluginMutation({
-      file: undefined,
-      repo: url,
-    }).catch(
-      Message.error(t("Something might be wrong with your URL. Please check and try again.")),
-    );
-  };
+  const handleChangeGithubUrl = useCallback(
+    async (url: string) => {
+      changeGithubUrl(url);
+      await handleParsePluginMutation({
+        file: undefined,
+        repo: url,
+      }).catch(
+        Message.error(t("Something might be wrong with your URL. Please check and try again.")),
+      );
+    },
+    [t, handleParsePluginMutation],
+  );
 
   // When Zip File Uploaded
-  const handleParsePlugin = async (file?: FileUploadType) => {
-    uploadZip(file);
-    await handleParsePluginMutation({
-      file: file,
-      repo: undefined,
-    });
-  };
+  const handleParsePlugin = useCallback(
+    async (file?: FileUploadType) => {
+      uploadZip(file);
+      await handleParsePluginMutation({
+        file: file,
+        repo: undefined,
+      });
+    },
+    [handleParsePluginMutation],
+  );
+
+  const handlePluginSave = useCallback(async () => {
+    if (newPlugin) {
+      await handlePluginCreation();
+    } else {
+      await handlePluginUpdate();
+    }
+  }, [newPlugin, handlePluginCreation, handlePluginUpdate]);
 
   return (
     <AddNewPluginPage
@@ -114,11 +120,10 @@ const AddNewPlugin: React.FC<Props> = ({ newPlugin }) => {
       description={parsedPlugin ? parsedPlugin.description : ""}
       uploadedImages={uploadedImages}
       githubUrl={githubUrl}
-      isSaveLoading={isSaveLoading}
-      isPublishLoading={isPublishLoading}
+      isLoading={isLoading}
       handleChangeGithubUrl={handleChangeGithubUrl}
       handleParsePlugin={handleParsePlugin}
-      onPluginSave={newPlugin ? handlePluginCreation : handlePluginUpdate}
+      onPluginSave={handlePluginSave}
       handleClickPublish={handleClickPublish}
       handleUploadImages={handleUploadImages}
     />

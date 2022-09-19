@@ -1,4 +1,5 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Message from "@marketplace/components/atoms/Message";
 import type { FileUploadType } from "@marketplace/components/molecules/Common/PluginUpload/PackageArea";
@@ -11,20 +12,56 @@ import { useT } from "@marketplace/i18n";
 
 export default () => {
   const t = useT();
+  const navigate = useNavigate();
+
+  const [isLoading, toggleLoading] = useState<boolean>(false);
+
   const [parsePluginMutation, { data: parsedData }] = useParsePluginMutation();
   const [createPluginMutation] = useCreatePluginMutation();
   const [updatePluginMutation] = useUpdatePluginMutation();
 
   const handleCreatePluginMutation = useCallback(
     async (data: { file?: FileUploadType; repo?: string }) => {
+      toggleLoading(true);
       await createPluginMutation({
         variables: {
           file: data.file,
           repo: data.repo,
         },
+        refetchQueries: ["GetMe"],
       });
+      toggleLoading(false);
     },
     [createPluginMutation],
+  );
+
+  const handleUpdatePluginMutation = useCallback(
+    async (data: { id: string; images?: string[]; active?: boolean }) => {
+      toggleLoading(true);
+      await updatePluginMutation({
+        variables: {
+          pluginId: data.id,
+          active: data.active,
+          images: data.images,
+        },
+        refetchQueries: ["GetMe"],
+        onCompleted: () => {
+          if (data.active !== undefined) {
+            if (data.active) {
+              Message.success(t("Your file was successfully published!"));
+            } else {
+              Message.success(t("Your file was successfully unpublished!"));
+            }
+          } else {
+            Message.success(t("Your file was successfully updated!"));
+          }
+          navigate("/myplugins");
+        },
+        onError: () => Message.error(t("Something went wrong with the update.")),
+      });
+      toggleLoading(false);
+    },
+    [t, navigate, updatePluginMutation],
   );
 
   const handleParsePluginMutation = useCallback(
@@ -37,31 +74,6 @@ export default () => {
       });
     },
     [parsePluginMutation],
-  );
-
-  const handleUpdatePluginMutation = useCallback(
-    async (data: { id: string; images?: string[]; active?: boolean }) => {
-      await updatePluginMutation({
-        variables: {
-          pluginId: data.id,
-          active: data.active,
-          images: data.images,
-        },
-        onCompleted: () => {
-          if (data.active !== undefined) {
-            if (data.active) {
-              Message.success(t("Your file was successfully published!"));
-            } else {
-              Message.success(t("Your file was successfully unpublished!"));
-            }
-          } else {
-            Message.success(t("Your file was successfully updated!"));
-          }
-        },
-        onError: () => Message.error(t("Something went wrong with the update.")),
-      });
-    },
-    [t, updatePluginMutation],
   );
 
   const parsedPlugin = useMemo(
@@ -85,6 +97,7 @@ export default () => {
 
   return {
     parsedPlugin,
+    isLoading,
     handleParsePluginMutation,
     handleCreatePluginMutation,
     handleUpdatePluginMutation,

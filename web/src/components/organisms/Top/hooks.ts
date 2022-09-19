@@ -1,20 +1,15 @@
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 
 import { useAuth } from "@marketplace/auth/hooks";
 import { type Plugin } from "@marketplace/components/molecules/TopPage";
-import {
-  useSearchPluginQuery,
-  useLikePluginMutation,
-  useUnlikePluginMutation,
-  PluginSort,
-} from "@marketplace/gql";
+import { useSearchPluginQuery, PluginSort } from "@marketplace/gql";
 
 export { PluginSort };
 
 export default (searchText?: string, sort?: PluginSort, liked?: boolean, accessToken?: string) => {
   const { isAuthenticated } = useAuth(accessToken);
 
-  const { data, refetch } = useSearchPluginQuery({
+  const { data } = useSearchPluginQuery({
     variables: {
       first: 50,
       keyword: searchText,
@@ -26,32 +21,6 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean, accessT
       // after: "",
     },
   });
-
-  const [likePlugin] = useLikePluginMutation();
-  const [unlikePlugin] = useUnlikePluginMutation();
-  const onLike = useCallback(
-    async (id: string) => {
-      await likePlugin({
-        variables: {
-          id,
-        },
-      });
-      await refetch();
-    },
-    [likePlugin, refetch],
-  );
-
-  const onUnlike = useCallback(
-    async (id: string) => {
-      await unlikePlugin({
-        variables: {
-          id,
-        },
-      });
-      await refetch();
-    },
-    [unlikePlugin, refetch],
-  );
 
   const plugins = useMemo(
     () =>
@@ -76,7 +45,5 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean, accessT
   return {
     plugins,
     isAuthenticated,
-    onLike,
-    onUnlike,
   };
 };
