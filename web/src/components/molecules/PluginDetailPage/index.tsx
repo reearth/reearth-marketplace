@@ -200,7 +200,7 @@ const PluginDetailPage: React.FC<Props> = ({
                   <Col>v{version}</Col>
                 </PluginInfo>
                 <PluginInfo align="middle" justify="space-between">
-                  <Col>{t("Update date")}</Col>
+                  <Col>{t("Updated Date")}</Col>
                   <Col>
                     {date ? `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}` : ""}
                   </Col>

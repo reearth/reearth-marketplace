@@ -56,7 +56,7 @@ const Footer: React.FC<Props> = () => {
                 {t("Github")}
               </SectionContent>
               <SectionContent href="https://github.com/reearth/reearth/projects/1" target="_blank">
-                {t("Road Maps")}
+                {t("Roadmap")}
               </SectionContent>
               <SectionContent
                 href="https://github.com/reearth/reearth/blob/main/CHANGELOG.md"

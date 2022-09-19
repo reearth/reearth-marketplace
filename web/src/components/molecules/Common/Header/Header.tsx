@@ -61,7 +61,7 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
       theme="dark"
       items={[
         {
-          label: t("Profile"),
+          label: t("My Page"),
           key: 1,
           icon: <Icon icon="user" style={{ paddingRight: "5px" }} />,
           onClick: () => navigate(`/mypage`),
