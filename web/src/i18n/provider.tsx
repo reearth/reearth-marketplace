@@ -1,8 +1,9 @@
+import { ReactNode, useEffect } from "react";
+import { I18nextProvider } from "react-i18next";
+
 import { useAuth } from "@marketplace/auth";
 import { useGetMeQuery } from "@marketplace/gql";
 import { useCurrentLang } from "@marketplace/state";
-import { ReactNode, useEffect } from "react";
-import { I18nextProvider } from "react-i18next";
 
 import i18n from "./i18n";
 

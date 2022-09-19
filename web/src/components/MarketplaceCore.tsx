@@ -1,3 +1,6 @@
+import { useCallback } from "react";
+import { BrowserRouter as Router, useNavigate, useRoutes } from "react-router-dom";
+
 import CoreWrapper from "@marketplace/components/molecules/Common/CoreWrapper";
 import Footer from "@marketplace/components/molecules/Common/Footer";
 import Header from "@marketplace/components/organisms/Common/Header";
@@ -10,8 +13,6 @@ import RootPage from "@marketplace/components/pages/Root";
 import UpdatePlugin from "@marketplace/components/pages/UpdatePlugin";
 import UserPage from "@marketplace/components/pages/User";
 import { Provider as ThemeProvider } from "@marketplace/theme";
-import { useCallback } from "react";
-import { BrowserRouter as Router, useNavigate, useRoutes } from "react-router-dom";
 
 const AppRoutes = () => {
   const navigate = useNavigate();

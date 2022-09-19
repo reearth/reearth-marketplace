@@ -1,8 +1,9 @@
-import { styled } from "@marketplace/theme";
 import { useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 import tinycolor from "tinycolor2";
+
+import { styled } from "@marketplace/theme";
 
 import { Typography, typographyStyles } from "./typography";
 

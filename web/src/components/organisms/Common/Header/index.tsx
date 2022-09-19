@@ -1,4 +1,4 @@
-import HeaderOrganism from "@marketplace/components/molecules/Common/Header";
+import HeaderOrganism from "@marketplace/components/molecules/Common/Header/Header";
 
 import useHooks from "./hooks";
 

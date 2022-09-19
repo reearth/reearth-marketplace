@@ -1,5 +1,6 @@
-import { styled } from "@marketplace/theme";
 import { ComponentType } from "react";
+
+import { styled } from "@marketplace/theme";
 
 export type Props = {
   className?: string;

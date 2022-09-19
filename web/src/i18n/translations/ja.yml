@@ -2,23 +2,8 @@ Re:Earth Plugin Marketplace: Re:Earthプラグインマーケットプレイス
 Make Re:Earth the way you want it: あなたのRe:Earthをもっと自由に
 Update: アップデート
 Uninstall: アンインストール
-You successfully updated your plugin.: プラグインのアップデートが完了しました。
+Your plugin was successfully updated!: ''
 Success: ''
-Plugins List: プラグイン一覧
-New Plugin: 新しいプラグイン
-Save: 保存
-Publish: 公開
-Details Setting: 詳細設定
-Upload from local: PCからアップロード
-GitHub repository: GitHubレポジトリ
-File uploaded successfully.: ファイルのアップロードされました。
-File upload failed.: ファイルのアップロードに失敗しました。
-Click or drag file to this area to upload: ''
-Please set your repository as public respository.: ''
-Plugin Name: プラグイン名
-Version: バージョン
-Images: イメージ
-Upload Image: イメージをアップロード
 Community: コミュニティ
 Discord: ''
 Discussion: ''
@@ -51,14 +36,35 @@ Profile: プロファイル
 My Plugins: マイプラグイン
 Log Out: ログアウト
 Re:Earth Marketplace: Re:Earthマーケットプレイス
+Upload new plugin: ''
 Log in: ログイン
+Plugins List: プラグイン一覧
+Update Plugin: ''
+New Plugin: 新しいプラグイン
+Save: 保存
+Save & Publish: 保存と公開
+File uploaded successfully.: ファイルのアップロードされました。
+File upload failed.: ファイルのアップロードに失敗しました。
+Details Setting: 詳細設定
+Upload from local: PCからアップロード
+GitHub repository: GitHubレポジトリ
+Click or drag file to this area to upload: ''
+Please set your repository as public respository.: ''
+Image uploaded successfully.: ''
+Image upload failed.: ''
+Back: ''
+Plugin Name: プラグイン名
+Version: バージョン
+Images: イメージ
+Upload Image: イメージをアップロード
 Status: ステータス
 Published: 公開済み
 Not Published: 非公開
 Updated Date: アップデート日
+Action: アクション
 Update this plugin: アップデートする
 Top: トップ
-Readme: リードミー
+README: ''
 Already installed: インストールされています
 Install: インストール
 Open Plugin in your project: プロジェクトで開く
@@ -79,12 +85,9 @@ Published Desc: ''
 search text: 検索
 Order: 順番
 Liked: お気に入り
-Your file was successfully saved!: ''
-Something went wrong during the save.: ''
-Your file was successfully loaded!: ''
-Something is wrong with the file you tried to upload.: ''
-Your file was successfully updated!: ''
-Something went wrong with the update.: ''
+Your plugin was successfully published!: ''
+Your plugin was successfully unpublished!: ''
+Something went wrong with the update. Please try again.: ''
+The plugin you uploaded is different from the one you are trying to update.: ''
 Something might be wrong with your URL. Please check and try again.: ''
-Something might be wrong with your URl. Please check and try again.: ''
 Developer Registration: ''
