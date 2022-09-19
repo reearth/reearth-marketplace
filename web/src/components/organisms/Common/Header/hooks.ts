@@ -1,7 +1,8 @@
+import { useCallback, useMemo } from "react";
+
 import { useAuth } from "@marketplace/auth";
 import { useGetMeQuery, useUpdateMeMutation } from "@marketplace/gql";
 import { useCurrentLang } from "@marketplace/state";
-import { useCallback, useMemo } from "react";
 
 export type Lang = "en" | "ja" | "und";
 
@@ -29,7 +30,7 @@ export default () => {
         setLang(lang);
       }
     },
-    [isAuthenticated, setLang],
+    [isAuthenticated, setLang, updateMeMutation],
   );
 
   const username = useMemo(() => data?.me.name, [data]);

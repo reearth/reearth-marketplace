@@ -398,14 +398,14 @@ export type PluginQueryVariables = Exact<{
 }>;
 
 
-export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' } | null };
+export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization', id: string } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User', id: string } | null };
 
 export type PluginsQueryVariables = Exact<{
   ids: Array<Scalars['ID']> | Scalars['ID'];
 }>;
 
 
-export type PluginsQuery = { __typename?: 'Query', nodes: Array<{ __typename?: 'Organization' } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User' }> };
+export type PluginsQuery = { __typename?: 'Query', nodes: Array<{ __typename?: 'Organization', id: string } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User', id: string }> };
 
 export type SearchPluginQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -496,6 +496,7 @@ export type UpdateMeMutation = { __typename?: 'Mutation', updateMe: { __typename
 export const PluginDocument = gql`
     query Plugin($id: ID!) {
   node(id: $id, type: PLUGIN) {
+    id
     ... on Plugin {
       id
       images
@@ -546,6 +547,7 @@ export type PluginQueryResult = Apollo.QueryResult<PluginQuery, PluginQueryVaria
 export const PluginsDocument = gql`
     query Plugins($ids: [ID!]!) {
   nodes(ids: $ids, type: PLUGIN) {
+    id
     ... on Plugin {
       id
       images

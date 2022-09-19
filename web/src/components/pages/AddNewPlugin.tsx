@@ -1,12 +1,12 @@
 import { AuthenticationRequiredPage } from "@marketplace/auth";
-import AddNewPluginOrg from "@marketplace/components/organisms/AddNewPlugin";
+import PluginEditing from "@marketplace/components/organisms/Common/PluginUpload";
 
 export type Props = {};
 
 const AddNewPlugin: React.FC<Props> = () => {
   return (
     <AuthenticationRequiredPage>
-      <AddNewPluginOrg />
+      <PluginEditing />
     </AuthenticationRequiredPage>
   );
 };

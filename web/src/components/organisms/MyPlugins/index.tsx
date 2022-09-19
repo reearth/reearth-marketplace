@@ -11,11 +11,9 @@ export type Plugin = {
 };
 export type Props = {};
 const MyPlugins: React.FC<Props> = () => {
-  const { plugins, onToggleActive } = useHooks();
-  const handlePublishClick = (id: string, active: boolean) => {
-    onToggleActive(id, !active);
-  };
-  return <MyPluginsPage plugins={plugins} handlePublishClick={handlePublishClick} />;
+  const { plugins, handleTogglePublish } = useHooks();
+
+  return <MyPluginsPage plugins={plugins} onPublish={handleTogglePublish} />;
 };
 
 export default MyPlugins;

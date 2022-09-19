@@ -1,8 +1,9 @@
+import { useCallback, useLayoutEffect, useState } from "react";
+
 import CoreWrapper from "@marketplace/components/molecules/Common/CoreWrapper";
 import PluginDetailPage from "@marketplace/components/pages/PluginDetail";
 import RootPage from "@marketplace/components/pages/Root";
 import { useT } from "@marketplace/i18n";
-import { useCallback, useLayoutEffect, useState } from "react";
 
 import SharedProviders from "../sharedProviders";
 
@@ -35,7 +36,7 @@ export default function LibraryExtension({
   const handleInstall = useCallback(
     (id: string) => {
       onInstall?.(id);
-      onNotificationChange?.("success", t("You successfully updated your plugin."), t("Success"));
+      onNotificationChange?.("success", t("Your plugin was successfully updated!"), t("Success"));
     },
     [t, onInstall, onNotificationChange],
   );
