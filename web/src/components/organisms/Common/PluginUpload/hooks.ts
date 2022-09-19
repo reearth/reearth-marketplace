@@ -78,7 +78,7 @@ export default ({ pluginId }: { pluginId?: string }) => {
 
   const parsedPlugin = useMemo(() => {
     if (parsedData?.parsePlugin.plugin.__typename === "Plugin") {
-      if (parsedData.parsePlugin.plugin.id === pluginId) {
+      if (!pluginId || parsedData.parsePlugin.plugin.id === pluginId) {
         return {
           id: parsedData.parsePlugin.plugin.id,
           name: parsedData.parsePlugin.plugin.name,
