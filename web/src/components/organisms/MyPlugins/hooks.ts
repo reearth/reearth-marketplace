@@ -15,7 +15,7 @@ export default (id?: string, active?: boolean) => {
     variables: { pluginId: id ? id : "", active: active },
   });
 
-  const onToggleActive = useCallback(
+  const handleTogglePublish = useCallback(
     async (id: string, active: boolean) => {
       await updatePlugin({
         variables: {
@@ -48,6 +48,6 @@ export default (id?: string, active?: boolean) => {
 
   return {
     plugins,
-    onToggleActive,
+    handleTogglePublish,
   };
 };

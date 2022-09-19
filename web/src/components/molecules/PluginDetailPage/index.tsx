@@ -122,7 +122,7 @@ const PluginDetailPage: React.FC<Props> = ({
                 </Carousel>
                 <PluginDocs>
                   <Tabs defaultActiveKey="1">
-                    <TabPane tab={t("Readme")} key="1">
+                    <TabPane tab={t("README")} key="1">
                       <Markdown>{readme}</Markdown>
                     </TabPane>
                     {/* TODO: after developing function for posting changelogs */}

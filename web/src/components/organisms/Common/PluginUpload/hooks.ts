@@ -48,16 +48,16 @@ export default ({ pluginId }: { pluginId?: string }) => {
         onCompleted: () => {
           if (data.active !== undefined) {
             if (data.active) {
-              Message.success(t("Your file was successfully published!"));
+              Message.success(t("Your plugin was successfully published!"));
             } else {
-              Message.success(t("Your file was successfully unpublished!"));
+              Message.success(t("Your plugin was successfully unpublished!"));
             }
           } else {
-            Message.success(t("Your file was successfully updated!"));
+            Message.success(t("Your plugin was successfully updated!"));
           }
           navigate("/myplugins");
         },
-        onError: () => Message.error(t("Something went wrong with the update.")),
+        onError: () => Message.error(t("Something went wrong with the update. Please try again.")),
       });
       toggleLoading(false);
     },

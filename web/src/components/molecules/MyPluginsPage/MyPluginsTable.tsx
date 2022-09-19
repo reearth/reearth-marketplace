@@ -15,11 +15,11 @@ import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
 export type Props = {
-  data?: Plugin[];
-  handlePublishClick: (id: string, active: boolean) => void;
+  plugins?: Plugin[];
+  onPublish: (id: string, active: boolean) => void;
 };
 
-const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
+const MyPluginsTable: React.FC<Props> = ({ plugins, onPublish }) => {
   const t = useT();
   const navigate = useNavigate();
 
@@ -41,7 +41,7 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
               <Switch
                 defaultChecked={active}
                 checked={active}
-                onClick={() => handlePublishClick(plugin.id, active)}
+                onClick={() => onPublish(plugin.id, !active)}
               />
             </Col>
             <Col>{active ? t("Published") : t("Not Published")}</Col>
@@ -64,7 +64,7 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
       },
     },
     {
-      title: "Action",
+      title: t("Action"),
       key: "action",
       dataIndex: "id",
       render: id => {
@@ -104,8 +104,8 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
     <Wrapper>
       <Table
         columns={columns}
-        dataSource={data}
-        loading={!data && { indicator: <Loading size="md" height={200} /> }}
+        dataSource={plugins}
+        loading={!plugins && { indicator: <Loading size="md" height={200} /> }}
       />
     </Wrapper>
   );
@@ -113,6 +113,10 @@ const MyPluginsTable: React.FC<Props> = ({ data, handlePublishClick }) => {
 
 const Wrapper = styled.div`
   width: 100%;
+
+  .ant-table-thead > tr > th {
+    background: #f0f0f0;
+  }
 `;
 
 const BoldTitle = styled.p`
