@@ -8,7 +8,7 @@ const TitleBar: React.FC<Props> = () => {
   return (
     <Wrapper>
       <Contents>
-        <Title>{t("Re:Earth Plugin Marketplace")}</Title>
+        <Title>{t("Re:Earth Marketplace")}</Title>
         <Desc>{t("Make Re:Earth the way you want it")}</Desc>
       </Contents>
     </Wrapper>
