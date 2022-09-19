@@ -101,10 +101,10 @@ const PluginUpload: React.FC<Props> = ({
           <PackageArea
             uploadedFile={uploadedFile}
             githubUrl={githubUrl}
-            handleChangeGithubUrl={handleChangeGithubUrl}
+            onChangeGithubUrl={handleChangeGithubUrl}
             onPageChange={pluginName !== "" ? handlePageChange : undefined}
             onRemove={handleRemove}
-            handleParsePlugin={handleParsePlugin}
+            onParsePlugin={handleParsePlugin}
           />
         )}
         {currentTab === 2 && (

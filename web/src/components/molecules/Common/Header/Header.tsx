@@ -89,7 +89,7 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
           <Title onClick={() => navigate("/")}>{t("Re:Earth Marketplace")}</Title>
         </Col>
         <Col>
-          <Space size="middle">
+          <Space size="large">
             {isLoggedIn && (
               <Tooltip placement="bottom" title={t("Upload new plugin")} mouseEnterDelay={0.5}>
                 <div
@@ -99,25 +99,19 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
                 </div>
               </Tooltip>
             )}
-            {/* TODO: Dots Nine is needed? */}
-            {/* <Button>
-            <Space size="small">
-              <Icon icon="" />
-            </Space>
-          </Button> */}
             <Dropdown overlay={langMenu} trigger={["click"]} placement="bottom">
-              <Space size="small" style={{ cursor: "pointer" }}>
-                {DisplayLang[lang]}
-                <Icon icon="downFilled" />
-              </Space>
+              <DropdownContents>
+                <Lang>{DisplayLang[lang]}</Lang>
+                <StyledIcon icon="downFilled" />
+              </DropdownContents>
             </Dropdown>
             {isLoggedIn ? (
               <Dropdown overlay={userMenu} trigger={["click"]} placement="bottom">
-                <UserWrapper>
+                <DropdownContents>
                   <NameIcon>{username?.charAt(0).toUpperCase()}</NameIcon>
                   <UserName>{username}</UserName>
-                  <Icon icon="downFilled" />
-                </UserWrapper>
+                  <StyledIcon icon="downFilled" />
+                </DropdownContents>
               </Dropdown>
             ) : (
               <LoginWrapper onClick={login}>{t("Log in")}</LoginWrapper>
@@ -142,6 +136,12 @@ const Title = styled.h1`
   cursor: pointer;
 `;
 
+const DropdownContents = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+`;
+
 const NameIcon = styled.div`
   height: 24px;
   width: 24px;
@@ -152,20 +152,23 @@ const NameIcon = styled.div`
   align-items: center;
 `;
 
-const UserWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
+const Lang = styled.div`
+  margin-right: 10px;
 `;
 
 const UserName = styled.p`
   margin: 0 10px;
+  color: #dbdbdb;
 `;
 
 const LoginWrapper = styled.div`
   padding: 4px;
   display: flex;
   cursor: pointer;
+`;
+
+const StyledIcon = styled(Icon)`
+  color: #8c8c8c;
 `;
 
 export default Header;

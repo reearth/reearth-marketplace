@@ -26,8 +26,8 @@ export type Props = {
   githubUrl?: string;
   onPageChange?: () => void;
   onRemove?: () => void;
-  handleParsePlugin: (file?: RcFile) => Promise<void>;
-  handleChangeGithubUrl: (url: string) => void;
+  onParsePlugin: (file?: RcFile) => Promise<void>;
+  onChangeGithubUrl: (url: string) => void;
 };
 
 const PackageArea: React.FC<Props> = ({
@@ -35,8 +35,8 @@ const PackageArea: React.FC<Props> = ({
   githubUrl,
   onPageChange,
   onRemove,
-  handleParsePlugin,
-  handleChangeGithubUrl,
+  onParsePlugin,
+  onChangeGithubUrl,
 }) => {
   const t = useT();
 
@@ -56,7 +56,7 @@ const PackageArea: React.FC<Props> = ({
     customRequest: async options => {
       const { onSuccess, onError, file } = options;
       try {
-        await handleParsePlugin(file as RcFile);
+        await onParsePlugin(file as RcFile);
         onSuccess?.("Ok");
       } catch (err: any) {
         onError?.(new Error(err));
@@ -111,7 +111,7 @@ const PackageArea: React.FC<Props> = ({
               placeholder="github.com/xxx/xxx"
               value={githubUrl}
               onChange={e => {
-                handleChangeGithubUrl(e.target.value);
+                onChangeGithubUrl(e.target.value);
               }}
             />
             <p>{t("Please set your repository as public respository.")}</p>
