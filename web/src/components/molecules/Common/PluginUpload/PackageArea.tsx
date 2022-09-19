@@ -8,21 +8,33 @@ import Message from "@marketplace/components/atoms/Message";
 import Radio, { RadioChangeEvent } from "@marketplace/components/atoms/Radio";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
-import { Dragger, RcFile, UploadProps } from "@marketplace/components/atoms/Upload";
+import {
+  Dragger,
+  RcFile,
+  UploadProps,
+  UploadFile as UploadFileType,
+} from "@marketplace/components/atoms/Upload";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
 export type FileUploadType = string | RcFile | Blob;
 
+export type UploadFile = UploadFileType;
+
 export type Props = {
+  uploadedFile?: RcFile;
   githubUrl?: string;
   onPageChange?: () => void;
-  handleParsePlugin: (file?: FileUploadType) => Promise<void>;
+  onRemove?: () => void;
+  handleParsePlugin: (file?: RcFile) => Promise<void>;
   handleChangeGithubUrl: (url: string) => void;
 };
+
 const PackageArea: React.FC<Props> = ({
+  uploadedFile,
   githubUrl,
   onPageChange,
+  onRemove,
   handleParsePlugin,
   handleChangeGithubUrl,
 }) => {
@@ -44,7 +56,7 @@ const PackageArea: React.FC<Props> = ({
     customRequest: async options => {
       const { onSuccess, onError, file } = options;
       try {
-        await handleParsePlugin(file);
+        await handleParsePlugin(file as RcFile);
         onSuccess?.("Ok");
       } catch (err: any) {
         onError?.(new Error(err));
@@ -58,8 +70,9 @@ const PackageArea: React.FC<Props> = ({
         Message.error(`${info.file.name} ${t("File upload failed.")}`);
       }
     },
-    // To do: remove parsed plugin details onRemove
-    // onRemove() {},
+    onRemove() {
+      onRemove?.();
+    },
   };
 
   return (
@@ -83,7 +96,10 @@ const PackageArea: React.FC<Props> = ({
         </Row>
         {currentRadio === "Upload from local" ? (
           //   TODO: itemRenderのみを表示させて、DragDropエリアを消す方法を探す
-          <Dragger {...uploadProps} style={{ border: "1px dashed" }}>
+          <Dragger
+            {...uploadProps}
+            style={{ border: "1px dashed" }}
+            defaultFileList={uploadedFile ? [uploadedFile] : undefined}>
             <DraggerContents>
               <Icon icon="inbox" style={{ fontSize: "48px" }} />
               <p className="ant-upload-hint">{t("Click or drag file to this area to upload")}</p>
