@@ -16,8 +16,12 @@ export default function PluginInstalledList({
   installedPlugins?: {
     id: string;
     version: string;
+    title?: string;
+    author?: string;
+    icon?: string;
+    readme?: string;
   }[];
-  onInstall?: (pluginId: string) => void;
+  onInstall?: (pluginId: string | undefined, oldPluginId: string) => void;
   onUninstall?: (pluginId: string) => void;
 }) {
   return (
