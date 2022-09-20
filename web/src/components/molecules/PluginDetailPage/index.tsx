@@ -24,7 +24,7 @@ export type Props = {
     id: string;
     name: string;
     cover: string;
-    author: string;
+    publisher: string;
     like: number;
     images: string[];
     description: string;
@@ -56,7 +56,7 @@ const PluginDetailPage: React.FC<Props> = ({
     id,
     name: pluginName,
     version,
-    author,
+    publisher,
     like: likes,
     liked: isLiked,
     description,
@@ -197,7 +197,7 @@ const PluginDetailPage: React.FC<Props> = ({
                 </Description>
                 <PluginInfo align="middle" justify="space-between">
                   <Col>{t("Developer")}</Col>
-                  <Col>{author}</Col>
+                  <Col>{publisher}</Col>
                 </PluginInfo>
                 <PluginInfo align="middle" justify="space-between">
                   <Col>{t("Version")}</Col>
