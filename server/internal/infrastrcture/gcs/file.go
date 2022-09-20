@@ -82,24 +82,23 @@ func (f *fileRepo) UploadImage(ctx context.Context, image io.ReadSeeker) (string
 	if err != nil {
 		return "", err
 	}
+
 	content, err := io.ReadAll(image) // TODO: size limit
 	if err != nil {
 		return "", err
 	}
-	imageType, _ := filetype.Image(content)
-	extension := ""
-	switch imageType {
-	case matchers.TypePng:
-		extension = ".png"
-	case matchers.TypeJpeg:
-		extension = ".jpeg"
-	default:
-		return "", errors.New("unsupported format")
+
+	extension, err := imageExtension(content)
+	if err != nil {
+		return "", err
 	}
+
+	bucket := client.Bucket(f.assetsBucketName)
+
 	digest := sha256.Sum256(content)
 	hexDigest := hex.EncodeToString(digest[:])
-	bucket := client.Bucket(f.assetsBucketName)
 	name := path.Join(gcsImagesBasePath, hexDigest+extension)
+
 	object := bucket.Object(name)
 	if err := object.Delete(ctx); err != nil && !errors.Is(err, storage.ErrObjectNotExist) {
 		return "", gateway.ErrFailedToUploadFile
@@ -117,4 +116,19 @@ func (f *fileRepo) UploadImage(ctx context.Context, image io.ReadSeeker) (string
 
 func (f *fileRepo) AssetsURL(ctx context.Context, name string) string {
 	return f.assetsBaseURL + name
+}
+
+func imageExtension(b []byte) (e string, err error) {
+	imageType, _ := filetype.Image(b)
+	switch imageType {
+	case matchers.TypePng:
+		e = ".png"
+	case matchers.TypeJpeg:
+		e = ".jpg"
+	case matchers.TypeWebp:
+		e = ".webp"
+	default:
+		err = errors.New("unsupported format")
+	}
+	return
 }
