@@ -69,6 +69,7 @@ const InnerWrapper = styled.div`
 const InfoWrapper = styled.div`
   display: flex;
   margin-right: 32px;
+  color: ${({ theme }) => theme.main.text};
 
   p {
     font-size: 16px;

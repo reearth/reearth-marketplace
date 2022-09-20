@@ -88,10 +88,15 @@ export default ({ pluginId }: { pluginId?: string }) => {
   useEffect(() => {
     setParsedPlugin(() => {
       if (parsedData?.parsePlugin.plugin.__typename === "Plugin") {
-        if (!pluginId || parsedData.parsePlugin.plugin.id === pluginId) {
+        if (pluginId && parsedData.parsePlugin.plugin.id !== pluginId) {
+          Message.error(
+            t("The plugin you uploaded is different from the one you are trying to update."),
+          );
+        } else {
           return {
             id: parsedData.parsePlugin.plugin.id,
             name: parsedData.parsePlugin.plugin.name,
+            author: parsedData.parsePlugin.plugin.author,
             description: parsedData.parsePlugin.plugin.description
               ? parsedData.parsePlugin.plugin.description
               : "",
@@ -100,10 +105,6 @@ export default ({ pluginId }: { pluginId?: string }) => {
               ? parsedData.parsePlugin.plugin.latestVersion?.version
               : "",
           };
-        } else {
-          Message.error(
-            t("The plugin you uploaded is different from the one you are trying to update."),
-          );
         }
       }
       return undefined;
