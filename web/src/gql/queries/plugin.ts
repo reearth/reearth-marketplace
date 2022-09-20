@@ -16,6 +16,7 @@ export const PLUGIN = gql`
         description
         liked
         updatedAt
+        active
         latestVersion {
           version
         }
@@ -188,6 +189,7 @@ export const UPDATE_PLUGIN_VERSION = gql`
     ) {
       plugin {
         id
+        name
         author
         description
         icon

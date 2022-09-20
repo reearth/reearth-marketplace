@@ -71,16 +71,16 @@ const MyPluginsTable: React.FC<Props> = ({ plugins, onPublish }) => {
       render: id => {
         return (
           <Row justify="space-around" style={{ maxWidth: "200px" }}>
-            {/* <Col>
+            <Col>
               <Popover content="Edit this plugin info">
                 <Button
                   type="link"
                   size="middle"
                   icon={<Icon icon="edit" />}
-                  onClick={() => navigate(`/myplugins/${id}/update`)}
+                  onClick={() => navigate(`/myplugins/${id}/edit`)}
                 />
               </Popover>
-            </Col> */}
+            </Col>
             <Col>
               <Popover content={t("Update this plugin")}>
                 <Button

@@ -24,6 +24,7 @@ export type UploadFile = UploadFileType;
 export type Props = {
   uploadedFile?: RcFile;
   githubUrl?: string;
+  pageChangeButton?: string;
   onPageChange?: () => void;
   onRemove?: () => void;
   onParsePlugin: (file?: RcFile) => Promise<void>;
@@ -33,6 +34,7 @@ export type Props = {
 const PackageArea: React.FC<Props> = ({
   uploadedFile,
   githubUrl,
+  pageChangeButton,
   onPageChange,
   onRemove,
   onParsePlugin,
@@ -81,7 +83,7 @@ const PackageArea: React.FC<Props> = ({
         <Row justify="end">
           <Col>
             <Button type="primary" onClick={onPageChange} disabled={!onPageChange}>
-              {t("Details Setting")}
+              {pageChangeButton}
               <Icon icon="arrowRight" />
             </Button>
           </Col>
