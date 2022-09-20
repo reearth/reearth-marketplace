@@ -22,8 +22,9 @@ export type Props = {
   githubUrl?: string;
   isLoading: boolean;
   handleChangeGithubUrl: (url: string) => void;
-  handleParsePlugin: (file?: FileUploadType) => Promise<void>;
+  onParsePlugin: (file?: FileUploadType) => Promise<void>;
   onPluginSave: () => void;
+  onRemove?: () => void;
   handleClickPublish: () => void;
   handleUploadImages: (images: (RcFile | undefined)[]) => void;
 };
@@ -37,17 +38,32 @@ const PluginUpload: React.FC<Props> = ({
   githubUrl,
   isLoading,
   handleChangeGithubUrl,
-  handleParsePlugin,
+  onParsePlugin,
   onPluginSave,
+  onRemove,
   handleClickPublish,
   handleUploadImages,
 }) => {
   const t = useT();
   const [currentTab, updateTab] = useState<1 | 2>(1);
+  const [uploadedFile, setUploadedFile] = useState<RcFile>();
 
   const handlePageChange = useCallback(() => {
     updateTab(currentTab === 1 ? 2 : 1);
   }, [currentTab]);
+
+  const handleRemove = useCallback(() => {
+    onRemove?.();
+    setUploadedFile(undefined);
+  }, [onRemove]);
+
+  const handleParsePlugin = useCallback(
+    async (file?: RcFile) => {
+      await onParsePlugin(file);
+      setUploadedFile(file);
+    },
+    [onParsePlugin],
+  );
 
   return (
     <Wrapper>
@@ -83,10 +99,12 @@ const PluginUpload: React.FC<Props> = ({
         </TopRow>
         {currentTab === 1 && (
           <PackageArea
+            uploadedFile={uploadedFile}
             githubUrl={githubUrl}
-            handleChangeGithubUrl={handleChangeGithubUrl}
+            onChangeGithubUrl={handleChangeGithubUrl}
             onPageChange={pluginName !== "" ? handlePageChange : undefined}
-            handleParsePlugin={handleParsePlugin}
+            onRemove={handleRemove}
+            onParsePlugin={handleParsePlugin}
           />
         )}
         {currentTab === 2 && (

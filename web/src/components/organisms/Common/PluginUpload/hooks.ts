@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Message from "@marketplace/components/atoms/Message";
@@ -10,11 +10,20 @@ import {
 } from "@marketplace/gql";
 import { useT } from "@marketplace/i18n";
 
+export type ParsedPlugin = {
+  id: string;
+  name: string;
+  description: string;
+  readme: string;
+  version: string;
+};
+
 export default ({ pluginId }: { pluginId?: string }) => {
   const t = useT();
   const navigate = useNavigate();
 
   const [isLoading, toggleLoading] = useState<boolean>(false);
+  const [parsedPlugin, setParsedPlugin] = useState<ParsedPlugin | undefined>();
 
   const [parsePluginMutation, { data: parsedData }] = useParsePluginMutation();
   const [createPluginMutation] = useCreatePluginMutation();
@@ -76,33 +85,40 @@ export default ({ pluginId }: { pluginId?: string }) => {
     [parsePluginMutation],
   );
 
-  const parsedPlugin = useMemo(() => {
-    if (parsedData?.parsePlugin.plugin.__typename === "Plugin") {
-      if (pluginId && parsedData.parsePlugin.plugin.id !== pluginId) {
-        Message.error(
-          t("The plugin you uploaded is different from the one you are trying to update."),
-        );
-      } else {
-        return {
-          id: parsedData.parsePlugin.plugin.id,
-          name: parsedData.parsePlugin.plugin.name,
-          author: parsedData.parsePlugin.plugin.author,
-          description: parsedData.parsePlugin.plugin.description
-            ? parsedData.parsePlugin.plugin.description
-            : "",
-          readme: parsedData.parsePlugin.plugin.readme,
-          version: parsedData.parsePlugin.plugin.latestVersion?.version
-            ? parsedData.parsePlugin.plugin.latestVersion?.version
-            : "",
-        };
+  useEffect(() => {
+    setParsedPlugin(() => {
+      if (parsedData?.parsePlugin.plugin.__typename === "Plugin") {
+        if (pluginId && parsedData.parsePlugin.plugin.id !== pluginId) {
+          Message.error(
+            t("The plugin you uploaded is different from the one you are trying to update."),
+          );
+        } else {
+          return {
+            id: parsedData.parsePlugin.plugin.id,
+            name: parsedData.parsePlugin.plugin.name,
+            author: parsedData.parsePlugin.plugin.author,
+            description: parsedData.parsePlugin.plugin.description
+              ? parsedData.parsePlugin.plugin.description
+              : "",
+            readme: parsedData.parsePlugin.plugin.readme,
+            version: parsedData.parsePlugin.plugin.latestVersion?.version
+              ? parsedData.parsePlugin.plugin.latestVersion?.version
+              : "",
+          };
+        }
       }
-    }
-    return undefined;
+      return undefined;
+    });
   }, [t, pluginId, parsedData?.parsePlugin.plugin]);
+
+  const handleClearParsedPlugin = useCallback(() => {
+    setParsedPlugin(undefined);
+  }, []);
 
   return {
     parsedPlugin,
     isLoading,
+    handleClearParsedPlugin,
     handleParsePluginMutation,
     handleCreatePluginMutation,
     handleUpdatePluginMutation,
