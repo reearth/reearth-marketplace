@@ -31,7 +31,7 @@ const SettingArea: React.FC<Props> = ({
   const uploadProps: UploadProps = {
     name: "images",
     listType: "picture",
-    accept: "image/png, image/jpeg, image/jpg",
+    accept: "image/png, image/jpeg, image/jpg, image/webp",
     multiple: true,
     defaultFileList: uploadedImages,
     customRequest: async options => {
