@@ -8,6 +8,7 @@ import PluginAccordionItemHeader from "./header";
 
 export type PluginItem = {
   pluginId: string;
+  newPluginId?: string;
   title: string;
   author: string;
   installed: boolean;
@@ -21,8 +22,12 @@ export type PluginAccordionProps = {
   plugins?: {
     id: string;
     version: string;
+    title?: string;
+    author?: string;
+    icon?: string;
+    readme?: string;
   }[];
-  onInstall?: (pluginId: string) => void;
+  onInstall?: (pluginId: string | undefined, oldPluginId: string) => void;
   onUninstall?: (pluginId: string) => void;
 };
 
@@ -41,22 +46,26 @@ const PluginAccordion: React.FC<PluginAccordionProps> = ({
 
   const installedPlugins: PluginItem[] | undefined = useMemo(
     () =>
-      data?.nodes
-        .map((p): PluginItem | undefined =>
-          p && p.__typename === "Plugin"
-            ? {
-                pluginId: `${p.id}~${plugins?.find(q => q.id === p.id)?.version || "x.x.x"}`,
-                title: p.name,
-                author: p.author ?? "",
-                installed: true,
-                bodyMarkdown: p.readme,
-                thumbnailUrl: p.icon ?? "",
-                updatable:
-                  !!p.latestVersion?.version &&
-                  p.latestVersion.version !== plugins?.find(q => q.id === p.id)?.version,
-              }
-            : undefined,
-        )
+      plugins
+        ?.map((p): PluginItem | undefined => {
+          const pluginNode = data?.nodes.find(n => n?.__typename === "Plugin" && n.id === p.id);
+          const plugin = pluginNode?.__typename === "Plugin" ? pluginNode : undefined;
+          const updatable =
+            !!plugin?.latestVersion?.version && plugin.latestVersion.version !== p.version;
+
+          return {
+            pluginId: `${p.id}~${p.version}`,
+            newPluginId: updatable
+              ? `${plugin.id}~${plugin?.latestVersion?.version ?? ""}`
+              : undefined,
+            title: plugin?.name || p.title || p.id,
+            author: plugin?.author || p.author || "",
+            installed: true,
+            bodyMarkdown: plugin?.readme || p.readme,
+            thumbnailUrl: plugin?.icon || p.icon || "",
+            updatable,
+          };
+        })
         .filter((p): p is PluginItem => !!p),
     [data?.nodes, plugins],
   );
@@ -77,7 +86,7 @@ const PluginAccordion: React.FC<PluginAccordionProps> = ({
               author={p.author}
               installed={p.installed}
               updatable={p.updatable}
-              onInstall={() => onInstall?.(p.pluginId)}
+              onInstall={() => onInstall?.(p.newPluginId, p.pluginId)}
               onUninstall={() => onUninstall?.(p.pluginId)}
             />
           ),
