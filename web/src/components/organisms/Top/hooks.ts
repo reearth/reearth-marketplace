@@ -33,7 +33,7 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean, accessT
                 id: p.id,
                 name: p.name,
                 cover: p.images[0],
-                author: p.author ? p.author : "",
+                publisher: p.publisher.name,
                 like: p.like,
                 liked: p.liked,
                 downloads: p.downloads,

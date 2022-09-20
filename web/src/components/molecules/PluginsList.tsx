@@ -11,7 +11,7 @@ export type Plugin = {
   id: string;
   name: string;
   cover: string;
-  author: string;
+  publisher: string;
   like: number;
   liked?: boolean;
   downloads: number;
@@ -27,7 +27,7 @@ const PluginsList: React.FC<Props> = ({ plugins, loading, onPluginSelect }) => {
               <PluginsListCard
                 key={plugin.id}
                 name={plugin.name}
-                author={plugin.author}
+                publisher={plugin.publisher}
                 cover={plugin.cover}
                 likedCount={plugin.like}
                 personallyLiked={plugin.liked}
