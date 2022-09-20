@@ -15,24 +15,31 @@ func initEcho(cfg *ServerConfig) *echo.Echo {
 	e.Debug = cfg.Debug
 	e.HideBanner = true
 	e.HidePort = true
+
 	logger := log.NewEcho()
 	e.Logger = logger
 	e.HTTPErrorHandler = errorHandler(e.DefaultHTTPErrorHandler)
+
 	e.Use(
-		// logger.AccessLogger(),
+		middleware.Recover(),
+		logger.AccessLogger(),
 		middleware.CORSWithConfig(middleware.CORSConfig{
 			AllowOrigins: cfg.Config.Origins,
 		}),
 		jwtEchoMiddleware(cfg),
 		authMiddleware(cfg),
+		UsecaseMiddleware(cfg.Repos, cfg.Gateways),
+		private,
 	)
-	e.Use(UsecaseMiddleware(cfg.Repos, cfg.Gateways))
-	e.POST("/api/graphql", GraphqlAPI(cfg.Config.GraphQL))
+
 	e.GET("/api/ping", Ping())
+	e.POST("/api/graphql", GraphqlAPI(cfg.Config.GraphQL))
+
 	pluginAPI := e.Group("/api/plugins/:id")
 	pluginAPI.Use(serverAuthMiddleware(&cfg.Config.Auth_M2M))
 	pluginAPI.GET("/:version", DownloadPlugin())
 	pluginAPI.POST("/:version/download", IncreasePluginDownloadCount())
+
 	return e
 }
 
@@ -80,4 +87,11 @@ func errorMessage(err error, log func(string, ...interface{})) (int, string) {
 	}
 
 	return code, msg
+}
+
+func private(next echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		c.Response().Header().Set(echo.HeaderCacheControl, "private, no-store, no-cache, must-revalidate")
+		return next(c)
+	}
 }
