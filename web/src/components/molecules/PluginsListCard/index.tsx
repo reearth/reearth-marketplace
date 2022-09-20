@@ -9,7 +9,7 @@ import { styled } from "@marketplace/theme";
 
 export type Props = {
   name: string;
-  publisher: string;
+  publisher?: string;
   cover?: string;
   likedCount: number;
   personallyLiked?: boolean;

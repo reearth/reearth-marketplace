@@ -11,7 +11,8 @@ export type Plugin = {
   id: string;
   name: string;
   cover: string;
-  publisher: string;
+  publisher?: string;
+  author?: string;
   like: number;
   liked?: boolean;
   downloads: number;
