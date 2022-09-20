@@ -19,6 +19,7 @@ const PluginUpload: React.FC<Props> = ({ pluginId }) => {
   const {
     parsedPlugin,
     isLoading,
+    handleClearParsedPlugin,
     handleParsePluginMutation,
     handleCreatePluginMutation,
     handleUpdatePluginMutation,
@@ -125,7 +126,8 @@ const PluginUpload: React.FC<Props> = ({ pluginId }) => {
       githubUrl={githubUrl}
       isLoading={isLoading}
       handleChangeGithubUrl={handleChangeGithubUrl}
-      handleParsePlugin={handleParsePlugin}
+      onParsePlugin={handleParsePlugin}
+      onRemove={handleClearParsedPlugin}
       onPluginSave={handlePluginSave}
       handleClickPublish={handleClickPublish}
       handleUploadImages={handleUploadImages}

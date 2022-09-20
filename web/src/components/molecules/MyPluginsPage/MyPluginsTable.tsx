@@ -1,4 +1,5 @@
 import type { ColumnsType } from "antd/es/table";
+import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "@marketplace/components/atoms/Button";
@@ -100,11 +101,23 @@ const MyPluginsTable: React.FC<Props> = ({ plugins, onPublish }) => {
       },
     },
   ];
+
+  const pluginDataSource = useMemo(
+    () =>
+      plugins?.map(plugin => {
+        return {
+          key: plugin.id,
+          ...plugin,
+        };
+      }),
+    [plugins],
+  );
+
   return (
     <Wrapper>
       <Table
         columns={columns}
-        dataSource={plugins}
+        dataSource={pluginDataSource}
         loading={!plugins && { indicator: <Loading size="md" height={200} /> }}
       />
     </Wrapper>
