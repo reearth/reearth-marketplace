@@ -45,7 +45,7 @@ const PluginAccordion: React.FC<PluginAccordionProps> = ({
         .map((p): PluginItem | undefined =>
           p && p.__typename === "Plugin"
             ? {
-                pluginId: `${p.id}~${p.latestVersion ? p.latestVersion.version : "x.x.x"}`,
+                pluginId: `${p.id}~${plugins?.find(q => q.id === p.id)?.version || "x.x.x"}`,
                 title: p.name,
                 author: p.author ?? "",
                 installed: true,
