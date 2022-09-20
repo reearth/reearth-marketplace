@@ -1,12 +1,12 @@
-import { useState } from "react";
+// import { useState } from "react";
 
 import Button from "@marketplace/components/atoms/Button";
-import Dropdown from "@marketplace/components/atoms/Dropdown";
+// import Dropdown from "@marketplace/components/atoms/Dropdown";
 import Icon from "@marketplace/components/atoms/Icon";
-import Menu, { MenuProps } from "@marketplace/components/atoms/Menu";
+// import Menu, { MenuProps } from "@marketplace/components/atoms/Menu";
 import Search from "@marketplace/components/atoms/Search";
 import Space from "@marketplace/components/atoms/Space";
-import { PluginSort } from "@marketplace/components/organisms/Top/hooks";
+// import { PluginSort } from "@marketplace/components/organisms/Top/hooks";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
@@ -37,51 +37,51 @@ const SearchArea: React.FC<Props> = ({
   const t = useT();
   // TODO: onSearchへのソートの渡し方
   // const [displayMenuState, updateDisplayMenuState] = useState(1);
-  const [_, updateOrderMenuState] = useState(1);
+  // const [_, updateOrderMenuState] = useState(1);
 
   // const handleDisplayMenuClick: MenuProps["onClick"] = (e) => {
   //   updateDisplayMenuState(Number(e.key));
   // };
 
-  const handleOrderMenuClick: MenuProps["onClick"] = e => {
-    updateOrderMenuState(Number(e.key));
-  };
+  // const handleOrderMenuClick: MenuProps["onClick"] = e => {
+  //   updateOrderMenuState(Number(e.key));
+  // };
 
   // const displayMenu = <Menu onClick={handleDisplayMenuClick} items={displayMenuItems} />;
 
-  const orderMenuItems: Array<{ label: string; key: number; value: PluginSort }> = [
-    {
-      label: t("Downloads Asc"),
-      key: 1,
-      value: PluginSort.DownloadsAsc,
-    },
-    {
-      label: t("Downloads Desc"),
-      key: 2,
-      value: PluginSort.DownloadsDesc,
-    },
-    {
-      label: t("Name Asc"),
-      key: 3,
-      value: PluginSort.NameAsc,
-    },
-    {
-      label: t("Name Desc"),
-      key: 4,
-      value: PluginSort.NameDesc,
-    },
-    {
-      label: t("Published Asc"),
-      key: 5,
-      value: PluginSort.PublishedatAsc,
-    },
-    {
-      label: t("Published Desc"),
-      key: 6,
-      value: PluginSort.PublishedatDesc,
-    },
-  ];
-  const orderMenu = <Menu onClick={handleOrderMenuClick} items={orderMenuItems} />;
+  // const orderMenuItems: Array<{ label: string; key: number; value: PluginSort }> = [
+  //   {
+  //     label: t("Downloads Asc"),
+  //     key: 1,
+  //     value: PluginSort.DownloadsAsc,
+  //   },
+  //   {
+  //     label: t("Downloads Desc"),
+  //     key: 2,
+  //     value: PluginSort.DownloadsDesc,
+  //   },
+  //   {
+  //     label: t("Name Asc"),
+  //     key: 3,
+  //     value: PluginSort.NameAsc,
+  //   },
+  //   {
+  //     label: t("Name Desc"),
+  //     key: 4,
+  //     value: PluginSort.NameDesc,
+  //   },
+  //   {
+  //     label: t("Published Asc"),
+  //     key: 5,
+  //     value: PluginSort.PublishedatAsc,
+  //   },
+  //   {
+  //     label: t("Published Desc"),
+  //     key: 6,
+  //     value: PluginSort.PublishedatDesc,
+  //   },
+  // ];
+  // const orderMenu = <Menu onClick={handleOrderMenuClick} items={orderMenuItems} />;
 
   return (
     <StyledSpace size={16}>
@@ -95,12 +95,12 @@ const SearchArea: React.FC<Props> = ({
           </Space>
         </Button>
       </Dropdown> */}
-      <Dropdown overlay={orderMenu}>
+      {/* <Dropdown overlay={orderMenu}>
         <StyledButton>
           {t("Order")}
           <Icon icon="downOutlined" style={{ fontSize: "8px" }} />
         </StyledButton>
-      </Dropdown>
+      </Dropdown> */}
       {isLoggedIn && (
         <StyledButton
           isFavSelected={isFavSelected}
@@ -133,6 +133,7 @@ const StyledSearch = styled(Search)`
   .ant-input-affix-wrapper,
   .ant-input-search-button {
     border: 1px solid ${({ theme }) => theme.main.weakText};
+    background: transparent;
   }
 `;
 
@@ -151,6 +152,7 @@ const StyledButton = styled(Button)<{ isFavSelected?: boolean }>`
   :focus {
     ${({ theme, isFavSelected }) => !isFavSelected && `border: 1px solid ${theme.main.weakText};`}
     ${({ theme, isFavSelected }) => !isFavSelected && `color: ${theme.main.weakText};`}
+    background: transparent;
   }
 `;
 

@@ -47,32 +47,38 @@ export default (pluginId: string, installedPlugins?: Plugin[]) => {
     [unlikePlugin, refetch],
   );
 
-  const plugin = useMemo(
-    () =>
-      currentPlugin
-        ? {
-            id: currentPlugin.id,
-            name: currentPlugin.name,
-            cover: currentPlugin.images[0],
-            author: currentPlugin.author || "",
-            like: currentPlugin.like,
-            images: currentPlugin.images,
-            description: currentPlugin.description || "",
-            readme: currentPlugin.readme,
-            liked: currentPlugin.liked,
-            version: currentPlugin.latestVersion?.version,
-            downloads: currentPlugin.downloads,
-            updatedAt: currentPlugin.updatedAt,
-            installed:
-              installedPlugins &&
-              installedPlugins.findIndex(
-                p =>
-                  p.id === currentPlugin.id && p.version === currentPlugin.latestVersion?.version,
-              ) >= 0,
-          }
-        : undefined,
-    [currentPlugin, installedPlugins],
-  );
+  const plugin = useMemo(() => {
+    if (!currentPlugin) return undefined;
+
+    const installedPlugin = installedPlugins?.find(ip => ip.id === currentPlugin.id);
+
+    return currentPlugin
+      ? {
+          id: currentPlugin.id,
+          name: currentPlugin.name,
+          cover: currentPlugin.images[0],
+          author: currentPlugin.author || "",
+          like: currentPlugin.like,
+          images: currentPlugin.images,
+          description: currentPlugin.description || "",
+          readme: currentPlugin.readme,
+          liked: currentPlugin.liked,
+          version: currentPlugin.latestVersion?.version,
+          downloads: currentPlugin.downloads,
+          updatedAt: currentPlugin.updatedAt,
+          hasUpdate: !!(
+            currentPlugin.latestVersion?.version &&
+            installedPlugin?.version &&
+            currentPlugin.latestVersion?.version > installedPlugin?.version
+          ),
+          installed:
+            installedPlugins &&
+            installedPlugins.findIndex(
+              p => p.id === currentPlugin.id && p.version === currentPlugin.latestVersion?.version,
+            ) >= 0,
+        }
+      : undefined;
+  }, [currentPlugin, installedPlugins]);
 
   const [modalVisible, onToggleModal] = useState(false);
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);

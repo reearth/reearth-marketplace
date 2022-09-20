@@ -41,11 +41,11 @@ const PluginAccordionItemHeader: React.FC<PluginItemProps> = ({
         </InfoWrapper>
       </InnerWrapper>
       <ButtonWrapper>
-        <Button
-          disabled={!updatable}
-          onClick={updatable && installed ? () => onInstall?.() : undefined}>
-          {t("Update")}
-        </Button>
+        {updatable && (
+          <Button onClick={updatable && installed ? () => onInstall?.() : undefined}>
+            {t("Update")}
+          </Button>
+        )}
         <Button onClick={installed ? () => onUninstall?.() : undefined}>{t("Uninstall")}</Button>
       </ButtonWrapper>
     </Wrapper>
@@ -69,6 +69,7 @@ const InnerWrapper = styled.div`
 const InfoWrapper = styled.div`
   display: flex;
   margin-right: 32px;
+  color: ${({ theme }) => theme.main.text};
 
   p {
     font-size: 16px;
@@ -95,6 +96,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   width: 316px;
+  align-items: right;
 `;
 
 const Thumbnail = styled.img`

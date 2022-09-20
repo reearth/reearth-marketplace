@@ -32,6 +32,7 @@ export type Props = {
     liked: boolean;
     version: string | undefined;
     downloads: number;
+    hasUpdate: boolean;
     updatedAt: Date;
     installed: boolean | undefined;
   };
@@ -62,6 +63,7 @@ const PluginDetailPage: React.FC<Props> = ({
     readme,
     images,
     downloads,
+    hasUpdate,
     updatedAt: updatedDate,
     installed,
   } = plugin ?? {};
@@ -177,9 +179,11 @@ const PluginDetailPage: React.FC<Props> = ({
                           ? onExtPluginInstall(`${id}~${version}`)
                           : onToggleModal?.(true)
                       }
-                      disabled={!isLoggedIn || installed}>
+                      disabled={!isLoggedIn || (installed && !hasUpdate)}>
                       <Icon icon="download" />
-                      {installed
+                      {hasUpdate
+                        ? t("Update Plugin")
+                        : installed
                         ? t("Already installed")
                         : onExtPluginInstall
                         ? t("Install")
