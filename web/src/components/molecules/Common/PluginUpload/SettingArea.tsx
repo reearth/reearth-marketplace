@@ -24,7 +24,7 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, onBack, handleUploa
   const uploadProps: UploadProps = {
     name: "images",
     listType: "picture",
-    accept: "image/png, image/jpeg, image/jpg",
+    accept: "image/png, image/jpeg, image/jpg, image/webp",
     multiple: true,
     customRequest: async options => {
       options.onSuccess?.("Ok");

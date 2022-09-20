@@ -57,7 +57,7 @@ export default (pluginId: string, installedPlugins?: Plugin[]) => {
           id: currentPlugin.id,
           name: currentPlugin.name,
           cover: currentPlugin.images[0],
-          author: currentPlugin.author || "",
+          publisher: currentPlugin.publisher.name,
           like: currentPlugin.like,
           images: currentPlugin.images,
           description: currentPlugin.description || "",

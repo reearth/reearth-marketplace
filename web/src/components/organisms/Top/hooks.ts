@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { useApolloClient } from "@apollo/client";
+import { useEffect, useMemo } from "react";
 
 import { useAuth } from "@marketplace/auth/hooks";
 import { type Plugin } from "@marketplace/components/molecules/TopPage";
@@ -8,6 +9,7 @@ export { PluginSort };
 
 export default (searchText?: string, sort?: PluginSort, liked?: boolean, accessToken?: string) => {
   const { isAuthenticated } = useAuth(accessToken);
+  const gqlCache = useApolloClient().cache;
 
   const { data } = useSearchPluginQuery({
     variables: {
@@ -31,7 +33,7 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean, accessT
                 id: p.id,
                 name: p.name,
                 cover: p.images[0],
-                author: p.author ? p.author : "",
+                publisher: p.publisher.name,
                 like: p.like,
                 liked: p.liked,
                 downloads: p.downloads,
@@ -41,6 +43,12 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean, accessT
         .filter((p): p is Plugin => !!p),
     [data?.plugins],
   );
+
+  useEffect(() => {
+    return () => {
+      gqlCache.evict({ fieldName: "plugins" });
+    };
+  }, [gqlCache]);
 
   return {
     plugins,

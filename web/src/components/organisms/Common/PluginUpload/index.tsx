@@ -77,10 +77,11 @@ const PluginUpload: React.FC<Props> = ({ pluginId }) => {
       }
       await handleUpdatePluginMutation({
         id: parsedPlugin.id,
+        images: uploadedImages,
         active: true,
       });
     }
-  }, [pluginId, parsedPlugin, handlePluginCreation, handleUpdatePluginMutation]);
+  }, [pluginId, uploadedImages, parsedPlugin, handlePluginCreation, handleUpdatePluginMutation]);
 
   // When Github Url Input
   const handleChangeGithubUrl = useCallback(
