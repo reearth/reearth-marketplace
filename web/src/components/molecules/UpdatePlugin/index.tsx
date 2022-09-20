@@ -2,21 +2,21 @@ import { useCallback, useState } from "react";
 
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
+// import { TextArea } from "@marketplace/components/atoms/Input";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
-import PackageArea, { FileUploadType } from "./PackageArea";
-import SettingArea, { RcFile as RcFileType } from "./SettingArea";
+import PackageArea, { FileUploadType } from "../Common/PluginUpload/PackageArea";
+import { RcFile as RcFileType } from "../Common/PluginUpload/SettingArea";
 
 export type RcFile = RcFileType;
 
 export type Props = {
-  currentPluginId?: string;
   pluginName: string;
-  description: string;
+  changelog?: string;
   version: string;
   githubUrl?: string;
   isLoading: boolean;
@@ -24,23 +24,18 @@ export type Props = {
   onParsePlugin: (file?: FileUploadType) => Promise<void>;
   onPluginSave: () => void;
   onRemove?: () => void;
-  handleClickPublish: () => void;
-  handleUploadImages: (images: (RcFile | undefined)[]) => void;
 };
 
-const PluginUpload: React.FC<Props> = ({
-  currentPluginId,
+const UpdatePlugin: React.FC<Props> = ({
   pluginName,
+  // changelog,
   version,
-  description,
   githubUrl,
   isLoading,
   handleChangeGithubUrl,
   onParsePlugin,
   onPluginSave,
   onRemove,
-  handleClickPublish,
-  handleUploadImages,
 }) => {
   const t = useT();
   const [currentTab, updateTab] = useState<1 | 2>(1);
@@ -71,7 +66,7 @@ const PluginUpload: React.FC<Props> = ({
             <Breadcrumb
               rootLink="/myplugins"
               rootName={t("Plugins List")}
-              currentName={currentPluginId ? currentPluginId : t("New Plugin")}
+              currentName={t("Update Plugin")}
             />
           </Col>
           <Col>
@@ -81,19 +76,10 @@ const PluginUpload: React.FC<Props> = ({
                 size="large"
                 onClick={onPluginSave}
                 loading={isLoading}
-                disabled={currentTab !== 2}>
+                disabled={pluginName === ""}>
+                {/* disabled={currentTab !== 2}> */}
                 {t("Save")}
               </Button>
-              {!currentPluginId && (
-                <Button
-                  type="primary"
-                  size="large"
-                  onClick={handleClickPublish}
-                  loading={isLoading}
-                  disabled={currentTab !== 2}>
-                  {t("Save & Publish")}
-                </Button>
-              )}
             </Space>
           </Col>
         </TopRow>
@@ -101,21 +87,29 @@ const PluginUpload: React.FC<Props> = ({
           <PackageArea
             uploadedFile={uploadedFile}
             githubUrl={githubUrl}
-            pageChangeButton={t("Details Setting")}
             onChangeGithubUrl={handleChangeGithubUrl}
             onPageChange={pluginName !== "" ? handlePageChange : undefined}
+            // pageChangeButton={t("Changelog")}
+            pageChangeButton={t("Details")}
             onRemove={handleRemove}
             onParsePlugin={handleParsePlugin}
           />
         )}
         {currentTab === 2 && (
-          <SettingArea
-            pluginName={pluginName}
-            version={version}
-            description={description}
-            onBack={handlePageChange}
-            handleUploadImages={handleUploadImages}
-          />
+          <PageTwo>
+            <Button onClick={handlePageChange} style={{ marginBottom: "12px" }}>
+              {t("Back")}
+            </Button>
+            <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+              <Title>{t("Plugin Name")}</Title>
+              <PluginInfo>{pluginName}</PluginInfo>
+              <Title>{t("Version")}</Title>
+              <PluginInfo>{version}</PluginInfo>
+
+              {/* <Title>{t("Changelog")}</Title>
+              <StyledTextArea rows={4} defaultValue={changelog} /> */}
+            </Space>
+          </PageTwo>
         )}
       </ContentWrapper>
     </Wrapper>
@@ -141,4 +135,23 @@ const TopRow = styled(Row)`
   margin-bottom: 32px;
 `;
 
-export default PluginUpload;
+const PageTwo = styled.div`
+  background: rgba(255, 255, 255, 1);
+  padding: 32px;
+`;
+
+const Title = styled.p`
+  font-size: 16px;
+  width: 100%;
+`;
+
+const PluginInfo = styled.h1`
+  font-size: 16px;
+  font-weight: bold;
+`;
+
+// const StyledTextArea = styled(TextArea)`
+//   width: 100%;
+// `;
+
+export default UpdatePlugin;

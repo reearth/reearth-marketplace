@@ -7,6 +7,7 @@ import Footer from "@marketplace/components/molecules/Common/Footer";
 import Header from "@marketplace/components/organisms/Common/Header";
 import AddNewPlugin from "@marketplace/components/pages/AddNewPlugin";
 import PublisherRegistration from "@marketplace/components/pages/DeveloperRegistration";
+import EditPlugin from "@marketplace/components/pages/EditPlugin";
 import MyPlugins from "@marketplace/components/pages/MyPlugins";
 import NotFound from "@marketplace/components/pages/NotFound";
 import PluginDetailPage from "@marketplace/components/pages/PluginDetail";
@@ -41,6 +42,7 @@ const AppRoutes = () => {
     { path: "/myplugins", element: <MyPlugins /> },
     { path: "/myplugins/new", element: <AddNewPlugin /> },
     { path: "/myplugins/:pluginId/update", element: <UpdatePlugin /> },
+    { path: "/myplugins/:pluginId/edit", element: <EditPlugin /> },
     { path: "*", element: <NotFound /> },
   ]);
 };
