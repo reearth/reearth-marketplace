@@ -78,7 +78,11 @@ export default ({ pluginId }: { pluginId?: string }) => {
 
   const parsedPlugin = useMemo(() => {
     if (parsedData?.parsePlugin.plugin.__typename === "Plugin") {
-      if (parsedData.parsePlugin.plugin.id === pluginId) {
+      if (pluginId && parsedData.parsePlugin.plugin.id !== pluginId) {
+        Message.error(
+          t("The plugin you uploaded is different from the one you are trying to update."),
+        );
+      } else {
         return {
           id: parsedData.parsePlugin.plugin.id,
           name: parsedData.parsePlugin.plugin.name,
@@ -91,10 +95,6 @@ export default ({ pluginId }: { pluginId?: string }) => {
             ? parsedData.parsePlugin.plugin.latestVersion?.version
             : "",
         };
-      } else {
-        Message.error(
-          t("The plugin you uploaded is different from the one you are trying to update."),
-        );
       }
     }
     return undefined;
