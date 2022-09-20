@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
-import { TextArea } from "@marketplace/components/atoms/Input";
+// import { TextArea } from "@marketplace/components/atoms/Input";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
@@ -28,7 +28,7 @@ export type Props = {
 
 const UpdatePlugin: React.FC<Props> = ({
   pluginName,
-  changelog,
+  // changelog,
   version,
   githubUrl,
   isLoading,
@@ -76,7 +76,8 @@ const UpdatePlugin: React.FC<Props> = ({
                 size="large"
                 onClick={onPluginSave}
                 loading={isLoading}
-                disabled={currentTab !== 2}>
+                disabled={pluginName === ""}>
+                {/* disabled={currentTab !== 2}> */}
                 {t("Save")}
               </Button>
             </Space>
@@ -88,22 +89,25 @@ const UpdatePlugin: React.FC<Props> = ({
             githubUrl={githubUrl}
             onChangeGithubUrl={handleChangeGithubUrl}
             onPageChange={pluginName !== "" ? handlePageChange : undefined}
-            pageChangeButton={t("Changelog")}
+            // pageChangeButton={t("Changelog")}
+            pageChangeButton={t("Details")}
             onRemove={handleRemove}
             onParsePlugin={handleParsePlugin}
           />
         )}
         {currentTab === 2 && (
           <PageTwo>
-            <Button onClick={handlePageChange}>{t("Back")}</Button>
+            <Button onClick={handlePageChange} style={{ marginBottom: "12px" }}>
+              {t("Back")}
+            </Button>
             <Space direction="vertical" size="middle" style={{ width: "100%" }}>
               <Title>{t("Plugin Name")}</Title>
               <PluginInfo>{pluginName}</PluginInfo>
               <Title>{t("Version")}</Title>
               <PluginInfo>{version}</PluginInfo>
 
-              <Title>{t("Changelog")}</Title>
-              <StyledTextArea rows={4} defaultValue={changelog} />
+              {/* <Title>{t("Changelog")}</Title>
+              <StyledTextArea rows={4} defaultValue={changelog} /> */}
             </Space>
           </PageTwo>
         )}
@@ -146,8 +150,8 @@ const PluginInfo = styled.h1`
   font-weight: bold;
 `;
 
-const StyledTextArea = styled(TextArea)`
-  width: 100%;
-`;
+// const StyledTextArea = styled(TextArea)`
+//   width: 100%;
+// `;
 
 export default UpdatePlugin;

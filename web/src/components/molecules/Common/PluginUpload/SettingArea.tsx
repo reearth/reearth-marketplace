@@ -42,7 +42,11 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, onBack, handleUploa
 
   return (
     <Wrapper>
-      {onBack && <Button onClick={onBack}>{t("Back")}</Button>}
+      {onBack && (
+        <Button onClick={onBack} style={{ marginBottom: "12px" }}>
+          {t("Back")}
+        </Button>
+      )}
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
         <Title>{t("Plugin Name")}</Title>
         <PluginInfo>{pluginName}</PluginInfo>
