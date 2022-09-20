@@ -18,7 +18,6 @@ export type Props = {
   pluginName: string;
   description: string;
   version: string;
-  uploadedImages: any[];
   githubUrl?: string;
   isLoading: boolean;
   handleChangeGithubUrl: (url: string) => void;
@@ -34,7 +33,6 @@ const PluginUpload: React.FC<Props> = ({
   pluginName,
   version,
   description,
-  uploadedImages,
   githubUrl,
   isLoading,
   handleChangeGithubUrl,
@@ -115,7 +113,6 @@ const PluginUpload: React.FC<Props> = ({
             pluginName={pluginName}
             version={version}
             description={description}
-            uploadedImages={uploadedImages}
             onBack={handlePageChange}
             handleUploadImages={handleUploadImages}
           />

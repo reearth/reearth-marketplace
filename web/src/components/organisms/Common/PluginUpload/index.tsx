@@ -122,7 +122,6 @@ const PluginUpload: React.FC<Props> = ({ pluginId }) => {
       pluginName={parsedPlugin ? parsedPlugin.name : ""}
       version={parsedPlugin ? parsedPlugin.version : ""}
       description={parsedPlugin ? parsedPlugin.description : ""}
-      uploadedImages={uploadedImages}
       githubUrl={githubUrl}
       isLoading={isLoading}
       handleChangeGithubUrl={handleChangeGithubUrl}
