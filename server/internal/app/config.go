@@ -53,11 +53,12 @@ type AuthConfig struct {
 }
 
 type AuthM2MConfig struct {
-	ISS *url.URL
-	AUD []string
-	ALG string `default:"RS256"`
-	TTL *int
-	Sub string
+	ISS    *url.URL
+	AUD    []string
+	ALG    string `default:"RS256"`
+	TTL    *int
+	Sub    string
+	Secret string
 }
 
 type GCSConfig struct {

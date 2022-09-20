@@ -42,18 +42,22 @@ func authMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
 	}
 }
 
-func serverAuthMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
+func serverAuthMiddleware(cfg *AuthM2MConfig) echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			req := c.Request()
 			ctx := req.Context()
 
-			if sub := cfg.Config.Auth_M2M.Sub; sub != "" {
-				ai := adapter.GetAuthInfo(ctx)
-				if ai == nil || ai.Sub != sub {
+			if cfg.Sub != "" {
+				if ai := adapter.GetAuthInfo(ctx); ai == nil || ai.Sub != cfg.Sub {
 					return c.NoContent(http.StatusUnauthorized)
 				}
 			}
+
+			if cfg.Secret != "" && req.Header.Get("X-Reearth-Secret") != cfg.Secret {
+				return c.NoContent(http.StatusUnauthorized)
+			}
+
 			return next(c)
 		}
 	}
