@@ -9,7 +9,7 @@ import { styled } from "@marketplace/theme";
 
 export type Props = {
   name: string;
-  author: string;
+  publisher?: string;
   cover?: string;
   likedCount: number;
   personallyLiked?: boolean;
@@ -19,7 +19,7 @@ export type Props = {
 };
 const PluginsListCard: React.FC<Props> = ({
   name,
-  author,
+  publisher,
   cover,
   likedCount,
   personallyLiked,
@@ -45,7 +45,7 @@ const PluginsListCard: React.FC<Props> = ({
       onClick={onClick}
       bodyStyle={{ padding: "0" }}>
       <Row justify="space-between" align="top">
-        <AuthorName>{author}</AuthorName>
+        <AuthorName>{publisher}</AuthorName>
         <Space size="small">
           <LikedRow align="middle" personallyLiked={personallyLiked}>
             <StyledIcon icon="heartOutlined" />
