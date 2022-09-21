@@ -119,7 +119,17 @@ func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) erro
 	res := r.pluginClient().Client().FindOneAndUpdate(ctx,
 		bson.M{"id": pluginDoc.ID, "type": pluginDoc.Type},
 		bson.M{
-			"$setOnInsert": pluginDoc,
+			"$setOnInsert": bson.M{
+				"id":          pluginDoc.ID,
+				"type":        pluginDoc.Type,
+				"createdAt":   pluginDoc.CreatedAt,
+				"tags":        pluginDoc.Tags,
+				"image":       pluginDoc.Images,
+				"publisherId": pluginDoc.PublisherID,
+				"publishedAt": pluginDoc.PublishedAt,
+				"downloads":   pluginDoc.Downloads,
+				"like":        pluginDoc.Like,
+			},
 			"$set": bson.M{
 				"name":          pluginDoc.Name,
 				"author":        pluginDoc.Author,
@@ -134,6 +144,9 @@ func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) erro
 		options.FindOneAndUpdate().SetUpsert(true).SetReturnDocument(options.After),
 	)
 	if err := res.Err(); err != nil {
+		if IsDupErr(err) {
+			return fmt.Errorf("plugin id already used")
+		}
 		return fmt.Errorf("find or insert plugin: %w", err)
 	}
 	var pd mongodoc.PluginDocument
@@ -652,4 +665,12 @@ func (s *Sort) BeforeOp() string {
 		return "$gt"
 	}
 	panic("unreachable")
+}
+
+func IsDupErr(err error) bool {
+	var e mongo.CommandError
+	if errors.As(err, &e) {
+		return e.HasErrorCode(11000)
+	}
+	return false
 }
