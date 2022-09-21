@@ -95,7 +95,7 @@ func NewPlugin(client *mongox.Client) repo.Plugin {
 }
 
 func (r *pluginRepo) init() {
-	r.pluginClient().CreateIndex(context.Background(), []string{"publisherId", "publishedAt", "downloads"}, []string{"name"})
+	r.pluginClient().CreateIndex(context.Background(), []string{"publisherId", "publishedAt", "downloads"}, []string{"id"})
 	lo.Must(r.pluginLikeClient().Client().Indexes().CreateOne(context.Background(), mongo.IndexModel{
 		Keys:    bson.D{{Key: "userId", Value: 1}, {Key: "pluginId", Value: 1}},
 		Options: options.Index().SetUnique(true),
@@ -117,8 +117,20 @@ func (r *pluginRepo) pluginLikeClient() *mongox.ClientCollection {
 func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) error {
 	pluginDoc, pluginVersionDoc := mongodoc.NewVersionedPlugin(p)
 	res := r.pluginClient().Client().FindOneAndUpdate(ctx,
-		bson.M{"id": pluginDoc.ID},
-		bson.M{"$setOnInsert": pluginDoc},
+		bson.M{"id": pluginDoc.ID, "type": pluginDoc.Type},
+		bson.M{
+			"$setOnInsert": pluginDoc,
+			"$set": bson.M{
+				"name":          pluginDoc.Name,
+				"author":        pluginDoc.Author,
+				"description":   pluginDoc.Description,
+				"icon":          pluginDoc.Icon,
+				"repository":    pluginDoc.Repository,
+				"readme":        pluginDoc.Readme,
+				"latestVersion": pluginDoc.LatestVersion,
+				"updatedAt":     pluginDoc.UpdatedAt,
+			},
+		},
 		options.FindOneAndUpdate().SetUpsert(true).SetReturnDocument(options.After),
 	)
 	if err := res.Err(); err != nil {

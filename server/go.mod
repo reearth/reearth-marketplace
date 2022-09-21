@@ -9,7 +9,7 @@ require (
 	github.com/h2non/filetype v1.1.3
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/labstack/echo/v4 v4.7.2
-	github.com/reearth/reearthx v0.0.0-20220831124713-1b1373700421
+	github.com/reearth/reearthx v0.0.0-20220920100400-54da87c8211a
 	github.com/samber/lo v1.27.0
 	github.com/spf13/afero v1.9.2
 	github.com/stretchr/testify v1.8.0
