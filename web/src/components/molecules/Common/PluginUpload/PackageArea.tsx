@@ -97,7 +97,6 @@ const PackageArea: React.FC<Props> = ({
           </Col>
         </Row>
         {currentRadio === "Upload from local" ? (
-          //   TODO: itemRenderのみを表示させて、DragDropエリアを消す方法を探す
           <Dragger
             {...uploadProps}
             style={{ border: "1px dashed" }}
@@ -112,9 +111,7 @@ const PackageArea: React.FC<Props> = ({
             <Input
               placeholder="github.com/xxx/xxx"
               value={githubUrl}
-              onChange={e => {
-                onChangeGithubUrl(e.target.value);
-              }}
+              onBlur={e => onChangeGithubUrl(e.target.value)}
             />
             <p>{t("Please set your repository as public respository.")}</p>
           </>

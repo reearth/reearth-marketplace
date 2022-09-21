@@ -25,7 +25,7 @@ export type Props = {
   onPluginSave: () => void;
   onRemove?: () => void;
   handleClickPublish: () => void;
-  handleUploadImages: (images: (RcFile | undefined)[]) => void;
+  handleUploadImages: (images: RcFile[]) => void;
 };
 
 const PluginUpload: React.FC<Props> = ({
