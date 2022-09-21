@@ -8,6 +8,10 @@ export const PLUGIN = gql`
         id
         images
         author
+        publisher{
+          id
+          name
+        }
         like
         downloads
         name
@@ -16,6 +20,7 @@ export const PLUGIN = gql`
         description
         liked
         updatedAt
+        active
         latestVersion {
           version
         }
@@ -32,6 +37,10 @@ export const PLUGINS = gql`
         id
         images
         author
+        publisher{
+          id
+          name
+        }
         like
         downloads
         name
@@ -75,6 +84,10 @@ export const SEARCH_PLUGIN = gql`
         id
         images
         author
+        publisher{
+          id
+          name
+        }
         like
         liked
         downloads
@@ -164,6 +177,10 @@ export const PARSE_PLUGIN = gql`
         type
         name
         author
+        publisher{
+          id
+          name
+        }
         description
         icon
         repository
@@ -188,7 +205,12 @@ export const UPDATE_PLUGIN_VERSION = gql`
     ) {
       plugin {
         id
+        name
         author
+        publisher{
+          id
+          name
+        }
         description
         icon
         repository

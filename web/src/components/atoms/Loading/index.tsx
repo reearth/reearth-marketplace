@@ -4,13 +4,15 @@ import LoadingIcon, { IconSize } from "@marketplace/components/atoms/LoadingIcon
 import "antd/lib/spin/style/index.css";
 
 export type Props = {
+  className?: string;
   height?: number;
   width?: number;
   size?: IconSize;
 };
 
-const App: React.FC<Props> = ({ height, width, size }) => (
+const Loading: React.FC<Props> = ({ className, height, width, size }) => (
   <div
+    className={className}
     style={{
       height: height + "px" ?? "100%",
       width: width + "px" ?? "100%",
@@ -23,4 +25,4 @@ const App: React.FC<Props> = ({ height, width, size }) => (
   </div>
 );
 
-export default App;
+export default Loading;

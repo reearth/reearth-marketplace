@@ -38,13 +38,12 @@ Log Out: ログアウト
 Upload new plugin: ''
 Log in: ログイン
 Plugins List: プラグイン一覧
-Update Plugin: ''
 New Plugin: 新規プラグインの追加
 Save: 一時保存
 Save & Publish: 保存と公開
+Details Setting: 詳細設定
 File uploaded successfully.: ファイルのアップロードが成功しました。
 File upload failed.: ファイルのアップロードに失敗しました。
-Details Setting: 詳細設定
 Upload from local: PCからアップロード
 GitHub repository: GitHubレポジトリ
 Click or drag file to this area to upload: クリックまたはドラッグしてアップロードするファイルを追加
@@ -64,6 +63,7 @@ Action: アクション
 Update this plugin: このプラグインを更新する
 Top: トップ
 README: ''
+Update Plugin: ''
 Already installed: 既にインストールされています
 Install: インストール
 Open Plugin in your project: このプラグインをプロジェクトに追加
@@ -82,9 +82,11 @@ Published Asc: 公開日昇順
 Published Desc: 公開日降順
 search text: キーワードを入力
 Liked: お気に入り済
+Details: 詳細
 Your plugin was successfully published!: ''
 Your plugin was successfully unpublished!: ''
 Something went wrong with the update. Please try again.: プラグインの更新時に問題が発生しました。
 The plugin you uploaded is different from the one you are trying to update.: ''
 Something might be wrong with your URL. Please check and try again.: URLに問題があります。もう一度お試しください。
+Your plugin's version was successfully updated!: ''
 Developer Registration: 開発者登録
