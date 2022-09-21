@@ -74,16 +74,16 @@ const ModalContent: React.FC<Props> = ({
       visible={visible}
       onCancel={handleCancel}
       okText={t("Choose")}
-      okButtonProps={{ disabled: !workspaceId }}
+      okButtonProps={{ disabled: !workspaceId || !projectId }}
       bodyStyle={{ padding: "20px 32px", maxHeight: "582px", overflow: "scroll" }}
       onOk={() => onOpenPluginInReearth?.(workspaceId, projectId)}>
-      {workspaces && workspaces.length > 0 ? (
+      {workspaces?.length ? (
         workspaceId && (
           <List
             dataSource={
               workspaceId
                 ? workspaces
-                    ?.find(ws => ws.id === workspaceId)
+                    .find(ws => ws.id === workspaceId)
                     ?.projects.map(prj => {
                       return {
                         id: prj.id,
