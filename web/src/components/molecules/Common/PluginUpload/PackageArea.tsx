@@ -8,31 +8,22 @@ import Message from "@marketplace/components/atoms/Message";
 import Radio, { RadioChangeEvent } from "@marketplace/components/atoms/Radio";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
-import {
-  Dragger,
-  RcFile,
-  UploadProps,
-  UploadFile as UploadFileType,
-} from "@marketplace/components/atoms/Upload";
+import { Dragger, RcFile, UploadProps, UploadFile } from "@marketplace/components/atoms/Upload";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
 export type FileUploadType = string | RcFile | Blob;
 
-export type UploadFile = UploadFileType;
-
 export type Props = {
-  uploadedFile?: RcFile;
   githubUrl?: string;
   pageChangeButton?: string;
   onPageChange?: () => void;
   onRemove?: () => void;
-  onParsePlugin: (file?: RcFile) => Promise<void>;
+  onParsePlugin: (file?: File) => Promise<void>;
   onChangeGithubUrl: (url: string) => void;
 };
 
 const PackageArea: React.FC<Props> = ({
-  uploadedFile,
   githubUrl,
   pageChangeButton,
   onPageChange,
@@ -42,6 +33,7 @@ const PackageArea: React.FC<Props> = ({
 }) => {
   const t = useT();
 
+  const [uploadedFile, uploadFile] = useState<UploadFile[]>();
   const [currentRadio, changeRadio] = useState<"Upload from local" | "GitHub repository">(
     "Upload from local",
   );
@@ -55,10 +47,11 @@ const PackageArea: React.FC<Props> = ({
     multiple: false,
     accept: ".zip",
     maxCount: 1,
-    customRequest: async options => {
-      const { onSuccess, onError, file } = options;
+    customRequest: async ({ onSuccess, onError, file }) => {
+      if (typeof file === "string" || !("uid" in file)) return;
       try {
-        await onParsePlugin(file as RcFile);
+        uploadFile([file]);
+        await onParsePlugin(file);
         onSuccess?.("Ok");
       } catch (err: any) {
         onError?.(new Error(err));
@@ -73,6 +66,7 @@ const PackageArea: React.FC<Props> = ({
       }
     },
     onRemove() {
+      uploadFile(undefined);
       onRemove?.();
     },
   };
@@ -97,11 +91,7 @@ const PackageArea: React.FC<Props> = ({
           </Col>
         </Row>
         {currentRadio === "Upload from local" ? (
-          //   TODO: itemRenderのみを表示させて、DragDropエリアを消す方法を探す
-          <Dragger
-            {...uploadProps}
-            style={{ border: "1px dashed" }}
-            defaultFileList={uploadedFile ? [uploadedFile] : undefined}>
+          <Dragger {...uploadProps} style={{ border: "1px dashed" }} defaultFileList={uploadedFile}>
             <DraggerContents>
               <Icon icon="inbox" style={{ fontSize: "48px" }} />
               <p className="ant-upload-hint">{t("Click or drag file to this area to upload")}</p>
@@ -112,9 +102,7 @@ const PackageArea: React.FC<Props> = ({
             <Input
               placeholder="github.com/xxx/xxx"
               value={githubUrl}
-              onChange={e => {
-                onChangeGithubUrl(e.target.value);
-              }}
+              onBlur={e => onChangeGithubUrl(e.target.value)}
             />
             <p>{t("Please set your repository as public respository.")}</p>
           </>
