@@ -16,7 +16,7 @@ export type Props = {
   version: string;
   description: string;
   onBack?: () => void;
-  handleUploadImages: (images: (RcFile | undefined)[]) => void;
+  handleUploadImages: (images: RcFile[]) => void;
 };
 const SettingArea: React.FC<Props> = ({ pluginName, version, onBack, handleUploadImages }) => {
   const t = useT();
@@ -24,7 +24,7 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, onBack, handleUploa
   const uploadProps: UploadProps = {
     name: "images",
     listType: "picture",
-    accept: "image/png, image/jpeg, image/jpg, image/webp",
+    accept: "image/png,image/jpeg,image/jpg,image/webp",
     multiple: true,
     customRequest: async options => {
       options.onSuccess?.("Ok");
@@ -32,7 +32,9 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, onBack, handleUploa
     onChange(info) {
       const { status } = info.file;
       if (status === "done" || status === "removed") {
-        handleUploadImages(info.fileList.map(f => f.originFileObj).filter(f2 => !!f2));
+        handleUploadImages(
+          info.fileList.map(f => f.originFileObj).filter((f): f is RcFileType => !!f),
+        );
         Message.success(`${info.file.name} ${t("Image uploaded successfully.")}`);
       } else if (status === "error") {
         Message.error(`${info.file.name} ${t("Image upload failed.")}`);
@@ -52,7 +54,6 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, onBack, handleUploa
         <PluginInfo>{pluginName}</PluginInfo>
         <Title>{t("Version")}</Title>
         <PluginInfo>{version}</PluginInfo>
-
         {/* <Title>{t("Description")}</Title>
         <StyledTextArea rows={4} defaultValue={description} /> */}
         <Title>{t("Images")}</Title>

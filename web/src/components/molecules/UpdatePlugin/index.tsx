@@ -9,54 +9,38 @@ import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
-import PackageArea, { FileUploadType } from "../Common/PluginUpload/PackageArea";
+import PackageArea from "../Common/PluginUpload/PackageArea";
 import { RcFile as RcFileType } from "../Common/PluginUpload/SettingArea";
 
 export type RcFile = RcFileType;
 
 export type Props = {
   pluginName: string;
-  changelog?: string;
   version: string;
   githubUrl?: string;
   isLoading: boolean;
-  handleChangeGithubUrl: (url: string) => void;
-  onParsePlugin: (file?: FileUploadType) => Promise<void>;
+  onGithubUrlChange: (url: string) => void;
+  onParsePlugin: (file?: File) => Promise<void>;
   onPluginSave: () => void;
   onRemove?: () => void;
 };
 
 const UpdatePlugin: React.FC<Props> = ({
   pluginName,
-  // changelog,
   version,
   githubUrl,
   isLoading,
-  handleChangeGithubUrl,
+  onGithubUrlChange,
   onParsePlugin,
   onPluginSave,
   onRemove,
 }) => {
   const t = useT();
   const [currentTab, updateTab] = useState<1 | 2>(1);
-  const [uploadedFile, setUploadedFile] = useState<RcFile>();
 
   const handlePageChange = useCallback(() => {
     updateTab(currentTab === 1 ? 2 : 1);
   }, [currentTab]);
-
-  const handleRemove = useCallback(() => {
-    onRemove?.();
-    setUploadedFile(undefined);
-  }, [onRemove]);
-
-  const handleParsePlugin = useCallback(
-    async (file?: RcFile) => {
-      await onParsePlugin(file);
-      setUploadedFile(file);
-    },
-    [onParsePlugin],
-  );
 
   return (
     <Wrapper>
@@ -85,14 +69,13 @@ const UpdatePlugin: React.FC<Props> = ({
         </TopRow>
         {currentTab === 1 && (
           <PackageArea
-            uploadedFile={uploadedFile}
             githubUrl={githubUrl}
-            onChangeGithubUrl={handleChangeGithubUrl}
+            onChangeGithubUrl={onGithubUrlChange}
             onPageChange={pluginName !== "" ? handlePageChange : undefined}
             // pageChangeButton={t("Changelog")}
             pageChangeButton={t("Details")}
-            onRemove={handleRemove}
-            onParsePlugin={handleParsePlugin}
+            onRemove={onRemove}
+            onParsePlugin={onParsePlugin}
           />
         )}
         {currentTab === 2 && (
@@ -105,7 +88,6 @@ const UpdatePlugin: React.FC<Props> = ({
               <PluginInfo>{pluginName}</PluginInfo>
               <Title>{t("Version")}</Title>
               <PluginInfo>{version}</PluginInfo>
-
               {/* <Title>{t("Changelog")}</Title>
               <StyledTextArea rows={4} defaultValue={changelog} /> */}
             </Space>

@@ -25,7 +25,7 @@ Roadmap: ロードマップ
 Changelog: ''
 Code of Conduct: ''
 Company: 会社情報
-Website: ''
+Website: Webサイト
 Facebook: ''
 https://twitter.com/eukarya_EN: https://twitter.com/eukaryaofficial
 Twitter: ''
@@ -35,7 +35,7 @@ Auto: 自動
 My Page: マイページ
 My Plugins: マイプラグイン
 Log Out: ログアウト
-Upload new plugin: ''
+Upload new plugin: 新しいプラグインをアップロード
 Log in: ログイン
 Plugins List: プラグイン一覧
 New Plugin: 新規プラグインの追加
@@ -48,9 +48,9 @@ Upload from local: PCからアップロード
 GitHub repository: GitHubレポジトリ
 Click or drag file to this area to upload: クリックまたはドラッグしてアップロードするファイルを追加
 Please set your repository as public respository.: レポジトリをPublicにするのをお忘れなく。
-Image uploaded successfully.: ''
-Image upload failed.: ''
-Back: ''
+Image uploaded successfully.: 画像がアップロードされました。
+Image upload failed.: 画像のアップロードに失敗しました。
+Back: 戻る
 Plugin Name: プラグイン名
 Version: バージョン
 Images: 画像
@@ -63,7 +63,7 @@ Action: アクション
 Update this plugin: このプラグインを更新する
 Top: トップ
 README: ''
-Update Plugin: ''
+Update Plugin: プラグインを更新
 Already installed: 既にインストールされています
 Install: インストール
 Open Plugin in your project: このプラグインをプロジェクトに追加
@@ -83,10 +83,8 @@ Published Desc: 公開日降順
 search text: キーワードを入力
 Liked: お気に入り済
 Details: 詳細
-Your plugin was successfully published!: ''
-Your plugin was successfully unpublished!: ''
+Your plugin was successfully published!: プラグインが正常に公開されました。
+Your plugin was successfully unpublished!: プラグインを非公開にしました。
 Something went wrong with the update. Please try again.: プラグインの更新時に問題が発生しました。
-The plugin you uploaded is different from the one you are trying to update.: ''
-Something might be wrong with your URL. Please check and try again.: URLに問題があります。もう一度お試しください。
-Your plugin's version was successfully updated!: ''
+Something might be wrong with your plugin. Please check and try again.: プラグインのアップロード時に問題が発生しました。
 Developer Registration: 開発者登録
