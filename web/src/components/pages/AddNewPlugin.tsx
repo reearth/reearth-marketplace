@@ -1,14 +1,16 @@
 import { AuthenticationRequiredPage } from "@marketplace/auth";
-import PluginEditing from "@marketplace/components/organisms/Common/PluginUpload";
+import PluginUpload from "@marketplace/components/organisms/Common/PluginUpload";
 
-export type Props = {};
+export type Props = {
+  pluginId?: string;
+};
 
-const AddNewPlugin: React.FC<Props> = () => {
+const PluginUploadPage: React.FC<Props> = ({ pluginId }) => {
   return (
     <AuthenticationRequiredPage>
-      <PluginEditing />
+      <PluginUpload pluginId={pluginId} />
     </AuthenticationRequiredPage>
   );
 };
 
-export default AddNewPlugin;
+export default PluginUploadPage;

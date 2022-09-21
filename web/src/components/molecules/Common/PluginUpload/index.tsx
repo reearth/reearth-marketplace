@@ -8,10 +8,8 @@ import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
-import PackageArea, { FileUploadType } from "./PackageArea";
-import SettingArea, { RcFile as RcFileType } from "./SettingArea";
-
-export type RcFile = RcFileType;
+import PackageArea from "./PackageArea";
+import SettingArea from "./SettingArea";
 
 export type Props = {
   currentPluginId?: string;
@@ -20,12 +18,12 @@ export type Props = {
   version: string;
   githubUrl?: string;
   isLoading: boolean;
-  handleChangeGithubUrl: (url: string) => void;
-  onParsePlugin: (file?: FileUploadType) => Promise<void>;
+  onChangeGithubUrl: (url: string) => void;
+  onParsePlugin: (file?: File) => Promise<void>;
   onPluginSave: () => void;
   onRemove?: () => void;
-  handleClickPublish: () => void;
-  handleUploadImages: (images: RcFile[]) => void;
+  onPublish: () => void;
+  onImagesUpload: (images: File[]) => void;
 };
 
 const PluginUpload: React.FC<Props> = ({
@@ -35,33 +33,19 @@ const PluginUpload: React.FC<Props> = ({
   description,
   githubUrl,
   isLoading,
-  handleChangeGithubUrl,
+  onChangeGithubUrl,
   onParsePlugin,
   onPluginSave,
   onRemove,
-  handleClickPublish,
-  handleUploadImages,
+  onPublish,
+  onImagesUpload,
 }) => {
   const t = useT();
   const [currentTab, updateTab] = useState<1 | 2>(1);
-  const [uploadedFile, setUploadedFile] = useState<RcFile>();
 
   const handlePageChange = useCallback(() => {
     updateTab(currentTab === 1 ? 2 : 1);
   }, [currentTab]);
-
-  const handleRemove = useCallback(() => {
-    onRemove?.();
-    setUploadedFile(undefined);
-  }, [onRemove]);
-
-  const handleParsePlugin = useCallback(
-    async (file?: RcFile) => {
-      await onParsePlugin(file);
-      setUploadedFile(file);
-    },
-    [onParsePlugin],
-  );
 
   return (
     <Wrapper>
@@ -88,7 +72,7 @@ const PluginUpload: React.FC<Props> = ({
                 <Button
                   type="primary"
                   size="large"
-                  onClick={handleClickPublish}
+                  onClick={onPublish}
                   loading={isLoading}
                   disabled={currentTab !== 2}>
                   {t("Save & Publish")}
@@ -99,13 +83,12 @@ const PluginUpload: React.FC<Props> = ({
         </TopRow>
         {currentTab === 1 && (
           <PackageArea
-            uploadedFile={uploadedFile}
             githubUrl={githubUrl}
             pageChangeButton={t("Details Setting")}
-            onChangeGithubUrl={handleChangeGithubUrl}
+            onChangeGithubUrl={onChangeGithubUrl}
             onPageChange={pluginName !== "" ? handlePageChange : undefined}
-            onRemove={handleRemove}
-            onParsePlugin={handleParsePlugin}
+            onRemove={onRemove}
+            onParsePlugin={onParsePlugin}
           />
         )}
         {currentTab === 2 && (
@@ -114,7 +97,7 @@ const PluginUpload: React.FC<Props> = ({
             version={version}
             description={description}
             onBack={handlePageChange}
-            handleUploadImages={handleUploadImages}
+            handleUploadImages={onImagesUpload}
           />
         )}
       </ContentWrapper>

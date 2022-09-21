@@ -27,12 +27,12 @@ const PluginUpload: React.FC<Props> = ({ pluginId }) => {
       description={parsedPlugin ? parsedPlugin.description : ""}
       githubUrl={githubUrl}
       isLoading={isLoading}
-      handleChangeGithubUrl={handleChangeGithubUrl}
+      onChangeGithubUrl={handleChangeGithubUrl}
       onParsePlugin={handleParsePlugin}
       onRemove={handleClearParsedPlugin}
       onPluginSave={handlePluginSave}
-      handleClickPublish={handleClickPublish}
-      handleUploadImages={handleUploadImages}
+      onPublish={handleClickPublish}
+      onImagesUpload={handleUploadImages}
     />
   );
 };
