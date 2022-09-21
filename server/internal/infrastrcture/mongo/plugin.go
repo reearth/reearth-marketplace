@@ -132,7 +132,10 @@ func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) erro
 		return fmt.Errorf("plugin id already used")
 	}
 	var pvc mongox.SliceConsumer[mongodoc.PluginVersionDocument]
-	if err := r.pluginVersionClient().FindOne(ctx, bson.M{"id": pluginVersionDoc.ID}, &pvc); err != nil && !errors.Is(err, rerror.ErrNotFound) {
+	if err := r.pluginVersionClient().FindOne(ctx, bson.M{
+		"id":      pluginVersionDoc.ID,
+		"version": pluginVersionDoc.Version,
+	}, &pvc); err != nil && !errors.Is(err, rerror.ErrNotFound) {
 		return fmt.Errorf("find plugin version: %w", err)
 	}
 	if len(pvc.Result) > 0 {
