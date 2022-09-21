@@ -34,32 +34,36 @@ const PluginUpload: React.FC<Props> = ({ pluginId }) => {
     uploadImages(images);
   }, []);
 
-  const handlePluginCreation = useCallback(async () => {
-    if (uploadedFile) {
-      await handleCreatePluginMutation({
-        file: uploadedFile,
-        repo: undefined,
-      });
-    } else if (githubUrl) {
-      await handleCreatePluginMutation({
-        file: undefined,
-        repo: githubUrl,
-      });
-    }
-    if (parsedPlugin && uploadImages.length > 0) {
-      await handleUpdatePluginMutation({
-        id: parsedPlugin.id,
-        images: uploadedImages,
-      });
-    }
-  }, [
-    githubUrl,
-    parsedPlugin,
-    uploadedFile,
-    uploadedImages,
-    handleCreatePluginMutation,
-    handleUpdatePluginMutation,
-  ]);
+  const handlePluginCreation = useCallback(
+    async (publish?: boolean) => {
+      if (uploadedFile) {
+        await handleCreatePluginMutation({
+          file: uploadedFile,
+          repo: undefined,
+        });
+      } else if (githubUrl) {
+        await handleCreatePluginMutation({
+          file: undefined,
+          repo: githubUrl,
+        });
+      }
+      if (parsedPlugin && uploadImages.length > 0) {
+        await handleUpdatePluginMutation({
+          id: parsedPlugin.id,
+          images: uploadedImages,
+          active: publish,
+        });
+      }
+    },
+    [
+      githubUrl,
+      parsedPlugin,
+      uploadedFile,
+      uploadedImages,
+      handleCreatePluginMutation,
+      handleUpdatePluginMutation,
+    ],
+  );
 
   const handlePluginUpdate = useCallback(async () => {
     if (parsedPlugin) {
@@ -73,15 +77,10 @@ const PluginUpload: React.FC<Props> = ({ pluginId }) => {
   const handleClickPublish = useCallback(async () => {
     if (parsedPlugin) {
       if (!pluginId) {
-        await handlePluginCreation();
+        await handlePluginCreation(true);
       }
-      await handleUpdatePluginMutation({
-        id: parsedPlugin.id,
-        images: uploadedImages,
-        active: true,
-      });
     }
-  }, [pluginId, uploadedImages, parsedPlugin, handlePluginCreation, handleUpdatePluginMutation]);
+  }, [pluginId, parsedPlugin, handlePluginCreation]);
 
   // When Github Url Input
   const handleChangeGithubUrl = useCallback(
