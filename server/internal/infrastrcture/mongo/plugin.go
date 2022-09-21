@@ -64,6 +64,7 @@ func (r *pluginRepo) FindByVersion(ctx context.Context, id plugin.ID, version st
 	pvd := pvc.Result[0]
 	return plugin.Versioned(pc.Rows[0]).
 		Version(pvd.Version).
+		Name(pvd.Name).
 		Author(pvd.Author).
 		Active(pvd.Active).
 		Downloads(pvd.Downloads).
