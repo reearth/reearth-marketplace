@@ -64,7 +64,9 @@ export default ({ pluginId }: { pluginId?: string }) => {
           repo,
         },
         onError: () => {
-          Message.error(t("Something might be wrong with your URL. Please check and try again."));
+          Message.error(
+            t("Something might be wrong with your plugin. Please check and try again."),
+          );
         },
       });
     },
@@ -102,6 +104,10 @@ export default ({ pluginId }: { pluginId?: string }) => {
           repo: githubUrl,
         },
         refetchQueries: ["GetMe"],
+        onError: () =>
+          Message.error(
+            t("Something might be wrong with your plugin. Please check and try again."),
+          ),
       });
 
       if (!errors && uploadImages.length) {
@@ -112,14 +118,14 @@ export default ({ pluginId }: { pluginId?: string }) => {
         });
       }
     },
-    [parsedPlugin, uploadedFile, githubUrl, uploadedImages, createPluginMutation, updatePlugin],
+    [parsedPlugin, createPluginMutation, uploadedFile, githubUrl, t, updatePlugin, uploadedImages],
   );
 
   const handleClickPublish = useCallback(async () => {
-    if (parsedPlugin && !pluginId) {
+    if (!pluginId) {
       await createPlugin(true);
     }
-  }, [pluginId, parsedPlugin, createPlugin]);
+  }, [pluginId, createPlugin]);
 
   // When Github URL is inputed
   const handleChangeGithubUrl = useCallback(
