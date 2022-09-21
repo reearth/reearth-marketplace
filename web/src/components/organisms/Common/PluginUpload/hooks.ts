@@ -28,33 +28,6 @@ export default ({ pluginId }: { pluginId?: string }) => {
   const [updatePluginMutation, { loading: loading3 }] = useUpdatePluginMutation();
   const isLoading = loading1 || loading2 || loading3;
 
-  const updatePlugin = useCallback(
-    async (data: { id: string; images?: File[]; active?: boolean }) => {
-      await updatePluginMutation({
-        variables: {
-          pluginId: data.id,
-          active: data.active,
-          images: data.images,
-        },
-        refetchQueries: ["GetMe"],
-        onCompleted: () => {
-          if (data.active !== undefined) {
-            if (data.active) {
-              Message.success(t("Your plugin was successfully published!"));
-            } else {
-              Message.success(t("Your plugin was successfully unpublished!"));
-            }
-          } else {
-            Message.success(t("Your plugin was successfully updated!"));
-          }
-          navigate("/myplugins");
-        },
-        onError: () => Message.error(t("Something went wrong with the update. Please try again.")),
-      });
-    },
-    [t, navigate, updatePluginMutation],
-  );
-
   const parsePlugin = useCallback(
     async ({ file, repo }: { file?: FileUploadType; repo?: string }) => {
       if (!file && !repo) return;
@@ -94,45 +67,75 @@ export default ({ pluginId }: { pluginId?: string }) => {
   const [uploadedFile, uploadZip] = useState<FileUploadType>();
   const [uploadedImages, uploadImages] = useState<File[]>([]);
 
-  const createPlugin = useCallback(
+  const savePlugin = useCallback(
     async (publish?: boolean) => {
-      if (!parsedPlugin) return;
+      const pid = parsedPlugin?.id || pluginId;
+      let error = false;
 
-      const { errors } = await createPluginMutation({
-        variables: {
-          file: uploadedFile,
-          repo: githubUrl,
-        },
-        refetchQueries: ["GetMe"],
-        onError: () =>
-          Message.error(
-            t("Something might be wrong with your plugin. Please check and try again."),
-          ),
-      });
+      if (parsedPlugin) {
+        const { errors } = await createPluginMutation({
+          variables: {
+            file: uploadedFile,
+            repo: githubUrl,
+          },
+          refetchQueries: ["GetMe"],
+          onError: () =>
+            Message.error(
+              t("Something might be wrong with your plugin. Please check and try again."),
+            ),
+        });
+        error = !!errors;
+      }
 
-      if (!errors && uploadImages.length) {
-        await updatePlugin({
-          id: parsedPlugin.id,
-          images: uploadedImages,
-          active: publish,
+      const active = typeof publish === "boolean" ? publish : undefined;
+      if (!error && pid && (typeof active === "boolean" || uploadImages.length)) {
+        await updatePluginMutation({
+          variables: {
+            pluginId: pid,
+            active,
+            images: uploadedImages,
+          },
+          refetchQueries: ["GetMe"],
+          onCompleted: () => {
+            if (active !== undefined) {
+              if (active) {
+                Message.success(t("Your plugin was successfully published!"));
+              } else {
+                Message.success(t("Your plugin was successfully unpublished!"));
+              }
+            } else {
+              Message.success(t("Your plugin was successfully updated!"));
+            }
+            navigate("/myplugins");
+          },
+          onError: () =>
+            Message.error(t("Something went wrong with the update. Please try again.")),
         });
       }
     },
-    [parsedPlugin, createPluginMutation, uploadedFile, githubUrl, t, updatePlugin, uploadedImages],
+    [
+      parsedPlugin,
+      pluginId,
+      createPluginMutation,
+      uploadedFile,
+      githubUrl,
+      t,
+      updatePluginMutation,
+      uploadedImages,
+      navigate,
+    ],
   );
 
-  const handleClickPublish = useCallback(async () => {
-    if (!pluginId) {
-      await createPlugin(true);
-    }
-  }, [pluginId, createPlugin]);
+  const handlePublish = useCallback(() => {
+    savePlugin(true);
+  }, [savePlugin]);
 
   // When Github URL is inputed
-  const handleChangeGithubUrl = useCallback(
+  const handleParseFromUrl = useCallback(
     async (url: string) => {
+      uploadZip(undefined);
       changeGithubUrl(url);
       await parsePlugin({
-        file: undefined,
         repo: url,
       });
     },
@@ -140,37 +143,26 @@ export default ({ pluginId }: { pluginId?: string }) => {
   );
 
   // When zip file is uploaded
-  const handleParsePluginFromFile = useCallback(
+  const handleParseFromFile = useCallback(
     async (file?: FileUploadType) => {
       uploadZip(file);
+      changeGithubUrl(undefined);
       await parsePlugin({
         file: file,
-        repo: undefined,
       });
     },
     [parsePlugin],
   );
 
-  const handlePluginSave = useCallback(async () => {
-    if (!pluginId) {
-      await createPlugin();
-    } else if (parsedPlugin) {
-      await updatePlugin({
-        id: parsedPlugin.id,
-        images: uploadedImages,
-      });
-    }
-  }, [pluginId, parsedPlugin, createPlugin, updatePlugin, uploadedImages]);
-
   return {
     parsedPlugin,
     isLoading,
     githubUrl,
-    handleClearParsedPlugin: reset,
+    handleRemove: reset,
     handleUploadImages: uploadImages,
-    handleClickPublish,
-    handleChangeGithubUrl,
-    handleParsePlugin: handleParsePluginFromFile,
-    handlePluginSave,
+    handleParseFromUrl,
+    handleParseFromFile,
+    handlePublish,
+    handlePluginSave: savePlugin,
   };
 };

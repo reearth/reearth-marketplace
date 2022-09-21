@@ -11,27 +11,27 @@ const PluginUpload: React.FC<Props> = ({ pluginId }) => {
     parsedPlugin,
     isLoading,
     githubUrl,
-    handleClearParsedPlugin,
-    handleChangeGithubUrl,
-    handleParsePlugin,
+    handleRemove,
+    handleParseFromUrl,
+    handleParseFromFile,
     handlePluginSave,
-    handleClickPublish,
+    handlePublish,
     handleUploadImages,
   } = useHooks({ pluginId });
 
   return (
     <PluginUploadMolecule
       currentPluginId={pluginId}
-      pluginName={parsedPlugin ? parsedPlugin.name : ""}
-      version={parsedPlugin ? parsedPlugin.version : ""}
-      description={parsedPlugin ? parsedPlugin.description : ""}
+      pluginName={parsedPlugin?.name ?? ""}
+      version={parsedPlugin?.version ?? ""}
+      description={parsedPlugin?.description ?? ""}
       githubUrl={githubUrl}
       isLoading={isLoading}
-      onChangeGithubUrl={handleChangeGithubUrl}
-      onParsePlugin={handleParsePlugin}
-      onRemove={handleClearParsedPlugin}
+      onParseFromUrl={handleParseFromUrl}
+      onParseFromFile={handleParseFromFile}
+      onPublish={handlePublish}
       onPluginSave={handlePluginSave}
-      onPublish={handleClickPublish}
+      onRemove={handleRemove}
       onImagesUpload={handleUploadImages}
     />
   );

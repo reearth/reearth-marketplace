@@ -18,8 +18,8 @@ export type Props = {
   version: string;
   githubUrl?: string;
   isLoading: boolean;
-  onChangeGithubUrl: (url: string) => void;
-  onParsePlugin: (file?: File) => Promise<void>;
+  onParseFromUrl: (url: string) => void;
+  onParseFromFile: (file?: File) => Promise<void>;
   onPluginSave: () => void;
   onRemove?: () => void;
   onPublish: () => void;
@@ -33,8 +33,8 @@ const PluginUpload: React.FC<Props> = ({
   description,
   githubUrl,
   isLoading,
-  onChangeGithubUrl,
-  onParsePlugin,
+  onParseFromUrl,
+  onParseFromFile,
   onPluginSave,
   onRemove,
   onPublish,
@@ -63,7 +63,7 @@ const PluginUpload: React.FC<Props> = ({
               <Button
                 type="default"
                 size="large"
-                onClick={onPluginSave}
+                onClick={() => onPluginSave?.()}
                 loading={isLoading}
                 disabled={currentTab !== 2}>
                 {t("Save")}
@@ -72,7 +72,7 @@ const PluginUpload: React.FC<Props> = ({
                 <Button
                   type="primary"
                   size="large"
-                  onClick={onPublish}
+                  onClick={() => onPublish?.()}
                   loading={isLoading}
                   disabled={currentTab !== 2}>
                   {t("Save & Publish")}
@@ -85,10 +85,10 @@ const PluginUpload: React.FC<Props> = ({
           <PackageArea
             githubUrl={githubUrl}
             pageChangeButton={t("Details Setting")}
-            onChangeGithubUrl={onChangeGithubUrl}
+            onChangeGithubUrl={onParseFromUrl}
             onPageChange={pluginName !== "" ? handlePageChange : undefined}
             onRemove={onRemove}
-            onParsePlugin={onParsePlugin}
+            onParsePlugin={onParseFromFile}
           />
         )}
         {currentTab === 2 && (
