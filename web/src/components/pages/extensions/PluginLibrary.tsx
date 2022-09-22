@@ -2,7 +2,7 @@ import { useCallback, useLayoutEffect, useState } from "react";
 
 import CoreWrapper from "@marketplace/components/molecules/Common/CoreWrapper";
 import PluginDetailOrg from "@marketplace/components/organisms/PluginDetail";
-import RootPage from "@marketplace/components/pages/Root";
+import Top from "@marketplace/components/organisms/Top";
 import { useT } from "@marketplace/i18n";
 
 import SharedProviders from "./sharedProviders";
@@ -71,7 +71,7 @@ export default function LibraryExtension({
             onBack={handleBack}
           />
         )}
-        {!pluginId && <RootPage accessToken={accessToken} onPluginSelect={handlePluginSelect} />}
+        {!pluginId && <Top accessToken={accessToken} onPluginSelect={handlePluginSelect} />}
       </CoreWrapper>
     </SharedProviders>
   );

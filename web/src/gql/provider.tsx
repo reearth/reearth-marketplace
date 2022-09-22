@@ -53,7 +53,7 @@ const Provider: React.FC<Props> = ({ children, accessToken: accessToken2 }) => {
     uri: endpoint,
     link: ApolloLink.from([errorLink, authLink, uploadLink]),
     cache,
-    connectToDevTools: process.env.NODE_ENV === "development",
+    connectToDevTools: !!import.meta.env.DEV,
   });
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
