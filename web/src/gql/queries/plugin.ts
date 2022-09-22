@@ -8,7 +8,7 @@ export const PLUGIN = gql`
         id
         images
         author
-        publisher{
+        publisher {
           id
           name
         }
@@ -37,7 +37,7 @@ export const PLUGINS = gql`
         id
         images
         author
-        publisher{
+        publisher {
           id
           name
         }
@@ -84,7 +84,7 @@ export const SEARCH_PLUGIN = gql`
         id
         images
         author
-        publisher{
+        publisher {
           id
           name
         }
@@ -177,7 +177,7 @@ export const PARSE_PLUGIN = gql`
         type
         name
         author
-        publisher{
+        publisher {
           id
           name
         }
@@ -207,7 +207,7 @@ export const UPDATE_PLUGIN_VERSION = gql`
         id
         name
         author
-        publisher{
+        publisher {
           id
           name
         }

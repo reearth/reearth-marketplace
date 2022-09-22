@@ -13,6 +13,7 @@ import Markdown from "@marketplace/components/atoms/Markdown";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
+import { getConfig } from "@marketplace/config";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
@@ -73,6 +74,8 @@ const PluginDetailPage: React.FC<Props> = ({
     if (isNaN(d.getTime())) return undefined;
     return d;
   }, [updatedDate]);
+
+  const config = getConfig();
 
   return (
     <Wrapper>
@@ -211,7 +214,7 @@ const PluginDetailPage: React.FC<Props> = ({
                 type="link"
                 size="middle"
                 danger
-                href={window.REEARTH_MARKETPLACE_CONFIG?.reportUrl}
+                href={config?.reportUrl}
                 target="_blank">
                 <Row align="bottom" justify="space-between" wrap={false}>
                   <Col>{t("Report this plugin")}</Col>

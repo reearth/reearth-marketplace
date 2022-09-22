@@ -17,6 +17,8 @@ import { Provider as GqlProvider } from "@marketplace/gql";
 import { Provider as I18nProvider } from "@marketplace/i18n";
 import { Provider as ThemeProvider } from "@marketplace/theme";
 
+import { useConfig } from "./config";
+
 const AppRoutes = () => {
   const navigate = useNavigate();
   const handlePluginSelect = useCallback(
@@ -47,7 +49,9 @@ const AppRoutes = () => {
 };
 
 export default function App() {
-  return (
+  const config = useConfig();
+
+  return config ? (
     <Auth0Provider>
       <GqlProvider>
         <I18nProvider>
@@ -61,5 +65,5 @@ export default function App() {
         </I18nProvider>
       </GqlProvider>
     </Auth0Provider>
-  );
+  ) : null;
 }

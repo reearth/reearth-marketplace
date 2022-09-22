@@ -1,3 +1,4 @@
+import { useConfig } from "@marketplace/config";
 import { Provider as GqlProvider } from "@marketplace/gql";
 import { Provider as I18nProvider } from "@marketplace/i18n";
 import { Provider as ThemeProvider } from "@marketplace/theme";
@@ -15,11 +16,13 @@ export default function SharedProviders({
   accessToken?: string;
   children?: React.ReactNode;
 }) {
-  return (
+  const config = useConfig();
+
+  return config?.marketplaceApi && accessToken ? (
     <I18nProvider>
       <GqlProvider accessToken={accessToken}>
         <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </GqlProvider>
     </I18nProvider>
-  );
+  ) : null;
 }

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { useAuth } from "@marketplace/auth";
 import { Workspace } from "@marketplace/components/molecules/PluginDetailPage";
+import { getConfig } from "@marketplace/config";
 import { usePluginQuery, useLikePluginMutation, useUnlikePluginMutation } from "@marketplace/gql";
 
 export type Plugin = {
@@ -10,6 +11,7 @@ export type Plugin = {
 };
 
 export default (pluginId: string, installedPlugins?: Plugin[]) => {
+  const config = getConfig();
   const auth = useAuth();
 
   const { data, refetch } = usePluginQuery({
@@ -84,8 +86,9 @@ export default (pluginId: string, installedPlugins?: Plugin[]) => {
   const [workspaces, setWorkspaces] = useState<Workspace[]>([]);
 
   useEffect(() => {
-    if (!modalVisible || !window.REEARTH_MARKETPLACE_CONFIG) return;
-    const base = window.REEARTH_MARKETPLACE_CONFIG.reearthApi;
+    const config = getConfig();
+    if (!modalVisible || !config) return;
+    const base = config.reearthApi;
 
     (async () => {
       const token = await auth.getAccessToken();
@@ -113,10 +116,9 @@ export default (pluginId: string, installedPlugins?: Plugin[]) => {
   const handleOpenPluginInReearth = useCallback(
     (_workspaceId: string, projectId: string) => {
       location.href =
-        (window.REEARTH_MARKETPLACE_CONFIG?.reearthWeb ?? "") +
-        `/settings/projects/${projectId}/plugins?pluginId=${pluginId}`;
+        (config?.reearthWeb ?? "") + `/settings/projects/${projectId}/plugins?pluginId=${pluginId}`;
     },
-    [pluginId],
+    [config?.reearthWeb, pluginId],
   );
 
   return {
