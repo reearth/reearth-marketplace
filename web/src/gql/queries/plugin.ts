@@ -11,6 +11,7 @@ export const PLUGIN = gql`
         publisher {
           id
           name
+          displayName
         }
         like
         downloads
@@ -40,6 +41,7 @@ export const PLUGINS = gql`
         publisher {
           id
           name
+          displayName
         }
         like
         downloads
@@ -87,6 +89,7 @@ export const SEARCH_PLUGIN = gql`
         publisher {
           id
           name
+          displayName
         }
         like
         liked
@@ -180,6 +183,7 @@ export const PARSE_PLUGIN = gql`
         publisher {
           id
           name
+          displayName
         }
         description
         icon
@@ -210,6 +214,7 @@ export const UPDATE_PLUGIN_VERSION = gql`
         publisher {
           id
           name
+          displayName
         }
         description
         icon

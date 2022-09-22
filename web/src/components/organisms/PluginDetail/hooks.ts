@@ -59,7 +59,7 @@ export default (pluginId: string, installedPlugins?: Plugin[]) => {
           id: currentPlugin.id,
           name: currentPlugin.name,
           cover: currentPlugin.images[0],
-          publisher: currentPlugin.publisher.name,
+          publisher: currentPlugin.publisher.displayName || currentPlugin.publisher.name,
           like: currentPlugin.like,
           images: currentPlugin.images,
           description: currentPlugin.description || "",

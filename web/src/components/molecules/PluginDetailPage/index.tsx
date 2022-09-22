@@ -57,8 +57,8 @@ const PluginDetailPage: React.FC<Props> = ({
     name: pluginName,
     version,
     publisher,
-    like: likes,
-    liked: isLiked,
+    like,
+    liked,
     description,
     readme,
     images,
@@ -146,7 +146,7 @@ const PluginDetailPage: React.FC<Props> = ({
                 <Space>
                   <Col>
                     <StyledIcon icon="heartOutlined" />
-                    {likes}
+                    {like}
                   </Col>
                   <Col>
                     <StyledIcon icon="arrowDown" />
@@ -162,8 +162,8 @@ const PluginDetailPage: React.FC<Props> = ({
                     size="large"
                     ghost
                     disabled={!isLoggedIn}
-                    onClick={() => handleClickLike(!!isLiked)}>
-                    {isLiked ? (
+                    onClick={() => handleClickLike(!!liked)}>
+                    {liked ? (
                       <Icon icon="heartFilled" style={{ color: "#B02838" }} />
                     ) : (
                       <Icon icon="heartOutlined" />
