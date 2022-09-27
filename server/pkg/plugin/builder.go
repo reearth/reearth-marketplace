@@ -90,7 +90,7 @@ func Versioned(plugin *Plugin) *VersionedBuilder {
 	return &VersionedBuilder{
 		p: VersionedPlugin{
 			plugin:  plugin,
-			version: &Version{PartialVersion: *plugin.latestVersion, id: vid},
+			version: &Version{PartialVersion: *plugin.latestVersion, id: vid, active: true},
 		},
 	}
 }
