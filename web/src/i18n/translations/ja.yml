@@ -1,9 +1,5 @@
 Re:Earth Marketplace: Re:Earthマーケットプレイス
 Make Re:Earth the way you want it: あなたのRe:Earthをもっと自由に
-Update: プラグインを更新
-Uninstall: アンインストール
-Your plugin was successfully updated!: プラグインのアップデートが完了しました。
-Success: 成功しました
 Community: コミュニティ
 Discord: ''
 Discussion: ''
@@ -73,6 +69,9 @@ Report this plugin: このプラグインを通報
 Choose one project to open this plugin: プラグインを追加するプロジェクトを１つ選んでください
 Workspace: ワークスペース
 Choose: 選択
+Cancel: キャンセル
+Update: プラグインを更新
+Uninstall: アンインストール
 alt-plugin-cover-image: プラグインの画像
 Downloads Asc: ダウンロード数昇順
 Downloads Desc: ダウンロード数降順
@@ -83,8 +82,9 @@ Published Desc: 公開日降順
 search text: キーワードを入力
 Liked: お気に入り済
 Details: 詳細
+Something might be wrong with your plugin. Please check and try again.: プラグインのアップロード時に問題が発生しました。
 Your plugin was successfully published!: プラグインが正常に公開されました。
 Your plugin was successfully unpublished!: プラグインを非公開にしました。
+Your plugin was successfully updated!: プラグインのアップデートが完了しました。
 Something went wrong with the update. Please try again.: プラグインの更新時に問題が発生しました。
-Something might be wrong with your plugin. Please check and try again.: プラグインのアップロード時に問題が発生しました。
-Developer Registration: 開発者登録
+Success: 成功しました
