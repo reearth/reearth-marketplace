@@ -1,11 +1,11 @@
 import { useCallback, useLayoutEffect, useState } from "react";
 
 import CoreWrapper from "@marketplace/components/molecules/Common/CoreWrapper";
-import PluginDetailPage from "@marketplace/components/pages/PluginDetail";
-import RootPage from "@marketplace/components/pages/Root";
+import PluginDetailOrg from "@marketplace/components/organisms/PluginDetail";
+import Top from "@marketplace/components/organisms/Top";
 import { useT } from "@marketplace/i18n";
 
-import SharedProviders from "../sharedProviders";
+import SharedProviders from "./sharedProviders";
 
 import "@marketplace/index.css";
 
@@ -63,15 +63,15 @@ export default function LibraryExtension({
     <SharedProviders accessToken={accessToken} lang={lang} theme={theme}>
       <CoreWrapper>
         {pluginId && (
-          <PluginDetailPage
-            selectedPluginId={pluginId}
+          <PluginDetailOrg
+            pluginId={pluginId}
             accessToken={accessToken}
             installedPlugins={installedPlugins}
-            onInstall={handleInstall}
+            onPluginInstall={handleInstall}
             onBack={handleBack}
           />
         )}
-        {!pluginId && <RootPage accessToken={accessToken} onPluginSelect={handlePluginSelect} />}
+        {!pluginId && <Top accessToken={accessToken} onPluginSelect={handlePluginSelect} />}
       </CoreWrapper>
     </SharedProviders>
   );

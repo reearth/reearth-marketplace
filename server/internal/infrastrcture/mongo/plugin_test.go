@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/reearth/reearth-marketplace/server/internal/infrastrcture/mongo/mongodoc"
+	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
@@ -245,5 +246,108 @@ func TestPlugin_Create(t *testing.T) {
 		assert.NoError(t, err)
 		err = r.Create(ctx, versioned)
 		assert.ErrorContains(t, err, "plugin id already used")
+	})
+}
+
+func Test_pluginRepo_Search(t *testing.T) {
+	now1 := time.Now().UTC().Truncate(time.Millisecond)
+	now2 := time.Now().Add(time.Second).UTC().Truncate(time.Millisecond)
+
+	publisherID := user.NewID()
+
+	version1, err := plugin.NewPartialVersion().
+		Version("0.0.1").
+		Name("Test Plugin").
+		Author("tester").
+		Description("plugin description").
+		Readme("# test-plugin\n").
+		CreatedAt(now1).
+		UpdatedAt(now1).
+		PublishedAt(now1).
+		Build()
+	assert.NoError(t, err)
+
+	plugin1 := plugin.New(publisherID).
+		NewID("test-plugin").
+		Type("REEARTH").
+		Active(true).
+		Downloads(0).
+		Like(0).
+		CreatedAt(now1).
+		UpdatedAt(now1).
+		LatestVersion(version1).
+		MustBuild()
+
+	version2, err := plugin.NewPartialVersion().
+		Version("0.0.2").
+		Name("Test Plugin 2").
+		Author("tester").
+		Description("plugin description 2").
+		Readme("# test-plugin 2\n").
+		CreatedAt(now2).
+		UpdatedAt(now2).
+		PublishedAt(now2).
+		Build()
+	assert.NoError(t, err)
+
+	plugin2 := plugin.New(publisherID).
+		NewID("test-plugin-2").
+		Type("REEARTH").
+		Active(true).
+		Downloads(0).
+		Like(0).
+		CreatedAt(now2).
+		UpdatedAt(now2).
+		LatestVersion(version2).
+		MustBuild()
+
+	versioned1, err := plugin.Versioned(plugin1).
+		Downloads(0).
+		Active(true).
+		Build()
+	assert.NoError(t, err)
+
+	versioned2, err := plugin.Versioned(plugin2).
+		Downloads(0).
+		Active(true).
+		Build()
+	assert.NoError(t, err)
+
+	connect := mongotest.Connect(t)
+	t.Run("Pagination", func(t *testing.T) {
+		ctx := context.Background()
+		db := connect(t)
+		r := NewPlugin(mongox.NewClientWithDatabase(db))
+		if err := r.Create(ctx, versioned1); err != nil {
+			t.Fatalf("failed to create versioned1: %v", err)
+		}
+		if err := r.Create(ctx, versioned2); err != nil {
+			t.Fatalf("failed to create versioned2: %v", err)
+		}
+		first := 1
+		sort := "PUBLISHEDAT_DESC"
+		ps1, pi1, err := r.Search(ctx, nil, &interfaces.SearchPluginParam{
+			First: &first,
+			Sort:  sort,
+		})
+		if err != nil {
+			t.Errorf("search: unexpected error: %v", err)
+		}
+		assert.Equal(t, 2, pi1.TotalCount)
+		assert.Equal(t, 1, len(ps1))
+		assert.Equal(t, versioned2, ps1[0])
+		assert.Equal(t, true, pi1.HasNextPage)
+
+		ps2, pi2, err := r.Search(ctx, nil, &interfaces.SearchPluginParam{
+			First: &first,
+			After: pi1.EndCursor.StringRef(),
+			Sort:  sort,
+		})
+		if err != nil {
+			t.Errorf("search with after: unexpected error: %v", err)
+		}
+		assert.Equal(t, 1, len(ps2))
+		assert.Equal(t, versioned1, ps2[0])
+		assert.Equal(t, false, pi2.HasNextPage)
 	})
 }

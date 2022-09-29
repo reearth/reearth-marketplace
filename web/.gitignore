@@ -25,3 +25,6 @@ dist-ssr
 
 /storybook-static
 /coverage
+
+/public/reearth_config.json
+/src/public/reearth_config.json

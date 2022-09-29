@@ -1,6 +1,6 @@
-import SharedProviders from "../sharedProviders";
+import PluginAccordion from "@marketplace/components/molecules/PluginInstalledList/Accordion";
 
-import List from "./Accordion";
+import SharedProviders from "./sharedProviders";
 
 export default function PluginInstalledList({
   theme,
@@ -26,7 +26,7 @@ export default function PluginInstalledList({
 }) {
   return (
     <SharedProviders accessToken={accessToken} lang={lang} theme={theme}>
-      <List plugins={installedPlugins} onInstall={onInstall} onUninstall={onUninstall} />
+      <PluginAccordion plugins={installedPlugins} onInstall={onInstall} onUninstall={onUninstall} />
     </SharedProviders>
   );
 }

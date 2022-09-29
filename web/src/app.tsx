@@ -1,12 +1,10 @@
-import { useCallback } from "react";
-import { BrowserRouter as Router, useNavigate, useRoutes } from "react-router-dom";
+import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 
 import { Provider as Auth0Provider } from "@marketplace/auth";
 import CoreWrapper from "@marketplace/components/molecules/Common/CoreWrapper";
 import Footer from "@marketplace/components/molecules/Common/Footer";
 import Header from "@marketplace/components/organisms/Common/Header";
 import PluginUploadPage from "@marketplace/components/pages/AddNewPlugin";
-import PublisherRegistration from "@marketplace/components/pages/DeveloperRegistration";
 import EditPlugin from "@marketplace/components/pages/EditPlugin";
 import MyPlugins from "@marketplace/components/pages/MyPlugins";
 import NotFound from "@marketplace/components/pages/NotFound";
@@ -17,27 +15,13 @@ import { Provider as GqlProvider } from "@marketplace/gql";
 import { Provider as I18nProvider } from "@marketplace/i18n";
 import { Provider as ThemeProvider } from "@marketplace/theme";
 
+import { useConfig } from "./config";
+
 const AppRoutes = () => {
-  const navigate = useNavigate();
-  const handlePluginSelect = useCallback(
-    (id: string) => {
-      navigate(`/plugins/${id}`);
-    },
-    [navigate],
-  );
-
-  const handleBack = useCallback(() => {
-    navigate("/");
-  }, [navigate]);
-
   return useRoutes([
-    { path: "/", element: <RootPage showBanner onPluginSelect={handlePluginSelect} /> },
-    { path: "/plugins/:pluginId", element: <PluginDetailPage onBack={handleBack} /> },
-    { path: "/mypage", element: <UserPage onPluginSelect={handlePluginSelect} /> },
-    {
-      path: "/:userId/publisher-registration",
-      element: <PublisherRegistration />,
-    },
+    { path: "/", element: <RootPage /> },
+    { path: "/plugins/:pluginId", element: <PluginDetailPage /> },
+    { path: "/mypage", element: <UserPage /> },
     { path: "/myplugins", element: <MyPlugins /> },
     { path: "/myplugins/new", element: <PluginUploadPage /> },
     { path: "/myplugins/:pluginId/update", element: <PluginUploadPage /> },
@@ -47,7 +31,9 @@ const AppRoutes = () => {
 };
 
 export default function App() {
-  return (
+  const config = useConfig();
+
+  return config ? (
     <Auth0Provider>
       <GqlProvider>
         <I18nProvider>
@@ -61,5 +47,5 @@ export default function App() {
         </I18nProvider>
       </GqlProvider>
     </Auth0Provider>
-  );
+  ) : null;
 }

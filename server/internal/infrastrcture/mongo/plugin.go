@@ -122,6 +122,7 @@ func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) erro
 			"$setOnInsert": bson.M{
 				"id":          pluginDoc.ID,
 				"type":        pluginDoc.Type,
+				"active":      pluginDoc.Active,
 				"createdAt":   pluginDoc.CreatedAt,
 				"tags":        pluginDoc.Tags,
 				"image":       pluginDoc.Images,
@@ -144,7 +145,7 @@ func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) erro
 		options.FindOneAndUpdate().SetUpsert(true).SetReturnDocument(options.After),
 	)
 	if err := res.Err(); err != nil {
-		if IsDupErr(err) {
+		if mongo.IsDuplicateKeyError(err) {
 			return fmt.Errorf("plugin id already used")
 		}
 		return fmt.Errorf("find or insert plugin: %w", err)
@@ -519,9 +520,22 @@ type searchCursor struct {
 	ID  string      `json:"id"`
 }
 
+func (c *searchCursor) KeyInt64() int64 {
+	switch k := c.Key.(type) {
+	case int:
+		return int64(k)
+	case float64:
+		return int64(k)
+	case int64:
+		return k
+	default:
+		return 0
+	}
+}
+
 func (c *searchCursor) IsValidKeyType() bool {
 	switch c.Key.(type) {
-	case string, int, int64:
+	case string, int, int64, float64:
 		return true
 	default:
 		return false
@@ -586,7 +600,7 @@ func decodeSearchCursor(key, s string) (*searchCursor, error) {
 		return nil, fmt.Errorf("invalid cursor type")
 	}
 	if key == "publishedAt" || key == "createdAt" {
-		sc.Key = time.UnixMicro(sc.Key.(int64))
+		sc.Key = time.UnixMicro(sc.KeyInt64())
 	}
 	return &sc, nil
 }

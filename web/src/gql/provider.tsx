@@ -4,6 +4,7 @@ import { onError } from "@apollo/client/link/error";
 import { createUploadLink } from "apollo-upload-client";
 
 import { useAuth } from "@marketplace/auth";
+import { getConfig } from "@marketplace/config";
 import { useError } from "@marketplace/state";
 
 type Props = {
@@ -12,9 +13,8 @@ type Props = {
 };
 
 const Provider: React.FC<Props> = ({ children, accessToken: accessToken2 }) => {
-  const endpoint = window.REEARTH_MARKETPLACE_CONFIG?.marketplaceApi
-    ? `${window.REEARTH_MARKETPLACE_CONFIG.marketplaceApi}/graphql`
-    : "/api/graphql";
+  const cofig = getConfig();
+  const endpoint = cofig?.marketplaceApi ? `${cofig.marketplaceApi}/graphql` : "/api/graphql";
   const [, setError] = useError();
   const { getAccessToken } = useAuth();
 
@@ -53,7 +53,7 @@ const Provider: React.FC<Props> = ({ children, accessToken: accessToken2 }) => {
     uri: endpoint,
     link: ApolloLink.from([errorLink, authLink, uploadLink]),
     cache,
-    connectToDevTools: process.env.NODE_ENV === "development",
+    connectToDevTools: !!import.meta.env.DEV,
   });
 
   return <ApolloProvider client={client}>{children}</ApolloProvider>;

@@ -1,35 +1,19 @@
-import { useParams } from "react-router-dom";
+import { useCallback } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 import PluginDetailOrg from "@marketplace/components/organisms/PluginDetail";
 
-export type Props = {
-  selectedPluginId?: string;
-  accessToken?: string;
-  installedPlugins?: {
-    id: string;
-    version: string;
-  }[];
-  onInstall?: (pluginId: string) => void;
-  onBack?: () => void;
-};
+export type Props = {};
 
-const PluginDetail: React.FC<Props> = ({
-  selectedPluginId,
-  accessToken,
-  installedPlugins,
-  onInstall,
-  onBack,
-}) => {
+const PluginDetail: React.FC<Props> = () => {
+  const navigate = useNavigate();
+
+  const handleBack = useCallback(() => {
+    navigate("/");
+  }, [navigate]);
+
   const { pluginId } = useParams();
-  return (
-    <PluginDetailOrg
-      pluginId={selectedPluginId ?? pluginId}
-      accessToken={accessToken}
-      installedPlugins={installedPlugins}
-      onPluginInstall={onInstall}
-      onBack={onBack}
-    />
-  );
+  return <PluginDetailOrg pluginId={pluginId} onBack={handleBack} />;
 };
 
 export default PluginDetail;
