@@ -16,13 +16,22 @@ const Footer: React.FC<Props> = () => {
           <Col style={{ maxWidth: "300px" }}>
             <SectionTitle>{t("Community")}</SectionTitle>
             <Section direction="vertical">
-              <SectionContent href="https://discord.gg/XJhYkQQDAu" target="_blank">
+              <SectionContent
+                href="https://discord.gg/XJhYkQQDAu"
+                target="_blank"
+              >
                 {t("Discord")}
               </SectionContent>
-              <SectionContent href="https://github.com/reearth/reearth/discussions" target="_blank">
+              <SectionContent
+                href="https://github.com/reearth/reearth/discussions"
+                target="_blank"
+              >
                 {t("Discussion")}
               </SectionContent>
-              <SectionContent href="https://reearth.io/blog/tags/event" target="_blank">
+              <SectionContent
+                href="https://reearth.io/blog/tags/event"
+                target="_blank"
+              >
                 {t("Events")}
               </SectionContent>
             </Section>
@@ -30,21 +39,42 @@ const Footer: React.FC<Props> = () => {
           <Col style={{ maxWidth: "300px" }}>
             <SectionTitle>{t("Support")}</SectionTitle>
             <Section direction="vertical">
-              <SectionContent href={t("https://docs2.reearth.io/getting-started")} target="_blank">
+              <SectionContent
+                href={t("https://docs2.reearth.io/getting-started")}
+                target="_blank"
+              >
                 {t("Getting Started")}
               </SectionContent>
-              <SectionContent href={t("https://docs2.reearth.io/reference")} target="_blank">
+              <SectionContent
+                href={t(
+                  "https://eukarya.notion.site/Re-Earth-Marketplace-ba8ab625400647878af457a46a907e3b"
+                )}
+                target="_blank"
+              >
+                {t("Marketplace User Manual")}
+              </SectionContent>
+              <SectionContent
+                href={t("https://docs2.reearth.io/reference")}
+                target="_blank"
+              >
                 {t("Reference")}
               </SectionContent>
               <SectionContent
                 href={t("https://docs.reearth.io/developer-guide/intro/about")}
-                target="_blank">
+                target="_blank"
+              >
                 {t("Developer Guide")}
               </SectionContent>
-              <SectionContent href={t("https://docs.reearth.io/tutorial/home")} target="_blank">
+              <SectionContent
+                href={t("https://docs.reearth.io/tutorial/home")}
+                target="_blank"
+              >
                 {t("Tutorial")}
               </SectionContent>
-              <SectionContent href={t("https://reearth.io/docs/terms-of-use")} target="_blank">
+              <SectionContent
+                href={t("https://reearth.io/docs/terms-of-use")}
+                target="_blank"
+              >
                 {t("Terms of Use")}
               </SectionContent>
             </Section>
@@ -52,20 +82,28 @@ const Footer: React.FC<Props> = () => {
           <Col style={{ maxWidth: "300px" }}>
             <SectionTitle>{t("Developers")}</SectionTitle>
             <Section direction="vertical">
-              <SectionContent href="https://github.com/reearth/reearth" target="_blank">
+              <SectionContent
+                href="https://github.com/reearth/reearth"
+                target="_blank"
+              >
                 {t("Github")}
               </SectionContent>
-              <SectionContent href="https://github.com/reearth/reearth/projects/1" target="_blank">
+              <SectionContent
+                href="https://github.com/reearth/reearth/projects/1"
+                target="_blank"
+              >
                 {t("Roadmap")}
               </SectionContent>
               <SectionContent
                 href="https://github.com/reearth/reearth/blob/main/CHANGELOG.md"
-                target="_blank">
+                target="_blank"
+              >
                 {t("Changelog")}
               </SectionContent>
               <SectionContent
                 href="https://github.com/reearth/reearth/blob/main/CODE_OF_CONDUCT.md"
-                target="_blank">
+                target="_blank"
+              >
                 {t("Code of Conduct")}
               </SectionContent>
             </Section>
@@ -76,13 +114,22 @@ const Footer: React.FC<Props> = () => {
               <SectionContent href="https://eukarya.io/" target="_blank">
                 {t("Website")}
               </SectionContent>
-              <SectionContent href="https://www.facebook.com/EukaryaInc" target="_blank">
+              <SectionContent
+                href="https://www.facebook.com/EukaryaInc"
+                target="_blank"
+              >
                 {t("Facebook")}
               </SectionContent>
-              <SectionContent href={t("https://twitter.com/eukarya_EN")} target="_blank">
+              <SectionContent
+                href={t("https://twitter.com/eukarya_EN")}
+                target="_blank"
+              >
                 {t("Twitter")}
               </SectionContent>
-              <SectionContent href={t("https://reearth.io/docs/privacy-policy")} target="_blank">
+              <SectionContent
+                href={t("https://reearth.io/docs/privacy-policy")}
+                target="_blank"
+              >
                 {t("Privacy Policy")}
               </SectionContent>
             </Section>
