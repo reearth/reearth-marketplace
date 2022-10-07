@@ -1,12 +1,14 @@
 Re:Earth Marketplace: Re:Earthマーケットプレイス
 Make Re:Earth the way you want it: あなたのRe:Earthをもっと自由に
 Community: コミュニティ
-Discord: ""
-Discussion: ""
+Discord: ''
+Discussion: ''
 Events: イベント
 Support: サポート
 https://docs2.reearth.io/getting-started: https://docs2.reearth.io/ja/getting-started
 Getting Started: Re:Earthをはじめよう
+https://eukarya.notion.site/Re-Earth-Marketplace-ba8ab625400647878af457a46a907e3b: ''
+Marketplace User Manual: ユーザーマニュアル
 https://docs2.reearth.io/reference: https://docs2.reearth.io/ja/reference
 Reference: 参考
 https://docs.reearth.io/developer-guide/intro/about: https://docs.reearth.io/ja/developer-guide/intro/about
@@ -16,15 +18,15 @@ Tutorial: チュートリアル
 https://reearth.io/docs/terms-of-use: https://reearth.io/ja/docs/terms-of-use
 Terms of Use: 利用規約
 Developers: デベロッパー
-Github: ""
+Github: ''
 Roadmap: ロードマップ
-Changelog: ""
-Code of Conduct: ""
+Changelog: ''
+Code of Conduct: ''
 Company: 会社情報
 Website: Webサイト
-Facebook: ""
+Facebook: ''
 https://twitter.com/eukarya_EN: https://twitter.com/eukaryaofficial
-Twitter: ""
+Twitter: ''
 https://reearth.io/docs/privacy-policy: https://reearth.io/ja/docs/privacy-policy
 Privacy Policy: プライバシーポリシー
 Auto: 自動
@@ -58,7 +60,7 @@ Updated Date: 最終更新日
 Action: アクション
 Update this plugin: このプラグインを更新する
 Top: トップ
-README: ""
+README: ''
 Update Plugin: プラグインを更新
 Already installed: 既にインストールされています
 Install: インストール
@@ -88,4 +90,3 @@ Your plugin was successfully unpublished!: プラグインを非公開にしま�
 Your plugin was successfully updated!: プラグインのアップデートが完了しました。
 Something went wrong with the update. Please try again.: プラグインの更新時に問題が発生しました。
 Success: 成功しました
-Marketplace User Manual: ユーザーマニュアル
