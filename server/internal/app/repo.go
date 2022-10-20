@@ -30,6 +30,8 @@ func initReposAndGateways(ctx context.Context, conf *Config, debug bool) (*repo.
 	if err := mongorepo.InitRepos(ctx, repos, client, "reearth_marketplace"); err != nil {
 		log.Fatalf("Failed to init mongo: %+v\n", err)
 	}
+
+	// File (GCS)
 	fileRepo, err := gcs.NewFile(conf.GCS.Bucket, conf.GCS.AssetsBucket, conf.GCS.AssetsBaseURL)
 	if err != nil {
 		log.Fatalf("file: init error: %v", err)
