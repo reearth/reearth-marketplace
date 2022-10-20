@@ -8,10 +8,11 @@ import (
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
+	"github.com/reearth/reearthx/usecasex"
 )
 
 type Organization struct {
-	transaction      repo.Transaction
+	transaction      usecasex.Transaction
 	organizationRepo repo.Organization
 	userRepo         repo.User
 }

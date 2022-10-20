@@ -14,15 +14,18 @@ type organizationRepo struct {
 }
 
 func NewOrganization(client *mongox.Client) repo.Organization {
-	r := &organizationRepo{
-		client: client.WithCollection("organization"),
-	}
+	r := &organizationRepo{client: client.WithCollection("organization")}
 	r.init()
 	return r
 }
 
 func (r *organizationRepo) init() {
-	r.client.CreateIndex(context.Background(), nil, []string{"name"})
+	initIndexes(
+		context.Background(),
+		r.client,
+		nil,
+		[]string{"id", "name"},
+	)
 }
 
 func (r *organizationRepo) Save(ctx context.Context, organization *user.Organization) error {

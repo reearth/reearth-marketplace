@@ -1,4 +1,4 @@
-name: deploy test
+name: deploy
 on:
   workflow_run:
     workflows: [build]
@@ -13,7 +13,7 @@ env:
 jobs:
   deploy_web:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion != 'failure' && github.event.repository.full_name == 'reearth/reearth-marketplace'
+    if: github.event.workflow_run.conclusion != 'failure' && github.event.repository.full_name == 'reearth/reearth-marketplace' && github.event.workflow_run.head_branch == 'main'
     steps:
       - name: get latest web artifact
         uses: dawidd6/action-download-artifact@v2
@@ -36,7 +36,7 @@ jobs:
         run: gsutil -m -h "Cache-Control:no-store" rsync -x "^reearth_config\\.json$" -dr reearth-marketplace-web/ $GCS_DEST
   deploy_server:
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion != 'failure' && github.event.repository.full_name == 'reearth/reearth-marketplace'
+    if: github.event.workflow_run.conclusion != 'failure' && github.event.repository.full_name == 'reearth/reearth-marketplace' && github.event.workflow_run.head_branch == 'main'
     permissions:
       contents: read
       id-token: write

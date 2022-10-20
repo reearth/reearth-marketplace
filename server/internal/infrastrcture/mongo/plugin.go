@@ -87,19 +87,24 @@ func (r *pluginRepo) SaveVersion(ctx context.Context, v *plugin.Version) error {
 }
 
 func NewPlugin(client *mongox.Client) repo.Plugin {
-	r := &pluginRepo{
-		client: client,
-	}
+	r := &pluginRepo{client: client}
 	r.init()
 	return r
 }
 
 func (r *pluginRepo) init() {
-	r.pluginClient().CreateIndex(context.Background(), []string{"publisherId", "publishedAt", "downloads"}, []string{"id"})
-	lo.Must(r.pluginLikeClient().Client().Indexes().CreateOne(context.Background(), mongo.IndexModel{
-		Keys:    bson.D{{Key: "userId", Value: 1}, {Key: "pluginId", Value: 1}},
-		Options: options.Index().SetUnique(true),
-	}))
+	initIndexes(
+		context.Background(),
+		r.pluginClient(),
+		[]string{"publisherId", "publishedAt", "downloads"},
+		[]string{"id"},
+	)
+	initIndexes(
+		context.Background(),
+		r.pluginLikeClient(),
+		nil,
+		[]string{"userId,pluginId"},
+	)
 }
 
 func (r *pluginRepo) pluginClient() *mongox.ClientCollection {

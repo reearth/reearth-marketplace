@@ -33,7 +33,12 @@ func NewUser(client *mongox.Client) repo.User {
 
 func (u *userRepo) init() {
 	ctx := context.Background()
-	u.client.CreateIndex(context.Background(), nil, []string{"oidcSub"})
+	initIndexes(
+		ctx,
+		u.client,
+		nil,
+		[]string{"id", "oidcSub"},
+	)
 	lo.Must(u.client.Client().Indexes().CreateOne(ctx, mongo.IndexModel{
 		Keys: bson.D{{Key: "name", Value: 1}},
 		Options: options.Index().
