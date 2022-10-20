@@ -22,7 +22,7 @@ import (
 
 type Plugin struct {
 	pluginRepo  repo.Plugin
-	transaction repo.Transaction
+	transaction usecasex.Transaction
 	file        gateway.File
 }
 
