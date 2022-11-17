@@ -109,6 +109,7 @@ type PluginsInput struct {
 	Last      *int         `json:"last"`
 	Before    *string      `json:"before"`
 	After     *string      `json:"after"`
+	Offset    *int         `json:"offset"`
 	Keyword   *string      `json:"keyword"`
 	Liked     *bool        `json:"liked"`
 	Tags      []string     `json:"tags"`

@@ -24,7 +24,7 @@ func (m *Me) ID() string {
 	return m.id.String()
 }
 
-func (m *Me) Plugins(ctx context.Context, first *int, last *int, before *string, after *string) (*PluginConnection, error) {
+func (m *Me) Plugins(ctx context.Context, first *int, last *int, before *string, after *string, offset *int) (*PluginConnection, error) {
 	ps, pageInfo, err := adapter.Usecases(ctx).Plugin.List(ctx,
 		&m.id,
 		interfaces.ListPluginParam{
@@ -32,6 +32,7 @@ func (m *Me) Plugins(ctx context.Context, first *int, last *int, before *string,
 			Last:       last,
 			Before:     before,
 			After:      after,
+			Offset:     offset,
 			ActiveOnly: false,
 		},
 	)
@@ -58,6 +59,6 @@ func (m *Me) Plugins(ctx context.Context, first *int, last *int, before *string,
 			HasNextPage:     pageInfo.HasNextPage,
 			HasPreviousPage: pageInfo.HasPreviousPage,
 		},
-		TotalCount: pageInfo.TotalCount,
+		TotalCount: int(pageInfo.TotalCount),
 	}, nil
 }
