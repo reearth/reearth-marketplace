@@ -33,6 +33,13 @@ const Footer: React.FC<Props> = () => {
               <SectionContent href={t("https://docs2.reearth.io/getting-started")} target="_blank">
                 {t("Getting Started")}
               </SectionContent>
+              <SectionContent
+                href={t(
+                  "https://eukarya.notion.site/Re-Earth-Marketplace-ba8ab625400647878af457a46a907e3b",
+                )}
+                target="_blank">
+                {t("Marketplace User Manual")}
+              </SectionContent>
               <SectionContent href={t("https://docs2.reearth.io/reference")} target="_blank">
                 {t("Reference")}
               </SectionContent>
