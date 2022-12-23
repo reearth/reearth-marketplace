@@ -68,7 +68,7 @@ export const SEARCH_PLUGIN = gql`
     $types: [PluginType!]
     $publisher: ID
     $sort: PluginSort
-    $after: Cursor
+    $offset: Int
   ) {
     plugins(
       input: {
@@ -79,7 +79,7 @@ export const SEARCH_PLUGIN = gql`
         types: $types
         publisher: $publisher
         sort: $sort
-        after: $after
+        offset: $offset
       }
     ) {
       nodes {
@@ -95,10 +95,6 @@ export const SEARCH_PLUGIN = gql`
         liked
         downloads
         name
-      }
-      pageInfo {
-        endCursor
-        hasNextPage
       }
       totalCount
     }

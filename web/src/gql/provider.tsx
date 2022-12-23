@@ -47,7 +47,27 @@ const Provider: React.FC<Props> = ({ children, accessToken: accessToken2 }) => {
     uri: endpoint,
   });
 
-  const cache = new InMemoryCache({});
+  const cache = new InMemoryCache({
+    typePolicies: {
+      Query: {
+        fields: {
+          plugins: {
+            keyArgs: [
+              "input",
+              ["keyword", "liked", "tags", "types", "publisher", "sort", "first", "offset"],
+            ],
+          },
+        },
+      },
+      Me: {
+        fields: {
+          plugins: {
+            keyArgs: ["first", "offset"],
+          },
+        },
+      },
+    },
+  });
 
   const client = new ApolloClient({
     uri: endpoint,

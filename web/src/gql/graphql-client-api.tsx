@@ -81,6 +81,7 @@ export type MePluginsArgs = {
   before?: InputMaybe<Scalars['Cursor']>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 export type MePayload = {
@@ -273,6 +274,7 @@ export type PluginsInput = {
   keyword?: InputMaybe<Scalars['String']>;
   last?: InputMaybe<Scalars['Int']>;
   liked?: InputMaybe<Scalars['Boolean']>;
+  offset?: InputMaybe<Scalars['Int']>;
   publisher?: InputMaybe<Scalars['ID']>;
   sort?: InputMaybe<PluginSort>;
   tags?: InputMaybe<Array<Scalars['String']>>;
@@ -373,6 +375,7 @@ export type UserPluginsArgs = {
   before?: InputMaybe<Scalars['Cursor']>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
 };
 
 export type Version = {
@@ -415,11 +418,11 @@ export type SearchPluginQueryVariables = Exact<{
   types?: InputMaybe<Array<PluginType> | PluginType>;
   publisher?: InputMaybe<Scalars['ID']>;
   sort?: InputMaybe<PluginSort>;
-  after?: InputMaybe<Scalars['Cursor']>;
+  offset?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, liked: boolean, downloads: number, name: string, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null } } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } };
+export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, liked: boolean, downloads: number, name: string, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null } } | null> } };
 
 export type LikePluginMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -475,11 +478,11 @@ export type UpdatePluginVersionMutation = { __typename?: 'Mutation', updateVersi
 
 export type GetMeQueryVariables = Exact<{
   first: Scalars['Int'];
-  after?: InputMaybe<Scalars['Cursor']>;
+  offset?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, name: string, lang?: any | null, displayName?: string | null, description?: string | null, plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, liked: boolean, downloads: number, name: string, readme: string, icon?: string | null, active: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | null>, pageInfo: { __typename?: 'PageInfo', endCursor?: string | null, hasNextPage: boolean } } } };
+export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, name: string, lang?: any | null, displayName?: string | null, description?: string | null, plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, liked: boolean, downloads: number, name: string, readme: string, icon?: string | null, active: boolean, updatedAt: Date, latestVersion?: { __typename?: 'Version', version: string } | null } | null> } } };
 
 export type UpdateMeMutationVariables = Exact<{
   name?: InputMaybe<Scalars['String']>;
@@ -607,9 +610,9 @@ export type PluginsQueryHookResult = ReturnType<typeof usePluginsQuery>;
 export type PluginsLazyQueryHookResult = ReturnType<typeof usePluginsLazyQuery>;
 export type PluginsQueryResult = Apollo.QueryResult<PluginsQuery, PluginsQueryVariables>;
 export const SearchPluginDocument = gql`
-    query SearchPlugin($first: Int!, $keyword: String, $liked: Boolean, $tags: [String!], $types: [PluginType!], $publisher: ID, $sort: PluginSort, $after: Cursor) {
+    query SearchPlugin($first: Int!, $keyword: String, $liked: Boolean, $tags: [String!], $types: [PluginType!], $publisher: ID, $sort: PluginSort, $offset: Int) {
   plugins(
-    input: {first: $first, keyword: $keyword, liked: $liked, tags: $tags, types: $types, publisher: $publisher, sort: $sort, after: $after}
+    input: {first: $first, keyword: $keyword, liked: $liked, tags: $tags, types: $types, publisher: $publisher, sort: $sort, offset: $offset}
   ) {
     nodes {
       id
@@ -624,10 +627,6 @@ export const SearchPluginDocument = gql`
       liked
       downloads
       name
-    }
-    pageInfo {
-      endCursor
-      hasNextPage
     }
     totalCount
   }
@@ -653,7 +652,7 @@ export const SearchPluginDocument = gql`
  *      types: // value for 'types'
  *      publisher: // value for 'publisher'
  *      sort: // value for 'sort'
- *      after: // value for 'after'
+ *      offset: // value for 'offset'
  *   },
  * });
  */
@@ -942,14 +941,14 @@ export type UpdatePluginVersionMutationHookResult = ReturnType<typeof useUpdateP
 export type UpdatePluginVersionMutationResult = Apollo.MutationResult<UpdatePluginVersionMutation>;
 export type UpdatePluginVersionMutationOptions = Apollo.BaseMutationOptions<UpdatePluginVersionMutation, UpdatePluginVersionMutationVariables>;
 export const GetMeDocument = gql`
-    query GetMe($first: Int!, $after: Cursor) {
+    query GetMe($first: Int!, $offset: Int) {
   me {
     id
     name
     lang
     displayName
     description
-    plugins(first: $first, after: $after) {
+    plugins(first: $first, offset: $offset) {
       nodes {
         id
         images
@@ -965,10 +964,6 @@ export const GetMeDocument = gql`
         }
         active
         updatedAt
-      }
-      pageInfo {
-        endCursor
-        hasNextPage
       }
       totalCount
     }
@@ -989,7 +984,7 @@ export const GetMeDocument = gql`
  * const { data, loading, error } = useGetMeQuery({
  *   variables: {
  *      first: // value for 'first'
- *      after: // value for 'after'
+ *      offset: // value for 'offset'
  *   },
  * });
  */

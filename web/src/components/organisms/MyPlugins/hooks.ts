@@ -1,13 +1,15 @@
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { useGetMeQuery, useUpdatePluginMutation } from "@marketplace/gql";
 
 import { type Plugin } from "./";
 
-export default (id?: string, active?: boolean) => {
+export default (pageSize: number, id?: string, active?: boolean) => {
+  const [page, setPage] = useState(1);
   const { data, refetch } = useGetMeQuery({
     variables: {
-      first: 50,
+      first: pageSize,
+      offset: (page - 1) * pageSize,
     },
   });
 
@@ -49,5 +51,8 @@ export default (id?: string, active?: boolean) => {
   return {
     plugins,
     handleTogglePublish,
+    handlePageChange: setPage,
+    totalCount: data?.me.plugins.totalCount,
+    page,
   };
 };

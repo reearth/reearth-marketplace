@@ -137,7 +137,9 @@ const StyledSearch = styled(Search)`
   }
 `;
 
-const StyledButton = styled(Button)<{ isFavSelected?: boolean }>`
+const StyledButton = styled(Button, {
+  shouldForwardProp: propName => propName !== "isFavSelected",
+})<{ isFavSelected?: boolean }>`
   font-weight: bold;
   background: transparent;
   color: ${({ theme, isFavSelected }) => (isFavSelected ? "#1890ff" : theme.main.weakText)};
