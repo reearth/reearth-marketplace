@@ -84,6 +84,7 @@ func (r *queryResolver) Plugins(ctx context.Context, input gqlmodel.PluginsInput
 		Last:      input.Last,
 		Before:    input.Before,
 		After:     input.After,
+		Offset:    input.Offset,
 		Keyword:   input.Keyword,
 		Liked:     input.Liked,
 		Tags:      input.Tags,
@@ -114,6 +115,6 @@ func (r *queryResolver) Plugins(ctx context.Context, input gqlmodel.PluginsInput
 			HasNextPage:     pageInfo.HasNextPage,
 			HasPreviousPage: pageInfo.HasPreviousPage,
 		},
-		TotalCount: pageInfo.TotalCount,
+		TotalCount: int(pageInfo.TotalCount),
 	}, nil
 }

@@ -333,7 +333,7 @@ func Test_pluginRepo_Search(t *testing.T) {
 		if err != nil {
 			t.Errorf("search: unexpected error: %v", err)
 		}
-		assert.Equal(t, 2, pi1.TotalCount)
+		assert.Equal(t, int64(2), pi1.TotalCount)
 		assert.Equal(t, 1, len(ps1))
 		assert.Equal(t, versioned2, ps1[0])
 		assert.Equal(t, true, pi1.HasNextPage)
@@ -349,5 +349,32 @@ func Test_pluginRepo_Search(t *testing.T) {
 		assert.Equal(t, 1, len(ps2))
 		assert.Equal(t, versioned1, ps2[0])
 		assert.Equal(t, false, pi2.HasNextPage)
+	})
+
+	t.Run("PaginationOffset", func(t *testing.T) {
+		ctx := context.Background()
+		db := connect(t)
+		r := NewPlugin(mongox.NewClientWithDatabase(db))
+		if err := r.Create(ctx, versioned1); err != nil {
+			t.Fatalf("failed to create versioned1: %v", err)
+		}
+		if err := r.Create(ctx, versioned2); err != nil {
+			t.Fatalf("failed to create versioned2: %v", err)
+		}
+		first := 1
+		offset := 1
+		sort := "PUBLISHEDAT_DESC"
+		ps1, pi1, err := r.Search(ctx, nil, &interfaces.SearchPluginParam{
+			First:  &first,
+			Offset: &offset,
+			Sort:   sort,
+		})
+		if err != nil {
+			t.Errorf("search: unexpected error: %v", err)
+		}
+		assert.Equal(t, int64(2), pi1.TotalCount)
+		assert.Equal(t, 1, len(ps1))
+		assert.Equal(t, versioned1, ps1[0])
+		assert.Equal(t, false, pi1.HasNextPage)
 	})
 }

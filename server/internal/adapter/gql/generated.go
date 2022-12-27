@@ -63,7 +63,7 @@ type ComplexityRoot struct {
 		ID          func(childComplexity int) int
 		Lang        func(childComplexity int) int
 		Name        func(childComplexity int) int
-		Plugins     func(childComplexity int, first *int, last *int, before *string, after *string) int
+		Plugins     func(childComplexity int, first *int, last *int, before *string, after *string, offset *int) int
 		Publishable func(childComplexity int) int
 		Tel         func(childComplexity int) int
 	}
@@ -163,7 +163,7 @@ type ComplexityRoot struct {
 		Name            func(childComplexity int) int
 		OrganizationIds func(childComplexity int) int
 		Organizations   func(childComplexity int) int
-		Plugins         func(childComplexity int, first *int, last *int, before *string, after *string) int
+		Plugins         func(childComplexity int, first *int, last *int, before *string, after *string, offset *int) int
 	}
 
 	Version struct {
@@ -285,7 +285,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Me.Plugins(childComplexity, args["first"].(*int), args["last"].(*int), args["before"].(*string), args["after"].(*string)), true
+		return e.complexity.Me.Plugins(childComplexity, args["first"].(*int), args["last"].(*int), args["before"].(*string), args["after"].(*string), args["offset"].(*int)), true
 
 	case "Me.publishable":
 		if e.complexity.Me.Publishable == nil {
@@ -839,7 +839,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.User.Plugins(childComplexity, args["first"].(*int), args["last"].(*int), args["before"].(*string), args["after"].(*string)), true
+		return e.complexity.User.Plugins(childComplexity, args["first"].(*int), args["last"].(*int), args["before"].(*string), args["after"].(*string), args["offset"].(*int)), true
 
 	case "Version.active":
 		if e.complexity.Version.Active == nil {
@@ -1034,6 +1034,7 @@ type User implements Node & Publisher {
     last: Int
     before: Cursor
     after: Cursor
+    offset: Int
   ): PluginConnection!
   # All organizations to which the user belongs
   organizationIds: [ID!]!
@@ -1122,6 +1123,7 @@ type Me implements Publisher {
     last: Int
     before: Cursor
     after: Cursor
+    offset: Int
   ): PluginConnection!
 }
 
@@ -1161,6 +1163,7 @@ input PluginsInput {
   last: Int
   before: Cursor
   after: Cursor
+  offset: Int
   keyword: String
   liked: Boolean
   tags: [String!] # AND
@@ -1362,6 +1365,15 @@ func (ec *executionContext) field_Me_plugins_args(ctx context.Context, rawArgs m
 		}
 	}
 	args["after"] = arg3
+	var arg4 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg4, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg4
 	return args, nil
 }
 
@@ -1704,6 +1716,15 @@ func (ec *executionContext) field_User_plugins_args(ctx context.Context, rawArgs
 		}
 	}
 	args["after"] = arg3
+	var arg4 *int
+	if tmp, ok := rawArgs["offset"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+		arg4, err = ec.unmarshalOInt2ᚖint(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["offset"] = arg4
 	return args, nil
 }
 
@@ -2187,7 +2208,7 @@ func (ec *executionContext) _Me_plugins(ctx context.Context, field graphql.Colle
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Plugins(ctx, fc.Args["first"].(*int), fc.Args["last"].(*int), fc.Args["before"].(*string), fc.Args["after"].(*string))
+		return obj.Plugins(ctx, fc.Args["first"].(*int), fc.Args["last"].(*int), fc.Args["before"].(*string), fc.Args["after"].(*string), fc.Args["offset"].(*int))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -5570,7 +5591,7 @@ func (ec *executionContext) _User_plugins(ctx context.Context, field graphql.Col
 	}()
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.Plugins(ctx, fc.Args["first"].(*int), fc.Args["last"].(*int), fc.Args["before"].(*string), fc.Args["after"].(*string))
+		return obj.Plugins(ctx, fc.Args["first"].(*int), fc.Args["last"].(*int), fc.Args["before"].(*string), fc.Args["after"].(*string), fc.Args["offset"].(*int))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -8209,7 +8230,7 @@ func (ec *executionContext) unmarshalInputPluginsInput(ctx context.Context, obj 
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"first", "last", "before", "after", "keyword", "liked", "tags", "types", "publisher", "sort"}
+	fieldsInOrder := [...]string{"first", "last", "before", "after", "offset", "keyword", "liked", "tags", "types", "publisher", "sort"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -8245,6 +8266,14 @@ func (ec *executionContext) unmarshalInputPluginsInput(ctx context.Context, obj 
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("after"))
 			it.After, err = ec.unmarshalOCursor2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "offset":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("offset"))
+			it.Offset, err = ec.unmarshalOInt2ᚖint(ctx, v)
 			if err != nil {
 				return it, err
 			}

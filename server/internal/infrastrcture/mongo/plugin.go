@@ -309,6 +309,9 @@ func (r *pluginRepo) Search(ctx context.Context, user *id.UserID, param *interfa
 			}
 		}
 	}
+	if param.Offset != nil {
+		findOption.SetSkip(int64(*param.Offset))
+	}
 	cur, err := r.pluginClient().Client().Find(ctx, toFilter(conditions), findOption)
 	if err != nil {
 		return nil, nil, err
@@ -362,7 +365,7 @@ func (r *pluginRepo) Search(ctx context.Context, user *id.UserID, param *interfa
 	if err != nil {
 		return nil, nil, err
 	}
-	return ps, usecasex.NewPageInfo(int(totalCount), startCursor, endCursor, hasNextPage, hasPreviousPage), nil
+	return ps, usecasex.NewPageInfo(totalCount, startCursor, endCursor, hasNextPage, hasPreviousPage), nil
 }
 
 func (r *pluginRepo) Like(ctx context.Context, user id.UserID, id plugin.ID) error {
@@ -464,6 +467,9 @@ func (r *pluginRepo) List(ctx context.Context, uid id.UserID, param *interfaces.
 			}
 		}
 	}
+	if param.Offset != nil {
+		findOption.SetSkip(int64(*param.Offset))
+	}
 	cur, err := r.pluginClient().Client().Find(ctx, toFilter(conditions), findOption)
 	if err != nil {
 		return nil, nil, err
@@ -517,7 +523,7 @@ func (r *pluginRepo) List(ctx context.Context, uid id.UserID, param *interfaces.
 	if err != nil {
 		return nil, nil, err
 	}
-	return ps, usecasex.NewPageInfo(int(totalCount), startCursor, endCursor, hasNextPage, hasPreviousPage), nil
+	return ps, usecasex.NewPageInfo(totalCount, startCursor, endCursor, hasNextPage, hasPreviousPage), nil
 }
 
 type searchCursor struct {

@@ -50,6 +50,7 @@ type SearchPluginParam struct {
 	Last      *int     `json:"last"`
 	Before    *string  `json:"before"`
 	After     *string  `json:"after"`
+	Offset    *int     `json:"offset"`
 	Keyword   *string  `json:"keyword"`
 	Liked     *bool    `json:"liked"`
 	Tags      []string `json:"tags"`
@@ -70,5 +71,6 @@ type ListPluginParam struct {
 	Last       *int
 	Before     *string
 	After      *string
+	Offset     *int
 	ActiveOnly bool
 }

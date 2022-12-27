@@ -41,6 +41,7 @@ type User implements Node & Publisher {
     last: Int
     before: Cursor
     after: Cursor
+    offset: Int
   ): PluginConnection!
   # All organizations to which the user belongs
   organizationIds: [ID!]!
@@ -129,6 +130,7 @@ type Me implements Publisher {
     last: Int
     before: Cursor
     after: Cursor
+    offset: Int
   ): PluginConnection!
 }
 
@@ -168,6 +170,7 @@ input PluginsInput {
   last: Int
   before: Cursor
   after: Cursor
+  offset: Int
   keyword: String
   liked: Boolean
   tags: [String!] # AND
