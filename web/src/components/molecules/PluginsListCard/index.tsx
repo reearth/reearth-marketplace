@@ -89,7 +89,9 @@ const LikedNum = styled.span`
   color: ${({ theme }) => theme.main.text};
 `;
 
-const LikedRow = styled(Row)<{ personallyLiked?: boolean }>`
+const LikedRow = styled(Row, { shouldForwardProp: propName => propName !== "personallyLiked" })<{
+  personallyLiked?: boolean;
+}>`
   color: ${({ theme, personallyLiked }) => (personallyLiked ? "#B02838" : theme.main.text)};
 `;
 

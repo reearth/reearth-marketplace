@@ -1,5 +1,5 @@
 import { useApolloClient } from "@apollo/client";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useAuth } from "@marketplace/auth/hooks";
 import { type Plugin } from "@marketplace/components/molecules/TopPage";
@@ -7,20 +7,24 @@ import { useSearchPluginQuery, PluginSort } from "@marketplace/gql";
 
 export { PluginSort };
 
-export default (searchText?: string, sort?: PluginSort, liked?: boolean, accessToken?: string) => {
+export default (
+  pageSize: number,
+  searchText?: string,
+  sort?: PluginSort,
+  liked?: boolean,
+  accessToken?: string,
+) => {
+  const [page, setPage] = useState<number>(1);
   const { isAuthenticated } = useAuth(accessToken);
   const gqlCache = useApolloClient().cache;
 
-  const { data } = useSearchPluginQuery({
+  const { data, loading: loadingPlugins } = useSearchPluginQuery({
     variables: {
-      first: 50,
+      first: pageSize,
+      offset: (page - 1) * pageSize,
       keyword: searchText,
       liked: liked || undefined,
-      // tags: [],
-      // types: [],
-      // publisher: "",
       sort: sort,
-      // after: "",
     },
   });
 
@@ -53,5 +57,9 @@ export default (searchText?: string, sort?: PluginSort, liked?: boolean, accessT
   return {
     plugins,
     isAuthenticated,
+    page,
+    totalCount: data?.plugins.totalCount ?? 0,
+    handlePageChange: setPage,
+    loadingPlugins,
   };
 };

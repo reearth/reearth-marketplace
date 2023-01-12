@@ -1,3 +1,4 @@
+import { Pagination } from "antd";
 import { Link } from "react-router-dom";
 
 import HeaderBanner from "@marketplace/assets/header.png";
@@ -16,9 +17,21 @@ export type Props = {
   myData?: MyDataType;
   plugins?: Plugin[];
   onPluginSelect?: (pluginId: string) => void;
+  totalCount: number;
+  page: number;
+  onPageChange: (page: number) => void;
+  pageSize: number;
 };
 
-const UserPageContents: React.FC<Props> = ({ myData, plugins, onPluginSelect }) => {
+const UserPageContents: React.FC<Props> = ({
+  myData,
+  plugins,
+  onPluginSelect,
+  totalCount,
+  page,
+  onPageChange,
+  pageSize,
+}) => {
   const t = useT();
 
   return (
@@ -63,6 +76,12 @@ const UserPageContents: React.FC<Props> = ({ myData, plugins, onPluginSelect }) 
               <PluginsList
                 plugins={plugins ? plugins : undefined}
                 onPluginSelect={onPluginSelect}
+              />
+              <Pagination
+                current={page}
+                pageSize={pageSize}
+                total={totalCount}
+                onChange={onPageChange}
               />
             </MyPlugins>
           </>
