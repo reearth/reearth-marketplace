@@ -16,8 +16,19 @@ export type MyDataType = {
 };
 
 const User: React.FC<Props> = ({ onPluginSelect }) => {
-  const { myData, plugins } = useHooks();
-  return <UserPage myData={myData} plugins={plugins} onPluginSelect={onPluginSelect} />;
+  const pageSize = 40;
+  const { myData, plugins, totalCount, page, handlePageChange } = useHooks(pageSize);
+  return (
+    <UserPage
+      myData={myData}
+      plugins={plugins}
+      onPluginSelect={onPluginSelect}
+      totalCount={totalCount}
+      page={page}
+      onPageChange={handlePageChange}
+      pageSize={pageSize}
+    />
+  );
 };
 
 export default User;

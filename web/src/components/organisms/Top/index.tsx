@@ -14,15 +14,31 @@ const Top: React.FC<Props> = ({ showBanner, accessToken, onPluginSelect }) => {
   const [searchText, updateSearchText] = useState<string>("");
   const [isFavSelected, toggleLiked] = useState<boolean>(false);
 
-  const { plugins, isAuthenticated } = useHooks(searchText, undefined, isFavSelected, accessToken);
+  const pageSize = 40;
 
-  const handleSearch = useCallback((text: string) => {
-    updateSearchText(text);
-  }, []);
+  const { plugins, isAuthenticated, totalCount, page, handlePageChange, loadingPlugins } = useHooks(
+    pageSize,
+    searchText,
+    undefined,
+    isFavSelected,
+    accessToken,
+  );
 
-  const handleFavButtonClick = useCallback((isFaved: boolean) => {
-    toggleLiked(isFaved);
-  }, []);
+  const handleSearch = useCallback(
+    (text: string) => {
+      updateSearchText(text);
+      handlePageChange(1);
+    },
+    [updateSearchText, handlePageChange],
+  );
+
+  const handleFavButtonClick = useCallback(
+    (isFaved: boolean) => {
+      toggleLiked(isFaved);
+      handlePageChange(1);
+    },
+    [toggleLiked, handlePageChange],
+  );
 
   return (
     <TopPage
@@ -33,6 +49,11 @@ const Top: React.FC<Props> = ({ showBanner, accessToken, onPluginSelect }) => {
       handleFavButtonClick={handleFavButtonClick}
       isFavSelected={isFavSelected}
       onPluginSelect={onPluginSelect}
+      totalCount={totalCount}
+      page={page}
+      onPageChange={handlePageChange}
+      loadingPlugins={loadingPlugins}
+      pageSize={pageSize}
     />
   );
 };

@@ -1,14 +1,14 @@
 import { gql } from "@apollo/client";
 
 export const GET_ME = gql`
-  query GetMe($first: Int!, $after: Cursor) {
+  query GetMe($first: Int!, $offset: Int) {
     me {
       id
       name
       lang
       displayName
       description
-      plugins(first: $first, after: $after) {
+      plugins(first: $first, offset: $offset) {
         nodes {
           id
           images
@@ -23,12 +23,7 @@ export const GET_ME = gql`
             version
           }
           active
-          # publishedAt
           updatedAt
-        }
-        pageInfo {
-          endCursor
-          hasNextPage
         }
         totalCount
       }

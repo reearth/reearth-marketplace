@@ -12,10 +12,21 @@ import MyPluginsTable from "./MyPluginsTable";
 
 export type Props = {
   plugins?: Plugin[];
-  onPublish: (id: string, active: boolean) => void;
+  onPublish: (id: string, active: boolean) => Promise<void>;
+  onPageChange: (page: number) => void;
+  totalCount: number;
+  page: number;
+  pageSize: number;
 };
 
-const MyPluginsPage: React.FC<Props> = ({ plugins, onPublish }) => {
+const MyPluginsPage: React.FC<Props> = ({
+  plugins,
+  onPublish,
+  onPageChange,
+  totalCount,
+  page,
+  pageSize,
+}) => {
   const t = useT();
   const navigate = useNavigate();
 
@@ -33,7 +44,14 @@ const MyPluginsPage: React.FC<Props> = ({ plugins, onPublish }) => {
             </Button>
           </Col>
         </TitleArea>
-        <MyPluginsTable plugins={plugins} onPublish={onPublish} />
+        <MyPluginsTable
+          plugins={plugins}
+          onPublish={onPublish}
+          onPageChange={onPageChange}
+          totalCount={totalCount}
+          page={page}
+          pageSize={pageSize}
+        />
       </ContentWrapper>
     </Wrapper>
   );

@@ -1,4 +1,4 @@
-import type { ColumnsType } from "antd/es/table";
+import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -17,10 +17,21 @@ import { styled } from "@marketplace/theme";
 
 export type Props = {
   plugins?: Plugin[];
-  onPublish: (id: string, active: boolean) => void;
+  onPublish: (id: string, active: boolean) => Promise<void>;
+  onPageChange: (page: number) => void;
+  totalCount: number;
+  page: number;
+  pageSize: number;
 };
 
-const MyPluginsTable: React.FC<Props> = ({ plugins, onPublish }) => {
+const MyPluginsTable: React.FC<Props> = ({
+  plugins,
+  onPublish,
+  onPageChange,
+  totalCount,
+  page,
+  pageSize,
+}) => {
   const t = useT();
   const navigate = useNavigate();
 
@@ -119,6 +130,14 @@ const MyPluginsTable: React.FC<Props> = ({ plugins, onPublish }) => {
         columns={columns}
         dataSource={pluginDataSource}
         loading={!plugins && { indicator: <Loading size="md" height={200} /> }}
+        pagination={
+          {
+            current: page,
+            total: totalCount,
+            pageSize: pageSize,
+            onChange: onPageChange,
+          } as TablePaginationConfig
+        }
       />
     </Wrapper>
   );

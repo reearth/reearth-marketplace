@@ -13,6 +13,11 @@ export type Props = {
   onSearch: (text: string) => void;
   handleFavButtonClick: (isFaved: boolean) => void;
   onPluginSelect?: (pluginId: string) => void;
+  totalCount: number;
+  page: number;
+  onPageChange: (page: number) => void;
+  loadingPlugins: boolean;
+  pageSize: number;
 };
 
 const TopPage: React.FC<Props> = ({
@@ -23,6 +28,11 @@ const TopPage: React.FC<Props> = ({
   onSearch,
   handleFavButtonClick,
   onPluginSelect,
+  totalCount,
+  page,
+  onPageChange,
+  loadingPlugins,
+  pageSize,
 }) => {
   return (
     <Wrapper>
@@ -34,6 +44,11 @@ const TopPage: React.FC<Props> = ({
         isFavSelected={isFavSelected}
         handleFavButtonClick={handleFavButtonClick}
         onPluginSelect={onPluginSelect}
+        totalCount={totalCount}
+        page={page}
+        onPageChange={onPageChange}
+        loadingPlugins={loadingPlugins}
+        pageSize={pageSize}
       />
     </Wrapper>
   );

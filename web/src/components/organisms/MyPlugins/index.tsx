@@ -11,9 +11,19 @@ export type Plugin = {
 };
 export type Props = {};
 const MyPlugins: React.FC<Props> = () => {
-  const { plugins, handleTogglePublish } = useHooks();
+  const pageSize = 10;
+  const { plugins, handleTogglePublish, handlePageChange, totalCount, page } = useHooks(pageSize);
 
-  return <MyPluginsPage plugins={plugins} onPublish={handleTogglePublish} />;
+  return (
+    <MyPluginsPage
+      plugins={plugins}
+      onPublish={handleTogglePublish}
+      onPageChange={handlePageChange}
+      totalCount={totalCount ?? 0}
+      page={page}
+      pageSize={pageSize}
+    />
+  );
 };
 
 export default MyPlugins;
