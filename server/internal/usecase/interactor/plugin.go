@@ -109,10 +109,12 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 		return nil, interfaces.ErrOperationDenied
 	}
 
-	tx, err := p.transaction.Begin()
+	tx, err := p.transaction.Begin(ctx)
 	if err != nil {
 		return nil, err
 	}
+
+	ctx = tx.Context()
 	defer func() {
 		err2 := tx.End(ctx)
 		if err == nil {
@@ -176,10 +178,12 @@ func (p *Plugin) Like(ctx context.Context, user *user.User, id id.PluginID) (_ *
 		return nil, interfaces.ErrOperationDenied
 	}
 
-	tx, err := p.transaction.Begin()
+	tx, err := p.transaction.Begin(ctx)
 	if err != nil {
 		return nil, err
 	}
+
+	ctx = tx.Context()
 	defer func() {
 		err2 := tx.End(ctx)
 		if err == nil {
@@ -210,10 +214,12 @@ func (p *Plugin) Unlike(ctx context.Context, user *user.User, id id.PluginID) (*
 		return nil, interfaces.ErrOperationDenied
 	}
 
-	tx, err := p.transaction.Begin()
+	tx, err := p.transaction.Begin(ctx)
 	if err != nil {
 		return nil, err
 	}
+
+	ctx = tx.Context()
 	defer func() {
 		err2 := tx.End(ctx)
 		if err == nil {
@@ -244,10 +250,12 @@ func (p *Plugin) UpdateVersion(ctx context.Context, user *user.User, param inter
 		return nil, interfaces.ErrOperationDenied
 	}
 
-	tx, err := p.transaction.Begin()
+	tx, err := p.transaction.Begin(ctx)
 	if err != nil {
 		return nil, err
 	}
+
+	ctx = tx.Context()
 	defer func() {
 		err2 := tx.End(ctx)
 		if err == nil {
@@ -338,10 +346,12 @@ func (p *Plugin) IncreaseDownloadCount(ctx context.Context, id id.PluginID, vers
 }
 
 func (p *Plugin) download(ctx context.Context, vp *plugin.VersionedPlugin, onlyIncrease bool) (_ io.ReadCloser, err error) {
-	tx, err := p.transaction.Begin()
+	tx, err := p.transaction.Begin(ctx)
 	if err != nil {
 		return nil, err
 	}
+
+	ctx = tx.Context()
 	defer func() {
 		err2 := tx.End(ctx)
 		if err == nil {
@@ -383,10 +393,12 @@ func (p *Plugin) create(ctx context.Context, publisher *user.User, pkg *pluginpa
 		return nil, err
 	}
 
-	tx, err := p.transaction.Begin()
+	tx, err := p.transaction.Begin(ctx)
 	if err != nil {
 		return nil, err
 	}
+
+	ctx = tx.Context()
 	defer func() {
 		err2 := tx.End(ctx)
 		if err == nil {
