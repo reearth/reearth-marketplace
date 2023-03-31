@@ -1,6 +1,5 @@
-import { Pagination } from "antd";
-
 import Loading from "@marketplace/components/atoms/Loading";
+import Pagination from "@marketplace/components/atoms/Pagination";
 import PluginsList, { Plugin } from "@marketplace/components/molecules/PluginsList";
 import SearchArea from "@marketplace/components/molecules/SearchArea";
 import { styled } from "@marketplace/theme";
@@ -9,28 +8,28 @@ export type Props = {
   plugins?: Plugin[];
   isLoggedIn: boolean;
   isFavSelected: boolean;
+  totalCount: number;
+  page: number;
+  loadingPlugins: boolean;
+  pageSize: number;
   onSearch: (text: string) => void;
   handleFavButtonClick: (isFaved: boolean) => void;
   onPluginSelect?: (pluginId: string) => void;
-  totalCount: number;
-  page: number;
   onPageChange: (page: number) => void;
-  loadingPlugins: boolean;
-  pageSize: number;
 };
 
 const TopPageContents: React.FC<Props> = ({
   plugins,
   isLoggedIn,
   isFavSelected,
+  totalCount,
+  page,
+  loadingPlugins,
+  pageSize,
   onSearch,
   handleFavButtonClick,
   onPluginSelect,
-  totalCount,
-  page,
   onPageChange,
-  loadingPlugins,
-  pageSize,
 }) => {
   return (
     <Wrapper>
