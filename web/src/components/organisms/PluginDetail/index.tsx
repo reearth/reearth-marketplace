@@ -55,7 +55,7 @@ const PluginDetail: React.FC<Props> = ({
         onBack={onBack}
       />
       <ModalContent
-        visible={modalVisible ?? false}
+        open={modalVisible ?? false}
         workspaces={workspaces}
         onCancel={() => onToggleModal?.(false)}
         onOpenPluginInReearth={handleOpenPluginInReearth}

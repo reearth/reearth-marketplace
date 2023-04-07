@@ -142,9 +142,9 @@ const StyledButton = styled(Button, {
 })<{ isFavSelected?: boolean }>`
   font-weight: bold;
   background: transparent;
-  color: ${({ theme, isFavSelected }) => (isFavSelected ? "#1890ff" : theme.main.weakText)};
+  color: ${({ theme, isFavSelected }) => (isFavSelected ? "#1677ff" : theme.main.weakText)};
   border: 1px solid
-    ${({ theme, isFavSelected }) => (isFavSelected ? "#1890ff" : theme.main.weakText)};
+    ${({ theme, isFavSelected }) => (isFavSelected ? "#1677ff" : theme.main.weakText)};
   border-radius: 8px;
 
   :hover {
