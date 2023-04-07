@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Col from "@marketplace/components/atoms/Col";
 import Dropdown from "@marketplace/components/atoms/Dropdown";
 import Icon from "@marketplace/components/atoms/Icon";
-import { MenuProps } from "@marketplace/components/atoms/Menu";
+import Menu, { MenuProps } from "@marketplace/components/atoms/Menu";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Tooltip from "@marketplace/components/atoms/Tooltip";
@@ -35,41 +35,52 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
     ja: "日本語",
   };
 
-  const langMenu = [
-    {
-      label: DisplayLang["und"],
-      key: "und",
-    },
-    {
-      label: DisplayLang["en"],
-      key: "en",
-    },
-    {
-      label: DisplayLang["ja"],
-      key: "ja",
-    },
-  ];
+  const langMenu = (
+    <Menu
+      theme="dark"
+      onClick={handleLangMenuClick}
+      items={[
+        {
+          label: DisplayLang["und"],
+          key: "und",
+        },
+        {
+          label: DisplayLang["en"],
+          key: "en",
+        },
+        {
+          label: DisplayLang["ja"],
+          key: "ja",
+        },
+      ]}
+    />
+  );
 
-  const userMenu = [
-    {
-      label: t("My Page"),
-      key: 1,
-      icon: <Icon icon="user" style={{ paddingRight: "5px" }} />,
-      onClick: () => navigate(`/mypage`),
-    },
-    {
-      label: t("My Plugins"),
-      key: 2,
-      icon: <Icon icon="upload" style={{ paddingRight: "5px" }} />,
-      onClick: () => navigate(`/myplugins`),
-    },
-    {
-      label: t("Log Out"),
-      key: 3,
-      icon: <Icon icon="logout" style={{ paddingRight: "5px" }} />,
-      onClick: logout,
-    },
-  ];
+  const userMenu = (
+    <Menu
+      theme="dark"
+      items={[
+        {
+          label: t("My Page"),
+          key: 1,
+          icon: <Icon icon="user" style={{ paddingRight: "5px" }} />,
+          onClick: () => navigate(`/mypage`),
+        },
+        {
+          label: t("My Plugins"),
+          key: 2,
+          icon: <Icon icon="upload" style={{ paddingRight: "5px" }} />,
+          onClick: () => navigate(`/myplugins`),
+        },
+        {
+          label: t("Log Out"),
+          key: 3,
+          icon: <Icon icon="logout" style={{ paddingRight: "5px" }} />,
+          onClick: logout,
+        },
+      ]}
+    />
+  );
 
   return (
     <Wrapper>
@@ -88,18 +99,14 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
                 </div>
               </Tooltip>
             )}
-            <Dropdown
-              menu={langMenu}
-              trigger={["click"]}
-              placement="bottom"
-              onClick={handleLangMenuClick}>
+            <Dropdown overlay={langMenu} trigger={["click"]} placement="bottom">
               <DropdownContents>
                 <Lang>{DisplayLang[lang]}</Lang>
                 <StyledIcon icon="downFilled" />
               </DropdownContents>
             </Dropdown>
             {isLoggedIn ? (
-              <Dropdown menu={userMenu} trigger={["click"]} placement="bottom">
+              <Dropdown overlay={userMenu} trigger={["click"]} placement="bottom">
                 <DropdownContents>
                   <NameIcon>{username?.charAt(0).toUpperCase()}</NameIcon>
                   <UserName>{username}</UserName>
