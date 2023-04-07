@@ -1,7 +1,6 @@
 import Spin from "antd/lib/spin";
 
 import LoadingIcon, { IconSize } from "@marketplace/components/atoms/LoadingIcon";
-import "antd/lib/spin/style/index.css";
 
 export type Props = {
   className?: string;
