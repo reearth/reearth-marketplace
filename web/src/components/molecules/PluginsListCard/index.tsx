@@ -79,6 +79,7 @@ const StyledCard = styled(Card)`
 const StyledImage = styled(Image)`
   height: 170px;
   object-fit: cover;
+  max-height: 170px;
 `;
 
 const AuthorName = styled.p`
