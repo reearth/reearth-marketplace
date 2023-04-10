@@ -57,7 +57,7 @@ const PluginsListCard: React.FC<Props> = ({
           </Row>
         </Space>
       </Row>
-      <StyledMeta title={name} />
+      <Meta title={<StyledName>{name}</StyledName>} />
     </StyledCard>
   );
 };
@@ -96,10 +96,8 @@ const LikedRow = styled(Row, { shouldForwardProp: propName => propName !== "pers
   color: ${({ theme, personallyLiked }) => (personallyLiked ? "#B02838" : theme.main.text)};
 `;
 
-const StyledMeta = styled(Meta)`
-  * {
-    color: ${({ theme }) => theme.main.text};
-  }
+const StyledName = styled.span`
+  color: ${({ theme }) => theme.main.text};
 `;
 
 const StyledIcon = styled(Icon)`
