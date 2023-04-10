@@ -1,8 +1,10 @@
-import SearchComponent from "antd/lib/input/Search";
+import { Input } from "antd";
 
 import { styled } from "@marketplace/theme";
 
-export default styled(SearchComponent)`
+const { Search } = Input;
+
+export default styled(Search)`
   *,
   *::before,
   *::after {

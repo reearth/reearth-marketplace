@@ -1,5 +1,5 @@
 import { Select } from "antd";
-import { DefaultOptionType } from "antd/lib/select";
+import type { DefaultOptionType } from "antd/es/select";
 
 export default Select;
 export const { Option } = Select;

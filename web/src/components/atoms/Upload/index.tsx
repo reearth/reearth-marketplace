@@ -1,6 +1,5 @@
 import { Upload } from "antd";
-import { RcFile } from "antd/lib/upload";
-import { UploadChangeParam, UploadFile, UploadProps } from "antd/lib/upload/interface";
+import { RcFile, UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload/interface";
 
 const { Dragger } = Upload;
 export { Dragger };

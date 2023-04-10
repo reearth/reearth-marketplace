@@ -1,4 +1,4 @@
-import Spin from "antd/lib/spin";
+import { Spin } from "antd";
 
 import LoadingIcon, { IconSize } from "@marketplace/components/atoms/LoadingIcon";
 
