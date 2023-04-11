@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 
 import Col from "@marketplace/components/atoms/Col";
+import ConfigProvider, { theme } from "@marketplace/components/atoms/ConfigProvider";
 import Dropdown from "@marketplace/components/atoms/Dropdown";
 import Icon from "@marketplace/components/atoms/Icon";
-import Menu, { MenuProps } from "@marketplace/components/atoms/Menu";
+import { MenuProps } from "@marketplace/components/atoms/Menu";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
 import Tooltip from "@marketplace/components/atoms/Tooltip";
@@ -35,91 +36,87 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
     ja: "日本語",
   };
 
-  const langMenu = (
-    <Menu
-      theme="dark"
-      onClick={handleLangMenuClick}
-      items={[
-        {
-          label: DisplayLang["und"],
-          key: "und",
-        },
-        {
-          label: DisplayLang["en"],
-          key: "en",
-        },
-        {
-          label: DisplayLang["ja"],
-          key: "ja",
-        },
-      ]}
-    />
-  );
+  const langMenu = {
+    onClick: handleLangMenuClick,
+    items: [
+      {
+        label: DisplayLang["und"],
+        key: "und",
+      },
+      {
+        label: DisplayLang["en"],
+        key: "en",
+      },
+      {
+        label: DisplayLang["ja"],
+        key: "ja",
+      },
+    ],
+  };
 
-  const userMenu = (
-    <Menu
-      theme="dark"
-      items={[
-        {
-          label: t("My Page"),
-          key: 1,
-          icon: <Icon icon="user" style={{ paddingRight: "5px" }} />,
-          onClick: () => navigate(`/mypage`),
-        },
-        {
-          label: t("My Plugins"),
-          key: 2,
-          icon: <Icon icon="upload" style={{ paddingRight: "5px" }} />,
-          onClick: () => navigate(`/myplugins`),
-        },
-        {
-          label: t("Log Out"),
-          key: 3,
-          icon: <Icon icon="logout" style={{ paddingRight: "5px" }} />,
-          onClick: logout,
-        },
-      ]}
-    />
-  );
+  const userMenu = {
+    items: [
+      {
+        label: t("My Page"),
+        key: 1,
+        icon: <Icon icon="user" style={{ paddingRight: "5px" }} />,
+        onClick: () => navigate(`/mypage`),
+      },
+      {
+        label: t("My Plugins"),
+        key: 2,
+        icon: <Icon icon="upload" style={{ paddingRight: "5px" }} />,
+        onClick: () => navigate(`/myplugins`),
+      },
+      {
+        label: t("Log Out"),
+        key: 3,
+        icon: <Icon icon="logout" style={{ paddingRight: "5px" }} />,
+        onClick: logout,
+      },
+    ],
+  };
 
   return (
-    <Wrapper>
-      <Row align="middle" style={{ height: "100%" }} justify="space-between">
-        <Col>
-          <Title onClick={() => navigate("/")}>{t("Re:Earth Marketplace")}</Title>
-        </Col>
-        <Col>
-          <Space size="large">
-            {isLoggedIn && (
-              <Tooltip placement="bottom" title={t("Upload new plugin")} mouseEnterDelay={0.5}>
-                <div
-                  style={{ padding: "10px", display: "flex", cursor: "pointer" }}
-                  onClick={() => navigate("/myplugins/new")}>
-                  <Icon icon="upload" style={{ fontSize: "20px" }} />
-                </div>
-              </Tooltip>
-            )}
-            <Dropdown overlay={langMenu} trigger={["click"]} placement="bottom">
-              <DropdownContents>
-                <Lang>{DisplayLang[lang]}</Lang>
-                <StyledIcon icon="downFilled" />
-              </DropdownContents>
-            </Dropdown>
-            {isLoggedIn ? (
-              <Dropdown overlay={userMenu} trigger={["click"]} placement="bottom">
+    <ConfigProvider theme={{ algorithm: theme.darkAlgorithm }}>
+      <Wrapper>
+        <Row align="middle" style={{ height: "100%" }} justify="space-between">
+          <Col>
+            <Title onClick={() => navigate("/")}>{t("Re:Earth Marketplace")}</Title>
+          </Col>
+          <Col>
+            <Space size="large">
+              {isLoggedIn && (
+                <Tooltip placement="bottom" title={t("Upload new plugin")} mouseEnterDelay={0.5}>
+                  <div
+                    style={{ padding: "10px", display: "flex", cursor: "pointer" }}
+                    onClick={() => navigate("/myplugins/new")}>
+                    <Icon icon="upload" style={{ fontSize: "20px" }} />
+                  </div>
+                </Tooltip>
+              )}
+              <Dropdown menu={langMenu} trigger={["click"]} placement="bottom">
                 <DropdownContents>
-                  <NameIcon>{username?.charAt(0).toUpperCase()}</NameIcon>
-                  <UserName>{username}</UserName>
+                  <Lang>{DisplayLang[lang]}</Lang>
                   <StyledIcon icon="downFilled" />
                 </DropdownContents>
               </Dropdown>
-            ) : (
-              <LoginWrapper onClick={login}>{t("Log in")}</LoginWrapper>
-            )}
-          </Space>
-        </Col>
-      </Row>
-    </Wrapper>
+              {isLoggedIn ? (
+                <Dropdown menu={userMenu} trigger={["click"]} placement="bottom">
+                  <DropdownContents>
+                    <NameIcon>{username?.charAt(0).toUpperCase()}</NameIcon>
+                    <UserName>{username}</UserName>
+                    <StyledIcon icon="downFilled" />
+                  </DropdownContents>
+                </Dropdown>
+              ) : (
+                <LoginWrapper onClick={login}>{t("Log in")}</LoginWrapper>
+              )}
+            </Space>
+          </Col>
+        </Row>
+      </Wrapper>
+    </ConfigProvider>
   );
 };
 
