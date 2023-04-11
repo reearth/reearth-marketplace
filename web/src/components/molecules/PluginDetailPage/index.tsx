@@ -80,19 +80,24 @@ const PluginDetailPage: React.FC<Props> = ({
   return (
     <Wrapper>
       <InnerWrapper>
-        <Breadcrumb style={{ marginBottom: "20px" }}>
-          <Breadcrumb.Item>
-            <StyledLink
-              style={{ cursor: "pointer" }}
-              onClick={e => {
-                e.preventDefault();
-                onBack?.();
-              }}>
-              {t("Top")}
-            </StyledLink>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>{pluginName}</Breadcrumb.Item>
-        </Breadcrumb>
+        <Breadcrumb
+          style={{ marginBottom: "20px" }}
+          items={[
+            {
+              title: (
+                <StyledLink
+                  style={{ cursor: "pointer" }}
+                  onClick={e => {
+                    e.preventDefault();
+                    onBack?.();
+                  }}>
+                  {t("Top")}
+                </StyledLink>
+              ),
+            },
+            { title: pluginName },
+          ]}
+        />
         {plugin ? (
           <Row wrap={false}>
             <Col flex={3} style={{ maxWidth: "736px" }}>
