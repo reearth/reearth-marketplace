@@ -1,5 +1,5 @@
 import { Tabs } from "antd";
 
-const { TabPane } = Tabs;
-export { TabPane };
+export type { TabsProps } from "antd";
+
 export default Tabs;
