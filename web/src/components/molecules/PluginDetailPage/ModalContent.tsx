@@ -71,7 +71,7 @@ const ModalContent: React.FC<Props> = ({
         </>
       }
       width="756px"
-      visible={visible}
+      open={visible}
       onCancel={handleCancel}
       okText={t("Choose")}
       cancelText={t("Cancel")}
@@ -112,13 +112,13 @@ export default ModalContent;
 const ListItem = styled(List.Item)<{ selected?: boolean }>`
   margin: 0 12px 10px 12px;
   cursor: pointer;
-  background: ${({ selected }) => (selected ? "#1890ff" : "#F0F0F0")};
+  background: ${({ selected }) => (selected ? "#1677ff" : "#F0F0F0")};
   ${({ selected }) => selected && "color: white;"}
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.15);
   padding: 12px 20px;
 
   :hover {
-    background: #1890ff;
+    background: #1677ff;
     color: white;
   }
 `;

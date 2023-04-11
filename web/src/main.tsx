@@ -4,7 +4,6 @@ import { createRoot } from "react-dom/client";
 import App from "./app";
 import { startMock } from "./test/mocks";
 
-import "antd/dist/antd.css";
 import "./index.css";
 
 startMock().finally(() => {

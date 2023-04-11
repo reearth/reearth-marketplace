@@ -37,12 +37,12 @@ const UserPageContents: React.FC<Props> = ({
   return (
     <Wrapper>
       <InnerWrapper>
-        <Breadcrumb>
-          <Breadcrumb.Item>
-            <StyledLink to="/">{t("Top")}</StyledLink>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>{myData ? myData.displayName : ""}</Breadcrumb.Item>
-        </Breadcrumb>
+        <Breadcrumb
+          items={[
+            { title: <StyledLink to="/">{t("Top")}</StyledLink> },
+            { title: myData ? myData.displayName : "" },
+          ]}
+        />
         <HeaderBannerSpace
           style={{
             paddingTop: "24px",

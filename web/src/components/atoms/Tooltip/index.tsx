@@ -1,3 +1,3 @@
-import Tooltip from "antd/lib/tooltip";
+import { Tooltip } from "antd";
 
 export default Tooltip;
