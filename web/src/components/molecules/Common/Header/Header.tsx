@@ -95,20 +95,20 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
                   </div>
                 </Tooltip>
               )}
-              <Dropdown menu={langMenu} trigger={["click"]} placement="bottom">
+              <StyledDropdown menu={langMenu} trigger={["click"]} placement="bottom">
                 <DropdownContents>
                   <Lang>{DisplayLang[lang]}</Lang>
                   <StyledIcon icon="downFilled" />
                 </DropdownContents>
-              </Dropdown>
+              </StyledDropdown>
               {isLoggedIn ? (
-                <Dropdown menu={userMenu} trigger={["click"]} placement="bottom">
+                <StyledDropdown menu={userMenu} trigger={["click"]} placement="bottom">
                   <DropdownContents>
                     <NameIcon>{username?.charAt(0).toUpperCase()}</NameIcon>
                     <UserName>{username}</UserName>
                     <StyledIcon icon="downFilled" />
                   </DropdownContents>
-                </Dropdown>
+                </StyledDropdown>
               ) : (
                 <LoginWrapper onClick={login}>{t("Log in")}</LoginWrapper>
               )}
@@ -131,6 +131,10 @@ const Title = styled.h1`
   color: #df3013;
   font-size: 14px;
   cursor: pointer;
+`;
+
+const StyledDropdown = styled(Dropdown)`
+  height: 48px;
 `;
 
 const DropdownContents = styled.div`

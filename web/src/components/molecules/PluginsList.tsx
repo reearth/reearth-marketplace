@@ -1,5 +1,6 @@
 import Space from "@marketplace/components/atoms/Space";
 import PluginsListCard from "@marketplace/components/molecules/PluginsListCard";
+import { styled } from "@marketplace/theme";
 
 export type Props = {
   plugins?: Plugin[];
@@ -21,7 +22,7 @@ export type Plugin = {
 
 const PluginsList: React.FC<Props> = ({ plugins, loading, onPluginSelect }) => {
   return (
-    <Space size={[30, 18]} wrap>
+    <Wrapper size={[30, 18]} wrap>
       {plugins
         ? plugins.map((plugin: Plugin) => {
             return (
@@ -39,8 +40,12 @@ const PluginsList: React.FC<Props> = ({ plugins, loading, onPluginSelect }) => {
             );
           })
         : null}
-    </Space>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled(Space)`
+  margin-bottom: 24px;
+`;
 
 export default PluginsList;
