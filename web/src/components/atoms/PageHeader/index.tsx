@@ -1,3 +1,3 @@
-import { PageHeader } from "antd";
+import { PageHeader } from "@ant-design/pro-layout";
 
 export default PageHeader;

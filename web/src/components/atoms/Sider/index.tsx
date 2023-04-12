@@ -1,3 +1,5 @@
-import Sider from "antd/lib/layout/Sider";
+import { Layout } from "antd";
+
+const { Sider } = Layout;
 
 export default Sider;

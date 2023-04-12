@@ -1,3 +1,5 @@
-import TextArea from "antd/lib/input/TextArea";
+import { Input } from "antd";
+
+const { TextArea } = Input;
 
 export default TextArea;

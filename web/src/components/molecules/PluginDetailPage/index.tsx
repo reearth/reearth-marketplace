@@ -12,7 +12,7 @@ import Loading from "@marketplace/components/atoms/Loading";
 import Markdown from "@marketplace/components/atoms/Markdown";
 import Row from "@marketplace/components/atoms/Row";
 import Space from "@marketplace/components/atoms/Space";
-import Tabs, { TabPane } from "@marketplace/components/atoms/Tabs";
+import Tabs, { TabsProps } from "@marketplace/components/atoms/Tabs";
 import { getConfig } from "@marketplace/config";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
@@ -75,24 +75,43 @@ const PluginDetailPage: React.FC<Props> = ({
     return d;
   }, [updatedDate]);
 
+  const items: TabsProps["items"] = [
+    {
+      key: "1",
+      label: t("README"),
+      children: <Markdown>{readme}</Markdown>,
+    },
+    // TODO: after developing function for posting changelogs
+    // {
+    //   key: "2",
+    //   label: t("Change log"),
+    //   children: "Change log",
+    // },
+  ];
+
   const config = getConfig();
 
   return (
     <Wrapper>
       <InnerWrapper>
-        <Breadcrumb style={{ marginBottom: "20px" }}>
-          <Breadcrumb.Item>
-            <StyledLink
-              style={{ cursor: "pointer" }}
-              onClick={e => {
-                e.preventDefault();
-                onBack?.();
-              }}>
-              {t("Top")}
-            </StyledLink>
-          </Breadcrumb.Item>
-          <Breadcrumb.Item>{pluginName}</Breadcrumb.Item>
-        </Breadcrumb>
+        <Breadcrumb
+          style={{ marginBottom: "20px" }}
+          items={[
+            {
+              title: (
+                <StyledLink
+                  style={{ cursor: "pointer" }}
+                  onClick={e => {
+                    e.preventDefault();
+                    onBack?.();
+                  }}>
+                  {t("Top")}
+                </StyledLink>
+              ),
+            },
+            { title: pluginName },
+          ]}
+        />
         {plugin ? (
           <Row wrap={false}>
             <Col flex={3} style={{ maxWidth: "736px" }}>
@@ -124,15 +143,7 @@ const PluginDetailPage: React.FC<Props> = ({
                 )}
               </Carousel>
               <PluginDocs>
-                <Tabs defaultActiveKey="1">
-                  <TabPane tab={t("README")} key="1">
-                    <Markdown>{readme}</Markdown>
-                  </TabPane>
-                  {/* TODO: after developing function for posting changelogs */}
-                  {/* <TabPane tab="Change log" key="2">
-                      Change log
-                    </TabPane> */}
-                </Tabs>
+                <Tabs defaultActiveKey="1" items={items} />
               </PluginDocs>
             </Col>
             <Col

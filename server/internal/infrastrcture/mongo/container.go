@@ -9,12 +9,15 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func InitRepos(ctx context.Context, c *repo.Container, mc *mongo.Client, databaseName string) error {
+func InitRepos(ctx context.Context, c *repo.Container, mc *mongo.Client, databaseName string, useTransaction bool) error {
 	client := mongox.NewClient(databaseName, mc)
+	if useTransaction {
+		client = client.WithTransaction()
+	}
 	c.User = NewUser(client)
 	c.Plugin = NewPlugin(client)
-	c.Transaction = mongox.NewTransaction(client)
 	c.Organization = NewOrganization(client)
+	c.Transaction = client.Transaction()
 	return nil
 }
 

@@ -1,3 +1,6 @@
+import ConfigProvider, {
+  theme as ProviderTheme,
+} from "@marketplace/components/atoms/ConfigProvider";
 import { useConfig } from "@marketplace/config";
 import { Provider as GqlProvider } from "@marketplace/gql";
 import { Provider as I18nProvider } from "@marketplace/i18n";
@@ -19,10 +22,15 @@ export default function SharedProviders({
   const config = useConfig();
 
   return config?.marketplaceApi && accessToken ? (
-    <I18nProvider>
-      <GqlProvider accessToken={accessToken}>
-        <ThemeProvider theme={theme}>{children}</ThemeProvider>
-      </GqlProvider>
-    </I18nProvider>
+    <ConfigProvider
+      theme={{
+        algorithm: theme === "dark" ? ProviderTheme.darkAlgorithm : ProviderTheme.defaultAlgorithm,
+      }}>
+      <I18nProvider>
+        <GqlProvider accessToken={accessToken}>
+          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+        </GqlProvider>
+      </I18nProvider>
+    </ConfigProvider>
   ) : null;
 }

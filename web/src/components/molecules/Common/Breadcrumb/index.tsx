@@ -10,12 +10,9 @@ export type Props = {
 
 const MarketplaceBreadCrumb: React.FC<Props> = ({ rootLink, rootName, currentName }) => {
   return (
-    <Breadcrumb>
-      <Breadcrumb.Item>
-        <Link to={rootLink}>{rootName}</Link>
-      </Breadcrumb.Item>
-      <Breadcrumb.Item>{currentName}</Breadcrumb.Item>
-    </Breadcrumb>
+    <Breadcrumb
+      items={[{ title: <Link to={rootLink}>{rootName}</Link> }, { title: currentName }]}
+    />
   );
 };
 

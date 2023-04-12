@@ -40,10 +40,12 @@ func (o *Organization) Create(ctx context.Context, u *user.User, param *interfac
 		Description(description).
 		Build()
 
-	tx, err := o.transaction.Begin()
+	tx, err := o.transaction.Begin(ctx)
 	if err != nil {
 		return nil, err
 	}
+
+	ctx = tx.Context()
 	defer func() {
 		err2 := tx.End(ctx)
 		if err == nil {
