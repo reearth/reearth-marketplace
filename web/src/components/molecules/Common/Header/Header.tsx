@@ -134,7 +134,7 @@ const Title = styled.h1`
 `;
 
 const StyledDropdown = styled(Dropdown)`
-  height: 40px;
+  height: 48px;
 `;
 
 const DropdownContents = styled.div`
