@@ -1,5 +1,7 @@
 extends:
   - reearth
+  - plugin:prettier/recommended # Add Prettier here
+
 root: true
 rules:
   import/order:
@@ -13,6 +15,8 @@ rules:
       alphabetize:
         order: asc
         caseInsensitive: true
+  prettier/prettier: error # Enforce Prettier rules as ESLint errors
+
 overrides:
   - files:
       - i18next-parser.config.js
