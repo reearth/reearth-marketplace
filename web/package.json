@@ -79,7 +79,7 @@
     "@emotion/react": "11.9.3",
     "@emotion/styled": "11.9.3",
     "@types/apollo-upload-client": "17.0.2",
-    "antd": "5.17.0",
+    "antd": "5.21.0",
     "apollo-upload-client": "17.0.0",
     "dayjs": "1.11.7",
     "graphiql": "1.8.10",

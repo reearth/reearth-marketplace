@@ -1,10 +1,12 @@
 import Button from "@marketplace/components/atoms/Button";
 import Icon from "@marketplace/components/atoms/Icon";
+import Radio from "@marketplace/components/atoms/Radio";
 import Space from "@marketplace/components/atoms/Space";
 import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
 import ShadowCard from "@marketplace/components/molecules/Common/ShadowCard";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
+import { Flex } from "antd";
 import { useCallback, useState } from "react";
 
 export type Props = {
@@ -43,6 +45,11 @@ const PluginUpload: React.FC<Props> = ({
     updateTab(currentTab === 1 ? 2 : 1);
   }, [currentTab]);
 
+  const radioOptions  = [
+    { label: 'Classic', value: 'Classic' },
+    { label: 'Visualizer', value: 'Visualizer' },
+  ];
+
   return (
     <Wrapper>
       <ContentWrapper>
@@ -60,11 +67,15 @@ const PluginUpload: React.FC<Props> = ({
           </Button>
         </ButtonWrapper>
         <ShadowCard>
+          <div>
           <Space direction="vertical" size={"large"}>
             <ContentText>Version</ContentText>
             <ContentText>Which environment your plugin is developed for ?</ContentText>
-            <div></div>
           </Space>
+            <RadioWrapper>
+              <Radio.Group block options={radioOptions} defaultValue="Classic" optionType="button" />
+            </RadioWrapper>
+          </div>
         </ShadowCard>
       </ContentWrapper>
     </Wrapper>
@@ -87,6 +98,13 @@ const ContentText = styled.p`
 const ContentWrapper = styled.div`
   width: 1200px;
 `;
+
+const RadioWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
+  width: 100%;
+`
 
 const Title = styled.p`
   font-size: 28px;
