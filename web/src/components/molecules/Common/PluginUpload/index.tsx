@@ -1,15 +1,11 @@
-import { useCallback, useState } from "react";
-
 import Button from "@marketplace/components/atoms/Button";
-import Col from "@marketplace/components/atoms/Col";
-import Row from "@marketplace/components/atoms/Row";
+import Icon from "@marketplace/components/atoms/Icon";
 import Space from "@marketplace/components/atoms/Space";
 import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
+import ShadowCard from "@marketplace/components/molecules/Common/ShadowCard";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-
-import PackageArea from "./PackageArea";
-import SettingArea from "./SettingArea";
+import { useCallback, useState } from "react";
 
 export type Props = {
   currentPluginId?: string;
@@ -50,60 +46,58 @@ const PluginUpload: React.FC<Props> = ({
   return (
     <Wrapper>
       <ContentWrapper>
-        <TopRow align="middle" justify="space-between">
-          <Col>
-            <Breadcrumb
-              rootLink="/myplugins"
-              rootName={t("Plugins List")}
-              currentName={currentPluginId ? currentPluginId : t("New Plugin")}
-            />
-          </Col>
-          <Col>
-            <Space size="middle">
-              <Button
-                type="default"
-                size="large"
-                onClick={() => onPluginSave?.()}
-                loading={isLoading}
-                disabled={currentTab !== 2}>
-                {t("Save")}
-              </Button>
-              {!currentPluginId && (
-                <Button
-                  type="primary"
-                  size="large"
-                  onClick={() => onPublish?.()}
-                  loading={isLoading}
-                  disabled={currentTab !== 2}>
-                  {t("Save & Publish")}
-                </Button>
-              )}
-            </Space>
-          </Col>
-        </TopRow>
-        {currentTab === 1 && (
-          <PackageArea
-            githubUrl={githubUrl}
-            pageChangeButton={t("Details Setting")}
-            onChangeGithubUrl={onParseFromUrl}
-            onPageChange={pluginName !== "" ? handlePageChange : undefined}
-            onRemove={onRemove}
-            onParsePlugin={onParseFromFile}
-          />
-        )}
-        {currentTab === 2 && (
-          <SettingArea
-            pluginName={pluginName}
-            version={version}
-            description={description}
-            onBack={handlePageChange}
-            handleUploadImages={onImagesUpload}
-          />
-        )}
+        <Breadcrumb
+          rootLink="/myplugins"
+          rootName={t("Plugins List")}
+          currentName={currentPluginId ? currentPluginId : t("New Plugin")}
+        />
+        <TitleWrapper>
+          <Title>{t("New Plugin")}</Title>
+        </TitleWrapper>
+        <ButtonWrapper>
+          <Button icon={<Icon icon="arrowRight" />} iconPosition="end" type="primary">
+            {t("Next")}
+          </Button>
+        </ButtonWrapper>
+        <ShadowCard>
+          <Space direction="vertical" size={"large"}>
+            <ContentText>Version</ContentText>
+            <ContentText>Which environment your plugin is developed for ?</ContentText>
+            <div></div>
+          </Space>
+        </ShadowCard>
       </ContentWrapper>
     </Wrapper>
   );
 };
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+`;
+
+const ContentText = styled.p`
+  font-size: 16px;
+  line-height: 21.79px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.85);
+`;
+
+const ContentWrapper = styled.div`
+  width: 1200px;
+`;
+
+const Title = styled.p`
+  font-size: 28px;
+  line-height: 38.14px;
+  font-weight: 700;
+`;
+
+const TitleWrapper = styled.div`
+  margin-top: 24px;
+  margin-bottom: 24px;
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -113,15 +107,6 @@ const Wrapper = styled.div`
   background: rgba(250, 250, 250, 1);
   padding-top: 48px;
   padding-bottom: 72px;
-`;
-
-const ContentWrapper = styled.div`
-  width: 1200px;
-`;
-
-const TopRow = styled(Row)`
-  padding: 0;
-  margin-bottom: 32px;
 `;
 
 export default PluginUpload;

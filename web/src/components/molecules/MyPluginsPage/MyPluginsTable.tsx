@@ -1,7 +1,3 @@
-import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Icon from "@marketplace/components/atoms/Icon";
@@ -14,6 +10,10 @@ import Table from "@marketplace/components/atoms/Table";
 import type { Plugin } from "@marketplace/components/organisms/MyPlugins";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
+import { ConfigProvider } from "antd";
+import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
 export type Props = {
   plugins?: Plugin[];
@@ -24,14 +24,7 @@ export type Props = {
   pageSize: number;
 };
 
-const MyPluginsTable: React.FC<Props> = ({
-  plugins,
-  onPublish,
-  onPageChange,
-  totalCount,
-  page,
-  pageSize,
-}) => {
+const MyPluginsTable: React.FC<Props> = ({ plugins, onPublish, onPageChange, totalCount, page, pageSize }) => {
   const t = useT();
   const navigate = useNavigate();
 
@@ -40,21 +33,17 @@ const MyPluginsTable: React.FC<Props> = ({
       title: t("Plugin Name"),
       dataIndex: "name",
       key: "name",
-      render: text => <BoldTitle>{text}</BoldTitle>,
+      render: (text) => <BoldTitle>{text}</BoldTitle>,
     },
     {
-      title: t("Status"),
+      title: t("State"),
       dataIndex: "active",
       key: "active",
       render: (active, plugin) => (
         <Row justify="start">
           <Space size="large">
             <Col>
-              <Switch
-                defaultChecked={active}
-                checked={active}
-                onClick={() => onPublish(plugin.id, !active)}
-              />
+              <Switch defaultChecked={active} checked={active} onClick={() => onPublish(plugin.id, !active)} />
             </Col>
             <Col>{active ? t("Published") : t("Not Published")}</Col>
           </Space>
@@ -67,7 +56,7 @@ const MyPluginsTable: React.FC<Props> = ({
       key: "version",
     },
     {
-      title: t("Updated Date"),
+      title: t("Publish time"),
       dataIndex: "updateAt",
       key: "updateAt",
       render: (date: Date) => {
@@ -79,7 +68,7 @@ const MyPluginsTable: React.FC<Props> = ({
       title: t("Action"),
       key: "action",
       dataIndex: "id",
-      render: id => {
+      render: (id) => {
         return (
           <Row justify="space-around" style={{ maxWidth: "200px" }}>
             <Col>
@@ -115,7 +104,7 @@ const MyPluginsTable: React.FC<Props> = ({
 
   const pluginDataSource = useMemo(
     () =>
-      plugins?.map(plugin => {
+      plugins?.map((plugin) => {
         return {
           key: plugin.id,
           ...plugin,
@@ -124,21 +113,31 @@ const MyPluginsTable: React.FC<Props> = ({
     [plugins],
   );
 
+  const renderEmpty = () => {
+    return (
+      <RenderEmptyWrapper>
+        <RenderEmptyText>{t("Click the ” New Plugin ” button to upload your first Plugin")}</RenderEmptyText>
+      </RenderEmptyWrapper>
+    );
+  };
+
   return (
     <Wrapper>
-      <Table
-        columns={columns}
-        dataSource={pluginDataSource}
-        loading={!plugins && { indicator: <Loading size="md" height={200} /> }}
-        pagination={
-          {
-            current: page,
-            total: totalCount,
-            pageSize: pageSize,
-            onChange: onPageChange,
-          } as TablePaginationConfig
-        }
-      />
+      <ConfigProvider renderEmpty={renderEmpty}>
+        <Table
+          columns={columns}
+          dataSource={pluginDataSource}
+          loading={!plugins && { indicator: <Loading size="md" height={200} /> }}
+          pagination={
+            {
+              current: page,
+              total: totalCount,
+              pageSize: pageSize,
+              onChange: onPageChange,
+            } as TablePaginationConfig
+          }
+        />
+      </ConfigProvider>
     </Wrapper>
   );
 };
@@ -157,6 +156,19 @@ const BoldTitle = styled.p`
 
 const UpdateIcon = styled(Icon)`
   transform: rotate(0.75turn);
+`;
+
+const RenderEmptyWrapper = styled.div`
+  height: 750px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const RenderEmptyText = styled.p`
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 500;
 `;
 
 export default MyPluginsTable;

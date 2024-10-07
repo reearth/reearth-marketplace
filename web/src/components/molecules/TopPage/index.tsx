@@ -36,7 +36,7 @@ const TopPage: React.FC<Props> = ({
 }) => {
   return (
     <Wrapper>
-      {showBanner && <TitleBar />}
+      {/* {showBanner && <TitleBar />} */}
       <TopPageContent
         plugins={plugins}
         onSearch={onSearch}

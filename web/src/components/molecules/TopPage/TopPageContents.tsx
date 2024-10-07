@@ -2,6 +2,9 @@ import Loading from "@marketplace/components/atoms/Loading";
 import Pagination from "@marketplace/components/atoms/Pagination";
 import PluginsList, { Plugin } from "@marketplace/components/molecules/PluginsList";
 import SearchArea from "@marketplace/components/molecules/SearchArea";
+import Tabs, { TabsProps } from "@marketplace/components/atoms/Tabs";
+import { useT } from "@marketplace/i18n";
+
 import { styled } from "@marketplace/theme";
 
 export type Props = {
@@ -18,6 +21,8 @@ export type Props = {
   onPageChange: (page: number) => void;
 };
 
+
+
 const TopPageContents: React.FC<Props> = ({
   plugins,
   isLoggedIn,
@@ -31,9 +36,26 @@ const TopPageContents: React.FC<Props> = ({
   onPluginSelect,
   onPageChange,
 }) => {
+  const t = useT();
+
+  const tabs: TabsProps["items"] = [
+    {
+      key: "0",
+      label: t("Classical"),
+    },
+    {
+      key: "1",
+      label: t("Visualizer"),
+    },
+  ];
+
   return (
-    <Wrapper>
-      <SearchArea
+    <div>
+         <TabsWrapper>
+        <Tabs defaultActiveKey="0" items={tabs} />
+        </TabsWrapper>
+        <Wrapper>
+      <SearchArea 
         onSearch={onSearch}
         isLoggedIn={isLoggedIn}
         handleFavButtonClick={handleFavButtonClick}
@@ -41,7 +63,7 @@ const TopPageContents: React.FC<Props> = ({
       />
       {!loadingPlugins ? (
         <>
-          <PluginsList plugins={plugins} onPluginSelect={onPluginSelect} />
+          {/* <PluginsList plugins={plugins} onPluginSelect={onPluginSelect} /> */}
           <Pagination
             current={page}
             total={totalCount}
@@ -53,6 +75,8 @@ const TopPageContents: React.FC<Props> = ({
         <Loading height={400} />
       )}
     </Wrapper>
+    </div>
+    
   );
 };
 
@@ -62,5 +86,12 @@ const Wrapper = styled.div`
   padding-bottom: 72px;
   background: transparent;
 `;
+
+const TabsWrapper = styled.div`
+  background: #070707;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 48px;
+`
 
 export default TopPageContents;
