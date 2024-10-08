@@ -1,12 +1,11 @@
 import Button from "@marketplace/components/atoms/Button";
 import Icon from "@marketplace/components/atoms/Icon";
-import Radio from "@marketplace/components/atoms/Radio";
-import Space from "@marketplace/components/atoms/Space";
 import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
-import ShadowCard from "@marketplace/components/molecules/Common/ShadowCard";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 import { useCallback, useState } from "react";
+import PackageArea from "./PackageArea";
+import VersionArea from "./VersionArea";
 
 export type Props = {
   currentPluginId?: string;
@@ -41,13 +40,9 @@ const PluginUpload: React.FC<Props> = ({
   const [currentTab, updateTab] = useState<1 | 2>(1);
 
   const handlePageChange = useCallback(() => {
+    console.log("pressed");
     updateTab(currentTab === 1 ? 2 : 1);
   }, [currentTab]);
-
-  const radioOptions = [
-    { label: "Classic", value: "Classic" },
-    { label: "Visualizer", value: "Visualizer" },
-  ];
 
   return (
     <Wrapper>
@@ -61,21 +56,21 @@ const PluginUpload: React.FC<Props> = ({
           <Title>{t("New Plugin")}</Title>
         </TitleWrapper>
         <ButtonWrapper>
-          <Button icon={<Icon icon="arrowRight" />} iconPosition="end" type="primary">
+          <Button icon={<Icon icon="arrowRight" />} iconPosition="end" type="primary" onClick={handlePageChange}>
             {t("Next")}
           </Button>
         </ButtonWrapper>
-        <ShadowCard>
-          <div>
-            <Space direction="vertical" size={"large"}>
-              <ContentText>Version</ContentText>
-              <ContentText>Which environment your plugin is developed for ?</ContentText>
-            </Space>
-            <RadioWrapper>
-              <Radio.Group block options={radioOptions} defaultValue="Classic" optionType="button" />
-            </RadioWrapper>
-          </div>
-        </ShadowCard>
+        {currentTab === 1 && <VersionArea />}
+        {currentTab === 2 && (
+          <PackageArea
+            githubUrl={githubUrl}
+            pageChangeButton={t("Details Setting")}
+            onChangeGithubUrl={onParseFromUrl}
+            onPageChange={pluginName !== "" ? handlePageChange : undefined}
+            onRemove={onRemove}
+            onParsePlugin={onParseFromFile}
+          />
+        )}
       </ContentWrapper>
     </Wrapper>
   );
@@ -87,22 +82,8 @@ const ButtonWrapper = styled.div`
   margin-bottom: 24px;
 `;
 
-const ContentText = styled.p`
-  font-size: 16px;
-  line-height: 21.79px;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.85);
-`;
-
 const ContentWrapper = styled.div`
   width: 1200px;
-`;
-
-const RadioWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 24px;
-  width: 100%;
 `;
 
 const Title = styled.p`
