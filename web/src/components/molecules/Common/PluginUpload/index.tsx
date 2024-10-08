@@ -6,7 +6,6 @@ import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
 import ShadowCard from "@marketplace/components/molecules/Common/ShadowCard";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { Flex } from "antd";
 import { useCallback, useState } from "react";
 
 export type Props = {
@@ -45,9 +44,9 @@ const PluginUpload: React.FC<Props> = ({
     updateTab(currentTab === 1 ? 2 : 1);
   }, [currentTab]);
 
-  const radioOptions  = [
-    { label: 'Classic', value: 'Classic' },
-    { label: 'Visualizer', value: 'Visualizer' },
+  const radioOptions = [
+    { label: "Classic", value: "Classic" },
+    { label: "Visualizer", value: "Visualizer" },
   ];
 
   return (
@@ -68,10 +67,10 @@ const PluginUpload: React.FC<Props> = ({
         </ButtonWrapper>
         <ShadowCard>
           <div>
-          <Space direction="vertical" size={"large"}>
-            <ContentText>Version</ContentText>
-            <ContentText>Which environment your plugin is developed for ?</ContentText>
-          </Space>
+            <Space direction="vertical" size={"large"}>
+              <ContentText>Version</ContentText>
+              <ContentText>Which environment your plugin is developed for ?</ContentText>
+            </Space>
             <RadioWrapper>
               <Radio.Group block options={radioOptions} defaultValue="Classic" optionType="button" />
             </RadioWrapper>
@@ -104,7 +103,7 @@ const RadioWrapper = styled.div`
   justify-content: center;
   margin-top: 24px;
   width: 100%;
-`
+`;
 
 const Title = styled.p`
   font-size: 28px;
