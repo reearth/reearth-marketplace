@@ -1,10 +1,10 @@
-import Button from "@marketplace/components/atoms/Button";
-import Icon from "@marketplace/components/atoms/Icon";
 import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 import { useCallback, useState } from "react";
+import ButtonNavigation from "./ButtonNavigation";
 import PackageArea from "./PackageArea";
+import SettingArea from "./SettingArea";
 import VersionArea from "./VersionArea";
 
 export type Props = {
@@ -36,12 +36,17 @@ const PluginUpload: React.FC<Props> = ({
   onPublish,
   onImagesUpload,
 }) => {
+  const [currentTab, updateTab] = useState<"1" | "2" | "3">("1");
   const t = useT();
-  const [currentTab, updateTab] = useState<1 | 2>(1);
 
-  const handlePageChange = useCallback(() => {
-    console.log("pressed");
-    updateTab(currentTab === 1 ? 2 : 1);
+  const handleNextButtonPress = useCallback(() => {
+    if (currentTab === "1") updateTab("2");
+    else if (currentTab === "2") updateTab("3");
+  }, [currentTab]);
+
+  const handlePrevButtonPress = useCallback(() => {
+    if (currentTab === "3") updateTab("2");
+    else if (currentTab === "2") updateTab("1");
   }, [currentTab]);
 
   return (
@@ -55,32 +60,32 @@ const PluginUpload: React.FC<Props> = ({
         <TitleWrapper>
           <Title>{t("New Plugin")}</Title>
         </TitleWrapper>
-        <ButtonWrapper>
-          <Button icon={<Icon icon="arrowRight" />} iconPosition="end" type="primary" onClick={handlePageChange}>
-            {t("Next")}
-          </Button>
-        </ButtonWrapper>
-        {currentTab === 1 && <VersionArea />}
-        {currentTab === 2 && (
+        <ButtonNavigation
+          currentTab={currentTab}
+          handleNextButtonPress={handleNextButtonPress}
+          handlePrevButtonPress={handlePrevButtonPress}
+        />
+        {currentTab === "1" && <VersionArea />}
+        {currentTab === "2" && (
           <PackageArea
             githubUrl={githubUrl}
-            pageChangeButton={t("Details Setting")}
             onChangeGithubUrl={onParseFromUrl}
-            onPageChange={pluginName !== "" ? handlePageChange : undefined}
             onRemove={onRemove}
             onParsePlugin={onParseFromFile}
+          />
+        )}
+        {currentTab === "3" && (
+          <SettingArea
+            pluginName={pluginName}
+            version={version}
+            description={description}
+            handleUploadImages={onImagesUpload}
           />
         )}
       </ContentWrapper>
     </Wrapper>
   );
 };
-
-const ButtonWrapper = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 24px;
-`;
 
 const ContentWrapper = styled.div`
   width: 1200px;

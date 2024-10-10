@@ -15,21 +15,12 @@ export type FileUploadType = string | RcFile | Blob;
 
 export type Props = {
   githubUrl?: string;
-  pageChangeButton?: string;
-  onPageChange?: () => void;
   onRemove?: () => void;
   onParsePlugin: (file?: File) => Promise<void>;
   onChangeGithubUrl: (url: string) => void;
 };
 
-const PackageArea: React.FC<Props> = ({
-  githubUrl,
-  pageChangeButton,
-  onPageChange,
-  onRemove,
-  onParsePlugin,
-  onChangeGithubUrl,
-}) => {
+const PackageArea: React.FC<Props> = ({ githubUrl, onRemove, onParsePlugin, onChangeGithubUrl }) => {
   const t = useT();
 
   const [uploadedFile, uploadFile] = useState<UploadFile[]>();

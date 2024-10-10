@@ -3,7 +3,7 @@ import Icon from "@marketplace/components/atoms/Icon";
 // import { TextArea } from "@marketplace/components/atoms/Input";
 import Message from "@marketplace/components/atoms/Message";
 import Space from "@marketplace/components/atoms/Space";
-import Upload, { UploadProps, RcFile as RcFileType } from "@marketplace/components/atoms/Upload";
+import Upload, { RcFile as RcFileType, UploadProps } from "@marketplace/components/atoms/Upload";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
@@ -15,10 +15,9 @@ export type Props = {
   pluginName: string;
   version: string;
   description: string;
-  onBack?: () => void;
   handleUploadImages: (images: RcFile[]) => void;
 };
-const SettingArea: React.FC<Props> = ({ pluginName, version, onBack, handleUploadImages }) => {
+const SettingArea: React.FC<Props> = ({ description, pluginName, version, handleUploadImages }) => {
   const t = useT();
 
   const uploadProps: UploadProps = {
@@ -26,15 +25,13 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, onBack, handleUploa
     listType: "picture",
     accept: "image/png,image/jpeg,image/jpg,image/webp",
     multiple: true,
-    customRequest: async options => {
+    customRequest: async (options) => {
       options.onSuccess?.("Ok");
     },
     onChange(info) {
       const { status } = info.file;
       if (status === "done" || status === "removed") {
-        handleUploadImages(
-          info.fileList.map(f => f.originFileObj).filter((f): f is RcFileType => !!f),
-        );
+        handleUploadImages(info.fileList.map((f) => f.originFileObj).filter((f): f is RcFileType => !!f));
         Message.success(`${info.file.name} ${t("Image uploaded successfully.")}`);
       } else if (status === "error") {
         Message.error(`${info.file.name} ${t("Image upload failed.")}`);
@@ -44,18 +41,15 @@ const SettingArea: React.FC<Props> = ({ pluginName, version, onBack, handleUploa
 
   return (
     <Wrapper>
-      {onBack && (
-        <Button onClick={onBack} style={{ marginBottom: "12px" }}>
-          {t("Back")}
-        </Button>
-      )}
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
         <Title>{t("Plugin Name")}</Title>
         <PluginInfo>{pluginName}</PluginInfo>
         <Title>{t("Version")}</Title>
         <PluginInfo>{version}</PluginInfo>
-        {/* <Title>{t("Description")}</Title>
-        <StyledTextArea rows={4} defaultValue={description} /> */}
+        <Title>{t("Description")}</Title>
+        <StyledDiv>
+          <p>{description}</p>
+        </StyledDiv>
         <Title>{t("Images")}</Title>
         <Upload {...uploadProps}>
           <Button icon={<Icon icon="upload" />} type="primary" ghost>
@@ -74,16 +68,23 @@ const Wrapper = styled.div`
 
 const Title = styled.p`
   font-size: 16px;
+  font-weight: 500;
+  line-height: 21.79px;
   width: 100%;
 `;
 
 const PluginInfo = styled.h1`
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 700;
+  line-height: 21.79px;
 `;
 
-// const StyledTextArea = styled(TextArea)`
-//   width: 100%;
-// `;
+const StyledDiv = styled.div`
+  min-height: 100px;
+  border-width: 1px;
+  border-style: solid;
+  padding: 6px 8px; 8px; 8px;
+  border-color: rgba(0, 0, 0, 0.25);
+`;
 
 export default SettingArea;
