@@ -1,9 +1,9 @@
 import Button from "@marketplace/components/atoms/Button";
 import Icon from "@marketplace/components/atoms/Icon";
-// import { TextArea } from "@marketplace/components/atoms/Input";
 import Message from "@marketplace/components/atoms/Message";
 import Space from "@marketplace/components/atoms/Space";
 import Upload, { RcFile as RcFileType, UploadProps } from "@marketplace/components/atoms/Upload";
+import ShadowCard from "@marketplace/components/molecules/Common/ShadowCard";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
@@ -40,7 +40,7 @@ const SettingArea: React.FC<Props> = ({ description, pluginName, version, handle
   };
 
   return (
-    <Wrapper>
+    <ShadowCard>
       <Space direction="vertical" size="middle" style={{ width: "100%" }}>
         <Title>{t("Plugin Name")}</Title>
         <PluginInfo>{pluginName}</PluginInfo>
@@ -57,14 +57,9 @@ const SettingArea: React.FC<Props> = ({ description, pluginName, version, handle
           </Button>
         </Upload>
       </Space>
-    </Wrapper>
+    </ShadowCard>
   );
 };
-
-const Wrapper = styled.div`
-  background: rgba(255, 255, 255, 1);
-  padding: 32px;
-`;
 
 const Title = styled.p`
   font-size: 16px;
