@@ -1,10 +1,9 @@
 import Loading from "@marketplace/components/atoms/Loading";
 import Pagination from "@marketplace/components/atoms/Pagination";
-import PluginsList, { Plugin } from "@marketplace/components/molecules/PluginsList";
-import SearchArea from "@marketplace/components/molecules/SearchArea";
 import Tabs, { TabsProps } from "@marketplace/components/atoms/Tabs";
+import { Plugin } from "@marketplace/components/molecules/PluginsList";
+import SearchArea from "@marketplace/components/molecules/SearchArea";
 import { useT } from "@marketplace/i18n";
-
 import { styled } from "@marketplace/theme";
 
 export type Props = {
@@ -20,8 +19,6 @@ export type Props = {
   onPluginSelect?: (pluginId: string) => void;
   onPageChange: (page: number) => void;
 };
-
-
 
 const TopPageContents: React.FC<Props> = ({
   plugins,
@@ -41,7 +38,7 @@ const TopPageContents: React.FC<Props> = ({
   const tabs: TabsProps["items"] = [
     {
       key: "0",
-      label: t("Classical"),
+      label: t("Classic"),
     },
     {
       key: "1",
@@ -51,32 +48,26 @@ const TopPageContents: React.FC<Props> = ({
 
   return (
     <div>
-         <TabsWrapper>
+      <TabsWrapper>
         <Tabs defaultActiveKey="0" items={tabs} />
-        </TabsWrapper>
-        <Wrapper>
-      <SearchArea 
-        onSearch={onSearch}
-        isLoggedIn={isLoggedIn}
-        handleFavButtonClick={handleFavButtonClick}
-        isFavSelected={isFavSelected}
-      />
-      {!loadingPlugins ? (
-        <>
-          {/* <PluginsList plugins={plugins} onPluginSelect={onPluginSelect} /> */}
-          <Pagination
-            current={page}
-            total={totalCount}
-            pageSize={pageSize}
-            onChange={onPageChange}
-          />
-        </>
-      ) : (
-        <Loading height={400} />
-      )}
-    </Wrapper>
+      </TabsWrapper>
+      <Wrapper>
+        <SearchArea
+          onSearch={onSearch}
+          isLoggedIn={isLoggedIn}
+          handleFavButtonClick={handleFavButtonClick}
+          isFavSelected={isFavSelected}
+        />
+        {!loadingPlugins ? (
+          <>
+            {/* <PluginsList plugins={plugins} onPluginSelect={onPluginSelect} /> */}
+            <Pagination current={page} total={totalCount} pageSize={pageSize} onChange={onPageChange} />
+          </>
+        ) : (
+          <Loading height={400} />
+        )}
+      </Wrapper>
     </div>
-    
   );
 };
 
@@ -92,6 +83,6 @@ const TabsWrapper = styled.div`
   display: flex;
   justify-content: center;
   margin-bottom: 48px;
-`
+`;
 
 export default TopPageContents;
