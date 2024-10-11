@@ -1,0 +1,79 @@
+name: deploy
+on:
+  workflow_run:
+    workflows: [build]
+    types: [completed]
+    branches: [main]
+env:
+  REEARTH_MARKETPLACE_URL: marketplace.test.reearth.dev
+  REEARTH_API: "https://api.marketplace.test.reearth.dev/api"
+  GCS_DEST: gs://marketplace.test.reearth.dev
+  IMAGE_GCP: us-central1-docker.pkg.dev/reearth-oss/reearth/reearth-marketplace:nightly
+  WEB_IMAGE_GCP: us-central1-docker.pkg.dev/reearth-oss/reearth/reearth-marketplace-web:nightly
+  GCP_REGION: us-central1
+jobs:
+  deploy_web:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion != 'failure' && github.event.repository.full_name == 'reearth/reearth-marketplace' && github.event.workflow_run.head_branch == 'main'
+    steps:
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+      - name: Configure docker
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+      - name: docker build and push
+        run: |
+          cd web
+          docker build -t $WEB_IMAGE_GCP .
+          docker push $WEB_IMAGE_GCP
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy reearth-marketplace-web \
+            --image $WEB_IMAGE_GCP \
+            --region $GCP_REGION \
+            --platform managed \
+            --quiet
+  deploy_server:
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion != 'failure' && github.event.repository.full_name == 'reearth/reearth-marketplace' && github.event.workflow_run.head_branch == 'main'
+    permissions:
+      contents: read
+      id-token: write
+      packages: read
+    steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
+      - uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+      #   with:
+      #     workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+      #     service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+      - name: Configure docker
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+      - name: Download server arfiacts
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          github_token: ${{ steps.app-token.outputs.token }}
+          workflow: build.yml
+          workflow_conclusion: success
+          branch: main
+          name: reearth-marketplace
+          check_artifacts: true
+      - name: Unpack docker image
+        run: docker load < reearth-marketplace.tar.gz
+      - name: docker push
+        run: |
+          docker tag reearth/reearth-marketplace:nightly $IMAGE_GCP
+          docker push $IMAGE_GCP
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy reearth-marketplace-backend \
+            --image $IMAGE_GCP \
+            --region $GCP_REGION \
+            --platform managed \
+            --quiet

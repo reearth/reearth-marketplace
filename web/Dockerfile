@@ -1,15 +1,37 @@
 FROM node:18.16.1-slim AS node
 WORKDIR /work
-# RUN apt-get update && apt-get install -y python3 make gcc g++ \
-#   && apt-get clean  \
-#   && rm -rf /var/lib/apt/lists/*
-COPY package.json yarn.lock ./
-RUN yarn install
-COPY . . 
-RUN yarn build && yarn build:ext
+
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=yarn.lock,target=yarn.lock \
+    --mount=type=cache,target=/root/.yarn,sharing=locked \
+    yarn install --frozen-lockfile --production=false
+
+RUN --mount=type=bind,source=package.json,target=package.json \
+    --mount=type=bind,source=yarn.lock,target=yarn.lock \
+    --mount=type=bind,source=index.html,target=index.html \
+    --mount=type=bind,source=tsconfig.json,target=tsconfig.json \
+    --mount=type=bind,source=tsconfig.node.json,target=tsconfig.node.json \
+    --mount=type=bind,source=vite.config.ts,target=vite.config.ts \
+    --mount=type=bind,source=vite.config.ext.ts,target=vite.config.ext.ts \
+    --mount=type=bind,source=src,target=src \
+    --mount=type=bind,source=TEMP.js,target=TEMP.js \
+    --mount=type=cache,target=/root/.yarn,sharing=locked \
+    yarn build && yarn build:ext
 
 FROM nginx:1.27-alpine
-COPY --from=node /work/dist/ /opt/reearth-marketplace
-COPY docker/reearth_config.json.tmpl /tmp/reearth_config.json.tmpl
-COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
-COPY docker/40-envsubst-on-reearth_config.sh /docker-entrypoint.d/
+
+# Quite the Nginx startup logs.
+ENV  NGINX_ENTRYPOINT_QUIET_LOGS=true
+
+# Default to Cloud Run port.
+# Ref: https://cloud.google.com/run/docs/reference/container-contract#port
+ENV PORT=8080
+
+# Defaults Google Cloud Load Balancer header.
+# Ref: https://cloud.google.com/load-balancing/docs/https#target-proxies
+ENV REAL_IP_HEADER=X-Forwarded-For
+
+COPY --from=node /work/dist/ /usr/share/nginx/html
+COPY --chown=nginx:nginx  docker/reearth_config.json.template /tmp/reearth_config.json.template
+COPY --chown=nginx:nginx docker/nginx.conf.template /etc/nginx/templates/nginx.conf.template
+COPY --chown=nginx:nginx docker/40-envsubst-on-reearth_config.sh /docker-entrypoint.d/
