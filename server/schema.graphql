@@ -98,6 +98,8 @@ type Plugin implements Node {
 
   like: Int!
   liked: Boolean!
+
+  core: Boolean!
 }
 
 type Version {
