@@ -29,6 +29,7 @@ type Plugin struct {
 	LatestVersion *Version   `json:"latestVersion"`
 	Images        []string   `json:"images"`
 	Like          int        `json:"like"`
+	Core          bool       `json:"core"`
 
 	publisherID id.UserID
 }

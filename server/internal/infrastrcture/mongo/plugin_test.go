@@ -122,6 +122,7 @@ func TestPlugin_Create(t *testing.T) {
 		Active(false).
 		Downloads(0).
 		Like(0).
+		Core(true).
 		CreatedAt(now1).
 		UpdatedAt(now1).
 		LatestVersion(version1).
@@ -273,6 +274,7 @@ func Test_pluginRepo_Search(t *testing.T) {
 		Active(true).
 		Downloads(0).
 		Like(0).
+		Core(false).
 		CreatedAt(now1).
 		UpdatedAt(now1).
 		LatestVersion(version1).
@@ -296,6 +298,7 @@ func Test_pluginRepo_Search(t *testing.T) {
 		Active(true).
 		Downloads(0).
 		Like(0).
+		Core(false).
 		CreatedAt(now2).
 		UpdatedAt(now2).
 		LatestVersion(version2).
@@ -377,4 +380,29 @@ func Test_pluginRepo_Search(t *testing.T) {
 		assert.Equal(t, versioned1, ps1[0])
 		assert.Equal(t, false, pi1.HasNextPage)
 	})
+}
+
+func TestCorePlugin_FindByID(t *testing.T) {
+	ctx := context.Background()
+	db := mongotest.Connect(t)(t)
+	r := NewPlugin(mongox.NewClientWithDatabase(db))
+
+	uid := id.NewUserID()
+	pid := id.MustPluginID("xxxxxx1aaas")
+
+	pl, err := r.FindByID(ctx, pid, nil)
+	assert.Equal(t, rerror.ErrNotFound, err)
+	assert.Nil(t, pl)
+
+	_, _ = db.Collection("plugin").InsertOne(ctx, bson.M{
+		"id":          pid.String(),
+		"publisherId": uid.String(),
+		"active":      true,
+		"core":        true,
+	})
+
+	pl, err = r.FindByID(ctx, pid, nil)
+	assert.NoError(t, err)
+	assert.Equal(t, plugin.New(uid).ID(pid).Active(true).MustBuild(), pl)
+
 }
