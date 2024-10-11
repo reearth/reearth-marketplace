@@ -256,6 +256,7 @@ input CreatePluginInput {
   repo: String
   # If omitted, the plugin will be published from the personal publisher
   publisher: ID
+  core: Boolean
 }
 
 input UpdatePluginInput {

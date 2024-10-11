@@ -26,9 +26,10 @@ type CreateOrganizationInput struct {
 }
 
 type CreatePluginInput struct {
-	File      *graphql.Upload `json:"file"`
-	Repo      *string         `json:"repo"`
-	Publisher *string         `json:"publisher"`
+	File      *graphql.Upload `json:"file,omitempty"`
+	Repo      *string         `json:"repo,omitempty"`
+	Publisher *string         `json:"publisher,omitempty"`
+	Core      *bool           `json:"core,omitempty"`
 }
 
 type DeleteOrganizationInput struct {
