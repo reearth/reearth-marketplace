@@ -28,7 +28,11 @@ const ButtonNavigation: React.FC<Props> = ({
     <ButtonWrapper>
       <div>
         {["2", "3"].includes(currentTab) && (
-          <Button icon={<Icon icon="arrowLeft" />} iconPosition="start" type="primary" onClick={handlePrevButtonPress}>
+          <Button
+            icon={<Icon icon="arrowLeft" />}
+            iconPosition="start"
+            type="primary"
+            onClick={handlePrevButtonPress}>
             {t("Prev")}
           </Button>
         )}
@@ -40,8 +44,7 @@ const ButtonNavigation: React.FC<Props> = ({
             icon={<Icon icon="arrowRight" />}
             iconPosition="end"
             type="primary"
-            onClick={handleNextButtonPress}
-          >
+            onClick={handleNextButtonPress}>
             {t("Next")}
           </Button>
         ) : (
@@ -51,8 +54,7 @@ const ButtonNavigation: React.FC<Props> = ({
               iconPosition="end"
               loading={isLoading}
               type="primary"
-              onClick={handlePluginSave}
-            >
+              onClick={handlePluginSave}>
               {t("Save")}
             </CustomButton>
             <Button
@@ -60,8 +62,7 @@ const ButtonNavigation: React.FC<Props> = ({
               iconPosition="end"
               loading={isLoading}
               type="primary"
-              onClick={handlePluginPublish}
-            >
+              onClick={handlePluginPublish}>
               {t("Save & Publish")}
             </Button>
           </div>

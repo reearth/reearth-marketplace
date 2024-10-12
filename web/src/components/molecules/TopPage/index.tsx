@@ -22,7 +22,7 @@ export type Props = {
 
 const TopPage: React.FC<Props> = ({
   plugins,
-  showBanner,
+  // showBanner,
   isLoggedIn,
   isFavSelected,
   onSearch,
@@ -37,6 +37,7 @@ const TopPage: React.FC<Props> = ({
 }) => {
   return (
     <Wrapper>
+      {/* NOTE: No banner in the new design */}
       {/* {showBanner && <TitleBar />} */}
       <TopPageContent
         plugins={plugins}
