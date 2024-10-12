@@ -1,5 +1,4 @@
 import PluginUploadMolecule from "@marketplace/components/molecules/Common/PluginUpload";
-
 import useHooks from "./hooks";
 
 export type Props = {
@@ -27,6 +26,7 @@ const PluginUpload: React.FC<Props> = ({ pluginId }) => {
       description={parsedPlugin?.description ?? ""}
       githubUrl={githubUrl}
       isLoading={isLoading}
+      pluginUploaded={!!parsedPlugin}
       onParseFromUrl={handleParseFromUrl}
       onParseFromFile={handleParseFromFile}
       onPublish={handlePublish}

@@ -1,10 +1,19 @@
 import Loading from "@marketplace/components/atoms/Loading";
 import Pagination from "@marketplace/components/atoms/Pagination";
-import Tabs, { TabsProps } from "@marketplace/components/atoms/Tabs";
-import { Plugin } from "@marketplace/components/molecules/PluginsList";
+import Tabs from "@marketplace/components/atoms/Tabs";
+import PluginsList, { Plugin } from "@marketplace/components/molecules/PluginsList";
 import SearchArea from "@marketplace/components/molecules/SearchArea";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
+import { Version } from "@marketplace/types";
+
+type TabKeys = "0" | "1";
+
+type Tabs = {
+  key: TabKeys;
+  label: string;
+  value: Version;
+};
 
 export type Props = {
   plugins?: Plugin[];
@@ -18,6 +27,7 @@ export type Props = {
   handleFavButtonClick: (isFaved: boolean) => void;
   onPluginSelect?: (pluginId: string) => void;
   onPageChange: (page: number) => void;
+  setCurrentVersion: React.Dispatch<React.SetStateAction<Version>>;
 };
 
 const TopPageContents: React.FC<Props> = ({
@@ -32,24 +42,32 @@ const TopPageContents: React.FC<Props> = ({
   handleFavButtonClick,
   onPluginSelect,
   onPageChange,
+  setCurrentVersion,
 }) => {
   const t = useT();
-
-  const tabs: TabsProps["items"] = [
+  const tabs: Tabs[] = [
     {
       key: "0",
       label: t("Classic"),
+      value: "classic",
     },
     {
       key: "1",
       label: t("Visualizer"),
+      value: "visualizer",
     },
   ];
 
   return (
     <div>
       <TabsWrapper>
-        <Tabs defaultActiveKey="0" items={tabs} />
+        <Tabs
+          defaultActiveKey="0"
+          items={tabs}
+          onChange={(activeKey: string) =>
+            setCurrentVersion(tabs.find((tab) => tab.key === activeKey)?.value as Version)
+          }
+        />
       </TabsWrapper>
       <Wrapper>
         <SearchArea
@@ -60,7 +78,7 @@ const TopPageContents: React.FC<Props> = ({
         />
         {!loadingPlugins ? (
           <>
-            {/* <PluginsList plugins={plugins} onPluginSelect={onPluginSelect} /> */}
+            <PluginsList plugins={plugins} onPluginSelect={onPluginSelect} />
             <Pagination current={page} total={totalCount} pageSize={pageSize} onChange={onPageChange} />
           </>
         ) : (

@@ -7,9 +7,21 @@ type Props = {
   currentTab: "1" | "2" | "3";
   handleNextButtonPress: () => void;
   handlePrevButtonPress: () => void;
+  handlePluginSave: () => void;
+  handlePluginPublish: () => void;
+  isLoading: boolean;
+  pluginUploaded: boolean;
 };
 
-const ButtonNavigation: React.FC<Props> = ({ currentTab, handleNextButtonPress, handlePrevButtonPress }) => {
+const ButtonNavigation: React.FC<Props> = ({
+  currentTab,
+  handleNextButtonPress,
+  handlePrevButtonPress,
+  handlePluginSave,
+  handlePluginPublish,
+  isLoading,
+  pluginUploaded,
+}) => {
   const t = useT();
 
   return (
@@ -22,14 +34,38 @@ const ButtonNavigation: React.FC<Props> = ({ currentTab, handleNextButtonPress, 
         )}
       </div>
       <div>
-        <Button
-          icon={currentTab !== "3" ? <Icon icon="arrowRight" /> : null}
-          iconPosition="end"
-          type="primary"
-          onClick={handleNextButtonPress}
-        >
-          {t(`${currentTab === "3" ? "Save and Publish" : "Next"}`)}
-        </Button>
+        {currentTab !== "3" ? (
+          <Button
+            disabled={currentTab === "2" && !pluginUploaded}
+            icon={<Icon icon="arrowRight" />}
+            iconPosition="end"
+            type="primary"
+            onClick={handleNextButtonPress}
+          >
+            {t("Next")}
+          </Button>
+        ) : (
+          <div>
+            <CustomButton
+              icon={currentTab !== "3" ? <Icon icon="arrowRight" /> : null}
+              iconPosition="end"
+              loading={isLoading}
+              type="primary"
+              onClick={handlePluginSave}
+            >
+              {t("Save")}
+            </CustomButton>
+            <Button
+              icon={currentTab !== "3" ? <Icon icon="arrowRight" /> : null}
+              iconPosition="end"
+              loading={isLoading}
+              type="primary"
+              onClick={handlePluginPublish}
+            >
+              {t("Save & Publish")}
+            </Button>
+          </div>
+        )}
       </div>
     </ButtonWrapper>
   );
@@ -41,4 +77,8 @@ const ButtonWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 24px;
+`;
+
+const CustomButton = styled(Button)`
+  margin-right: 16px;
 `;

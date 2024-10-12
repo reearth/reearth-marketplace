@@ -14,6 +14,7 @@ export type Props = {
   version: string;
   githubUrl?: string;
   isLoading: boolean;
+  pluginUploaded: boolean;
   onParseFromUrl: (url: string) => void;
   onParseFromFile: (file?: File) => Promise<void>;
   onPluginSave: () => void;
@@ -29,6 +30,7 @@ const PluginUpload: React.FC<Props> = ({
   description,
   githubUrl,
   isLoading,
+  pluginUploaded,
   onParseFromUrl,
   onParseFromFile,
   onPluginSave,
@@ -63,7 +65,11 @@ const PluginUpload: React.FC<Props> = ({
         <ButtonNavigation
           currentTab={currentTab}
           handleNextButtonPress={handleNextButtonPress}
+          handlePluginSave={onPluginSave}
+          handlePluginPublish={onPublish}
           handlePrevButtonPress={handlePrevButtonPress}
+          isLoading={isLoading}
+          pluginUploaded={pluginUploaded}
         />
         {currentTab === "1" && <VersionArea />}
         {currentTab === "2" && (

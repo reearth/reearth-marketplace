@@ -61,7 +61,7 @@ const PackageArea: React.FC<Props> = ({ githubUrl, onRemove, onParsePlugin, onCh
 
   return (
     <ShadowCard>
-      <div>
+      <ContentWrapper>
         <Space direction="vertical" size={"large"}>
           <ContentText>Package</ContentText>
           <TopRow justify="start">
@@ -94,7 +94,7 @@ const PackageArea: React.FC<Props> = ({ githubUrl, onRemove, onParsePlugin, onCh
             </>
           )}
         </InputWrapper>
-      </div>
+      </ContentWrapper>
     </ShadowCard>
   );
 };
@@ -104,6 +104,10 @@ const ContentText = styled.p`
   line-height: 21.79px;
   font-weight: 500;
   color: rgba(0, 0, 0, 0.85);
+`;
+
+const ContentWrapper = styled.div`
+  padding-bottom: 30px;
 `;
 
 const IconWrapper = styled.div`

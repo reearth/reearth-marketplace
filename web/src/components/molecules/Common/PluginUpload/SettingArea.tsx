@@ -46,10 +46,14 @@ const SettingArea: React.FC<Props> = ({ description, pluginName, version, handle
         <PluginInfo>{pluginName}</PluginInfo>
         <Title>{t("Version")}</Title>
         <PluginInfo>{version}</PluginInfo>
-        <Title>{t("Description")}</Title>
-        <StyledDiv>
-          <p>{description}</p>
-        </StyledDiv>
+        {description && (
+          <>
+            <Title>{t("Description")}</Title>
+            <StyledDiv>
+              <p>{description}</p>
+            </StyledDiv>
+          </>
+        )}
         <Title>{t("Images")}</Title>
         <Upload {...uploadProps}>
           <Button icon={<Icon icon="upload" />} type="primary" ghost>
