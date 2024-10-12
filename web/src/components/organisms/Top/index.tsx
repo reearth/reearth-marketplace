@@ -1,5 +1,7 @@
-import TopPage from "@marketplace/components/molecules/TopPage";
 import { useCallback, useState } from "react";
+
+import TopPage from "@marketplace/components/molecules/TopPage";
+
 import useHooks from "./hooks";
 
 export type Props = {
@@ -13,7 +15,7 @@ type Version = "classic" | "visualizer";
 const Top: React.FC<Props> = ({ showBanner, accessToken, onPluginSelect }) => {
   const [searchText, updateSearchText] = useState<string>("");
   const [isFavSelected, toggleLiked] = useState<boolean>(false);
-  const [currentVersion, setCurrentVersion] = useState<Version>("classic");
+  const [_currentVersion, setCurrentVersion] = useState<Version>("classic");
 
   // TODO: pass `currentVersion` which might be visualizer or classic to hook to filter by version
   const pageSize = 40;

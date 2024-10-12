@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 import Col from "@marketplace/components/atoms/Col";
 import Icon from "@marketplace/components/atoms/Icon";
 import Input from "@marketplace/components/atoms/Input";
@@ -9,7 +11,6 @@ import { Dragger, RcFile, UploadFile, UploadProps } from "@marketplace/component
 import ShadowCard from "@marketplace/components/molecules/Common/ShadowCard";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { useState } from "react";
 
 export type FileUploadType = string | RcFile | Blob;
 
@@ -20,7 +21,12 @@ export type Props = {
   onChangeGithubUrl: (url: string) => void;
 };
 
-const PackageArea: React.FC<Props> = ({ githubUrl, onRemove, onParsePlugin, onChangeGithubUrl }) => {
+const PackageArea: React.FC<Props> = ({
+  githubUrl,
+  onRemove,
+  onParsePlugin,
+  onChangeGithubUrl,
+}) => {
   const t = useT();
 
   const [uploadedFile, uploadFile] = useState<UploadFile[]>();
@@ -75,7 +81,10 @@ const PackageArea: React.FC<Props> = ({ githubUrl, onRemove, onParsePlugin, onCh
         </Space>
         <InputWrapper>
           {currentRadio === "Upload from local" ? (
-            <Dragger {...uploadProps} style={{ border: "1px dashed" }} defaultFileList={uploadedFile}>
+            <Dragger
+              {...uploadProps}
+              style={{ border: "1px dashed" }}
+              defaultFileList={uploadedFile}>
               <DraggerContents>
                 <IconWrapper>
                   <Icon icon="inbox" style={{ fontSize: "36px" }} />
@@ -88,7 +97,7 @@ const PackageArea: React.FC<Props> = ({ githubUrl, onRemove, onParsePlugin, onCh
               <Input
                 placeholder="github.com/xxx/xxx"
                 value={githubUrl}
-                onBlur={(e) => onChangeGithubUrl(e.target.value)}
+                onBlur={e => onChangeGithubUrl(e.target.value)}
               />
               <InputFooter>{t("Please set your repository as public respository.")}</InputFooter>
             </>

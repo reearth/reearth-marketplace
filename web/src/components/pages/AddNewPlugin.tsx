@@ -1,6 +1,7 @@
+import { useParams } from "react-router-dom";
+
 import { AuthenticationRequiredPage } from "@marketplace/auth";
 import PluginUpload from "@marketplace/components/organisms/Common/PluginUpload";
-import { useParams } from "react-router-dom";
 
 export type Props = {};
 

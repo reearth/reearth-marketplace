@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 import Col from "@marketplace/components/atoms/Col";
 import ConfigProvider, { theme } from "@marketplace/components/atoms/ConfigProvider";
 import Dropdown from "@marketplace/components/atoms/Dropdown";
@@ -8,7 +10,6 @@ import Space from "@marketplace/components/atoms/Space";
 import Tooltip from "@marketplace/components/atoms/Tooltip";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { useNavigate } from "react-router-dom";
 
 export type Lang = "en" | "ja" | "und";
 
@@ -25,7 +26,7 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
   const t = useT();
   const navigate = useNavigate();
 
-  const handleLangMenuClick: MenuProps["onClick"] = (e) => {
+  const handleLangMenuClick: MenuProps["onClick"] = e => {
     onLangUpdate?.(e.key as Lang);
   };
 
@@ -89,8 +90,7 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
                 <Tooltip placement="bottom" title={t("Upload new plugin")} mouseEnterDelay={0.5}>
                   <div
                     style={{ padding: "10px", display: "flex", cursor: "pointer" }}
-                    onClick={() => navigate("/myplugins")}
-                  >
+                    onClick={() => navigate("/myplugins")}>
                     <Icon icon="upload" style={{ fontSize: "20px" }} />
                   </div>
                 </Tooltip>

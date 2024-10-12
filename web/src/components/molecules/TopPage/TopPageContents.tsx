@@ -65,7 +65,7 @@ const TopPageContents: React.FC<Props> = ({
           defaultActiveKey="0"
           items={tabs}
           onChange={(activeKey: string) =>
-            setCurrentVersion(tabs.find((tab) => tab.key === activeKey)?.value as Version)
+            setCurrentVersion(tabs.find(tab => tab.key === activeKey)?.value as Version)
           }
         />
       </TabsWrapper>
@@ -79,7 +79,12 @@ const TopPageContents: React.FC<Props> = ({
         {!loadingPlugins ? (
           <>
             <PluginsList plugins={plugins} onPluginSelect={onPluginSelect} />
-            <Pagination current={page} total={totalCount} pageSize={pageSize} onChange={onPageChange} />
+            <Pagination
+              current={page}
+              total={totalCount}
+              pageSize={pageSize}
+              onChange={onPageChange}
+            />
           </>
         ) : (
           <Loading height={400} />

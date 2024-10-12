@@ -1,3 +1,8 @@
+import { ConfigProvider } from "antd";
+import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
+import { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Button from "@marketplace/components/atoms/Button";
 import Col from "@marketplace/components/atoms/Col";
 import Icon from "@marketplace/components/atoms/Icon";
@@ -10,10 +15,6 @@ import Table from "@marketplace/components/atoms/Table";
 import type { Plugin } from "@marketplace/components/organisms/MyPlugins";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { ConfigProvider } from "antd";
-import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
-import { useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 
 export type Props = {
   plugins?: Plugin[];
@@ -24,7 +25,14 @@ export type Props = {
   pageSize: number;
 };
 
-const MyPluginsTable: React.FC<Props> = ({ plugins, onPublish, onPageChange, totalCount, page, pageSize }) => {
+const MyPluginsTable: React.FC<Props> = ({
+  plugins,
+  onPublish,
+  onPageChange,
+  totalCount,
+  page,
+  pageSize,
+}) => {
   const t = useT();
   const navigate = useNavigate();
 
@@ -33,7 +41,7 @@ const MyPluginsTable: React.FC<Props> = ({ plugins, onPublish, onPageChange, tot
       title: t("Plugin Name"),
       dataIndex: "name",
       key: "name",
-      render: (text) => <BoldTitle>{text}</BoldTitle>,
+      render: text => <BoldTitle>{text}</BoldTitle>,
     },
     {
       title: t("State"),
@@ -43,7 +51,11 @@ const MyPluginsTable: React.FC<Props> = ({ plugins, onPublish, onPageChange, tot
         <Row justify="start">
           <Space size="large">
             <Col>
-              <Switch defaultChecked={active} checked={active} onClick={() => onPublish(plugin.id, !active)} />
+              <Switch
+                defaultChecked={active}
+                checked={active}
+                onClick={() => onPublish(plugin.id, !active)}
+              />
             </Col>
             <Col>{active ? t("Published") : t("Not Published")}</Col>
           </Space>
@@ -68,7 +80,7 @@ const MyPluginsTable: React.FC<Props> = ({ plugins, onPublish, onPageChange, tot
       title: t("Action"),
       key: "action",
       dataIndex: "id",
-      render: (id) => {
+      render: id => {
         return (
           <Row justify="space-around" style={{ maxWidth: "200px" }}>
             <Col>
@@ -104,7 +116,7 @@ const MyPluginsTable: React.FC<Props> = ({ plugins, onPublish, onPageChange, tot
 
   const pluginDataSource = useMemo(
     () =>
-      plugins?.map((plugin) => {
+      plugins?.map(plugin => {
         return {
           key: plugin.id,
           ...plugin,
@@ -116,7 +128,9 @@ const MyPluginsTable: React.FC<Props> = ({ plugins, onPublish, onPageChange, tot
   const renderEmpty = () => {
     return (
       <RenderEmptyWrapper>
-        <RenderEmptyText>{t("Click the ” New Plugin ” button to upload your first Plugin")}</RenderEmptyText>
+        <RenderEmptyText>
+          {t("Click the ” New Plugin ” button to upload your first Plugin")}
+        </RenderEmptyText>
       </RenderEmptyWrapper>
     );
   };

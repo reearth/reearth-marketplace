@@ -1,6 +1,7 @@
 import { type Plugin } from "@marketplace/components/molecules/PluginsList";
 import { styled } from "@marketplace/theme";
 import { Version } from "@marketplace/types";
+
 import TopPageContent from "./TopPageContents";
 
 export type { Plugin } from "@marketplace/components/molecules/PluginsList";

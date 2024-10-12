@@ -25,13 +25,15 @@ const SettingArea: React.FC<Props> = ({ description, pluginName, version, handle
     listType: "picture",
     accept: "image/png,image/jpeg,image/jpg,image/webp",
     multiple: true,
-    customRequest: async (options) => {
+    customRequest: async options => {
       options.onSuccess?.("Ok");
     },
     onChange(info) {
       const { status } = info.file;
       if (status === "done" || status === "removed") {
-        handleUploadImages(info.fileList.map((f) => f.originFileObj).filter((f): f is RcFileType => !!f));
+        handleUploadImages(
+          info.fileList.map(f => f.originFileObj).filter((f): f is RcFileType => !!f),
+        );
         Message.success(`${info.file.name} ${t("Image uploaded successfully.")}`);
       } else if (status === "error") {
         Message.error(`${info.file.name} ${t("Image upload failed.")}`);

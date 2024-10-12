@@ -4,6 +4,7 @@ import Row from "@marketplace/components/atoms/Row";
 import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
+
 import SettingArea, { RcFile as RcFileType } from "../Common/PluginUpload/SettingArea";
 
 export type RcFile = RcFileType;
@@ -43,7 +44,12 @@ const EditPlugin: React.FC<Props> = ({
             />
           </Col>
           <Col>
-            <Button type="default" size="large" onClick={onPluginSave} disabled={isSaveDisabled} loading={isLoading}>
+            <Button
+              type="default"
+              size="large"
+              onClick={onPluginSave}
+              disabled={isSaveDisabled}
+              loading={isLoading}>
               {t("Save")}
             </Button>
           </Col>
