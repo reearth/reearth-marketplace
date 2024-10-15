@@ -5,3 +5,5 @@ export enum Tabs {
 }
 
 export type Version = "classic" | "visualizer";
+
+export type App = Version;

@@ -1,11 +1,12 @@
 import { type Plugin } from "@marketplace/components/molecules/PluginsList";
 import { styled } from "@marketplace/theme";
-import { Version } from "@marketplace/types";
+import { App, Version } from "@marketplace/types";
 
 import TopPageContent from "./TopPageContents";
 
 export type { Plugin } from "@marketplace/components/molecules/PluginsList";
 export type Props = {
+  app?: App | undefined;
   isLoggedIn: boolean;
   plugins?: Plugin[];
   showBanner?: boolean;
@@ -22,6 +23,7 @@ export type Props = {
 };
 
 const TopPage: React.FC<Props> = ({
+  app,
   plugins,
   // showBanner,
   isLoggedIn,
@@ -41,6 +43,7 @@ const TopPage: React.FC<Props> = ({
       {/* NOTE: No banner in the new design */}
       {/* {showBanner && <TitleBar />} */}
       <TopPageContent
+        app={app}
         plugins={plugins}
         onSearch={onSearch}
         isLoggedIn={isLoggedIn}

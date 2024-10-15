@@ -5,7 +5,7 @@ import PluginsList, { Plugin } from "@marketplace/components/molecules/PluginsLi
 import SearchArea from "@marketplace/components/molecules/SearchArea";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { Version } from "@marketplace/types";
+import { App, Version } from "@marketplace/types";
 
 type TabKeys = "0" | "1";
 
@@ -16,6 +16,7 @@ type TabItem = {
 };
 
 export type Props = {
+  app?: App | undefined;
   plugins?: Plugin[];
   isLoggedIn: boolean;
   isFavSelected: boolean;
@@ -31,6 +32,7 @@ export type Props = {
 };
 
 const TopPageContents: React.FC<Props> = ({
+  app,
   plugins,
   isLoggedIn,
   isFavSelected,
@@ -60,20 +62,22 @@ const TopPageContents: React.FC<Props> = ({
 
   return (
     <div>
-      <TabsWrapper>
-        <Tabs
-          defaultActiveKey="0"
-          items={tabs}
-          onChange={(activeKey: string) => {
-            const selectedTab = tabs.find(tab => tab.key === activeKey);
-            if (selectedTab) {
-              setCurrentVersion(selectedTab.value);
-            } else {
-              setCurrentVersion("classic");
-            }
-          }}
-        />
-      </TabsWrapper>
+      {app && (
+        <TabsWrapper>
+          <Tabs
+            defaultActiveKey="0"
+            items={tabs}
+            onChange={(activeKey: string) => {
+              const selectedTab = tabs.find(tab => tab.key === activeKey);
+              if (selectedTab) {
+                setCurrentVersion(selectedTab.value);
+              } else {
+                setCurrentVersion("classic");
+              }
+            }}
+          />
+        </TabsWrapper>
+      )}
       <Wrapper>
         <SearchArea
           onSearch={onSearch}
@@ -99,18 +103,18 @@ const TopPageContents: React.FC<Props> = ({
   );
 };
 
+const TabsWrapper = styled.div`
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 48px;
+`;
+
 const Wrapper = styled.div`
   max-width: 1200px;
   margin: 0 auto;
   padding-bottom: 72px;
   background: transparent;
-`;
-
-const TabsWrapper = styled.div`
-  background: #070707;
-  display: flex;
-  justify-content: center;
-  margin-bottom: 48px;
 `;
 
 export default TopPageContents;

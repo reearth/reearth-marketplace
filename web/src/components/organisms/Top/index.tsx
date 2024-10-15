@@ -1,18 +1,20 @@
 import { useCallback, useState } from "react";
 
 import TopPage from "@marketplace/components/molecules/TopPage";
+import { App } from "@marketplace/types";
 
 import useHooks from "./hooks";
 
 export type Props = {
-  showBanner?: boolean;
   accessToken?: string;
+  app?: App | undefined;
   onPluginSelect?: (pluginId: string) => void;
+  showBanner?: boolean;
 };
 
 type Version = "classic" | "visualizer";
 
-const Top: React.FC<Props> = ({ showBanner, accessToken, onPluginSelect }) => {
+const Top: React.FC<Props> = ({ app, showBanner, accessToken, onPluginSelect }) => {
   const [searchText, updateSearchText] = useState<string>("");
   const [isFavSelected, toggleLiked] = useState<boolean>(false);
   const [_currentVersion, setCurrentVersion] = useState<Version>("classic");
@@ -46,6 +48,7 @@ const Top: React.FC<Props> = ({ showBanner, accessToken, onPluginSelect }) => {
 
   return (
     <TopPage
+      app={app}
       plugins={plugins}
       showBanner={showBanner}
       onSearch={handleSearch}
