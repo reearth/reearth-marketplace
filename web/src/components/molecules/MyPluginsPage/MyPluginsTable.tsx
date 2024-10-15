@@ -44,7 +44,7 @@ const MyPluginsTable: React.FC<Props> = ({
       render: text => <BoldTitle>{text}</BoldTitle>,
     },
     {
-      title: t("State"),
+      title: t("Status"),
       dataIndex: "active",
       key: "active",
       render: (active, plugin) => (
@@ -68,7 +68,7 @@ const MyPluginsTable: React.FC<Props> = ({
       key: "version",
     },
     {
-      title: t("Publish time"),
+      title: t("Updated Date"),
       dataIndex: "updateAt",
       key: "updateAt",
       render: (date: Date) => {

@@ -90,7 +90,7 @@ const Header: React.FC<Props> = ({ username, lang, isLoggedIn, login, logout, on
                 <Tooltip placement="bottom" title={t("Upload new plugin")} mouseEnterDelay={0.5}>
                   <div
                     style={{ padding: "10px", display: "flex", cursor: "pointer" }}
-                    onClick={() => navigate("/myplugins")}>
+                    onClick={() => navigate("/myplugins/new")}>
                     <Icon icon="upload" style={{ fontSize: "20px" }} />
                   </div>
                 </Tooltip>
