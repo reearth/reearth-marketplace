@@ -129,7 +129,7 @@ const MyPluginsTable: React.FC<Props> = ({
     return (
       <RenderEmptyWrapper>
         <RenderEmptyText>
-          {t("Click the ” New Plugin ” button to upload your first Plugin")}
+          {t("Click the  “ New Plugin ” button to upload your first Plugin")}
         </RenderEmptyText>
       </RenderEmptyWrapper>
     );
