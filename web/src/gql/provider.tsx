@@ -73,10 +73,10 @@ const Provider: React.FC<Props> = ({ children, accessToken: accessToken2 }) => {
     uri: endpoint,
     link: ApolloLink.from([
       errorLink,
-       authLink,
+      authLink,
       // https://github.com/apollographql/apollo-client/issues/6011#issuecomment-619468320
-      uploadLink as unknown as ApolloLink
-      ]),
+      uploadLink as unknown as ApolloLink,
+    ]),
     cache,
     connectToDevTools: !!import.meta.env.DEV,
   });
