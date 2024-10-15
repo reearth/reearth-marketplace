@@ -73,7 +73,7 @@ const PackageArea: React.FC<Props> = ({
     <ShadowCard>
       <ContentWrapper>
         <Space direction="vertical" size={"large"}>
-          <ContentText>Package</ContentText>
+          <ContentText>{t("Package")}</ContentText>
           <TopRow justify="start">
             <Col>
               <Radio.Group onChange={handleChangeRadio} value={currentRadio}>
@@ -103,7 +103,7 @@ const PackageArea: React.FC<Props> = ({
                 value={githubUrl}
                 onChange={e => onChangeGithubUrl(e.target.value)}
               />
-              <InputFooter>{t("Please set your repository as public respository.")}</InputFooter>
+              <InputFooter>{t("Please set your repository as public.")}</InputFooter>
             </>
           )}
         </InputWrapper>

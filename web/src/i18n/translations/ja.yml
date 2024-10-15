@@ -43,10 +43,11 @@ Plugins List: プラグイン一覧
 New Plugin: 新規プラグインの追加
 File uploaded successfully.: ファイルのアップロードが成功しました。
 File upload failed.: ファイルのアップロードに失敗しました。
+Package: パッケージ
 Upload from local: PCからアップロード
 GitHub: ''
 Click or drag file to this area to upload: クリックまたはドラッグしてアップロードするファイルを追加
-Please set your repository as public respository.: レポジトリをPublicにするのをお忘れなく。
+Please set your repository as public.: リポジトリを公開に設定してください。
 Image uploaded successfully.: 画像がアップロードされました。
 Image upload failed.: 画像のアップロードに失敗しました。
 Plugin Name: プラグイン名
@@ -54,7 +55,7 @@ Version: バージョン
 Description: 詳細
 Images: 画像
 Upload Image: 画像の追加
-Which environment is your plugin developed for ?: ''
+Which environment is your plugin developed for ?: プラグインはどの環境用に開発されましたか？
 Status: 公開状態
 Published: 公開中
 Not Published: 非公開
@@ -85,8 +86,8 @@ Published Asc: 公開日昇順
 Published Desc: 公開日降順
 search text: キーワードを入力
 Liked: お気に入り済
-Classic: ''
-Visualizer: ''
+Classic: クラシック
+Visualizer: ビジュアライザー
 Back: 戻る
 Something might be wrong with your plugin. Please check and try again.: プラグインのアップロード時に問題が発生しました。
 Your plugin was successfully published!: プラグインが正常に公開されました。
