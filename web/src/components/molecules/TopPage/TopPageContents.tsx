@@ -60,7 +60,6 @@ const TopPageContents: React.FC<Props> = ({
     },
   ];
 
-  console.log("here", version);
   return (
     <div>
       {!version && (
