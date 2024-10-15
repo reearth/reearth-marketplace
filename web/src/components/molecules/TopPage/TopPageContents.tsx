@@ -5,7 +5,7 @@ import PluginsList, { Plugin } from "@marketplace/components/molecules/PluginsLi
 import SearchArea from "@marketplace/components/molecules/SearchArea";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { App, Version } from "@marketplace/types";
+import { Version } from "@marketplace/types";
 
 type TabKeys = "0" | "1";
 
@@ -16,7 +16,6 @@ type TabItem = {
 };
 
 export type Props = {
-  app?: App | undefined;
   plugins?: Plugin[];
   isLoggedIn: boolean;
   isFavSelected: boolean;
@@ -29,10 +28,10 @@ export type Props = {
   onPluginSelect?: (pluginId: string) => void;
   onPageChange: (page: number) => void;
   setCurrentVersion: React.Dispatch<React.SetStateAction<Version>>;
+  version?: Version | undefined;
 };
 
 const TopPageContents: React.FC<Props> = ({
-  app,
   plugins,
   isLoggedIn,
   isFavSelected,
@@ -45,6 +44,7 @@ const TopPageContents: React.FC<Props> = ({
   onPluginSelect,
   onPageChange,
   setCurrentVersion,
+  version,
 }) => {
   const t = useT();
   const tabs: TabItem[] = [
@@ -60,9 +60,10 @@ const TopPageContents: React.FC<Props> = ({
     },
   ];
 
+  console.log("here", version);
   return (
     <div>
-      {!app && (
+      {!version && (
         <TabsWrapper>
           <Tabs
             defaultActiveKey="0"

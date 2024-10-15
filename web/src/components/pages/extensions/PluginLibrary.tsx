@@ -4,7 +4,7 @@ import CoreWrapper from "@marketplace/components/molecules/Common/CoreWrapper";
 import PluginDetailOrg from "@marketplace/components/organisms/PluginDetail";
 import Top from "@marketplace/components/organisms/Top";
 import { useT } from "@marketplace/i18n";
-import { App } from "@marketplace/types";
+import { Version } from "@marketplace/types";
 
 import SharedProviders from "./sharedProviders";
 
@@ -24,7 +24,7 @@ type Props = {
     text: string,
     heading?: string,
   ) => void;
-  app: App;
+  version?: Version | undefined;
 };
 
 export default function LibraryExtension({
@@ -34,7 +34,7 @@ export default function LibraryExtension({
   installedPlugins,
   onInstall,
   onNotificationChange,
-  app,
+  version,
 }: Props) {
   const t = useT();
 
@@ -77,7 +77,7 @@ export default function LibraryExtension({
           />
         )}
         {!pluginId && (
-          <Top accessToken={accessToken} onPluginSelect={handlePluginSelect} app={app} />
+          <Top accessToken={accessToken} onPluginSelect={handlePluginSelect} version={version} />
         )}
       </CoreWrapper>
     </SharedProviders>

@@ -1,12 +1,12 @@
 import { type Plugin } from "@marketplace/components/molecules/PluginsList";
 import { styled } from "@marketplace/theme";
-import { App, Version } from "@marketplace/types";
+import { Version } from "@marketplace/types";
 
 import TopPageContent from "./TopPageContents";
 
 export type { Plugin } from "@marketplace/components/molecules/PluginsList";
 export type Props = {
-  app?: App | undefined;
+  version?: Version | undefined;
   isLoggedIn: boolean;
   plugins?: Plugin[];
   isFavSelected: boolean;
@@ -22,7 +22,7 @@ export type Props = {
 };
 
 const TopPage: React.FC<Props> = ({
-  app,
+  version,
   plugins,
   isLoggedIn,
   isFavSelected,
@@ -39,7 +39,7 @@ const TopPage: React.FC<Props> = ({
   return (
     <Wrapper>
       <TopPageContent
-        app={app}
+        version={version}
         plugins={plugins}
         onSearch={onSearch}
         isLoggedIn={isLoggedIn}
