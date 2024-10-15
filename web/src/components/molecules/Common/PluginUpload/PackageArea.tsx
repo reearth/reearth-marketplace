@@ -29,8 +29,12 @@ const PackageArea: React.FC<Props> = ({
 }) => {
   const t = useT();
 
+  const UPLOAD_FROM_LOCAL = "upload_from_local";
+  const GITHUB = "github";
+
+  type RADIO_CONTENT = typeof UPLOAD_FROM_LOCAL | typeof GITHUB;
   const [uploadedFile, uploadFile] = useState<UploadFile[]>();
-  const [currentRadio, changeRadio] = useState<"Upload from local" | "GitHub">("Upload from local");
+  const [currentRadio, changeRadio] = useState<RADIO_CONTENT>(UPLOAD_FROM_LOCAL);
 
   const handleChangeRadio = (e: RadioChangeEvent) => {
     changeRadio(e.target.value);
@@ -73,14 +77,14 @@ const PackageArea: React.FC<Props> = ({
           <TopRow justify="start">
             <Col>
               <Radio.Group onChange={handleChangeRadio} value={currentRadio}>
-                <Radio.Button value="Upload from local">{t("Upload from local")}</Radio.Button>
-                <Radio.Button value="GitHub">{t("GitHub")}</Radio.Button>
+                <Radio.Button value={UPLOAD_FROM_LOCAL}>{t("Upload from local")}</Radio.Button>
+                <Radio.Button value={GITHUB}>{t("GitHub")}</Radio.Button>
               </Radio.Group>
             </Col>
           </TopRow>
         </Space>
         <InputWrapper>
-          {currentRadio === "Upload from local" ? (
+          {currentRadio === UPLOAD_FROM_LOCAL ? (
             <Dragger
               {...uploadProps}
               style={{ border: "1px dashed" }}

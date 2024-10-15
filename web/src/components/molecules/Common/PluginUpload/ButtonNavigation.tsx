@@ -2,9 +2,10 @@ import Button from "@marketplace/components/atoms/Button";
 import Icon from "@marketplace/components/atoms/Icon";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
+import { Tabs } from "@marketplace/types";
 
 type Props = {
-  currentTab: "1" | "2" | "3";
+  currentTab: Tabs;
   handleNextButtonPress: () => void;
   handlePrevButtonPress: () => void;
   handlePluginSave: () => void;
@@ -27,7 +28,7 @@ const ButtonNavigation: React.FC<Props> = ({
   return (
     <ButtonWrapper>
       <div>
-        {["2", "3"].includes(currentTab) && (
+        {[Tabs.Package, Tabs.Settings].includes(currentTab) && (
           <Button
             icon={<Icon icon="arrowLeft" />}
             iconPosition="start"
@@ -38,9 +39,9 @@ const ButtonNavigation: React.FC<Props> = ({
         )}
       </div>
       <div>
-        {currentTab !== "3" ? (
+        {currentTab !== Tabs.Settings ? (
           <Button
-            disabled={currentTab === "2" && !pluginUploaded}
+            disabled={currentTab === Tabs.Package && !pluginUploaded}
             icon={<Icon icon="arrowRight" />}
             iconPosition="end"
             type="primary"
@@ -50,7 +51,7 @@ const ButtonNavigation: React.FC<Props> = ({
         ) : (
           <div>
             <CustomButton
-              icon={currentTab !== "3" ? <Icon icon="arrowRight" /> : null}
+              icon={currentTab !== Tabs.Settings ? <Icon icon="arrowRight" /> : null}
               iconPosition="end"
               loading={isLoading}
               type="primary"
@@ -58,7 +59,7 @@ const ButtonNavigation: React.FC<Props> = ({
               {t("Save")}
             </CustomButton>
             <Button
-              icon={currentTab !== "3" ? <Icon icon="arrowRight" /> : null}
+              icon={currentTab !== Tabs.Settings ? <Icon icon="arrowRight" /> : null}
               iconPosition="end"
               loading={isLoading}
               type="primary"

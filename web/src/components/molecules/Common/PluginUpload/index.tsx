@@ -3,6 +3,7 @@ import { useCallback, useState } from "react";
 import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
+import { Tabs } from "@marketplace/types";
 
 import ButtonNavigation from "./ButtonNavigation";
 import PackageArea from "./PackageArea";
@@ -40,17 +41,17 @@ const PluginUpload: React.FC<Props> = ({
   onPublish,
   onImagesUpload,
 }) => {
-  const [currentTab, updateTab] = useState<"1" | "2" | "3">("1");
+  const [currentTab, updateTab] = useState<Tabs>(Tabs.Version);
   const t = useT();
 
   const handleNextButtonPress = useCallback(() => {
-    if (currentTab === "1") updateTab("2");
-    else if (currentTab === "2") updateTab("3");
+    if (currentTab === Tabs.Version) updateTab(Tabs.Package);
+    else if (currentTab === Tabs.Package) updateTab(Tabs.Settings);
   }, [currentTab]);
 
   const handlePrevButtonPress = useCallback(() => {
-    if (currentTab === "3") updateTab("2");
-    else if (currentTab === "2") updateTab("1");
+    if (currentTab === Tabs.Settings) updateTab(Tabs.Package);
+    else if (currentTab === Tabs.Package) updateTab(Tabs.Version);
   }, [currentTab]);
 
   return (
@@ -73,8 +74,8 @@ const PluginUpload: React.FC<Props> = ({
           isLoading={isLoading}
           pluginUploaded={pluginUploaded}
         />
-        {currentTab === "1" && <VersionArea />}
-        {currentTab === "2" && (
+        {currentTab === Tabs.Version && <VersionArea />}
+        {currentTab === Tabs.Package && (
           <PackageArea
             githubUrl={githubUrl}
             onChangeGithubUrl={onParseFromUrl}
@@ -82,7 +83,7 @@ const PluginUpload: React.FC<Props> = ({
             onParsePlugin={onParseFromFile}
           />
         )}
-        {currentTab === "3" && (
+        {currentTab === Tabs.Settings && (
           <SettingArea
             pluginName={pluginName}
             version={version}

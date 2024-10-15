@@ -9,7 +9,7 @@ import { Version } from "@marketplace/types";
 
 type TabKeys = "0" | "1";
 
-type Tabs = {
+type TabItem = {
   key: TabKeys;
   label: string;
   value: Version;
@@ -45,7 +45,7 @@ const TopPageContents: React.FC<Props> = ({
   setCurrentVersion,
 }) => {
   const t = useT();
-  const tabs: Tabs[] = [
+  const tabs: TabItem[] = [
     {
       key: "0",
       label: t("Classic"),
@@ -64,9 +64,14 @@ const TopPageContents: React.FC<Props> = ({
         <Tabs
           defaultActiveKey="0"
           items={tabs}
-          onChange={(activeKey: string) =>
-            setCurrentVersion(tabs.find(tab => tab.key === activeKey)?.value as Version)
-          }
+          onChange={(activeKey: string) => {
+            const selectedTab = tabs.find(tab => tab.key === activeKey);
+            if (selectedTab) {
+              setCurrentVersion(selectedTab.value);
+            } else {
+              setCurrentVersion("classic");
+            }
+          }}
         />
       </TabsWrapper>
       <Wrapper>
