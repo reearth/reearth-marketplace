@@ -45,13 +45,19 @@ const PluginUpload: React.FC<Props> = ({
   const t = useT();
 
   const handleNextButtonPress = useCallback(() => {
-    if (currentTab === Tabs.Version) updateTab(Tabs.Package);
-    else if (currentTab === Tabs.Package) updateTab(Tabs.Settings);
+    const tabs = [Tabs.Version, Tabs.Package, Tabs.Settings];
+    const currentIndex = tabs.indexOf(currentTab);
+    if (currentIndex < tabs.length - 1) {
+      updateTab(tabs[currentIndex + 1]);
+    }
   }, [currentTab]);
 
   const handlePrevButtonPress = useCallback(() => {
-    if (currentTab === Tabs.Settings) updateTab(Tabs.Package);
-    else if (currentTab === Tabs.Package) updateTab(Tabs.Version);
+    const tabs = [Tabs.Version, Tabs.Package, Tabs.Settings];
+    const currentIndex = tabs.indexOf(currentTab);
+    if (currentIndex > 0) {
+      updateTab(tabs[currentIndex - 1]);
+    }
   }, [currentTab]);
 
   return (

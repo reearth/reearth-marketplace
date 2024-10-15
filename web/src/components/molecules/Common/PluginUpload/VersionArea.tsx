@@ -1,6 +1,7 @@
 import Radio from "@marketplace/components/atoms/Radio";
 import Space from "@marketplace/components/atoms/Space";
 import ShadowCard from "@marketplace/components/molecules/Common/ShadowCard";
+import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
 const radioOptions = [
@@ -9,12 +10,13 @@ const radioOptions = [
 ];
 
 const VersionArea: React.FC = () => {
+  const t = useT();
   return (
     <ShadowCard>
       <div>
         <Space direction="vertical" size={"large"}>
-          <ContentText>Version</ContentText>
-          <ContentText>Which environment your plugin is developed for ?</ContentText>
+          <ContentText>{t("Version")}</ContentText>
+          <ContentText>{t("Which environment is your plugin developed for ?")}</ContentText>
         </Space>
         <RadioWrapper>
           <Radio.Group block options={radioOptions} defaultValue="Classic" optionType="button" />

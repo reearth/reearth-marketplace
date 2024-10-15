@@ -101,7 +101,7 @@ const PackageArea: React.FC<Props> = ({
               <Input
                 placeholder="github.com/xxx/xxx"
                 value={githubUrl}
-                onBlur={e => onChangeGithubUrl(e.target.value)}
+                onChange={e => onChangeGithubUrl(e.target.value)}
               />
               <InputFooter>{t("Please set your repository as public respository.")}</InputFooter>
             </>

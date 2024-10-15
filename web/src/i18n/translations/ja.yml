@@ -35,8 +35,8 @@ My Plugins: マイプラグイン
 Log Out: ログアウト
 Upload new plugin: 新しいプラグインをアップロード
 Log in: ログイン
-Prev: ''
-Next: ''
+Prev: 前へ
+Next: 次へ
 Save: 一時保存
 Save & Publish: 保存と公開
 Plugins List: プラグイン一覧
@@ -54,13 +54,14 @@ Version: バージョン
 Description: 詳細
 Images: 画像
 Upload Image: 画像の追加
+Which environment is your plugin developed for ?: ''
 Status: 公開状態
 Published: 公開中
 Not Published: 非公開
 Updated Date: 最終更新日
 Action: アクション
 Update this plugin: このプラグインを更新する
-Click the  “ New Plugin ” button to upload your first Plugin: ''
+Click the  “ New Plugin ” button to upload your first Plugin: 「新規プラグインの追加」ボタンをクリックして、最初のプラグインをアップロードしてください
 README: ''
 Top: トップ
 Update Plugin: プラグインを更新
