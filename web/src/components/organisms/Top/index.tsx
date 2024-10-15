@@ -9,12 +9,11 @@ export type Props = {
   accessToken?: string;
   app?: App | undefined;
   onPluginSelect?: (pluginId: string) => void;
-  showBanner?: boolean;
 };
 
 type Version = "classic" | "visualizer";
 
-const Top: React.FC<Props> = ({ app, showBanner, accessToken, onPluginSelect }) => {
+const Top: React.FC<Props> = ({ app, accessToken, onPluginSelect }) => {
   const [searchText, updateSearchText] = useState<string>("");
   const [isFavSelected, toggleLiked] = useState<boolean>(false);
   const [_currentVersion, setCurrentVersion] = useState<Version>("classic");
@@ -50,7 +49,6 @@ const Top: React.FC<Props> = ({ app, showBanner, accessToken, onPluginSelect }) 
     <TopPage
       app={app}
       plugins={plugins}
-      showBanner={showBanner}
       onSearch={handleSearch}
       isLoggedIn={isAuthenticated}
       handleFavButtonClick={handleFavButtonClick}

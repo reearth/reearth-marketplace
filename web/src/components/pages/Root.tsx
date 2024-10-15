@@ -15,7 +15,7 @@ const Root: React.FC<Props> = () => {
     [navigate],
   );
 
-  return <Top showBanner onPluginSelect={handlePluginSelect} />;
+  return <Top onPluginSelect={handlePluginSelect} />;
 };
 
 export default Root;

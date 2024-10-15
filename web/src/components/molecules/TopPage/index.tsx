@@ -9,7 +9,6 @@ export type Props = {
   app?: App | undefined;
   isLoggedIn: boolean;
   plugins?: Plugin[];
-  showBanner?: boolean;
   isFavSelected: boolean;
   onSearch: (text: string) => void;
   handleFavButtonClick: (isFaved: boolean) => void;
@@ -25,7 +24,6 @@ export type Props = {
 const TopPage: React.FC<Props> = ({
   app,
   plugins,
-  // showBanner,
   isLoggedIn,
   isFavSelected,
   onSearch,
@@ -40,8 +38,6 @@ const TopPage: React.FC<Props> = ({
 }) => {
   return (
     <Wrapper>
-      {/* NOTE: No banner in the new design */}
-      {/* {showBanner && <TitleBar />} */}
       <TopPageContent
         app={app}
         plugins={plugins}

@@ -62,7 +62,7 @@ const TopPageContents: React.FC<Props> = ({
 
   return (
     <div>
-      {app && (
+      {!app && (
         <TabsWrapper>
           <Tabs
             defaultActiveKey="0"
@@ -104,7 +104,7 @@ const TopPageContents: React.FC<Props> = ({
 };
 
 const TabsWrapper = styled.div`
-  background: transparent;
+  background: #070707;
   display: flex;
   justify-content: center;
   margin-bottom: 48px;
