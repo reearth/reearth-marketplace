@@ -1,4 +1,4 @@
-export enum Tabs {
+export enum TabsType {
   Version = "VERSION",
   Package = "PACKAGE",
   Settings = "SETTINGS",

@@ -84,7 +84,7 @@ const StyledDiv = styled.div`
   min-height: 100px;
   border-width: 1px;
   border-style: solid;
-  padding: 6px 8px; 8px; 8px;
+  padding: 6px 8px 8px 8px;
   border-color: rgba(0, 0, 0, 0.25);
 `;
 

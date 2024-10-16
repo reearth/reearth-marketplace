@@ -14,7 +14,7 @@ export type Props = {
 const Top: React.FC<Props> = ({ accessToken, onPluginSelect, version }) => {
   const [searchText, updateSearchText] = useState<string>("");
   const [isFavSelected, toggleLiked] = useState<boolean>(false);
-  const [_currentVersion, setCurrentVersion] = useState<Version>("classic");
+  const [_currentVersion, setCurrentVersion] = useState<Version>(version ?? "classic");
 
   // TODO: pass `currentVersion` which might be visualizer or classic to hook to filter by version
   const pageSize = 40;

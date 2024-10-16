@@ -2,10 +2,10 @@ import Button from "@marketplace/components/atoms/Button";
 import Icon from "@marketplace/components/atoms/Icon";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { Tabs } from "@marketplace/types";
+import { TabsType } from "@marketplace/types";
 
 type Props = {
-  currentTab: Tabs;
+  currentTab: TabsType;
   handleNextButtonPress: () => void;
   handlePrevButtonPress: () => void;
   handlePluginSave: () => void;
@@ -28,7 +28,7 @@ const ButtonNavigation: React.FC<Props> = ({
   return (
     <ButtonWrapper>
       <div>
-        {[Tabs.Package, Tabs.Settings].includes(currentTab) && (
+        {[TabsType.Package, TabsType.Settings].includes(currentTab) && (
           <Button
             icon={<Icon icon="arrowLeft" />}
             iconPosition="start"
@@ -39,9 +39,9 @@ const ButtonNavigation: React.FC<Props> = ({
         )}
       </div>
       <div>
-        {currentTab !== Tabs.Settings ? (
+        {currentTab !== TabsType.Settings ? (
           <Button
-            disabled={currentTab === Tabs.Package && !pluginUploaded}
+            disabled={currentTab === TabsType.Package && !pluginUploaded}
             icon={<Icon icon="arrowRight" />}
             iconPosition="end"
             type="primary"
@@ -51,7 +51,7 @@ const ButtonNavigation: React.FC<Props> = ({
         ) : (
           <div>
             <CustomButton
-              icon={currentTab !== Tabs.Settings ? <Icon icon="arrowRight" /> : null}
+              icon={currentTab !== TabsType.Settings ? <Icon icon="arrowRight" /> : null}
               iconPosition="end"
               loading={isLoading}
               type="primary"
@@ -59,7 +59,7 @@ const ButtonNavigation: React.FC<Props> = ({
               {t("Save")}
             </CustomButton>
             <Button
-              icon={currentTab !== Tabs.Settings ? <Icon icon="arrowRight" /> : null}
+              icon={currentTab !== TabsType.Settings ? <Icon icon="arrowRight" /> : null}
               iconPosition="end"
               loading={isLoading}
               type="primary"

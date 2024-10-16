@@ -3,7 +3,7 @@ import { useCallback, useState } from "react";
 import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
-import { Tabs } from "@marketplace/types";
+import { TabsType } from "@marketplace/types";
 
 import ButtonNavigation from "./ButtonNavigation";
 import PackageArea from "./PackageArea";
@@ -41,11 +41,11 @@ const PluginUpload: React.FC<Props> = ({
   onPublish,
   onImagesUpload,
 }) => {
-  const [currentTab, updateTab] = useState<Tabs>(Tabs.Version);
+  const [currentTab, updateTab] = useState<TabsType>(TabsType.Version);
   const t = useT();
 
   const handleNextButtonPress = useCallback(() => {
-    const tabs = [Tabs.Version, Tabs.Package, Tabs.Settings];
+    const tabs = [TabsType.Version, TabsType.Package, TabsType.Settings];
     const currentIndex = tabs.indexOf(currentTab);
     if (currentIndex < tabs.length - 1) {
       updateTab(tabs[currentIndex + 1]);
@@ -53,7 +53,7 @@ const PluginUpload: React.FC<Props> = ({
   }, [currentTab]);
 
   const handlePrevButtonPress = useCallback(() => {
-    const tabs = [Tabs.Version, Tabs.Package, Tabs.Settings];
+    const tabs = [TabsType.Version, TabsType.Package, TabsType.Settings];
     const currentIndex = tabs.indexOf(currentTab);
     if (currentIndex > 0) {
       updateTab(tabs[currentIndex - 1]);
@@ -80,8 +80,8 @@ const PluginUpload: React.FC<Props> = ({
           isLoading={isLoading}
           pluginUploaded={pluginUploaded}
         />
-        {currentTab === Tabs.Version && <VersionArea />}
-        {currentTab === Tabs.Package && (
+        {currentTab === TabsType.Version && <VersionArea />}
+        {currentTab === TabsType.Package && (
           <PackageArea
             githubUrl={githubUrl}
             onChangeGithubUrl={onParseFromUrl}
@@ -89,7 +89,7 @@ const PluginUpload: React.FC<Props> = ({
             onParsePlugin={onParseFromFile}
           />
         )}
-        {currentTab === Tabs.Settings && (
+        {currentTab === TabsType.Settings && (
           <SettingArea
             pluginName={pluginName}
             version={version}
