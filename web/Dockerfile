@@ -31,6 +31,9 @@ ENV PORT=8080
 # Ref: https://cloud.google.com/load-balancing/docs/https#target-proxies
 ENV REAL_IP_HEADER=X-Forwarded-For
 
+# URLs with access to reearth-markplace
+ENV CORS_ALLOWED_ORIGINS=""
+
 COPY --from=node /work/dist/ /usr/share/nginx/html
 COPY --chown=nginx:nginx  docker/reearth_config.json.template /tmp/reearth_config.json.template
 COPY --chown=nginx:nginx docker/nginx.conf.template /etc/nginx/templates/nginx.conf.template
