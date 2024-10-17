@@ -4,12 +4,16 @@ help:
 	@echo ""
 	@echo "Targets:"
 	@echo "  test       Run unit tests with race detector in short mode"
+	@echo "  e2e        Run end-to-end tests"
 	@echo "  build      Build the project"
 	@echo "  run-app    Run the application"
 	@echo "  gql        Generate GraphQL code"
 
 test:
 	go test -race -short -v ./...
+
+e2e:
+	go test -v ./e2e/...
 
 build:
 	go build ./cmd/reearth-marketplace
@@ -20,4 +24,4 @@ run-app:
 gql:
 	go generate ./internal/adapter/gql
 
-.PHONY: test build run-app gql
+.PHONY: test e2e build run-app gql
