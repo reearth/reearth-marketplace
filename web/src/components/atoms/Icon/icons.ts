@@ -1,5 +1,6 @@
 import {
   ArrowDownOutlined,
+  ArrowLeftOutlined,
   ArrowRightOutlined,
   DoubleRightOutlined,
   DownloadOutlined,
@@ -26,6 +27,7 @@ import {
 
 export default {
   arrowDown: ArrowDownOutlined,
+  arrowLeft: ArrowLeftOutlined,
   arrowRight: ArrowRightOutlined,
   arrowRightDouble: DoubleRightOutlined,
   downOutlined: DownOutlined,

@@ -71,9 +71,6 @@ const UpdatePlugin: React.FC<Props> = ({
           <PackageArea
             githubUrl={githubUrl}
             onChangeGithubUrl={onGithubUrlChange}
-            onPageChange={pluginName !== "" ? handlePageChange : undefined}
-            // pageChangeButton={t("Changelog")}
-            pageChangeButton={t("Details")}
             onRemove={onRemove}
             onParsePlugin={onParsePlugin}
           />

@@ -35,37 +35,40 @@ My Plugins: マイプラグイン
 Log Out: ログアウト
 Upload new plugin: 新しいプラグインをアップロード
 Log in: ログイン
-Plugins List: プラグイン一覧
-New Plugin: 新規プラグインの追加
+Prev: 前へ
+Next: 次へ
 Save: 一時保存
 Save & Publish: 保存と公開
-Details Setting: 詳細設定
+Plugins List: プラグイン一覧
+New Plugin: 新規プラグインの追加
 File uploaded successfully.: ファイルのアップロードが成功しました。
 File upload failed.: ファイルのアップロードに失敗しました。
+Package: パッケージ
 Upload from local: PCからアップロード
-GitHub repository: GitHubレポジトリ
+GitHub: ''
 Click or drag file to this area to upload: クリックまたはドラッグしてアップロードするファイルを追加
-Please set your repository as public respository.: レポジトリをPublicにするのをお忘れなく。
+Please set your repository as public.: リポジトリを公開に設定してください。
 Image uploaded successfully.: 画像がアップロードされました。
 Image upload failed.: 画像のアップロードに失敗しました。
-Back: 戻る
 Plugin Name: プラグイン名
 Version: バージョン
+Description: 詳細
 Images: 画像
 Upload Image: 画像の追加
+Which environment is your plugin developed for ?: プラグインはどの環境用に開発されましたか？
 Status: 公開状態
 Published: 公開中
 Not Published: 非公開
 Updated Date: 最終更新日
 Action: アクション
 Update this plugin: このプラグインを更新する
-Top: トップ
+Click the  "New Plugin" button to upload your first Plugin: ''
 README: ''
+Top: トップ
 Update Plugin: プラグインを更新
 Already installed: 既にインストールされています
 Install: インストール
 Open Plugin in your project: プロジェクトに追加
-Description: 詳細
 Developer: 開発者
 Report this plugin: このプラグインを通報
 Choose one project to open this plugin: プラグインを追加するプロジェクトを１つ選んでください
@@ -83,7 +86,9 @@ Published Asc: 公開日昇順
 Published Desc: 公開日降順
 search text: キーワードを入力
 Liked: お気に入り済
-Details: 詳細
+Classic: クラシック
+Visualizer: ビジュアライザー
+Back: 戻る
 Something might be wrong with your plugin. Please check and try again.: プラグインのアップロード時に問題が発生しました。
 Your plugin was successfully published!: プラグインが正常に公開されました。
 Your plugin was successfully unpublished!: プラグインを非公開にしました。

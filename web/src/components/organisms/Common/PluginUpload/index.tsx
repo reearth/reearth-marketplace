@@ -27,6 +27,7 @@ const PluginUpload: React.FC<Props> = ({ pluginId }) => {
       description={parsedPlugin?.description ?? ""}
       githubUrl={githubUrl}
       isLoading={isLoading}
+      pluginUploaded={!!parsedPlugin}
       onParseFromUrl={handleParseFromUrl}
       onParseFromFile={handleParseFromFile}
       onPublish={handlePublish}

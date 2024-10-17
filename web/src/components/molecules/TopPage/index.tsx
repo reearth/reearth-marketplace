@@ -1,14 +1,14 @@
-import TitleBar from "@marketplace/components/atoms/TitleBar";
 import { type Plugin } from "@marketplace/components/molecules/PluginsList";
 import { styled } from "@marketplace/theme";
+import { Version } from "@marketplace/types";
 
 import TopPageContent from "./TopPageContents";
 
 export type { Plugin } from "@marketplace/components/molecules/PluginsList";
 export type Props = {
+  version?: Version | undefined;
   isLoggedIn: boolean;
   plugins?: Plugin[];
-  showBanner?: boolean;
   isFavSelected: boolean;
   onSearch: (text: string) => void;
   handleFavButtonClick: (isFaved: boolean) => void;
@@ -18,11 +18,12 @@ export type Props = {
   onPageChange: (page: number) => void;
   loadingPlugins: boolean;
   pageSize: number;
+  setCurrentVersion: React.Dispatch<React.SetStateAction<Version>>;
 };
 
 const TopPage: React.FC<Props> = ({
+  version,
   plugins,
-  showBanner,
   isLoggedIn,
   isFavSelected,
   onSearch,
@@ -33,11 +34,12 @@ const TopPage: React.FC<Props> = ({
   onPageChange,
   loadingPlugins,
   pageSize,
+  setCurrentVersion,
 }) => {
   return (
     <Wrapper>
-      {showBanner && <TitleBar />}
       <TopPageContent
+        version={version}
         plugins={plugins}
         onSearch={onSearch}
         isLoggedIn={isLoggedIn}
@@ -49,6 +51,7 @@ const TopPage: React.FC<Props> = ({
         onPageChange={onPageChange}
         loadingPlugins={loadingPlugins}
         pageSize={pageSize}
+        setCurrentVersion={setCurrentVersion}
       />
     </Wrapper>
   );

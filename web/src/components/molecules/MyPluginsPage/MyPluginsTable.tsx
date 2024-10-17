@@ -1,3 +1,4 @@
+import { ConfigProvider } from "antd";
 import type { ColumnsType, TablePaginationConfig } from "antd/es/table";
 import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
@@ -124,21 +125,33 @@ const MyPluginsTable: React.FC<Props> = ({
     [plugins],
   );
 
+  const renderEmpty = () => {
+    return (
+      <RenderEmptyWrapper>
+        <RenderEmptyText>
+          {t('Click the  "New Plugin" button to upload your first Plugin')}
+        </RenderEmptyText>
+      </RenderEmptyWrapper>
+    );
+  };
+
   return (
     <Wrapper>
-      <Table
-        columns={columns}
-        dataSource={pluginDataSource}
-        loading={!plugins && { indicator: <Loading size="md" height={200} /> }}
-        pagination={
-          {
-            current: page,
-            total: totalCount,
-            pageSize: pageSize,
-            onChange: onPageChange,
-          } as TablePaginationConfig
-        }
-      />
+      <ConfigProvider renderEmpty={renderEmpty}>
+        <Table
+          columns={columns}
+          dataSource={pluginDataSource}
+          loading={!plugins && { indicator: <Loading size="md" height={200} /> }}
+          pagination={
+            {
+              current: page,
+              total: totalCount,
+              pageSize: pageSize,
+              onChange: onPageChange,
+            } as TablePaginationConfig
+          }
+        />
+      </ConfigProvider>
     </Wrapper>
   );
 };
@@ -157,6 +170,19 @@ const BoldTitle = styled.p`
 
 const UpdateIcon = styled(Icon)`
   transform: rotate(0.75turn);
+`;
+
+const RenderEmptyWrapper = styled.div`
+  height: 750px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const RenderEmptyText = styled.p`
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 500;
 `;
 
 export default MyPluginsTable;
