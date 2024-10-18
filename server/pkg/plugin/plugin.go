@@ -22,6 +22,7 @@ type Plugin struct {
 	downloads     int64
 	like          int64
 	publisherID   id.UserID // TODO: organization の場合にも対応する必要があるが generics にすると repo などが実装できない
+	core          bool
 	latestVersion *PartialVersion
 }
 
