@@ -183,7 +183,7 @@ jobs:
       - name: Save docker image
         run: docker save ${{ steps.options.outputs.tags }} | gzip > reearth-marketplace.tar.gz
       - name: Save imaged to artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         # env:
         #   TAG: ${{ needs.info.outputs.tag_short }}
         #   NAME: ${{ needs.info.outputs.name }}
