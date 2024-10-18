@@ -17,6 +17,12 @@ import (
 	"github.com/reearth/reearthx/mongox/mongotest"
 )
 
+type GraphQLRequest struct {
+	OperationName string         `json:"operationName"`
+	Query         string         `json:"query"`
+	Variables     map[string]any `json:"variables"`
+}
+
 func init() {
 	mongotest.Env = "REEARTH_DB"
 }
