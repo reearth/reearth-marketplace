@@ -9,11 +9,6 @@ import (
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
 )
 
-const (
-	gcsPluginBasePath = "plugins"
-	gcsImagesBasePath = "images"
-)
-
 type fileRepo struct {
 	pluginBucketName string
 	assetsBucketName string
