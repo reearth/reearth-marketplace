@@ -9,8 +9,8 @@ import (
 
 	"github.com/gavv/httpexpect/v2"
 	"github.com/reearth/reearth-marketplace/server/internal/app"
-	"github.com/reearth/reearth-marketplace/server/internal/infrastrcture/fs"
-	mongorepo "github.com/reearth/reearth-marketplace/server/internal/infrastrcture/mongo"
+	"github.com/reearth/reearth-marketplace/server/internal/infrastructure/fs"
+	mongorepo "github.com/reearth/reearth-marketplace/server/internal/infrastructure/mongo"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/gateway"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearthx/mongox"
@@ -24,7 +24,7 @@ type GraphQLRequest struct {
 }
 
 func init() {
-	mongotest.Env = "REEARTH_DB"
+	mongotest.Env = "REEARTH_MARKETPLACE_DB"
 }
 
 type Seeder func(ctx context.Context, r *repo.Container) error
@@ -50,7 +50,7 @@ func initTestReposAndGateways(t *testing.T, ctx context.Context, conf *app.Confi
 	}
 
 	// File
-	fileRepo, err := fs.NewFile("marketplace.test.reearth.dev", "assets.marketplace.test.reearth.dev", "")
+	fileRepo, err := fs.NewFile(conf.GCS.Bucket, conf.GCS.AssetsBucket, conf.GCS.AssetsBaseURL)
 	if err != nil {
 		log.Fatalf("file: init error: %v", err)
 	}

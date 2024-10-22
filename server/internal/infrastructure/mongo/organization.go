@@ -3,7 +3,7 @@ package mongo
 import (
 	"context"
 
-	"github.com/reearth/reearth-marketplace/server/internal/infrastrcture/mongo/mongodoc"
+	"github.com/reearth/reearth-marketplace/server/internal/infrastructure/mongo/mongodoc"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
 	"github.com/reearth/reearthx/mongox"
