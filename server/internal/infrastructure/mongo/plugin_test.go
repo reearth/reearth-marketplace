@@ -403,6 +403,6 @@ func TestCorePlugin_FindByID(t *testing.T) {
 
 	pl, err = r.FindByID(ctx, pid, nil)
 	assert.NoError(t, err)
-	assert.Equal(t, plugin.New(uid).ID(pid).Active(true).MustBuild(), pl)
+	assert.Equal(t, plugin.New(uid).ID(pid).Active(true).Core(true).MustBuild(), pl)
 
 }

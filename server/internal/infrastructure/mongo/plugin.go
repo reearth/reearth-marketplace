@@ -128,6 +128,7 @@ func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) erro
 				"id":          pluginDoc.ID,
 				"type":        pluginDoc.Type,
 				"active":      pluginDoc.Active,
+				"core":        pluginDoc.Core,
 				"createdAt":   pluginDoc.CreatedAt,
 				"tags":        pluginDoc.Tags,
 				"image":       pluginDoc.Images,

@@ -17,10 +17,13 @@ import (
 func (r *mutationResolver) ParsePlugin(ctx context.Context, input gqlmodel.CreatePluginInput) (*gqlmodel.PluginPayload, error) {
 	var p *plugin.VersionedPlugin
 	var err error
+
+	core := *input.Core
+
 	if input.File != nil {
-		p, err = usecases(ctx).Plugin.Parse(ctx, getUser(ctx), input.File.File)
+		p, err = usecases(ctx).Plugin.Parse(ctx, getUser(ctx), input.File.File, core)
 	} else if input.Repo != nil {
-		p, err = usecases(ctx).Plugin.ParseFromRepo(ctx, getUser(ctx), input.Repo)
+		p, err = usecases(ctx).Plugin.ParseFromRepo(ctx, getUser(ctx), input.Repo, core)
 	} else {
 		return nil, errors.New("either file or repo is required")
 	}
@@ -36,10 +39,12 @@ func (r *mutationResolver) CreatePlugin(ctx context.Context, input gqlmodel.Crea
 	var p *plugin.VersionedPlugin
 	var err error
 
+	core := *input.Core
+
 	if input.File != nil {
-		p, err = usecases(ctx).Plugin.Create(ctx, getUser(ctx), input.File.File)
+		p, err = usecases(ctx).Plugin.Create(ctx, getUser(ctx), input.File.File, core)
 	} else if input.Repo != nil {
-		p, err = usecases(ctx).Plugin.CreateFromRepo(ctx, getUser(ctx), input.Repo)
+		p, err = usecases(ctx).Plugin.CreateFromRepo(ctx, getUser(ctx), input.Repo, core)
 	} else {
 		return nil, errors.New("either file or repo is required")
 	}

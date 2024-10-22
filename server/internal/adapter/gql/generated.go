@@ -1099,6 +1099,7 @@ type Plugin implements Node {
 
   like: Int!
   liked: Boolean!
+  core: Boolean!
 }
 
 type Version {
@@ -1255,6 +1256,7 @@ input CreatePluginInput {
   repo: String
   # If omitted, the plugin will be published from the personal publisher
   publisher: ID
+  core: Boolean
 }
 
 input UpdatePluginInput {
@@ -4774,6 +4776,8 @@ func (ec *executionContext) fieldContext_PluginConnection_nodes(ctx context.Cont
 				return ec.fieldContext_Plugin_like(ctx, field)
 			case "liked":
 				return ec.fieldContext_Plugin_liked(ctx, field)
+			case "core":
+				return ec.fieldContext_Plugin_core(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Plugin", field.Name)
 		},
@@ -5001,6 +5005,8 @@ func (ec *executionContext) fieldContext_PluginEdge_node(ctx context.Context, fi
 				return ec.fieldContext_Plugin_like(ctx, field)
 			case "liked":
 				return ec.fieldContext_Plugin_liked(ctx, field)
+			case "core":
+				return ec.fieldContext_Plugin_core(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Plugin", field.Name)
 		},
@@ -5089,6 +5095,8 @@ func (ec *executionContext) fieldContext_PluginPayload_plugin(ctx context.Contex
 				return ec.fieldContext_Plugin_like(ctx, field)
 			case "liked":
 				return ec.fieldContext_Plugin_liked(ctx, field)
+			case "core":
+				return ec.fieldContext_Plugin_core(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Plugin", field.Name)
 		},
@@ -6233,6 +6241,8 @@ func (ec *executionContext) fieldContext_VersionPayload_plugin(ctx context.Conte
 				return ec.fieldContext_Plugin_like(ctx, field)
 			case "liked":
 				return ec.fieldContext_Plugin_liked(ctx, field)
+			case "core":
+				return ec.fieldContext_Plugin_core(ctx, field)
 			}
 			return nil, fmt.Errorf("no field named %q was found under type Plugin", field.Name)
 		},
@@ -9356,6 +9366,26 @@ func (ec *executionContext) _Plugin(ctx context.Context, sel ast.SelectionSet, o
 					}
 				}()
 				res = ec._Plugin_liked(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			}
+
+			out.Concurrently(i, func() graphql.Marshaler {
+				return innerFunc(ctx)
+
+			})
+		case "core":
+			field := field
+
+			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Plugin_core(ctx, field, obj)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}

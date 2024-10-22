@@ -20,3 +20,7 @@ models:
     model: github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel.Me
   User:
     model: github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel.User
+  # Node:
+  #   model: github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel.Node
+  # Publisher:
+  #   model: github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel.Publisher

@@ -56,7 +56,7 @@ func (p *Plugin) FindByVersion(ctx context.Context, id id.PluginID, version stri
 	return p.pluginRepo.FindByVersion(ctx, id, version)
 }
 
-func (p *Plugin) Parse(ctx context.Context, publisher *user.User, r io.Reader) (*plugin.VersionedPlugin, error) {
+func (p *Plugin) Parse(ctx context.Context, publisher *user.User, r io.Reader, core bool) (*plugin.VersionedPlugin, error) {
 	if publisher == nil {
 		return nil, interfaces.ErrOperationDenied
 	}
@@ -65,10 +65,10 @@ func (p *Plugin) Parse(ctx context.Context, publisher *user.User, r io.Reader) (
 	if err != nil {
 		return nil, err
 	}
-	return pluginpack.ToPlugin(ctx, pkg, publisher.ID())
+	return pluginpack.ToPlugin(ctx, pkg, publisher.ID(), core)
 }
 
-func (p *Plugin) ParseFromRepo(ctx context.Context, publisher *user.User, repo *string) (*plugin.VersionedPlugin, error) {
+func (p *Plugin) ParseFromRepo(ctx context.Context, publisher *user.User, repo *string, core bool) (*plugin.VersionedPlugin, error) {
 	if publisher == nil {
 		return nil, interfaces.ErrOperationDenied
 	}
@@ -77,10 +77,10 @@ func (p *Plugin) ParseFromRepo(ctx context.Context, publisher *user.User, repo *
 	if err != nil {
 		return nil, err
 	}
-	return pluginpack.ToPlugin(ctx, pkg, publisher.ID())
+	return pluginpack.ToPlugin(ctx, pkg, publisher.ID(), core)
 }
 
-func (p *Plugin) Create(ctx context.Context, publisher *user.User, r io.Reader) (*plugin.VersionedPlugin, error) {
+func (p *Plugin) Create(ctx context.Context, publisher *user.User, r io.Reader, core bool) (*plugin.VersionedPlugin, error) {
 	if publisher == nil {
 		return nil, interfaces.ErrOperationDenied
 	}
@@ -89,10 +89,10 @@ func (p *Plugin) Create(ctx context.Context, publisher *user.User, r io.Reader) 
 	if err != nil {
 		return nil, err
 	}
-	return p.create(ctx, publisher, pkg)
+	return p.create(ctx, publisher, pkg, core)
 }
 
-func (p *Plugin) CreateFromRepo(ctx context.Context, publisher *user.User, repo *string) (*plugin.VersionedPlugin, error) {
+func (p *Plugin) CreateFromRepo(ctx context.Context, publisher *user.User, repo *string, core bool) (*plugin.VersionedPlugin, error) {
 	if publisher == nil {
 		return nil, interfaces.ErrOperationDenied
 	}
@@ -101,7 +101,7 @@ func (p *Plugin) CreateFromRepo(ctx context.Context, publisher *user.User, repo 
 	if err != nil {
 		return nil, err
 	}
-	return p.create(ctx, publisher, pkg)
+	return p.create(ctx, publisher, pkg, core)
 }
 
 func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam) (_ *plugin.VersionedPlugin, err error) {
@@ -383,12 +383,12 @@ func (p *Plugin) download(ctx context.Context, vp *plugin.VersionedPlugin, onlyI
 	return b, nil
 }
 
-func (p *Plugin) create(ctx context.Context, publisher *user.User, pkg *pluginpack.Package) (_ *plugin.VersionedPlugin, err error) {
+func (p *Plugin) create(ctx context.Context, publisher *user.User, pkg *pluginpack.Package, core bool) (_ *plugin.VersionedPlugin, err error) {
 	if publisher == nil {
 		return nil, interfaces.ErrOperationDenied
 	}
 
-	vp, err := pluginpack.ToPlugin(ctx, pkg, publisher.ID())
+	vp, err := pluginpack.ToPlugin(ctx, pkg, publisher.ID(), core)
 	if err != nil {
 		return nil, err
 	}

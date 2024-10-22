@@ -102,7 +102,7 @@ const (
 	iconSizeLimit = 100 * 1024
 )
 
-func ToPlugin(ctx context.Context, pkg *Package, publisherID plugin.PublisherID) (*plugin.VersionedPlugin, error) {
+func ToPlugin(ctx context.Context, pkg *Package, publisherID plugin.PublisherID, core bool) (*plugin.VersionedPlugin, error) {
 	iconURL, err := pkg.iconURL(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("iconURL: %w", err)
@@ -137,6 +137,7 @@ func ToPlugin(ctx context.Context, pkg *Package, publisherID plugin.PublisherID)
 		UpdatedAt(now).
 		Active(false).
 		LatestVersion(pv).
+		Core(core).
 		Build()
 	if err != nil {
 		return nil, fmt.Errorf("plugin: %w", err)

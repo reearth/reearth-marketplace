@@ -19,10 +19,10 @@ type Plugin struct {
 	tags          []string
 	images        []string
 	active        bool
+	core          bool
 	downloads     int64
 	like          int64
 	publisherID   id.UserID // TODO: organization の場合にも対応する必要があるが generics にすると repo などが実装できない
-	core          bool
 	latestVersion *PartialVersion
 }
 
@@ -57,6 +57,10 @@ func (p *Plugin) Active() bool {
 	return p.active
 }
 
+func (p *Plugin) Core() bool {
+	return p.core
+}
+
 func (p *Plugin) Images() []string {
 	return p.images
 }
@@ -81,6 +85,10 @@ func (p *Plugin) SetActive(active bool) (changed bool) {
 	old := p.active
 	p.active = active
 	return old != active
+}
+
+func (p *Plugin) SetCore(core bool) {
+	p.core = core
 }
 
 func (p *Plugin) SetTags(tags []string) {
