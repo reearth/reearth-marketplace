@@ -39,8 +39,6 @@ func initTestReposAndGateways(t *testing.T, ctx context.Context, conf *app.Confi
 
 	// Mongo
 	db := mongotest.Connect(t)(t)
-	client := mongox.NewClientWithDatabase(db)
-	client = client.WithTransaction()
 	repos := &repo.Container{}
 	if err := mongorepo.InitRepos(ctx, repos, db.Client(), db.Name(), mongox.IsTransactionAvailable(conf.DB)); err != nil {
 		log.Fatalf("Failed to init mongo: %+v\n", err)
