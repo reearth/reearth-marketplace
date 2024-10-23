@@ -50,7 +50,7 @@ func initTestReposAndGateways(t *testing.T, ctx context.Context, conf *app.Confi
 	}
 
 	// File
-	fileRepo, err := fs.NewFile(conf.GCS.Bucket, conf.GCS.AssetsBucket, conf.GCS.AssetsBaseURL)
+	fileRepo, err := fs.NewFile("TestBucket", "TestAssetsBucket", "TestAssetsBaseURL")
 	if err != nil {
 		log.Fatalf("file: init error: %v", err)
 	}

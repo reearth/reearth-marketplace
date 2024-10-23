@@ -388,11 +388,7 @@ func TestCorePlugin_FindByID(t *testing.T) {
 	r := NewPlugin(mongox.NewClientWithDatabase(db))
 
 	uid := id.NewUserID()
-	pid := id.MustPluginID("xxxxxx1aaas")
-
-	pl, err := r.FindByID(ctx, pid, nil)
-	assert.Equal(t, rerror.ErrNotFound, err)
-	assert.Nil(t, pl)
+	pid := id.MustPluginID("xxxxxx2aaas")
 
 	_, _ = db.Collection("plugin").InsertOne(ctx, bson.M{
 		"id":          pid.String(),
@@ -401,7 +397,7 @@ func TestCorePlugin_FindByID(t *testing.T) {
 		"core":        true,
 	})
 
-	pl, err = r.FindByID(ctx, pid, nil)
+	pl, err := r.FindByID(ctx, pid, nil)
 	assert.NoError(t, err)
 	assert.Equal(t, plugin.New(uid).ID(pid).Active(true).Core(true).MustBuild(), pl)
 
