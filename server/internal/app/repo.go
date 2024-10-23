@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/reearth/reearth-marketplace/server/internal/infrastrcture/gcs"
-	mongorepo "github.com/reearth/reearth-marketplace/server/internal/infrastrcture/mongo"
+	"github.com/reearth/reearth-marketplace/server/internal/infrastructure/gcs"
+	mongorepo "github.com/reearth/reearth-marketplace/server/internal/infrastructure/mongo"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/gateway"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearthx/log"

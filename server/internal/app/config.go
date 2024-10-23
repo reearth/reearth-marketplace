@@ -4,8 +4,10 @@ import (
 	"fmt"
 	"net/url"
 
+	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/reearth/reearthx/appx"
+	"github.com/yudai/pp"
 )
 
 const configPrefix = "REEARTH_MARKETPLACE"
@@ -72,9 +74,17 @@ type GraphQLConfig struct {
 }
 
 func LoadConfig() (*Config, error) {
+	err := godotenv.Load(".env")
+	if err != nil {
+		fmt.Println("Error loading .env file")
+	}
+
 	var c Config
 	if err := envconfig.Process(configPrefix, &c); err != nil {
 		return nil, fmt.Errorf("load a config from env: %w", err)
+	}
+	if c.Debug {
+		fmt.Printf("Config: %s \n", pp.Sprint(c))
 	}
 	return &c, nil
 }

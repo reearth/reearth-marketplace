@@ -19,7 +19,7 @@ func TestPluginPackage(t *testing.T) {
 	p, err := PackageFromZip(file, 100000)
 	assert.NoError(t, err)
 
-	pl, err := ToPlugin(context.Background(), p, id.NewUserID())
+	pl, err := ToPlugin(context.Background(), p, id.NewUserID(), false)
 	assert.NoError(t, err)
 	assert.Equal(t, id.MustPluginID("testplugin"), pl.Plugin().ID())
 }
