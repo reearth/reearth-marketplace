@@ -54,6 +54,7 @@ export const PLUGINS = gql`
         latestVersion {
           version
         }
+        core
       }
     }
   }
@@ -95,6 +96,7 @@ export const SEARCH_PLUGIN = gql`
         liked
         downloads
         name
+        core
       }
       totalCount
     }
