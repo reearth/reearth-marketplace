@@ -18,6 +18,7 @@ export type Plugin = {
   liked?: boolean;
   downloads: number;
   version?: string;
+  core?: boolean;
 };
 
 const PluginsList: React.FC<Props> = ({ plugins, loading, onPluginSelect }) => {

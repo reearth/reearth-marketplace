@@ -27,6 +27,7 @@ export type CreateOrganizationInput = {
 };
 
 export type CreatePluginInput = {
+  core?: InputMaybe<Scalars['Boolean']>;
   file?: InputMaybe<Scalars['Upload']>;
   publisher?: InputMaybe<Scalars['ID']>;
   repo?: InputMaybe<Scalars['String']>;
@@ -211,6 +212,7 @@ export type Plugin = Node & {
   __typename?: 'Plugin';
   active: Scalars['Boolean'];
   author?: Maybe<Scalars['String']>;
+  core: Scalars['Boolean'];
   createdAt: Scalars['Time'];
   description?: Maybe<Scalars['String']>;
   downloads: Scalars['Int'];
@@ -408,7 +410,7 @@ export type PluginsQueryVariables = Exact<{
 }>;
 
 
-export type PluginsQuery = { __typename?: 'Query', nodes: Array<{ __typename?: 'Organization', id: string } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null }, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User', id: string }> };
+export type PluginsQuery = { __typename?: 'Query', nodes: Array<{ __typename?: 'Organization', id: string } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, core: boolean, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null }, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User', id: string }> };
 
 export type SearchPluginQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -422,7 +424,7 @@ export type SearchPluginQueryVariables = Exact<{
 }>;
 
 
-export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, liked: boolean, downloads: number, name: string, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null } } | null> } };
+export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, liked: boolean, downloads: number, name: string, core: boolean, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null } } | null> } };
 
 export type LikePluginMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -577,6 +579,7 @@ export const PluginsDocument = gql`
       latestVersion {
         version
       }
+      core
     }
   }
 }
@@ -627,6 +630,7 @@ export const SearchPluginDocument = gql`
       liked
       downloads
       name
+      core
     }
     totalCount
   }
