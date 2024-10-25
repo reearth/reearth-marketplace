@@ -155,8 +155,8 @@ export const UPDATE_PLUGIN = gql`
 `;
 
 export const CREATE_PLUGIN = gql`
-  mutation CreatePlugin($file: Upload, $repo: String, $publisher: ID) {
-    createPlugin(input: { file: $file, repo: $repo, publisher: $publisher }) {
+  mutation CreatePlugin($file: Upload, $repo: String, $publisher: ID, $core: Boolean) {
+    createPlugin(input: { file: $file, repo: $repo, publisher: $publisher, core: $core }) {
       plugin {
         id
         name
@@ -165,14 +165,15 @@ export const CREATE_PLUGIN = gql`
           version
         }
         images
+        core
       }
     }
   }
 `;
 
 export const PARSE_PLUGIN = gql`
-  mutation ParsePlugin($file: Upload, $repo: String) {
-    parsePlugin(input: { file: $file, repo: $repo }) {
+  mutation ParsePlugin($file: Upload, $repo: String, $core: Boolean) {
+    parsePlugin(input: { file: $file, repo: $repo, core: $core }) {
       plugin {
         id
         type
@@ -190,6 +191,7 @@ export const PARSE_PLUGIN = gql`
         latestVersion {
           version
         }
+        core
       }
     }
   }

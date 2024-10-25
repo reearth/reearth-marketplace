@@ -8,10 +8,12 @@ type Props = {
   currentTab: TabsType;
   handleNextButtonPress: () => void;
   handlePrevButtonPress: () => void;
-  handlePluginSave: () => void;
-  handlePluginPublish: () => void;
+  handlePluginSave: ({ publish, core }: { publish?: boolean; core: boolean }) => void;
+  handlePluginPublish: (core: boolean) => void;
+  isCorePlugin: boolean;
   isLoading: boolean;
   pluginUploaded: boolean;
+  isVersionSelected: boolean;
 };
 
 const ButtonNavigation: React.FC<Props> = ({
@@ -21,7 +23,9 @@ const ButtonNavigation: React.FC<Props> = ({
   handlePluginSave,
   handlePluginPublish,
   isLoading,
+  isCorePlugin,
   pluginUploaded,
+  isVersionSelected,
 }) => {
   const t = useT();
 
@@ -41,7 +45,10 @@ const ButtonNavigation: React.FC<Props> = ({
       <div>
         {currentTab !== TabsType.Settings ? (
           <Button
-            disabled={currentTab === TabsType.Package && !pluginUploaded}
+            disabled={
+              (currentTab === TabsType.Package && !pluginUploaded) ||
+              (currentTab === TabsType.Version && !isVersionSelected)
+            }
             icon={<Icon icon="arrowRight" />}
             iconPosition="end"
             type="primary"
@@ -55,7 +62,7 @@ const ButtonNavigation: React.FC<Props> = ({
               iconPosition="end"
               loading={isLoading}
               type="primary"
-              onClick={handlePluginSave}>
+              onClick={() => handlePluginSave({ publish: true, core: isCorePlugin })}>
               {t("Save")}
             </CustomButton>
             <Button
@@ -63,7 +70,7 @@ const ButtonNavigation: React.FC<Props> = ({
               iconPosition="end"
               loading={isLoading}
               type="primary"
-              onClick={handlePluginPublish}>
+              onClick={() => handlePluginPublish(isCorePlugin)}>
               {t("Save & Publish")}
             </Button>
           </div>

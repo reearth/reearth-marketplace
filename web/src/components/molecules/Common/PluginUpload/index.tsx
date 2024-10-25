@@ -18,11 +18,11 @@ export type Props = {
   githubUrl?: string;
   isLoading: boolean;
   pluginUploaded: boolean;
-  onParseFromUrl: (url: string) => void;
-  onParseFromFile: (file?: File) => Promise<void>;
-  onPluginSave: () => void;
+  onParseFromUrl: ({ core, url }: { core: boolean; url: string }) => void;
+  onParseFromFile: ({ core, file }: { core: boolean; file?: File }) => Promise<void>;
+  onPluginSave: ({ publish, core }: { publish?: boolean; core: boolean }) => void;
   onRemove?: () => void;
-  onPublish: () => void;
+  onPublish: (core: boolean) => void;
   onImagesUpload: (images: File[]) => void;
 };
 
@@ -42,6 +42,9 @@ const PluginUpload: React.FC<Props> = ({
   onImagesUpload,
 }) => {
   const [currentTab, updateTab] = useState<TabsType>(TabsType.Version);
+  const [isCorePlugin, setCorePlugin] = useState<boolean>(false);
+  const [isVersionSelected, setVersionSelected] = useState<boolean>(false);
+
   const t = useT();
 
   const handleNextButtonPress = useCallback(() => {
@@ -78,12 +81,17 @@ const PluginUpload: React.FC<Props> = ({
           handlePluginPublish={onPublish}
           handlePrevButtonPress={handlePrevButtonPress}
           isLoading={isLoading}
+          isCorePlugin={isCorePlugin}
           pluginUploaded={pluginUploaded}
+          isVersionSelected={isVersionSelected}
         />
-        {currentTab === TabsType.Version && <VersionArea />}
+        {currentTab === TabsType.Version && (
+          <VersionArea setCorePlugin={setCorePlugin} setVersionSelected={setVersionSelected} />
+        )}
         {currentTab === TabsType.Package && (
           <PackageArea
             githubUrl={githubUrl}
+            isCorePlugin={isCorePlugin}
             onChangeGithubUrl={onParseFromUrl}
             onRemove={onRemove}
             onParsePlugin={onParseFromFile}

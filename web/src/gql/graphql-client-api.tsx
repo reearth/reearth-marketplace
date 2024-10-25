@@ -455,18 +455,20 @@ export type CreatePluginMutationVariables = Exact<{
   file?: InputMaybe<Scalars['Upload']>;
   repo?: InputMaybe<Scalars['String']>;
   publisher?: InputMaybe<Scalars['ID']>;
+  core?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
-export type CreatePluginMutation = { __typename?: 'Mutation', createPlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, name: string, description?: string | null, images: Array<string>, latestVersion?: { __typename?: 'Version', version: string } | null } } };
+export type CreatePluginMutation = { __typename?: 'Mutation', createPlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, name: string, description?: string | null, images: Array<string>, core: boolean, latestVersion?: { __typename?: 'Version', version: string } | null } } };
 
 export type ParsePluginMutationVariables = Exact<{
   file?: InputMaybe<Scalars['Upload']>;
   repo?: InputMaybe<Scalars['String']>;
+  core?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
-export type ParsePluginMutation = { __typename?: 'Mutation', parsePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, type: PluginType, name: string, author?: string | null, description?: string | null, icon?: string | null, repository?: string | null, readme: string, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null }, latestVersion?: { __typename?: 'Version', version: string } | null } } };
+export type ParsePluginMutation = { __typename?: 'Mutation', parsePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, type: PluginType, name: string, author?: string | null, description?: string | null, icon?: string | null, repository?: string | null, readme: string, core: boolean, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null }, latestVersion?: { __typename?: 'Version', version: string } | null } } };
 
 export type UpdatePluginVersionMutationVariables = Exact<{
   pluginId: Scalars['ID'];
@@ -790,8 +792,10 @@ export type UpdatePluginMutationHookResult = ReturnType<typeof useUpdatePluginMu
 export type UpdatePluginMutationResult = Apollo.MutationResult<UpdatePluginMutation>;
 export type UpdatePluginMutationOptions = Apollo.BaseMutationOptions<UpdatePluginMutation, UpdatePluginMutationVariables>;
 export const CreatePluginDocument = gql`
-    mutation CreatePlugin($file: Upload, $repo: String, $publisher: ID) {
-  createPlugin(input: {file: $file, repo: $repo, publisher: $publisher}) {
+    mutation CreatePlugin($file: Upload, $repo: String, $publisher: ID, $core: Boolean) {
+  createPlugin(
+    input: {file: $file, repo: $repo, publisher: $publisher, core: $core}
+  ) {
     plugin {
       id
       name
@@ -800,6 +804,7 @@ export const CreatePluginDocument = gql`
         version
       }
       images
+      core
     }
   }
 }
@@ -822,6 +827,7 @@ export type CreatePluginMutationFn = Apollo.MutationFunction<CreatePluginMutatio
  *      file: // value for 'file'
  *      repo: // value for 'repo'
  *      publisher: // value for 'publisher'
+ *      core: // value for 'core'
  *   },
  * });
  */
@@ -833,8 +839,8 @@ export type CreatePluginMutationHookResult = ReturnType<typeof useCreatePluginMu
 export type CreatePluginMutationResult = Apollo.MutationResult<CreatePluginMutation>;
 export type CreatePluginMutationOptions = Apollo.BaseMutationOptions<CreatePluginMutation, CreatePluginMutationVariables>;
 export const ParsePluginDocument = gql`
-    mutation ParsePlugin($file: Upload, $repo: String) {
-  parsePlugin(input: {file: $file, repo: $repo}) {
+    mutation ParsePlugin($file: Upload, $repo: String, $core: Boolean) {
+  parsePlugin(input: {file: $file, repo: $repo, core: $core}) {
     plugin {
       id
       type
@@ -852,6 +858,7 @@ export const ParsePluginDocument = gql`
       latestVersion {
         version
       }
+      core
     }
   }
 }
@@ -873,6 +880,7 @@ export type ParsePluginMutationFn = Apollo.MutationFunction<ParsePluginMutation,
  *   variables: {
  *      file: // value for 'file'
  *      repo: // value for 'repo'
+ *      core: // value for 'core'
  *   },
  * });
  */
