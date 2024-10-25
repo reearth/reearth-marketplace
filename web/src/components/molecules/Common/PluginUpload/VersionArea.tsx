@@ -6,7 +6,6 @@ import { styled } from "@marketplace/theme";
 
 type Props = {
   setCorePlugin: React.Dispatch<React.SetStateAction<boolean>>;
-  setVersionSelected: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const radioOptions = [
@@ -14,11 +13,10 @@ const radioOptions = [
   { label: "Visualizer", value: "visualizer" },
 ];
 
-const VersionArea = ({ setCorePlugin, setVersionSelected }: Props) => {
+const VersionArea = ({ setCorePlugin }: Props) => {
   const t = useT();
 
   const onChange = (e: RadioChangeEvent) => {
-    setVersionSelected(true);
     setCorePlugin(e.target.value === "visualizer");
   };
   return (

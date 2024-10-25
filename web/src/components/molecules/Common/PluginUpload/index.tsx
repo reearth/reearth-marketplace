@@ -43,7 +43,6 @@ const PluginUpload: React.FC<Props> = ({
 }) => {
   const [currentTab, updateTab] = useState<TabsType>(TabsType.Version);
   const [isCorePlugin, setCorePlugin] = useState<boolean>(false);
-  const [isVersionSelected, setVersionSelected] = useState<boolean>(false);
 
   const t = useT();
 
@@ -83,11 +82,8 @@ const PluginUpload: React.FC<Props> = ({
           isLoading={isLoading}
           isCorePlugin={isCorePlugin}
           pluginUploaded={pluginUploaded}
-          isVersionSelected={isVersionSelected}
         />
-        {currentTab === TabsType.Version && (
-          <VersionArea setCorePlugin={setCorePlugin} setVersionSelected={setVersionSelected} />
-        )}
+        {currentTab === TabsType.Version && <VersionArea setCorePlugin={setCorePlugin} />}
         {currentTab === TabsType.Package && (
           <PackageArea
             githubUrl={githubUrl}

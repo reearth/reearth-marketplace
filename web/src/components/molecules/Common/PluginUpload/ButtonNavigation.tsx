@@ -13,7 +13,6 @@ type Props = {
   isCorePlugin: boolean;
   isLoading: boolean;
   pluginUploaded: boolean;
-  isVersionSelected: boolean;
 };
 
 const ButtonNavigation: React.FC<Props> = ({
@@ -25,7 +24,6 @@ const ButtonNavigation: React.FC<Props> = ({
   isLoading,
   isCorePlugin,
   pluginUploaded,
-  isVersionSelected,
 }) => {
   const t = useT();
 
@@ -45,10 +43,7 @@ const ButtonNavigation: React.FC<Props> = ({
       <div>
         {currentTab !== TabsType.Settings ? (
           <Button
-            disabled={
-              (currentTab === TabsType.Package && !pluginUploaded) ||
-              (currentTab === TabsType.Version && !isVersionSelected)
-            }
+            disabled={currentTab === TabsType.Package && !pluginUploaded}
             icon={<Icon icon="arrowRight" />}
             iconPosition="end"
             type="primary"
