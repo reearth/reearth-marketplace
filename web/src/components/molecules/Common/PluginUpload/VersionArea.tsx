@@ -33,7 +33,7 @@ const VersionArea = ({ setCorePlugin, setVersionSelected }: Props) => {
             onChange={onChange}
             block
             options={radioOptions}
-            defaultValue="Classic"
+            defaultValue="classic"
             optionType="button"
           />
         </RadioWrapper>

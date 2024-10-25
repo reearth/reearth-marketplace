@@ -28,9 +28,10 @@ const Top: React.FC<Props> = ({ accessToken, onPluginSelect, version }) => {
     },
   );
 
-  const filteredPlugins = plugins
-    ? plugins.filter(plugin => plugin.core === (currentVersion === "visualizer")) // NOTE: 'core' is a boolean value
-    : [];
+  const filteredPlugins =
+    plugins?.filter(
+      plugin => plugin && (currentVersion === "visualizer" ? plugin.core : !plugin.core),
+    ) ?? [];
 
   const handleSearch = useCallback(
     (text: string) => {
