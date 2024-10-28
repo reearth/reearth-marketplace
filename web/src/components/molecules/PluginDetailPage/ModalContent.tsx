@@ -59,7 +59,7 @@ const ModalContent: React.FC<Props> = ({
     onCancel();
   }, [onCancel]);
 
-  const getProjectsByPluginCore = ({
+  const getProjectsByPluginCoreProp = ({
     selectedWorkspaceId,
     workspaces,
     plugin,
@@ -123,7 +123,7 @@ const ModalContent: React.FC<Props> = ({
       {workspaces?.length ? (
         workspaceId && (
           <List
-            dataSource={getProjectsByPluginCore({
+            dataSource={getProjectsByPluginCoreProp({
               workspaces,
               selectedWorkspaceId: workspaceId,
               plugin,
