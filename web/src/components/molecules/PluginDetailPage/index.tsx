@@ -67,12 +67,6 @@ const PluginDetailPage: React.FC<Props> = ({
       label: t("README"),
       children: <Markdown>{readme}</Markdown>,
     },
-    // TODO: after developing function for posting changelogs
-    // {
-    //   key: "2",
-    //   label: t("Change log"),
-    //   children: "Change log",
-    // },
   ];
 
   const config = getConfig();
