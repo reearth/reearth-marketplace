@@ -25,6 +25,7 @@ export const PLUGIN = gql`
         latestVersion {
           version
         }
+        core
       }
     }
   }

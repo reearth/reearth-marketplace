@@ -16,26 +16,12 @@ import Tabs, { TabsProps } from "@marketplace/components/atoms/Tabs";
 import { getConfig } from "@marketplace/config";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
+import { Plugin } from "@marketplace/types";
 
 export type { Workspace, Project } from "./ModalContent";
 
 export type Props = {
-  plugin?: {
-    id: string;
-    name: string;
-    cover: string;
-    publisher: string;
-    like: number;
-    images: string[];
-    description: string;
-    readme: string;
-    liked: boolean;
-    version: string | undefined;
-    downloads: number;
-    hasUpdate: boolean;
-    updatedAt: Date;
-    installed: boolean | undefined;
-  };
+  plugin?: Plugin;
   isLoggedIn: boolean;
   handleClickLike: (isLiked: boolean) => void;
   onExtPluginInstall?: (pluginId: string) => void;

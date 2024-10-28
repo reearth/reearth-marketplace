@@ -15,7 +15,8 @@ export type Config = {
   authDomain?: string;
   authAudience?: string;
   reearthApi?: string;
-  reearthWeb?: string;
+  reearthClassicWeb?: string;
+  reearthVisualizerWeb?: string;
   reportUrl?: string;
 };
 
@@ -25,7 +26,8 @@ export const defaultConfig: Config = {
   authDomain: import.meta.env.REEARTH_MARKETPLACE_AUTH_DOMAIN,
   authClientId: import.meta.env.REEARTH_MARKETPLACE_AUTH_CLIENT_ID,
   reearthApi: import.meta.env.REEARTH_MARKETPLACE_REEARTH_API,
-  reearthWeb: import.meta.env.REEARTH_MARKETPLACE_REEARTH_WEB,
+  reearthClassicWeb: import.meta.env.REEARTH_MARKETPLACE_REEARTH_CLASSIC_WEB,
+  reearthVisualizerWeb: import.meta.env.REEARTH_MARKETPLACE_REEARTH_VISUALIZER_WEB,
   reportUrl: import.meta.env.REEARTH_MARKETPLACE_REPORT_URL,
 };
 
