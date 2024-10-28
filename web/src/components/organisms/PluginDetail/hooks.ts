@@ -123,7 +123,7 @@ export default (pluginId: string, installedPlugins?: Plugin[]) => {
 
       return `${
         isCorePlugin ? visualizerBasePath : classicBasePath
-      }/settings/project/${projectId}/plugins?pluginId=${pluginId}`;
+      }/settings/projects/${projectId}/plugins?pluginId=${pluginId}`;
     },
     [config, pluginId],
   );
