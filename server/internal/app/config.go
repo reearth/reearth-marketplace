@@ -13,17 +13,17 @@ import (
 const configPrefix = "REEARTH_MARKETPLACE"
 
 type Config struct {
-	Port     string `default:"8080" envconfig:"PORT"`
-	DB       string `default:"mongodb://localhost"`
-	Auth     AuthConfig
-	Auth_M2M AuthM2MConfig
-	GCS      GCSConfig
-	GraphQL  GraphQLConfig
-	Origins  []string
-	Debug    bool
+	Port     string        `default:"8080" envconfig:"PORT"`
+	DB       string        `default:"mongodb://localhost" pp:"-"`
+	Auth     AuthConfig    `pp:",omitempty"`
+	Auth_M2M AuthM2MConfig `pp:",omitempty"`
+	GCS      GCSConfig     `pp:",omitempty"`
+	GraphQL  GraphQLConfig `pp:",omitempty"`
+	Origins  []string      `pp:",omitempty"`
+	Debug    bool          `pp:",omitempty"`
 }
 
-func (c Config) AuthProviders() (p []appx.JWTProvider) {
+func (c *Config) AuthProviders() (p []appx.JWTProvider) {
 	if c.Auth.ISS != nil {
 		if iss := c.Auth.ISS.String(); iss != "" {
 			p = append(p, appx.JWTProvider{
@@ -48,25 +48,25 @@ func (c Config) AuthProviders() (p []appx.JWTProvider) {
 }
 
 type AuthConfig struct {
-	ISS *url.URL
-	AUD []string
-	ALG string `default:"RS256"`
-	TTL *int
+	ISS *url.URL `pp:",omitempty"`
+	AUD []string `pp:",omitempty"`
+	ALG string   `default:"RS256"`
+	TTL *int     `pp:",omitempty"`
 }
 
 type AuthM2MConfig struct {
-	ISS    *url.URL
-	AUD    []string
-	ALG    string `default:"RS256"`
-	TTL    *int
-	Sub    string
-	Secret string
+	ISS    *url.URL `pp:",omitempty"`
+	AUD    []string `pp:",omitempty"`
+	ALG    string   `default:"RS256" pp:",omitempty"`
+	TTL    *int     `pp:",omitempty"`
+	Sub    string   `pp:",omitempty"`
+	Secret string   `pp:",omitempty"`
 }
 
 type GCSConfig struct {
-	Bucket        string
-	AssetsBucket  string
-	AssetsBaseURL string
+	Bucket        string `pp:",omitempty"`
+	AssetsBucket  string `pp:",omitempty"`
+	AssetsBaseURL string `pp:",omitempty"`
 }
 
 type GraphQLConfig struct {
@@ -83,8 +83,10 @@ func LoadConfig() (*Config, error) {
 	if err := envconfig.Process(configPrefix, &c); err != nil {
 		return nil, fmt.Errorf("load a config from env: %w", err)
 	}
-	if c.Debug {
-		fmt.Printf("Config: %s \n", pp.Sprint(c))
-	}
+
 	return &c, nil
+}
+
+func (c *Config) Print() string {
+	return pp.Sprint(c)
 }

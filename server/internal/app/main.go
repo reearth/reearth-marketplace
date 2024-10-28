@@ -21,6 +21,7 @@ func Start(debug bool, version string) error {
 		return err
 	}
 
+	log.Infof("config: %s", c.Print())
 	repos, gateways := initReposAndGateways(ctx, c, debug)
 
 	NewServer(ctx, &ServerConfig{
