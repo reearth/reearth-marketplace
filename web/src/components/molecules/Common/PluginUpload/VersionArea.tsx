@@ -1,16 +1,24 @@
-import Radio from "@marketplace/components/atoms/Radio";
+import Radio, { RadioChangeEvent } from "@marketplace/components/atoms/Radio";
 import Space from "@marketplace/components/atoms/Space";
 import ShadowCard from "@marketplace/components/molecules/Common/ShadowCard";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
 
+type Props = {
+  setCorePlugin: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
 const radioOptions = [
-  { label: "Classic", value: "Classic" },
-  { label: "Visualizer", value: "Visualizer" },
+  { label: "Classic", value: "classic" },
+  { label: "Visualizer", value: "visualizer" },
 ];
 
-const VersionArea: React.FC = () => {
+const VersionArea = ({ setCorePlugin }: Props) => {
   const t = useT();
+
+  const onChange = (e: RadioChangeEvent) => {
+    setCorePlugin(e.target.value === "visualizer");
+  };
   return (
     <ShadowCard>
       <div>
@@ -19,7 +27,13 @@ const VersionArea: React.FC = () => {
           <ContentText>{t("Which environment is your plugin developed for ?")}</ContentText>
         </Space>
         <RadioWrapper>
-          <Radio.Group block options={radioOptions} defaultValue="Classic" optionType="button" />
+          <Radio.Group
+            onChange={onChange}
+            block
+            options={radioOptions}
+            defaultValue="classic"
+            optionType="button"
+          />
         </RadioWrapper>
       </div>
     </ShadowCard>

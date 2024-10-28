@@ -14,18 +14,24 @@ export type Props = {
 const Top: React.FC<Props> = ({ accessToken, onPluginSelect, version }) => {
   const [searchText, updateSearchText] = useState<string>("");
   const [isFavSelected, toggleLiked] = useState<boolean>(false);
-  const [_currentVersion, setCurrentVersion] = useState<Version>(version ?? "classic");
+  const [currentVersion, setCurrentVersion] = useState<Version>(version ?? "classic");
 
-  // TODO: pass `currentVersion` which might be visualizer or classic to hook to filter by version
   const pageSize = 40;
 
   const { plugins, isAuthenticated, totalCount, page, handlePageChange, loadingPlugins } = useHooks(
-    pageSize,
-    searchText,
-    undefined,
-    isFavSelected,
-    accessToken,
+    {
+      pageSize,
+      searchText,
+      sort: undefined,
+      liked: isFavSelected,
+      accessToken,
+    },
   );
+
+  const filteredPlugins =
+    plugins?.filter(
+      plugin => plugin && (currentVersion === "visualizer" ? plugin.core : !plugin.core),
+    ) ?? [];
 
   const handleSearch = useCallback(
     (text: string) => {
@@ -46,7 +52,7 @@ const Top: React.FC<Props> = ({ accessToken, onPluginSelect, version }) => {
   return (
     <TopPage
       version={version}
-      plugins={plugins}
+      plugins={filteredPlugins}
       onSearch={handleSearch}
       isLoggedIn={isAuthenticated}
       handleFavButtonClick={handleFavButtonClick}

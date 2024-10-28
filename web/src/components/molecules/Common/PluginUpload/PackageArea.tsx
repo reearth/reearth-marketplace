@@ -16,13 +16,15 @@ export type FileUploadType = string | RcFile | Blob;
 
 export type Props = {
   githubUrl?: string;
+  isCorePlugin: boolean;
   onRemove?: () => void;
-  onParsePlugin: (file?: File) => Promise<void>;
-  onChangeGithubUrl: (url: string) => void;
+  onParsePlugin: ({ core, file }: { core: boolean; file?: File }) => Promise<void>;
+  onChangeGithubUrl: ({ core, url }: { core: boolean; url: string }) => void;
 };
 
 const PackageArea: React.FC<Props> = ({
   githubUrl,
+  isCorePlugin,
   onRemove,
   onParsePlugin,
   onChangeGithubUrl,
@@ -49,7 +51,7 @@ const PackageArea: React.FC<Props> = ({
       if (typeof file === "string" || !("uid" in file)) return;
       try {
         uploadFile([file]);
-        await onParsePlugin(file);
+        await onParsePlugin({ core: isCorePlugin, file });
         onSuccess?.("Ok");
       } catch (err: any) {
         onError?.(new Error(err));
@@ -101,7 +103,7 @@ const PackageArea: React.FC<Props> = ({
               <Input
                 placeholder="github.com/xxx/xxx"
                 value={githubUrl}
-                onChange={e => onChangeGithubUrl(e.target.value)}
+                onChange={e => onChangeGithubUrl({ core: isCorePlugin, url: e.target.value })}
               />
               <InputFooter>{t("Please set your repository as public.")}</InputFooter>
             </>
