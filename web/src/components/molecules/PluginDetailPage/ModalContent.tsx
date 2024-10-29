@@ -116,7 +116,7 @@ const ModalContent: React.FC<Props> = ({
       okText={t("Choose")}
       cancelText={t("Cancel")}
       okButtonProps={{ disabled: !workspaceId || !projectId || !plugin }}
-      style={{ padding: "20px 32px", maxHeight: "582px", overflow: "scroll" }}
+      styles={{ body: { padding: "20px 32px", maxHeight: "582px", overflow: "auto" } }}
       onOk={() =>
         plugin && onOpenPluginInReearth?.({ projectId, isCorePlugin: plugin.isCorePlugin })
       }>

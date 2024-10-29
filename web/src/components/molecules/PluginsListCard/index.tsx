@@ -43,7 +43,7 @@ const PluginsListCard: React.FC<Props> = ({
       size="small"
       bordered={false}
       onClick={onClick}
-      style={{ padding: "0" }}>
+      styles={{ body: { padding: "0" } }}>
       <Row justify="space-between" align="top">
         <AuthorName>{publisher}</AuthorName>
         <Space size="small">

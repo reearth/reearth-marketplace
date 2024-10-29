@@ -116,21 +116,36 @@ export default (pluginId: string, installedPlugins?: Plugin[]) => {
 
   const getPluginLocationPath = useCallback(
     ({ isCorePlugin, projectId }: { isCorePlugin: boolean; projectId: string }): string => {
+      if (!projectId?.trim()) {
+        console.error("Invalid project ID provided");
+        return "";
+      }
+
       const visualizerBasePath = config?.reearthVisualizerWeb ?? "";
       const classicBasePath = config?.reearthClassicWeb ?? "";
 
-      if (!visualizerBasePath && !classicBasePath) return "";
+      const basePath = isCorePlugin ? visualizerBasePath : classicBasePath;
+      if (!basePath) {
+        console.error(`Missing configuration for ${isCorePlugin ? "visualizer" : "classic"} web`);
+        return "";
+      }
 
-      return `${
-        isCorePlugin ? visualizerBasePath : classicBasePath
-      }/settings/projects/${projectId}/plugins?pluginId=${pluginId}`;
+      return `${basePath}/settings/projects/${encodeURIComponent(
+        projectId,
+      )}/plugins?pluginId=${encodeURIComponent(pluginId)}`;
     },
     [config, pluginId],
   );
 
   const handleOpenPluginInReearth = useCallback(
     ({ isCorePlugin, projectId }: { isCorePlugin: boolean; projectId: string }) => {
-      location.href = getPluginLocationPath({ isCorePlugin, projectId });
+      const url = getPluginLocationPath({ isCorePlugin, projectId });
+      if (!url) {
+        console.error("Failed to get plugin location path");
+        return;
+      }
+
+      location.href = url;
     },
     [getPluginLocationPath],
   );
