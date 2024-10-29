@@ -69,7 +69,7 @@ const ModalContent: React.FC<Props> = ({
     plugin?: Plugin;
   }): { id: string; name: string }[] | [] => {
     if (selectedWorkspaceId && workspaces.length) {
-      const selectedWorkspace = workspaces.find(ws => ws.id === workspaceId);
+      const selectedWorkspace = workspaces.find(ws => ws.id === selectedWorkspaceId);
       if (!selectedWorkspace) return [];
 
       if (plugin) {
