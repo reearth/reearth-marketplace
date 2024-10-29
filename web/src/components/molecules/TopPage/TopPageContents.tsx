@@ -63,7 +63,7 @@ const TopPageContents: React.FC<Props> = ({
   return (
     <div>
       {!version && (
-        <TabsWrapper>
+        <TabsWrapper className="homepage-tabs">
           <Tabs
             defaultActiveKey="0"
             items={tabs}
