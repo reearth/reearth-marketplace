@@ -25,6 +25,9 @@ p {
 
 .ant-tabs .ant-tabs-tab {
   color: rgba(255, 255, 255, 0.8);
+  font-size: 16px !important;
+  line-height: 22px;
+  font-weight: 500;
 }
 
 .ant-tabs .ant-tabs-ink-bar {
@@ -41,4 +44,8 @@ p {
 
 .ant-tabs-nav::before {
   border-bottom: none !important;
+}
+
+.ant-tabs-nav {
+  margin-bottom: 2px !important;
 }
