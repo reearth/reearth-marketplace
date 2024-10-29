@@ -403,7 +403,7 @@ export type PluginQueryVariables = Exact<{
 }>;
 
 
-export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization', id: string } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, active: boolean, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null }, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User', id: string } | null };
+export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization', id: string } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, active: boolean, core: boolean, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null }, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User', id: string } | null };
 
 export type PluginsQueryVariables = Exact<{
   ids: Array<Scalars['ID']> | Scalars['ID'];
@@ -525,6 +525,7 @@ export const PluginDocument = gql`
       latestVersion {
         version
       }
+      core
     }
   }
 }
