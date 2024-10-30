@@ -97,7 +97,7 @@ export default (pluginId: string, installedPlugins?: Plugin[]) => {
       const data = await fetch(base + "/graphql", {
         method: "POST",
         body: JSON.stringify({
-          query: `query { me { teams { id, name, projects(first:100) { nodes { id, name, coreSupport } } } } }`, // TODO: this query seems to pull all the projects for all the teams, which could be a lot of data returned. Would need to refactor it to pull only those projects that are for the logged in user.
+          query: `query { me { teams { id, name, projects(last:10000) { nodes { id, name, coreSupport } } } } }`, // TODO: This is only workaround, We need to either implement load by page OR load by current selected workspace
         }),
         headers: {
           Authorization: `Bearer ${token}`,
