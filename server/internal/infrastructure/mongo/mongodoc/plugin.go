@@ -14,6 +14,7 @@ type PluginDocument struct {
 	CreatedAt   time.Time `bson:"createdAt"`
 	UpdatedAt   time.Time `bson:"updatedAt"`
 	Active      bool      `bson:"active"`
+	Core        bool      `bson:"core"`
 	Tags        []string  `bson:"tags"`
 	Images      []string  `bson:"images"`
 	PublisherID string    `bson:"publisherId"`
@@ -72,6 +73,7 @@ func NewPlugin(p *plugin.Plugin) *PluginDocument {
 		CreatedAt:   p.CreatedAt(),
 		UpdatedAt:   p.UpdatedAt(),
 		Active:      p.Active(),
+		Core:        p.Core(),
 		Tags:        p.Tags(),
 		Images:      p.Images(),
 		PublisherID: p.PublisherID().String(),
@@ -96,6 +98,7 @@ func NewVersionedPlugin(p *plugin.VersionedPlugin) (*PluginDocument, *PluginVers
 		CreatedAt:   p.Plugin().CreatedAt(),
 		UpdatedAt:   p.Plugin().UpdatedAt(),
 		Active:      p.Plugin().Active(),
+		Core:        p.Plugin().Core(),
 		Tags:        p.Plugin().Tags(),
 		Images:      p.Plugin().Images(),
 		PublisherID: p.Plugin().PublisherID().String(),
@@ -184,6 +187,7 @@ func (d *PluginDocument) Model() (*plugin.Plugin, error) {
 		Tags(d.Tags).
 		Images(d.Images).
 		Active(d.Active).
+		Core(d.Core).
 		Downloads(d.Downloads).
 		Like(d.Like).
 		LatestVersion(latestVersion).

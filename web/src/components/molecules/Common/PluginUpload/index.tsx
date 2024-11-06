@@ -1,15 +1,14 @@
 import { useCallback, useState } from "react";
 
-import Button from "@marketplace/components/atoms/Button";
-import Col from "@marketplace/components/atoms/Col";
-import Row from "@marketplace/components/atoms/Row";
-import Space from "@marketplace/components/atoms/Space";
 import Breadcrumb from "@marketplace/components/molecules/Common/Breadcrumb";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
+import { TabsType } from "@marketplace/types";
 
+import ButtonNavigation from "./ButtonNavigation";
 import PackageArea from "./PackageArea";
 import SettingArea from "./SettingArea";
+import VersionArea from "./VersionArea";
 
 export type Props = {
   currentPluginId?: string;
@@ -18,11 +17,12 @@ export type Props = {
   version: string;
   githubUrl?: string;
   isLoading: boolean;
-  onParseFromUrl: (url: string) => void;
-  onParseFromFile: (file?: File) => Promise<void>;
-  onPluginSave: () => void;
+  pluginUploaded: boolean;
+  onParseFromUrl: ({ core, url }: { core: boolean; url: string }) => void;
+  onParseFromFile: ({ core, file }: { core: boolean; file?: File }) => Promise<void>;
+  onPluginSave: ({ publish, core }: { publish?: boolean; core: boolean }) => void;
   onRemove?: () => void;
-  onPublish: () => void;
+  onPublish: (core: boolean) => void;
   onImagesUpload: (images: File[]) => void;
 };
 
@@ -33,6 +33,7 @@ const PluginUpload: React.FC<Props> = ({
   description,
   githubUrl,
   isLoading,
+  pluginUploaded,
   onParseFromUrl,
   onParseFromFile,
   onPluginSave,
@@ -40,63 +41,63 @@ const PluginUpload: React.FC<Props> = ({
   onPublish,
   onImagesUpload,
 }) => {
-  const t = useT();
-  const [currentTab, updateTab] = useState<1 | 2>(1);
+  const [currentTab, updateTab] = useState<TabsType>(TabsType.Version);
+  const [isCorePlugin, setCorePlugin] = useState<boolean>(false);
 
-  const handlePageChange = useCallback(() => {
-    updateTab(currentTab === 1 ? 2 : 1);
+  const t = useT();
+
+  const handleNextButtonPress = useCallback(() => {
+    const tabs = [TabsType.Version, TabsType.Package, TabsType.Settings];
+    const currentIndex = tabs.indexOf(currentTab);
+    if (currentIndex < tabs.length - 1) {
+      updateTab(tabs[currentIndex + 1]);
+    }
+  }, [currentTab]);
+
+  const handlePrevButtonPress = useCallback(() => {
+    const tabs = [TabsType.Version, TabsType.Package, TabsType.Settings];
+    const currentIndex = tabs.indexOf(currentTab);
+    if (currentIndex > 0) {
+      updateTab(tabs[currentIndex - 1]);
+    }
   }, [currentTab]);
 
   return (
     <Wrapper>
       <ContentWrapper>
-        <TopRow align="middle" justify="space-between">
-          <Col>
-            <Breadcrumb
-              rootLink="/myplugins"
-              rootName={t("Plugins List")}
-              currentName={currentPluginId ? currentPluginId : t("New Plugin")}
-            />
-          </Col>
-          <Col>
-            <Space size="middle">
-              <Button
-                type="default"
-                size="large"
-                onClick={() => onPluginSave?.()}
-                loading={isLoading}
-                disabled={currentTab !== 2}>
-                {t("Save")}
-              </Button>
-              {!currentPluginId && (
-                <Button
-                  type="primary"
-                  size="large"
-                  onClick={() => onPublish?.()}
-                  loading={isLoading}
-                  disabled={currentTab !== 2}>
-                  {t("Save & Publish")}
-                </Button>
-              )}
-            </Space>
-          </Col>
-        </TopRow>
-        {currentTab === 1 && (
+        <Breadcrumb
+          rootLink="/myplugins"
+          rootName={t("Plugins List")}
+          currentName={currentPluginId ? currentPluginId : t("New Plugin")}
+        />
+        <TitleWrapper>
+          <Title>{t("New Plugin")}</Title>
+        </TitleWrapper>
+        <ButtonNavigation
+          currentTab={currentTab}
+          handleNextButtonPress={handleNextButtonPress}
+          handlePluginSave={onPluginSave}
+          handlePluginPublish={onPublish}
+          handlePrevButtonPress={handlePrevButtonPress}
+          isLoading={isLoading}
+          isCorePlugin={isCorePlugin}
+          pluginUploaded={pluginUploaded}
+        />
+        {currentTab === TabsType.Version && <VersionArea setCorePlugin={setCorePlugin} />}
+        {currentTab === TabsType.Package && (
           <PackageArea
             githubUrl={githubUrl}
-            pageChangeButton={t("Details Setting")}
+            isCorePlugin={isCorePlugin}
             onChangeGithubUrl={onParseFromUrl}
-            onPageChange={pluginName !== "" ? handlePageChange : undefined}
             onRemove={onRemove}
             onParsePlugin={onParseFromFile}
           />
         )}
-        {currentTab === 2 && (
+        {currentTab === TabsType.Settings && (
           <SettingArea
             pluginName={pluginName}
             version={version}
             description={description}
-            onBack={handlePageChange}
             handleUploadImages={onImagesUpload}
           />
         )}
@@ -104,6 +105,21 @@ const PluginUpload: React.FC<Props> = ({
     </Wrapper>
   );
 };
+
+const ContentWrapper = styled.div`
+  width: 1200px;
+`;
+
+const Title = styled.p`
+  font-size: 28px;
+  line-height: 38.14px;
+  font-weight: 700;
+`;
+
+const TitleWrapper = styled.div`
+  margin-top: 24px;
+  margin-bottom: 24px;
+`;
 
 const Wrapper = styled.div`
   display: flex;
@@ -113,15 +129,6 @@ const Wrapper = styled.div`
   background: rgba(250, 250, 250, 1);
   padding-top: 48px;
   padding-bottom: 72px;
-`;
-
-const ContentWrapper = styled.div`
-  width: 1200px;
-`;
-
-const TopRow = styled(Row)`
-  padding: 0;
-  margin-bottom: 32px;
 `;
 
 export default PluginUpload;

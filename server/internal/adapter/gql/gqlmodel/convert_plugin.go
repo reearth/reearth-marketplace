@@ -31,6 +31,7 @@ func ToPlugin(ctx context.Context, p *plugin.VersionedPlugin) *Plugin {
 		PublishedAt: p.Version().PublishedAt(),
 		Downloads:   int(p.Plugin().Downloads()),
 		Active:      p.Plugin().Active(),
+		Core:        p.Plugin().Core(),
 		Readme:      p.Version().Readme(),
 		Tags:        p.Plugin().Tags(),
 		LatestVersion: &Version{

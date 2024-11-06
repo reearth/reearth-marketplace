@@ -64,6 +64,11 @@ func (b *Builder) Like(like int64) *Builder {
 	b.p.like = like
 	return b
 }
+func (b *Builder) Core(core bool) *Builder {
+	b.p.core = core
+	return b
+}
+
 func (b *Builder) LatestVersion(latestVersion *PartialVersion) *Builder {
 	b.p.latestVersion = latestVersion
 	return b

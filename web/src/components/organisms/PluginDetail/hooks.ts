@@ -78,6 +78,7 @@ export default (pluginId: string, installedPlugins?: Plugin[]) => {
             installedPlugins.findIndex(
               p => p.id === currentPlugin.id && p.version === currentPlugin.latestVersion?.version,
             ) >= 0,
+          isCorePlugin: currentPlugin.core,
         }
       : undefined;
   }, [currentPlugin, installedPlugins]);
@@ -96,7 +97,7 @@ export default (pluginId: string, installedPlugins?: Plugin[]) => {
       const data = await fetch(base + "/graphql", {
         method: "POST",
         body: JSON.stringify({
-          query: `query { me { teams { id, name, projects(first:100) { nodes { id, name } } } } }`,
+          query: `query { me { teams { id, name, projects(last:10000) { nodes { id, name, coreSupport } } } } }`, // TODO: This is only workaround, We need to either implement load by page OR load by current selected workspace
         }),
         headers: {
           Authorization: `Bearer ${token}`,
@@ -113,12 +114,40 @@ export default (pluginId: string, installedPlugins?: Plugin[]) => {
     })();
   }, [auth, modalVisible]);
 
-  const handleOpenPluginInReearth = useCallback(
-    (_workspaceId: string, projectId: string) => {
-      location.href =
-        (config?.reearthWeb ?? "") + `/settings/projects/${projectId}/plugins?pluginId=${pluginId}`;
+  const getPluginLocationPath = useCallback(
+    ({ isCorePlugin, projectId }: { isCorePlugin: boolean; projectId: string }): string => {
+      if (!projectId?.trim()) {
+        console.error("Invalid project ID provided");
+        return "";
+      }
+
+      const visualizerBasePath = config?.reearthVisualizerWeb ?? "";
+      const classicBasePath = config?.reearthClassicWeb ?? "";
+
+      const basePath = isCorePlugin ? visualizerBasePath : classicBasePath;
+      if (!basePath) {
+        console.error(`Missing configuration for ${isCorePlugin ? "visualizer" : "classic"} web`);
+        return "";
+      }
+
+      return `${basePath}/settings/projects/${encodeURIComponent(
+        projectId,
+      )}/plugins?pluginId=${encodeURIComponent(pluginId)}`;
     },
-    [config?.reearthWeb, pluginId],
+    [config, pluginId],
+  );
+
+  const handleOpenPluginInReearth = useCallback(
+    ({ isCorePlugin, projectId }: { isCorePlugin: boolean; projectId: string }) => {
+      const url = getPluginLocationPath({ isCorePlugin, projectId });
+      if (!url) {
+        console.error("Failed to get plugin location path");
+        return;
+      }
+
+      location.href = url;
+    },
+    [getPluginLocationPath],
   );
 
   return {

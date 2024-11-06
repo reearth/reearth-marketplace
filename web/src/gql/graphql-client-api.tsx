@@ -27,6 +27,7 @@ export type CreateOrganizationInput = {
 };
 
 export type CreatePluginInput = {
+  core?: InputMaybe<Scalars['Boolean']>;
   file?: InputMaybe<Scalars['Upload']>;
   publisher?: InputMaybe<Scalars['ID']>;
   repo?: InputMaybe<Scalars['String']>;
@@ -211,6 +212,7 @@ export type Plugin = Node & {
   __typename?: 'Plugin';
   active: Scalars['Boolean'];
   author?: Maybe<Scalars['String']>;
+  core: Scalars['Boolean'];
   createdAt: Scalars['Time'];
   description?: Maybe<Scalars['String']>;
   downloads: Scalars['Int'];
@@ -401,14 +403,14 @@ export type PluginQueryVariables = Exact<{
 }>;
 
 
-export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization', id: string } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, active: boolean, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null }, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User', id: string } | null };
+export type PluginQuery = { __typename?: 'Query', node?: { __typename?: 'Organization', id: string } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, active: boolean, core: boolean, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null }, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User', id: string } | null };
 
 export type PluginsQueryVariables = Exact<{
   ids: Array<Scalars['ID']> | Scalars['ID'];
 }>;
 
 
-export type PluginsQuery = { __typename?: 'Query', nodes: Array<{ __typename?: 'Organization', id: string } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null }, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User', id: string }> };
+export type PluginsQuery = { __typename?: 'Query', nodes: Array<{ __typename?: 'Organization', id: string } | { __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, downloads: number, name: string, icon?: string | null, readme: string, description?: string | null, liked: boolean, updatedAt: Date, core: boolean, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null }, latestVersion?: { __typename?: 'Version', version: string } | null } | { __typename?: 'User', id: string }> };
 
 export type SearchPluginQueryVariables = Exact<{
   first: Scalars['Int'];
@@ -422,7 +424,7 @@ export type SearchPluginQueryVariables = Exact<{
 }>;
 
 
-export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, liked: boolean, downloads: number, name: string, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null } } | null> } };
+export type SearchPluginQuery = { __typename?: 'Query', plugins: { __typename?: 'PluginConnection', totalCount: number, nodes: Array<{ __typename?: 'Plugin', id: string, images: Array<string>, author?: string | null, like: number, liked: boolean, downloads: number, name: string, core: boolean, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null } } | null> } };
 
 export type LikePluginMutationVariables = Exact<{
   id: Scalars['ID'];
@@ -453,18 +455,20 @@ export type CreatePluginMutationVariables = Exact<{
   file?: InputMaybe<Scalars['Upload']>;
   repo?: InputMaybe<Scalars['String']>;
   publisher?: InputMaybe<Scalars['ID']>;
+  core?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
-export type CreatePluginMutation = { __typename?: 'Mutation', createPlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, name: string, description?: string | null, images: Array<string>, latestVersion?: { __typename?: 'Version', version: string } | null } } };
+export type CreatePluginMutation = { __typename?: 'Mutation', createPlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, name: string, description?: string | null, images: Array<string>, core: boolean, latestVersion?: { __typename?: 'Version', version: string } | null } } };
 
 export type ParsePluginMutationVariables = Exact<{
   file?: InputMaybe<Scalars['Upload']>;
   repo?: InputMaybe<Scalars['String']>;
+  core?: InputMaybe<Scalars['Boolean']>;
 }>;
 
 
-export type ParsePluginMutation = { __typename?: 'Mutation', parsePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, type: PluginType, name: string, author?: string | null, description?: string | null, icon?: string | null, repository?: string | null, readme: string, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null }, latestVersion?: { __typename?: 'Version', version: string } | null } } };
+export type ParsePluginMutation = { __typename?: 'Mutation', parsePlugin: { __typename?: 'PluginPayload', plugin: { __typename?: 'Plugin', id: string, type: PluginType, name: string, author?: string | null, description?: string | null, icon?: string | null, repository?: string | null, readme: string, core: boolean, publisher: { __typename?: 'Me', id: string, name: string, displayName?: string | null } | { __typename?: 'Organization', id: string, name: string, displayName?: string | null } | { __typename?: 'User', id: string, name: string, displayName?: string | null }, latestVersion?: { __typename?: 'Version', version: string } | null } } };
 
 export type UpdatePluginVersionMutationVariables = Exact<{
   pluginId: Scalars['ID'];
@@ -521,6 +525,7 @@ export const PluginDocument = gql`
       latestVersion {
         version
       }
+      core
     }
   }
 }
@@ -577,6 +582,7 @@ export const PluginsDocument = gql`
       latestVersion {
         version
       }
+      core
     }
   }
 }
@@ -627,6 +633,7 @@ export const SearchPluginDocument = gql`
       liked
       downloads
       name
+      core
     }
     totalCount
   }
@@ -786,8 +793,10 @@ export type UpdatePluginMutationHookResult = ReturnType<typeof useUpdatePluginMu
 export type UpdatePluginMutationResult = Apollo.MutationResult<UpdatePluginMutation>;
 export type UpdatePluginMutationOptions = Apollo.BaseMutationOptions<UpdatePluginMutation, UpdatePluginMutationVariables>;
 export const CreatePluginDocument = gql`
-    mutation CreatePlugin($file: Upload, $repo: String, $publisher: ID) {
-  createPlugin(input: {file: $file, repo: $repo, publisher: $publisher}) {
+    mutation CreatePlugin($file: Upload, $repo: String, $publisher: ID, $core: Boolean) {
+  createPlugin(
+    input: {file: $file, repo: $repo, publisher: $publisher, core: $core}
+  ) {
     plugin {
       id
       name
@@ -796,6 +805,7 @@ export const CreatePluginDocument = gql`
         version
       }
       images
+      core
     }
   }
 }
@@ -818,6 +828,7 @@ export type CreatePluginMutationFn = Apollo.MutationFunction<CreatePluginMutatio
  *      file: // value for 'file'
  *      repo: // value for 'repo'
  *      publisher: // value for 'publisher'
+ *      core: // value for 'core'
  *   },
  * });
  */
@@ -829,8 +840,8 @@ export type CreatePluginMutationHookResult = ReturnType<typeof useCreatePluginMu
 export type CreatePluginMutationResult = Apollo.MutationResult<CreatePluginMutation>;
 export type CreatePluginMutationOptions = Apollo.BaseMutationOptions<CreatePluginMutation, CreatePluginMutationVariables>;
 export const ParsePluginDocument = gql`
-    mutation ParsePlugin($file: Upload, $repo: String) {
-  parsePlugin(input: {file: $file, repo: $repo}) {
+    mutation ParsePlugin($file: Upload, $repo: String, $core: Boolean) {
+  parsePlugin(input: {file: $file, repo: $repo, core: $core}) {
     plugin {
       id
       type
@@ -848,6 +859,7 @@ export const ParsePluginDocument = gql`
       latestVersion {
         version
       }
+      core
     }
   }
 }
@@ -869,6 +881,7 @@ export type ParsePluginMutationFn = Apollo.MutationFunction<ParsePluginMutation,
  *   variables: {
  *      file: // value for 'file'
  *      repo: // value for 'repo'
+ *      core: // value for 'core'
  *   },
  * });
  */

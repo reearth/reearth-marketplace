@@ -4,19 +4,13 @@ import CoreWrapper from "@marketplace/components/molecules/Common/CoreWrapper";
 import PluginDetailOrg from "@marketplace/components/organisms/PluginDetail";
 import Top from "@marketplace/components/organisms/Top";
 import { useT } from "@marketplace/i18n";
+import { Version } from "@marketplace/types";
 
 import SharedProviders from "./sharedProviders";
 
 import "@marketplace/index.css";
 
-export default function LibraryExtension({
-  theme,
-  lang,
-  accessToken,
-  installedPlugins,
-  onInstall,
-  onNotificationChange,
-}: {
+type Props = {
   theme?: "dark" | "light";
   lang?: string;
   accessToken?: string;
@@ -30,7 +24,18 @@ export default function LibraryExtension({
     text: string,
     heading?: string,
   ) => void;
-}) {
+  version?: Version | undefined;
+};
+
+export default function LibraryExtension({
+  theme,
+  lang,
+  accessToken,
+  installedPlugins,
+  onInstall,
+  onNotificationChange,
+  version,
+}: Props) {
   const t = useT();
 
   const handleInstall = useCallback(
@@ -71,7 +76,9 @@ export default function LibraryExtension({
             onBack={handleBack}
           />
         )}
-        {!pluginId && <Top accessToken={accessToken} onPluginSelect={handlePluginSelect} />}
+        {!pluginId && (
+          <Top accessToken={accessToken} onPluginSelect={handlePluginSelect} version={version} />
+        )}
       </CoreWrapper>
     </SharedProviders>
   );

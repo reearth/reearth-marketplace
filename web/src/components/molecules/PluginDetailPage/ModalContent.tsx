@@ -8,12 +8,20 @@ import Row from "@marketplace/components/atoms/Row";
 import Select, { Option } from "@marketplace/components/atoms/Select";
 import { useT } from "@marketplace/i18n";
 import { styled } from "@marketplace/theme";
+import { Plugin } from "@marketplace/types";
 
 type Props = {
   visible: boolean;
   workspaces?: Workspace[];
-  onOpenPluginInReearth?: (workspaceId: string, projectId: string) => void;
+  onOpenPluginInReearth?: ({
+    projectId,
+    isCorePlugin,
+  }: {
+    projectId: string;
+    isCorePlugin: boolean;
+  }) => void;
   onCancel: () => void;
+  plugin?: Plugin;
 };
 
 export type Workspace = {
@@ -25,6 +33,7 @@ export type Workspace = {
 export type Project = {
   id: string;
   name: string;
+  coreSupport: boolean;
 };
 
 const ModalContent: React.FC<Props> = ({
@@ -32,6 +41,7 @@ const ModalContent: React.FC<Props> = ({
   workspaces,
   onCancel,
   onOpenPluginInReearth,
+  plugin,
 }) => {
   const t = useT();
   const [workspaceId, selectWorkspace] = useState<string>("");
@@ -48,6 +58,36 @@ const ModalContent: React.FC<Props> = ({
     selectProject("");
     onCancel();
   }, [onCancel]);
+
+  const getProjectsByPluginCoreProp = ({
+    selectedWorkspaceId,
+    workspaces,
+    plugin,
+  }: {
+    selectedWorkspaceId: string;
+    workspaces: Workspace[];
+    plugin?: Plugin;
+  }): { id: string; name: string }[] | [] => {
+    if (selectedWorkspaceId && workspaces.length) {
+      const selectedWorkspace = workspaces.find(ws => ws.id === selectedWorkspaceId);
+      if (!selectedWorkspace) return [];
+
+      if (plugin) {
+        return selectedWorkspace.projects
+          .filter(project => project.coreSupport === plugin.isCorePlugin)
+          .map(project => ({
+            id: project.id,
+            name: project.name,
+          }));
+      }
+
+      return selectedWorkspace.projects.map(project => ({
+        id: project.id,
+        name: project.name,
+      }));
+    }
+    return [];
+  };
 
   return (
     <Modal
@@ -75,24 +115,19 @@ const ModalContent: React.FC<Props> = ({
       onCancel={handleCancel}
       okText={t("Choose")}
       cancelText={t("Cancel")}
-      okButtonProps={{ disabled: !workspaceId || !projectId }}
-      bodyStyle={{ padding: "20px 32px", maxHeight: "582px", overflow: "scroll" }}
-      onOk={() => onOpenPluginInReearth?.(workspaceId, projectId)}>
+      okButtonProps={{ disabled: !workspaceId || !projectId || !plugin }}
+      styles={{ body: { padding: "20px 32px", maxHeight: "582px", overflow: "auto" } }}
+      onOk={() =>
+        plugin && onOpenPluginInReearth?.({ projectId, isCorePlugin: plugin.isCorePlugin })
+      }>
       {workspaces?.length ? (
         workspaceId && (
           <List
-            dataSource={
-              workspaceId
-                ? workspaces
-                    .find(ws => ws.id === workspaceId)
-                    ?.projects.map(prj => {
-                      return {
-                        id: prj.id,
-                        name: prj.name,
-                      };
-                    })
-                : []
-            }
+            dataSource={getProjectsByPluginCoreProp({
+              workspaces,
+              selectedWorkspaceId: workspaceId,
+              plugin,
+            })}
             renderItem={prj => (
               <ListItem selected={prj.id === projectId} onClick={() => selectProject?.(prj.id)}>
                 {prj.name}

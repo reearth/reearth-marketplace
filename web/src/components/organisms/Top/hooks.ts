@@ -6,14 +6,14 @@ import { type Plugin } from "@marketplace/components/molecules/TopPage";
 import { useSearchPluginQuery, PluginSort } from "@marketplace/gql";
 
 export { PluginSort };
-
-export default (
-  pageSize: number,
-  searchText?: string,
-  sort?: PluginSort,
-  liked?: boolean,
-  accessToken?: string,
-) => {
+export type HookProps = {
+  pageSize: number;
+  searchText?: string;
+  sort?: PluginSort;
+  liked?: boolean;
+  accessToken?: string;
+};
+export default ({ pageSize, searchText, sort, liked, accessToken }: HookProps) => {
   const [page, setPage] = useState<number>(1);
   const { isAuthenticated } = useAuth(accessToken);
   const gqlCache = useApolloClient().cache;
@@ -24,7 +24,7 @@ export default (
       offset: (page - 1) * pageSize,
       keyword: searchText,
       liked: liked || undefined,
-      sort: sort,
+      sort,
     },
   });
 
@@ -41,6 +41,7 @@ export default (
                 like: p.like,
                 liked: p.liked,
                 downloads: p.downloads,
+                core: p.core,
               }
             : undefined,
         )

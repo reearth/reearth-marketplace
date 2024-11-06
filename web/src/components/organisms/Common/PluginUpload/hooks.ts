@@ -29,12 +29,13 @@ export default ({ pluginId }: { pluginId?: string }) => {
   const isLoading = loading1 || loading2 || loading3;
 
   const parsePlugin = useCallback(
-    async ({ file, repo }: { file?: FileUploadType; repo?: string }) => {
+    async ({ file, repo, core }: { file?: FileUploadType; repo?: string; core: boolean }) => {
       if (!file && !repo) return;
       await parsePluginMutation({
         variables: {
           file,
           repo,
+          core,
         },
         onError: () => {
           Message.error(
@@ -68,7 +69,7 @@ export default ({ pluginId }: { pluginId?: string }) => {
   const [uploadedImages, uploadImages] = useState<File[]>([]);
 
   const savePlugin = useCallback(
-    async (publish?: boolean) => {
+    async ({ publish, core }: { publish?: boolean; core: boolean }) => {
       const pid = parsedPlugin?.id || pluginId;
       let error = false;
 
@@ -77,6 +78,7 @@ export default ({ pluginId }: { pluginId?: string }) => {
           variables: {
             file: uploadedFile,
             repo: githubUrl,
+            core,
           },
           refetchQueries: ["GetMe"],
           onError: () =>
@@ -126,16 +128,20 @@ export default ({ pluginId }: { pluginId?: string }) => {
     ],
   );
 
-  const handlePublish = useCallback(() => {
-    savePlugin(true);
-  }, [savePlugin]);
+  const handlePublish = useCallback(
+    (core: boolean) => {
+      savePlugin({ publish: true, core });
+    },
+    [savePlugin],
+  );
 
   // When Github URL is inputed
   const handleParseFromUrl = useCallback(
-    async (url: string) => {
+    async ({ url, core }: { url: string; core: boolean }) => {
       uploadZip(undefined);
       changeGithubUrl(url);
       await parsePlugin({
+        core,
         repo: url,
       });
     },
@@ -144,10 +150,11 @@ export default ({ pluginId }: { pluginId?: string }) => {
 
   // When zip file is uploaded
   const handleParseFromFile = useCallback(
-    async (file?: FileUploadType) => {
+    async ({ file, core }: { core: boolean; file?: FileUploadType }) => {
       uploadZip(file);
       changeGithubUrl(undefined);
       await parsePlugin({
+        core,
         file: file,
       });
     },

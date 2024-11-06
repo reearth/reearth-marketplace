@@ -59,10 +59,15 @@ jobs:
       # ARTIFACTS_SERVER: server/dist #TODO: fix here
       ARTIFACTS_WEB: reearth-marketplace-web_${{ needs.info.outputs.name }}.tar.gz
     steps:
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
       - name: get latest web artifact
         uses: dawidd6/action-download-artifact@v2
         with:
-          github_token: ${{ secrets.GPT }}
+          github_token: ${{ steps.app-token.outputs.token }}
           workflow: ci.yml
           workflow_conclusion: success
           branch: ${{ github.event.workflow_run.head_branch }}
@@ -112,6 +117,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - uses: actions/create-github-app-token@v1
+        id: app-token
+        with:
+          app-id: ${{ vars.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -148,7 +158,7 @@ jobs:
       - name: Download web arfiacts
         uses: dawidd6/action-download-artifact@v2
         with:
-          github_token: ${{ secrets.GPT }}
+          github_token: ${{ steps.app-token.outputs.token }}
           workflow: ci.yml
           workflow_conclusion: success
           branch: ${{ github.event.workflow_run.head_branch }}
@@ -173,7 +183,7 @@ jobs:
       - name: Save docker image
         run: docker save ${{ steps.options.outputs.tags }} | gzip > reearth-marketplace.tar.gz
       - name: Save imaged to artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         # env:
         #   TAG: ${{ needs.info.outputs.tag_short }}
         #   NAME: ${{ needs.info.outputs.name }}

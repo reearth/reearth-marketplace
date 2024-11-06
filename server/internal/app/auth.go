@@ -6,6 +6,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
+	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearthx/appx"
 )
 
@@ -35,7 +36,21 @@ func authMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
 					return err
 				}
 				ctx = adapter.AttachUser(ctx, u)
+			} else if cfg.Debug {
+				// Used during E2E test
+				if userID := c.Request().Header.Get("X-Reearth-Debug-User"); userID != "" {
+					uId, _ := id.UserIDFrom(userID)
+					members := []id.UserID{
+						uId,
+					}
+					users, err := cfg.Repos.User.FindByIDs(ctx, members)
+					if err != nil {
+						return err
+					}
+					ctx = adapter.AttachUser(ctx, users[0])
+				}
 			}
+
 			c.SetRequest(req.WithContext(ctx))
 			return next(c)
 		}

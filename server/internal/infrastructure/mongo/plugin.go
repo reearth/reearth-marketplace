@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/reearth/reearth-marketplace/server/internal/infrastrcture/mongo/mongodoc"
+	"github.com/reearth/reearth-marketplace/server/internal/infrastructure/mongo/mongodoc"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
@@ -128,6 +128,7 @@ func (r *pluginRepo) Create(ctx context.Context, p *plugin.VersionedPlugin) erro
 				"id":          pluginDoc.ID,
 				"type":        pluginDoc.Type,
 				"active":      pluginDoc.Active,
+				"core":        pluginDoc.Core,
 				"createdAt":   pluginDoc.CreatedAt,
 				"tags":        pluginDoc.Tags,
 				"image":       pluginDoc.Images,
