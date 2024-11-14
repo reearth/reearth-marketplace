@@ -17,7 +17,6 @@ FROM debian:buster
 
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=build /app/reearth-marketplace /app/reearth-marketplace
-COPY web* /app/
 
 WORKDIR /app
 
