@@ -16,7 +16,13 @@ const getBrowserLanguage = () => {
   }
 };
 
-export default function Provider({ children }: { children?: ReactNode }) {
+export default function Provider({
+  extensionSetLang,
+  children,
+}: {
+  extensionSetLang?: string;
+  children?: ReactNode;
+}) {
   const { isAuthenticated } = useAuth();
   const [currentLang, setLang] = useCurrentLang();
 
@@ -26,7 +32,8 @@ export default function Provider({ children }: { children?: ReactNode }) {
     },
     skip: !isAuthenticated,
   });
-  const locale = data?.me.lang ?? currentLang;
+
+  const locale = extensionSetLang ? extensionSetLang : data?.me.lang ?? currentLang;
 
   useEffect(() => {
     const lang = locale === "und" ? getBrowserLanguage() : locale;
