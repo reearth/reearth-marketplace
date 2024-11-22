@@ -72,7 +72,7 @@ jobs:
           docker push $SERVER_IMAGE_GCP
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy reearth-marketplace-backend \
+          gcloud run deploy reearth-marketplace-api \
             --image $SERVER_IMAGE_GCP \
             --region $GCP_REGION \
             --platform managed \
