@@ -2,7 +2,7 @@
 name: web-build
 on:
   workflow_run:
-    workflows: [ci-web]
+    workflows: [ci]
     types: [completed]
     branches: [main, release]
 concurrency:
