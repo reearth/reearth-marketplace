@@ -1,10 +1,10 @@
-FROM node:18.16.1-slim AS node
+FROM node:22.1-slim AS node
 WORKDIR /work
 
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=yarn.lock,target=yarn.lock \
     --mount=type=cache,target=/root/.yarn,sharing=locked \
-    yarn install --frozen-lockfile --production=false
+    yarn install
 
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=yarn.lock,target=yarn.lock \
@@ -31,8 +31,16 @@ ENV PORT=8080
 # Ref: https://cloud.google.com/load-balancing/docs/https#target-proxies
 ENV REAL_IP_HEADER=X-Forwarded-For
 
-# URLs with access to reearth-markplace
-ENV CORS_ALLOWED_ORIGINS=""
+# Default values.
+ENV MARKETPLACE_API=
+ENV AUTH_CLIENT_ID=
+ENV AUTH_DOMAIN=
+ENV AUTH_AUDIENCE=
+ENV REPORT_URL=
+ENV REEARTH_API=
+ENV REEARTH_CLASSIC_WEB=
+ENV CORS_ALLOWED_ORIGINS=
+ENV REEARTH_VISUALIZER_WEB=
 
 COPY --from=node /work/dist/ /usr/share/nginx/html
 COPY --chown=nginx:nginx  docker/reearth_config.json.template /tmp/reearth_config.json.template
