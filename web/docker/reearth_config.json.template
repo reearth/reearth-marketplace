@@ -5,6 +5,7 @@
   "authAudience": "${AUTH_AUDIENCE}",
   "reportUrl": "${REPORT_URL}",
   "reearthApi": "${REEARTH_API}",
-  "reearthWeb": "${REEARTH_WEB}"
+  "reearthClassicWeb": "${REEARTH_CLASSIC_WEB}",
+  "reearthVisualizerWeb": "${REEARTH_VISUALIZER_WEB}"
 }
 

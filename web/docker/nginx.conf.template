@@ -35,7 +35,7 @@ server {
   location / {
     add_header 'Access-Control-Allow-Origin' "$cors";
     add_header 'Access-Control-Allow-Credentials' 'true';
-    add_header 'Access-Control-Allow-Methods' 'GET, POST, PATCH, PUT, HEAD OPTION';
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, PATCH, PUT, HEAD OPTIONS';
     add_header 'Access-Control-Allow-Headers' 'Origin, Authorization, Accept';
     
     if ($request_method = 'OPTIONS') {
