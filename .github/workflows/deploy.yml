@@ -7,7 +7,6 @@ on:
 env:
   REEARTH_MARKETPLACE_URL: marketplace.test.reearth.dev
   REEARTH_API: "https://api.marketplace.test.reearth.dev/api"
-  GCS_DEST: gs://marketplace.test.reearth.dev
   SERVER_IMAGE_GCP: us-central1-docker.pkg.dev/reearth-oss/reearth/reearth-marketplace-api:nightly
   WEB_IMAGE_GCP: us-central1-docker.pkg.dev/reearth-oss/reearth/reearth-marketplace-web:nightly
   GCP_REGION: us-central1
