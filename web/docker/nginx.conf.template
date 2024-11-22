@@ -18,7 +18,7 @@ real_ip_header ${REAL_IP_HEADER};
 
 # CORS_ALLOWED_ORIGINS specifies multiple origins to which access is allowed. 
 # The delimiter is | and the regular expression or is used to match. 
-# exmaple: CORS_ALLOWED_ORIGINS=https://example.com|http://localhosts:3000
+# example: CORS_ALLOWED_ORIGINS=https://example.com|http://localhosts:3000
 map $http_origin $cors{
   default '';
   ~^(${CORS_ALLOWED_ORIGINS})$ $http_origin;
