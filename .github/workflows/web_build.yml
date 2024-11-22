@@ -73,7 +73,7 @@ jobs:
       - name: Get options
         id: options
         env:
-          TAG: ${{ needs.info.outputs.tag_short }}
+          TAG: ${{ needs.info.outputs.new_tag_short }}
           NAME: ${{ needs.info.outputs.name }}
           SHA: ${{ needs.info.outputs.sha_short }}
         run: |
