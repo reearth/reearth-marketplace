@@ -1,0 +1,14 @@
+*
+
+!docker/
+!src/
+
+!index.html
+!TEMP.js
+!i18next-parser.config.js
+!tsconfig.json
+!tsconfig.node.json
+!package.json
+!vite.config.ts
+!vite.config.ext.ts
+!yarn.lock
