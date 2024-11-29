@@ -10,7 +10,7 @@ import "@marketplace/index.css";
 
 export default function SharedProviders({
   theme,
-  // lang,
+  lang,
   accessToken,
   children,
 }: {
@@ -26,7 +26,7 @@ export default function SharedProviders({
       theme={{
         algorithm: theme === "dark" ? ProviderTheme.darkAlgorithm : ProviderTheme.defaultAlgorithm,
       }}>
-      <I18nProvider>
+      <I18nProvider extensionSetLang={lang}>
         <GqlProvider accessToken={accessToken}>
           <ThemeProvider theme={theme}>{children}</ThemeProvider>
         </GqlProvider>

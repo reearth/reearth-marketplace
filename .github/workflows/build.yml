@@ -155,17 +155,6 @@ jobs:
           echo "::set-output name=platforms::$PLATFORMS"
           echo "::set-output name=version::$VERSION"
           echo "::set-output name=tags::$TAGS"
-      - name: Download web arfiacts
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          github_token: ${{ steps.app-token.outputs.token }}
-          workflow: ci.yml
-          workflow_conclusion: success
-          branch: ${{ github.event.workflow_run.head_branch }}
-          name: reearth-marketplace-web
-          check_artifacts: true
-      - name: Extract
-        run: tar -xvf reearth-marketplace-web.tar.gz && mv reearth-marketplace-web server/web
       - name: Build and load docker image
         uses: docker/build-push-action@v3
         with:
