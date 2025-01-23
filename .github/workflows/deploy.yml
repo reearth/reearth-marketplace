@@ -15,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.workflow_run.conclusion != 'failure' && github.event.repository.full_name == 'reearth/reearth-marketplace' && github.event.workflow_run.head_branch == 'main'
     steps:
-      - uses: google-github-actions/auth@v0
+      - uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
+        uses: google-github-actions/setup-gcloud@v2
       - name: Configure docker
         run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
       - name: docker build and push
@@ -47,18 +47,18 @@ jobs:
         with:
           app-id: ${{ vars.GH_APP_ID }}
           private-key: ${{ secrets.GH_APP_PRIVATE_KEY }}
-      - uses: google-github-actions/auth@v0
+      - uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
       #   with:
       #     workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
       #     service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
+        uses: google-github-actions/setup-gcloud@v2
       - name: Configure docker
         run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
       - name: Download server arfiacts
-        uses: dawidd6/action-download-artifact@v2
+        uses: dawidd6/action-download-artifact@v8
         with:
           github_token: ${{ steps.app-token.outputs.token }}
           workflow: build.yml

@@ -18,12 +18,12 @@ jobs:
       web: ${{ steps.web.outputs.any_changed }}
       server: ${{ steps.server.outputs.any_changed }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Get web changed files
         id: web
-        uses: tj-actions/changed-files@v24
+        uses: tj-actions/changed-files@v45
         with:
           files: |
             .github/workflows/ci.yml
@@ -36,7 +36,7 @@ jobs:
             .eslintignore
       - name: Get server changed files
         id: server
-        uses: tj-actions/changed-files@v24
+        uses: tj-actions/changed-files@v45
         with:
           files: |
             .github/workflows/ci.yml
@@ -55,14 +55,14 @@ jobs:
       run:
         working-directory: web
     steps:
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -76,7 +76,7 @@ jobs:
       - name: Test
         run: yarn coverage
       - name: codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v5
         with:
           flags: web
       - name: Check translations
@@ -88,7 +88,7 @@ jobs:
       - name: Pack
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release'
         run: mv dist reearth-marketplace-web && tar -zcvf reearth-marketplace-web.tar.gz reearth-marketplace-web
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release'
         with:
           name: reearth-marketplace-web
@@ -104,24 +104,24 @@ jobs:
         working-directory: server
     services:
       mongo:
-        image: mongo:4.4-focal
+        image: mongo:6.0-focal
         ports:
           - 27017:27017
     steps:
-      - uses: actions/setup-go@v3
+      - uses: actions/setup-go@v5
         with:
           go-version: 1.19
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: cache
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
+        uses: golangci/golangci-lint-action@v6
         with:
           version: v1.49
           working-directory: server
@@ -131,7 +131,7 @@ jobs:
         env:
           REEARTH_MARKETPLACE_DB: mongodb://localhost
       - name: codecov
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v5
         with:
           flags: server
           file: coverage.txt
