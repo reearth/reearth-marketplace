@@ -10,8 +10,8 @@ import (
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearthx/log"
 	"github.com/reearth/reearthx/mongox"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
+	"go.mongodb.org/mongo-driver/v2/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
 func initReposAndGateways(ctx context.Context, conf *Config, debug bool) (*repo.Container, *gateway.Container) {
