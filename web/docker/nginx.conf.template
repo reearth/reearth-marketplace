@@ -16,15 +16,15 @@ log_format json escape=json '{'
 
 real_ip_header ${REAL_IP_HEADER};
 
-# CORS_ALLOWED_ORIGINS specifies multiple origins to which access is allowed. 
-# The delimiter is | and the regular expression or is used to match. 
+# CORS_ALLOWED_ORIGINS specifies multiple origins to which access is allowed.
+# The delimiter is | and the regular expression or is used to match.
 # example: CORS_ALLOWED_ORIGINS=https://example.com|http://localhosts:3000
 map $http_origin $cors{
   default '';
   ~^(${CORS_ALLOWED_ORIGINS})$ $http_origin;
 }
 
-server { 
+server {
   listen ${PORT};
   root /usr/share/nginx/html;
   server_name _;
@@ -35,13 +35,13 @@ server {
   location / {
     add_header 'Access-Control-Allow-Origin' "$cors";
     add_header 'Access-Control-Allow-Credentials' 'true';
-    add_header 'Access-Control-Allow-Methods' 'GET, POST, PATCH, PUT, HEAD OPTIONS';
+    add_header 'Access-Control-Allow-Methods' 'GET, POST, PATCH, PUT, HEAD, OPTIONS';
     add_header 'Access-Control-Allow-Headers' 'Origin, Authorization, Accept';
-    
+
     if ($request_method = 'OPTIONS') {
       return 204;
     }
-  
+
     try_files $uri /index.html =404;
   }
 
