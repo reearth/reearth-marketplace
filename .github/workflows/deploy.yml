@@ -28,9 +28,9 @@ jobs:
         run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
       - name: docker build and push
         run: |
-          cd web
           docker build -t $WEB_IMAGE_GCP .
           docker push $WEB_IMAGE_GCP
+        working-directory: web
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy reearth-marketplace-web \
