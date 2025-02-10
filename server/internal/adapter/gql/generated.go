@@ -1099,6 +1099,7 @@ type Plugin implements Node {
 
   like: Int!
   liked: Boolean!
+
   core: Boolean!
 }
 
@@ -4632,7 +4633,7 @@ func (ec *executionContext) _Plugin_core(ctx context.Context, field graphql.Coll
 	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) fieldContext_Plugin_core(_ context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+func (ec *executionContext) fieldContext_Plugin_core(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
 	fc = &graphql.FieldContext{
 		Object:     "Plugin",
 		Field:      field,
@@ -8144,33 +8145,37 @@ func (ec *executionContext) unmarshalInputCreatePluginInput(ctx context.Context,
 		}
 		switch k {
 		case "file":
+			var err error
+
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("file"))
-			data, err := ec.unmarshalOUpload2ᚖgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUpload(ctx, v)
+			it.File, err = ec.unmarshalOUpload2ᚖgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚐUpload(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.File = data
 		case "repo":
+			var err error
+
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("repo"))
-			data, err := ec.unmarshalOString2ᚖstring(ctx, v)
+			it.Repo, err = ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Repo = data
 		case "publisher":
+			var err error
+
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("publisher"))
-			data, err := ec.unmarshalOID2ᚖstring(ctx, v)
+			it.Publisher, err = ec.unmarshalOID2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Publisher = data
 		case "core":
+			var err error
+
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("core"))
-			data, err := ec.unmarshalOBoolean2ᚖbool(ctx, v)
+			it.Core, err = ec.unmarshalOBoolean2ᚖbool(ctx, v)
 			if err != nil {
 				return it, err
 			}
-			it.Core = data
 		}
 	}
 
@@ -9377,25 +9382,12 @@ func (ec *executionContext) _Plugin(ctx context.Context, sel ast.SelectionSet, o
 
 			})
 		case "core":
-			field := field
 
-			innerFunc := func(ctx context.Context) (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Plugin_core(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
+			out.Values[i] = ec._Plugin_core(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				atomic.AddUint32(&invalids, 1)
 			}
-
-			out.Concurrently(i, func() graphql.Marshaler {
-				return innerFunc(ctx)
-
-			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}

@@ -26,10 +26,10 @@ type CreateOrganizationInput struct {
 }
 
 type CreatePluginInput struct {
-	File      *graphql.Upload `json:"file,omitempty"`
-	Repo      *string         `json:"repo,omitempty"`
-	Publisher *string         `json:"publisher,omitempty"`
-	Core      *bool           `json:"core,omitempty"`
+	File      *graphql.Upload `json:"file"`
+	Repo      *string         `json:"repo"`
+	Publisher *string         `json:"publisher"`
+	Core      *bool           `json:"core"`
 }
 
 type DeleteOrganizationInput struct {
@@ -67,8 +67,8 @@ type MePayload struct {
 type Organization struct {
 	ID          string            `json:"id"`
 	Name        string            `json:"name"`
-	DisplayName *string           `json:"displayName,omitempty"`
-	Description *string           `json:"description,omitempty"`
+	DisplayName *string           `json:"displayName"`
+	Description *string           `json:"description"`
 	Active      bool              `json:"active"`
 	Plugins     *PluginConnection `json:"plugins"`
 	MemberIds   []string          `json:"memberIds"`
@@ -83,8 +83,8 @@ type OrganizationPayload struct {
 }
 
 type PageInfo struct {
-	StartCursor     *string `json:"startCursor,omitempty"`
-	EndCursor       *string `json:"endCursor,omitempty"`
+	StartCursor     *string `json:"startCursor"`
+	EndCursor       *string `json:"endCursor"`
 	HasNextPage     bool    `json:"hasNextPage"`
 	HasPreviousPage bool    `json:"hasPreviousPage"`
 }
@@ -98,7 +98,7 @@ type PluginConnection struct {
 
 type PluginEdge struct {
 	Cursor string  `json:"cursor"`
-	Node   *Plugin `json:"node,omitempty"`
+	Node   *Plugin `json:"node"`
 }
 
 type PluginPayload struct {
@@ -106,17 +106,17 @@ type PluginPayload struct {
 }
 
 type PluginsInput struct {
-	First     *int         `json:"first,omitempty"`
-	Last      *int         `json:"last,omitempty"`
-	Before    *string      `json:"before,omitempty"`
-	After     *string      `json:"after,omitempty"`
-	Offset    *int         `json:"offset,omitempty"`
-	Keyword   *string      `json:"keyword,omitempty"`
-	Liked     *bool        `json:"liked,omitempty"`
-	Tags      []string     `json:"tags,omitempty"`
-	Types     []PluginType `json:"types,omitempty"`
-	Publisher *string      `json:"publisher,omitempty"`
-	Sort      *PluginSort  `json:"sort,omitempty"`
+	First     *int         `json:"first"`
+	Last      *int         `json:"last"`
+	Before    *string      `json:"before"`
+	After     *string      `json:"after"`
+	Offset    *int         `json:"offset"`
+	Keyword   *string      `json:"keyword"`
+	Liked     *bool        `json:"liked"`
+	Tags      []string     `json:"tags"`
+	Types     []PluginType `json:"types"`
+	Publisher *string      `json:"publisher"`
+	Sort      *PluginSort  `json:"sort"`
 }
 
 type UnlikePluginInput struct {
@@ -124,35 +124,35 @@ type UnlikePluginInput struct {
 }
 
 type UpdateMeInput struct {
-	Name        *string `json:"name,omitempty"`
-	Lang        *string `json:"lang,omitempty"`
-	DisplayName *string `json:"displayName,omitempty"`
-	Description *string `json:"description,omitempty"`
-	Tel         *string `json:"tel,omitempty"`
+	Name        *string `json:"name"`
+	Lang        *string `json:"lang"`
+	DisplayName *string `json:"displayName"`
+	Description *string `json:"description"`
+	Tel         *string `json:"tel"`
 }
 
 type UpdateOrganizationInput struct {
 	OrganizationID string   `json:"organizationId"`
-	Name           *string  `json:"name,omitempty"`
-	Description    *string  `json:"description,omitempty"`
-	Active         *bool    `json:"active,omitempty"`
-	NewMembers     []string `json:"newMembers,omitempty"`
-	DeletedMembers []string `json:"deletedMembers,omitempty"`
+	Name           *string  `json:"name"`
+	Description    *string  `json:"description"`
+	Active         *bool    `json:"active"`
+	NewMembers     []string `json:"newMembers"`
+	DeletedMembers []string `json:"deletedMembers"`
 }
 
 type UpdatePluginInput struct {
 	PluginID    string            `json:"pluginId"`
-	Active      *bool             `json:"active,omitempty"`
-	Images      []*graphql.Upload `json:"images,omitempty"`
-	NewTags     []string          `json:"newTags,omitempty"`
-	DeletedTags []string          `json:"deletedTags,omitempty"`
+	Active      *bool             `json:"active"`
+	Images      []*graphql.Upload `json:"images"`
+	NewTags     []string          `json:"newTags"`
+	DeletedTags []string          `json:"deletedTags"`
 }
 
 type UpdateVersionInput struct {
 	PluginID    string  `json:"pluginId"`
 	Version     string  `json:"version"`
-	Description *string `json:"description,omitempty"`
-	Active      *bool   `json:"active,omitempty"`
+	Description *string `json:"description"`
+	Active      *bool   `json:"active"`
 }
 
 type Version struct {
