@@ -8,6 +8,7 @@ require (
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/gavv/httpexpect/v2 v2.16.0
 	github.com/h2non/filetype v1.1.3
+	github.com/joho/godotenv v1.5.1
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/labstack/echo/v4 v4.7.2
 	github.com/reearth/reearthx v0.0.0-20230313110808-d00b7183549c
@@ -15,6 +16,7 @@ require (
 	github.com/spf13/afero v1.9.3
 	github.com/stretchr/testify v1.8.0
 	github.com/vektah/gqlparser/v2 v2.4.7
+	github.com/yudai/pp v2.0.1+incompatible
 	go.mongodb.org/mongo-driver v1.10.1
 	golang.org/x/text v0.18.0
 	gopkg.in/yaml.v3 v3.0.1
@@ -62,7 +64,7 @@ require (
 	github.com/gorilla/websocket v1.5.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/imkira/go-interpol v1.1.0 // indirect
-	github.com/joho/godotenv v1.5.1 // indirect
+	github.com/k0kubun/colorstring v0.0.0-20150214042306-9440f1994b88 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/labstack/gommon v0.3.1 // indirect
 	github.com/maruel/panicparse/v2 v2.3.1 // indirect
@@ -95,7 +97,6 @@ require (
 	github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a // indirect
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
-	github.com/yudai/pp v2.0.1+incompatible // indirect
 	go.opencensus.io v0.23.0 // indirect
 	go.opentelemetry.io/contrib v1.8.0 // indirect
 	go.opentelemetry.io/otel v1.8.0 // indirect
