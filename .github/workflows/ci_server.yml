@@ -58,4 +58,4 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: server
-          file: coverage.txt
+          files: coverage.txt
