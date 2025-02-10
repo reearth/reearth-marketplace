@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ inputs.name != '' || inputs.new_tag != '' }}
     env:
-      IMAGE_NAME: reearth/reearth-marketplace
+      IMAGE_NAME: ${{ vars.SERVER_IMAGE_NAME }}
     defaults:
       run:
         working-directory: server
