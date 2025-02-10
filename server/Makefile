@@ -48,7 +48,7 @@ SCHEMATYPER_BIN := $(shell which schematyper)
 DEEP_COPY_BIN := $(shell which deep-copy)
 dev-install:
 ifndef AIR_BIN
-	@echo "reflex is not installed. Installing..."
+	@echo "air is not installed. Installing..."
 	@go install github.com/air-verse/air@v1.61.5
 else
 	@echo "air is already installed."

@@ -32,7 +32,7 @@ jobs:
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy ${{ vars.SERVER_SERVICE_NAME }} \
-            --image ${{ vars.SERVER_IMAGE_NAME_GCP }}:IMAGE_TAG \
+            --image ${{ vars.SERVER_IMAGE_NAME_GCP }}:$IMAGE_TAG \
             --region ${{ vars.GCP_REGION }} \
             --platform managed \
             --quiet
