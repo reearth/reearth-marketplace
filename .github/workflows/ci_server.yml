@@ -22,6 +22,8 @@ jobs:
           version: v1.63.4
           args: --timeout=10m
           working-directory: server
+      - name: Install github.com/idubinskiy/schematyper
+        run: go get github.com/idubinskiy/schematyper
       - name: Run go generate
         run: |
           make generate
