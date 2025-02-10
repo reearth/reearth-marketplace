@@ -1,6 +1,6 @@
 module github.com/reearth/reearth-marketplace/server
 
-go 1.19
+go 1.22.12
 
 require (
 	cloud.google.com/go/storage v1.22.1
@@ -14,7 +14,7 @@ require (
 	github.com/reearth/reearthx v0.0.0-20230313110808-d00b7183549c
 	github.com/samber/lo v1.27.0
 	github.com/spf13/afero v1.9.3
-	github.com/stretchr/testify v1.8.0
+	github.com/stretchr/testify v1.9.0
 	github.com/vektah/gqlparser/v2 v2.4.7
 	github.com/yudai/pp v2.0.1+incompatible
 	go.mongodb.org/mongo-driver v1.10.1

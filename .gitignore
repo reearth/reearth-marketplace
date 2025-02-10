@@ -14,3 +14,4 @@ node_modules
 .env
 .secret
 /web/.yarn/install-state.gz
+/server/vendor/**
