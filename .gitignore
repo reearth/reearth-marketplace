@@ -13,3 +13,4 @@ node_modules
 /web/storybook-static
 .env
 .secret
+/web/.yarn/install-state.gz
