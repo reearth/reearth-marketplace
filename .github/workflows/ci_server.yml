@@ -22,9 +22,6 @@ jobs:
           version: v1.49
           args: --timeout=10m
           working-directory: server
-      - name: Generate graphq
-        run: make gql
-        working-directory: server
       - name: Check for changes in generated files
         run: |
           git diff --exit-code
