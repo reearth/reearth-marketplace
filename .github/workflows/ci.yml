@@ -1,146 +1,124 @@
-name: CI
+name: ci
 on:
-  pull_request:
   push:
-    branches:
-      - main
-      - release
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+    branches: [main, release/*, release]
+  pull_request:
 
 jobs:
-  ci_pre:
-    name: CI pre
+  prepare:
     runs-on: ubuntu-latest
-    if: github.event_name != 'push' || !startsWith(github.event.head_commit.message, 'v')
     outputs:
-      web: ${{ steps.web.outputs.any_changed }}
-      server: ${{ steps.server.outputs.any_changed }}
+      web: ${{ steps.web.outputs.any_modified }}
+      server: ${{ steps.server.outputs.any_modified }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Get web changed files
+      - name: changed files for web
         id: web
-        uses: tj-actions/changed-files@v24
+        uses: tj-actions/changed-files@v45
         with:
           files: |
-            .github/workflows/ci.yml
-            .github/workflows/build.yml
-            .github/workflows/deploy.yml
-            .github/workflows/stage.yml
-            .github/workflows/release.yml
+            web/
+            .github/workflows/ci_web.yml
+            .github/workflows/build_web.yml
+            .github/workflows/deploy_web_nightly.yml
             CHANGELOG.md
-            web/**
-            .eslintignore
-      - name: Get server changed files
+
+      - name: changed files for server
         id: server
-        uses: tj-actions/changed-files@v24
+        uses: tj-actions/changed-files@v45
         with:
           files: |
-            .github/workflows/ci.yml
-            .github/workflows/build.yml
-            .github/workflows/deploy.yml
-            .github/workflows/stage.yml
-            .github/workflows/release.yml
+            server/
+            .github/workflows/ci_server.yml
+            .github/workflows/build_server.yml
+            .github/workflows/deploy_server_nightly.yml
             CHANGELOG.md
-            server/**
-  ci_web:
-    name: CI web
-    needs: ci_pre
-    if: ${{ needs.ci_pre.outputs.web == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: web
-    steps:
-      - uses: actions/setup-node@v3
-        with:
-          node-version: lts/*
-      - uses: actions/checkout@v3
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v3
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install
-        run: yarn install
-      - name: Lint
-        run: yarn run lint
-      - name: Test
-        run: yarn coverage
-      - name: codecov
-        uses: codecov/codecov-action@v2
-        with:
-          flags: web
-      - name: Check translations
-        run: yarn i18n --fail-on-update
-      - name: Build
-        run: yarn build
-      - name: Build extension
-        run: yarn build:ext
-      - name: Pack
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release'
-        run: mv dist reearth-marketplace-web && tar -zcvf reearth-marketplace-web.tar.gz reearth-marketplace-web
-      - uses: actions/upload-artifact@v4
-        if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release'
-        with:
-          name: reearth-marketplace-web
-          path: web/reearth-marketplace-web.tar.gz
-          if-no-files-found: error
-  ci_server:
-    name: CI server
-    needs: ci_pre
-    if: ${{ needs.ci_pre.outputs.server == 'true' }}
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: server
-    services:
-      mongo:
-        image: mongo:4.4-focal
-        ports:
-          - 27017:27017
-    steps:
-      - uses: actions/setup-go@v3
-        with:
-          go-version: 1.19
-      - name: checkout
-        uses: actions/checkout@v3
-      - name: cache
-        uses: actions/cache@v3
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-go-
-      - name: golangci-lint
-        uses: golangci/golangci-lint-action@v3
-        with:
-          version: v1.49
-          working-directory: server
-          args: --timeout=10m
-      - name: test
-        run: go test ./... -v -race -coverprofile=coverage.txt -covermode=atomic
-        env:
-          REEARTH_MARKETPLACE_DB: mongodb://localhost
-      - name: codecov
-        uses: codecov/codecov-action@v2
-        with:
-          flags: server
-          file: coverage.txt
+
+  ci-web:
+    needs: prepare
+    if: needs.prepare.outputs.web == 'true'
+    uses: ./.github/workflows/ci_web.yml
+
+  ci-server:
+    needs: prepare
+    # server depends on web, so this should be triggered if web is modified
+    # TODO: Simplify "if" when we discontinue embedding front-end in the server
+    if: needs.prepare.outputs.server == 'true' || needs.prepare.outputs.web == 'true'
+    uses: ./.github/workflows/ci_server.yml
+
   ci:
-    name: CI
     runs-on: ubuntu-latest
     needs:
-      - ci_web
-      - ci_server
-    if: ${{ ! failure() }}
+      - ci-web
+      - ci-server
+    if: ${{ !failure() }}
     steps:
-      - run: echo succeeded
+      - run: echo OK
+
+  build-prepare:
+    needs: prepare
+    if: ${{ github.repository == 'reearth/reearth-marketplace' && github.event_name == 'push' && (github.ref_name == 'release' || !startsWith(github.event.head_commit.message, 'v')) }}
+    uses: ./.github/workflows/build_prepare.yml
+
+  build-web:
+    needs: [ci-web, build-prepare]
+    uses: ./.github/workflows/build_web.yml
+    with:
+      sha_short: ${{ needs.build-prepare.outputs.sha_short }}
+      new_tag: ${{ needs.build-prepare.outputs.new_tag }}
+      new_tag_short: ${{ needs.build-prepare.outputs.new_tag_short }}
+      name: ${{ needs.build-prepare.outputs.name }}
+      sha: ${{ github.sha }}
+    secrets: inherit
+
+  build-web-post:
+    # needs build-web, but also this job should be triggered even if it was skipped
+    needs: [build-prepare, build-web]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "OK"
+
+  build-server:
+    # required to trigger this job after build-web, but even if build-web is skipped
+    # TODO: Remove build-web-post from needs when we discontinue embedding front-end in the server
+    needs: [ci-server, build-prepare, build-web-post]
+    if: ${{ !cancelled() }}
+    #
+    uses: ./.github/workflows/build_server.yml
+    with:
+      sha_short: ${{ needs.build-prepare.outputs.sha_short }}
+      new_tag: ${{ needs.build-prepare.outputs.new_tag }}
+      new_tag_short: ${{ needs.build-prepare.outputs.new_tag_short }}
+      name: ${{ needs.build-prepare.outputs.name }}
+      sha: ${{ github.sha }}
+    secrets: inherit
+
+  # TODO: build_release workflow is broken
+  # TODO: Remove build-web-post from needs when we discontinue embedding front-end in the server
+  # build-release:
+  #   needs: [ci-server, build-prepare, build-web-post]
+  #   if: ${{ !cancelled() && needs.build-prepare.outputs.name != 'nightly' }}
+  #   uses: ./.github/workflows/build_release.yml
+  #   with:
+  #     sha_short: ${{ needs.build-prepare.outputs.sha_short }}
+  #     new_tag: ${{ needs.build-prepare.outputs.new_tag }}
+  #     new_tag_short: ${{ needs.build-prepare.outputs.new_tag_short }}
+  #     name: ${{ needs.build-prepare.outputs.name }}
+  #     sha: ${{ github.sha }}
+  #   secrets: inherit
+
+  deploy-web:
+    needs: build-web
+    uses: ./.github/workflows/deploy_web_nightly.yml
+    secrets: inherit
+
+  deploy-server:
+    needs: build-server
+    # due to the build_server "if" hack, this "if" is also required to trigger this job
+    # TODO: Remove "if" when we discontinue embedding front-end in the server
+    if: ${{ !cancelled() }}
+    uses: ./.github/workflows/deploy_server_nightly.yml
+    secrets: inherit

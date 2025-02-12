@@ -1,0 +1,54 @@
+name: ci-server
+on:
+  workflow_call:
+env:
+  GO_VERSION: "1.19"
+
+jobs:
+  ci-server-lint:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'push' || !startsWith(github.event.head_commit.message, 'v')
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: set up
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: v1.49
+          args: --timeout=10m
+          working-directory: server
+      - name: Check for changes in generated files
+        run: |
+          git diff --exit-code
+
+  ci-server-test:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:4.4-focal
+        ports:
+          - 27017:27017
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: set up
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: server/go.sum
+      - name: test
+        run: go test ./... -v -race -coverprofile=coverage.txt -covermode=atomic -timeout 10m
+        env:
+          REEARTH_MARKETPLACE_DB: mongodb://localhost
+        working-directory: server
+      - name: Send coverage report
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: server
+          files: coverage.txt
