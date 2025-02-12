@@ -1,6 +1,6 @@
 module github.com/reearth/reearth-marketplace/server
 
-go 1.22.12
+go 1.19
 
 require (
 	cloud.google.com/go/storage v1.22.1

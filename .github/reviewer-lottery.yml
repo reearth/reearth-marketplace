@@ -1,7 +1,0 @@
-groups:
-  - name: reviewers
-    reviewers: 1
-    usernames:
-      - pyshx
-      - rot1024
-      - airslice
