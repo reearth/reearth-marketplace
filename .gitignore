@@ -15,3 +15,5 @@ node_modules
 .secret
 /web/.yarn/install-state.gz
 /server/vendor/**
+
+/server/coverage.txt
