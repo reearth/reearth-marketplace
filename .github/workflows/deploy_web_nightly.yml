@@ -19,7 +19,7 @@ jobs:
       - uses: google-github-actions/auth@v2
         with:
           service_account: ${{ vars.GCP_SA_EMAIL }}
-          workload_identity_provider: ${{ vars.WORKLOAD_IDENTITY_PROVIDER }}
+          workload_identity_provider: ${{ vars.GCP_WORKLOAD_IDENTITY_PROVIDER }}
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
       - name: Configure docker
