@@ -28,7 +28,7 @@ func initReposAndGateways(ctx context.Context, conf *Config, debug bool) (*repo.
 	if err != nil {
 		log.Fatalf("repo initialization error: %+v\n", err)
 	}
-	if err := mongorepo.InitRepos(ctx, repos, client, "reearth_marketplace", mongox.IsTransactionAvailable(conf.DB)); err != nil {
+	if err := mongorepo.InitRepos(ctx, repos, client, "reearth-marketplace", mongox.IsTransactionAvailable(conf.DB)); err != nil {
 		log.Fatalf("Failed to init mongo: %+v\n", err)
 	}
 
