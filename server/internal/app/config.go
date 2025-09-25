@@ -15,6 +15,7 @@ const configPrefix = "REEARTH_MARKETPLACE"
 type Config struct {
 	Port     string        `default:"8080" envconfig:"PORT"`
 	DB       string        `default:"mongodb://localhost" pp:"-"`
+	DBName   string        `default:"reearth_marketplace" envconfig:"DB_NAME"`
 	Auth     AuthConfig    `pp:",omitempty"`
 	Auth_M2M AuthM2MConfig `pp:",omitempty"`
 	GCS      GCSConfig     `pp:",omitempty"`
