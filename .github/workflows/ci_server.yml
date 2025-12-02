@@ -20,7 +20,7 @@ jobs:
         run: |
           cd server
           rm -f internal/adapter/gql/generated.go internal/adapter/gql/gqlmodel/models_gen.go
-          go generate ./...
+          go run github.com/99designs/gqlgen generate
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
