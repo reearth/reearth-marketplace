@@ -3,6 +3,7 @@
 package gqlmodel
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"strconv"
@@ -13,16 +14,22 @@ import (
 
 type Node interface {
 	IsNode()
+	GetID() string
 }
 
 type Publisher interface {
 	IsPublisher()
+	GetID() string
+	GetName() string
+	GetDisplayName() *string
+	GetDescription() *string
+	GetPlugins() *PluginConnection
 }
 
 type CreateOrganizationInput struct {
 	Name        string   `json:"name"`
-	Description *string  `json:"description"`
-	Members     []string `json:"members"`
+	Description *string  `json:"description,omitempty"`
+	Members     []string `json:"members,omitempty"`
 }
 
 type CreatePluginInput struct {
@@ -64,6 +71,9 @@ type MePayload struct {
 	Me *Me `json:"me"`
 }
 
+type Mutation struct {
+}
+
 type Organization struct {
 	ID          string            `json:"id"`
 	Name        string            `json:"name"`
@@ -75,8 +85,15 @@ type Organization struct {
 	Members     []*User           `json:"members"`
 }
 
-func (Organization) IsNode()      {}
+func (Organization) IsNode()            {}
+func (this Organization) GetID() string { return this.ID }
+
 func (Organization) IsPublisher() {}
+
+func (this Organization) GetName() string               { return this.Name }
+func (this Organization) GetDisplayName() *string       { return this.DisplayName }
+func (this Organization) GetDescription() *string       { return this.Description }
+func (this Organization) GetPlugins() *PluginConnection { return this.Plugins }
 
 type OrganizationPayload struct {
 	Organization *Organization `json:"organization"`
@@ -117,6 +134,9 @@ type PluginsInput struct {
 	Types     []PluginType `json:"types,omitempty"`
 	Publisher *string      `json:"publisher,omitempty"`
 	Sort      *PluginSort  `json:"sort,omitempty"`
+}
+
+type Query struct {
 }
 
 type UnlikePluginInput struct {
@@ -195,7 +215,7 @@ func (e NodeType) String() string {
 	return string(e)
 }
 
-func (e *NodeType) UnmarshalGQL(v interface{}) error {
+func (e *NodeType) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -210,6 +230,20 @@ func (e *NodeType) UnmarshalGQL(v interface{}) error {
 
 func (e NodeType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+func (e *NodeType) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e NodeType) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
 }
 
 type PluginSort string
@@ -248,7 +282,7 @@ func (e PluginSort) String() string {
 	return string(e)
 }
 
-func (e *PluginSort) UnmarshalGQL(v interface{}) error {
+func (e *PluginSort) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -263,6 +297,20 @@ func (e *PluginSort) UnmarshalGQL(v interface{}) error {
 
 func (e PluginSort) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+func (e *PluginSort) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e PluginSort) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
 }
 
 type PluginType string
@@ -289,7 +337,7 @@ func (e PluginType) String() string {
 	return string(e)
 }
 
-func (e *PluginType) UnmarshalGQL(v interface{}) error {
+func (e *PluginType) UnmarshalGQL(v any) error {
 	str, ok := v.(string)
 	if !ok {
 		return fmt.Errorf("enums must be strings")
@@ -304,4 +352,18 @@ func (e *PluginType) UnmarshalGQL(v interface{}) error {
 
 func (e PluginType) MarshalGQL(w io.Writer) {
 	fmt.Fprint(w, strconv.Quote(e.String()))
+}
+
+func (e *PluginType) UnmarshalJSON(b []byte) error {
+	s, err := strconv.Unquote(string(b))
+	if err != nil {
+		return err
+	}
+	return e.UnmarshalGQL(s)
+}
+
+func (e PluginType) MarshalJSON() ([]byte, error) {
+	var buf bytes.Buffer
+	e.MarshalGQL(&buf)
+	return buf.Bytes(), nil
 }

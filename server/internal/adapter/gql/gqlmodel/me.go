@@ -24,6 +24,26 @@ func (m *Me) ID() string {
 	return m.id.String()
 }
 
+func (m *Me) GetID() string {
+	return m.id.String()
+}
+
+func (m *Me) GetName() string {
+	return m.Name
+}
+
+func (m *Me) GetDisplayName() *string {
+	return m.DisplayName
+}
+
+func (m *Me) GetDescription() *string {
+	return m.Description
+}
+
+func (m *Me) GetPlugins() *PluginConnection {
+	return nil
+}
+
 func (m *Me) Plugins(ctx context.Context, first *int, last *int, before *string, after *string, offset *int) (*PluginConnection, error) {
 	ps, pageInfo, err := adapter.Usecases(ctx).Plugin.List(ctx,
 		&m.id,

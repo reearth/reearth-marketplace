@@ -2,7 +2,7 @@ name: ci-server
 on:
   workflow_call:
 env:
-  GO_VERSION: "1.19"
+  GO_VERSION: "1.24"
 
 jobs:
   ci-server-lint:
@@ -16,10 +16,17 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
           cache: false
+      - name: Generate GraphQL code
+        run: |
+          cd server
+          rm -f internal/adapter/gql/generated.go internal/adapter/gql/gqlmodel/models_gen.go
+          GOTOOLCHAIN=go1.24.2 go run github.com/99designs/gqlgen generate
+          # Clean up generated warnings in resolver.go
+          sed -i '/^\/\/ !!! WARNING !!!/,/^\*\/$/d' internal/adapter/gql/resolver.go
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
-          version: v1.49
+          version: latest
           args: --timeout=10m
           working-directory: server
       - name: Check for changes in generated files

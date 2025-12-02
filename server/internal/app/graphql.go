@@ -4,6 +4,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/handler/extension"
 	"github.com/99designs/gqlgen/graphql/handler/lru"
+	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/labstack/echo/v4"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter/gql"
@@ -11,15 +12,18 @@ import (
 
 func GraphqlAPI(conf GraphQLConfig) echo.HandlerFunc {
 	schema := gql.NewExecutableSchema(gql.Config{
-		Resolvers: gql.NewResolver(),
+		Resolvers: &gql.Resolver{},
 	})
 
-	srv := handler.NewDefaultServer(schema)
+	srv := handler.New(schema)
+	// Explicitly register multipart transport for file uploads
+	srv.AddTransport(transport.MultipartForm{})
+
 	if conf.ComplexityLimit > 0 {
 		srv.Use(extension.FixedComplexityLimit(conf.ComplexityLimit))
 	}
 	srv.Use(extension.AutomaticPersistedQuery{
-		Cache: lru.New(30),
+		Cache: lru.New[string](30),
 	})
 
 	return func(c echo.Context) error {

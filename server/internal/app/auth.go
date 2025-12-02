@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/labstack/echo/v4"
@@ -12,7 +13,16 @@ import (
 
 // Validate the access token and inject the user clams into ctx
 func jwtEchoMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
-	mw, err := appx.AuthMiddleware(cfg.Config.AuthProviders(), adapter.ContextAuthInfo, true)
+	// In debug mode, skip JWT validation entirely if no auth providers configured
+	if cfg.Debug && len(cfg.Config.AuthProviders()) == 0 {
+		return func(next echo.HandlerFunc) echo.HandlerFunc {
+			return next // No-op middleware
+		}
+	}
+	
+	// In debug mode, allow requests without valid JWT tokens for testing
+	strict := !cfg.Debug
+	mw, err := appx.AuthMiddleware(cfg.Config.AuthProviders(), adapter.ContextAuthInfo, strict)
 	if err != nil {
 		panic(err)
 	}
@@ -39,13 +49,16 @@ func authMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
 			} else if cfg.Debug {
 				// Used during E2E test
 				if userID := c.Request().Header.Get("X-Reearth-Debug-User"); userID != "" {
-					uId, _ := id.UserIDFrom(userID)
-					members := []id.UserID{
-						uId,
-					}
-					users, err := cfg.Repos.User.FindByIDs(ctx, members)
+					uId, err := id.UserIDFrom(userID)
 					if err != nil {
-						return err
+						return fmt.Errorf("invalid debug user ID: %w", err)
+					}
+					users, err := cfg.Repos.User.FindByIDs(ctx, []id.UserID{uId})
+					if err != nil {
+						return fmt.Errorf("failed to find debug user: %w", err)
+					}
+					if len(users) == 0 {
+						return fmt.Errorf("debug user not found: %s", userID)
 					}
 					ctx = adapter.AttachUser(ctx, users[0])
 				}
