@@ -19,7 +19,7 @@ func GraphqlAPI(conf GraphQLConfig) echo.HandlerFunc {
 		srv.Use(extension.FixedComplexityLimit(conf.ComplexityLimit))
 	}
 	srv.Use(extension.AutomaticPersistedQuery{
-		Cache: lru.New(30),
+		Cache: lru.New[string](30),
 	})
 
 	return func(c echo.Context) error {
