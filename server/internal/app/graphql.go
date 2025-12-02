@@ -11,7 +11,7 @@ import (
 
 func GraphqlAPI(conf GraphQLConfig) echo.HandlerFunc {
 	schema := gql.NewExecutableSchema(gql.Config{
-		Resolvers: gql.NewResolver(),
+		Resolvers: &gql.Resolver{},
 	})
 
 	srv := handler.NewDefaultServer(schema)

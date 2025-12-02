@@ -11,7 +11,7 @@ import (
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter/gql/gqlmodel"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
-	"github.com/reearth/reearth-marketplace/server/pkg/id"
+	pkgid "github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
 	"github.com/reearth/reearthx/util"
@@ -19,15 +19,6 @@ import (
 )
 
 type Resolver struct{}
-
-func NewResolver() *Resolver {
-	return &Resolver{}
-}
-
-// Utility functions
-func pluginIDFrom(s string) (id.PluginID, error) {
-	return id.PluginIDFrom(s)
-}
 
 // UpdateMe is the resolver for the updateMe field.
 func (r *mutationResolver) UpdateMe(ctx context.Context, input gqlmodel.UpdateMeInput) (*gqlmodel.MePayload, error) {
@@ -92,7 +83,7 @@ func (r *mutationResolver) CreatePlugin(ctx context.Context, input gqlmodel.Crea
 
 // UpdatePlugin is the resolver for the updatePlugin field.
 func (r *mutationResolver) UpdatePlugin(ctx context.Context, input gqlmodel.UpdatePluginInput) (*gqlmodel.PluginPayload, error) {
-	pluginID, err := pluginIDFrom(input.PluginID)
+	pluginID, err := pkgid.PluginIDFrom(input.PluginID)
 	if err != nil {
 		return nil, fmt.Errorf("invalid plugin id: %w", err)
 	}
@@ -121,7 +112,7 @@ func (r *mutationResolver) DeletePlugin(ctx context.Context, input gqlmodel.Dele
 
 // UpdateVersion is the resolver for the updateVersion field.
 func (r *mutationResolver) UpdateVersion(ctx context.Context, input gqlmodel.UpdateVersionInput) (*gqlmodel.VersionPayload, error) {
-	pid, err := pluginIDFrom(input.PluginID)
+	pid, err := pkgid.PluginIDFrom(input.PluginID)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +138,7 @@ func (r *mutationResolver) DeleteVersion(ctx context.Context, input gqlmodel.Del
 
 // LikePlugin is the resolver for the likePlugin field.
 func (r *mutationResolver) LikePlugin(ctx context.Context, input gqlmodel.LikePluginInput) (*gqlmodel.PluginPayload, error) {
-	pid, err := pluginIDFrom(input.PluginID)
+	pid, err := pkgid.PluginIDFrom(input.PluginID)
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +154,7 @@ func (r *mutationResolver) LikePlugin(ctx context.Context, input gqlmodel.LikePl
 
 // UnlikePlugin is the resolver for the unlikePlugin field.
 func (r *mutationResolver) UnlikePlugin(ctx context.Context, input gqlmodel.UnlikePluginInput) (*gqlmodel.PluginPayload, error) {
-	pid, err := pluginIDFrom(input.PluginID)
+	pid, err := pkgid.PluginIDFrom(input.PluginID)
 	if err != nil {
 		return nil, err
 	}
@@ -207,10 +198,10 @@ func (r *queryResolver) Me(ctx context.Context) (*gqlmodel.Me, error) {
 }
 
 // Node is the resolver for the node field.
-func (r *queryResolver) Node(ctx context.Context, idStr string, typeArg gqlmodel.NodeType) (gqlmodel.Node, error) {
+func (r *queryResolver) Node(ctx context.Context, id string, typeArg gqlmodel.NodeType) (gqlmodel.Node, error) {
 	switch typeArg {
 	case gqlmodel.NodeTypeUser:
-		uid, err := id.UserIDFrom(idStr)
+		uid, err := pkgid.UserIDFrom(id)
 		if err != nil {
 			return nil, err
 		}
@@ -220,7 +211,7 @@ func (r *queryResolver) Node(ctx context.Context, idStr string, typeArg gqlmodel
 		}
 		return gqlmodel.ToUser(u), nil
 	case gqlmodel.NodeTypePlugin:
-		pid, err := id.PluginIDFrom(idStr)
+		pid, err := pkgid.PluginIDFrom(id)
 		if err != nil {
 			return nil, err
 		}
@@ -230,14 +221,14 @@ func (r *queryResolver) Node(ctx context.Context, idStr string, typeArg gqlmodel
 		}
 		return gqlmodel.ToPlugin(ctx, p), nil
 	}
-	return nil, fmt.Errorf("invalid id: %s", idStr)
+	return nil, fmt.Errorf("invalid id: %s", id)
 }
 
 // Nodes is the resolver for the nodes field.
 func (r *queryResolver) Nodes(ctx context.Context, ids []string, typeArg gqlmodel.NodeType) ([]gqlmodel.Node, error) {
 	switch typeArg {
 	case gqlmodel.NodeTypeUser:
-		uid, err := util.TryMap(ids, id.UserIDFrom)
+		uid, err := util.TryMap(ids, pkgid.UserIDFrom)
 		if err != nil {
 			return nil, err
 		}
@@ -247,7 +238,7 @@ func (r *queryResolver) Nodes(ctx context.Context, ids []string, typeArg gqlmode
 		}
 		return util.Map(u, func(u *user.User) gqlmodel.Node { return gqlmodel.ToUser(u) }), nil
 	case gqlmodel.NodeTypePlugin:
-		pid, err := util.TryMap(ids, id.PluginIDFrom)
+		pid, err := util.TryMap(ids, pkgid.PluginIDFrom)
 		if err != nil {
 			return nil, err
 		}
@@ -315,15 +306,3 @@ func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
 
-// !!! WARNING !!!
-// The code below was going to be deleted when updating resolvers. It has been copied here so you have
-// one last chance to move it out of harms way if you want. There are two reasons this happens:
-//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
-//    it when you're done.
-//  - You have helper methods in this file. Move them out to keep these resolver files clean.
-/*
-	type Resolver struct{}
-func NewResolver() ResolverRoot {
-	return &Resolver{}
-}
-*/
