@@ -21,6 +21,8 @@ jobs:
           cd server
           rm -f internal/adapter/gql/generated.go internal/adapter/gql/gqlmodel/models_gen.go
           GOTOOLCHAIN=go1.24.2 go run github.com/99designs/gqlgen generate
+          # Clean up generated warnings in resolver.go
+          sed -i '/^\/\/ !!! WARNING !!!/,/^\*\/$/d' internal/adapter/gql/resolver.go
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
