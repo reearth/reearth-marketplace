@@ -1,6 +1,5 @@
-module github.com/reearth/reearth-marketplace/server
 
-go 1.24.2
+go 1.24
 
 replace github.com/99designs/gqlgen => github.com/99designs/gqlgen v0.17.73
 
