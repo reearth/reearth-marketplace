@@ -57,7 +57,6 @@ func TestGetPlugins(t *testing.T) {
 	}
 	r := e.POST("/api/graphql").
 		WithHeader("Origin", "https://example.com").
-		WithHeader("authorization", "Bearer test").
 		WithHeader("X-Reearth-Debug-User", uID.String()).
 		WithHeader("Content-Type", "application/json").
 		WithJSON(requestBody).
@@ -103,7 +102,6 @@ func createPlugin(e *httpexpect.Expect, repo string, publisherID id.UserID, core
 	}
 	r := e.POST("/api/graphql").
 		WithHeader("Origin", "https://example.com").
-		WithHeader("authorization", "Bearer test").
 		WithHeader("X-Reearth-Debug-User", uID.String()).
 		WithHeader("Content-Type", "application/json").
 		WithJSON(requestBody).
