@@ -16,6 +16,11 @@ jobs:
         with:
           go-version: ${{ env.GO_VERSION }}
           cache: false
+      - name: Generate GraphQL code
+        run: |
+          cd server
+          rm -f internal/adapter/gql/generated.go internal/adapter/gql/gqlmodel/models_gen.go
+          go generate ./...
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
