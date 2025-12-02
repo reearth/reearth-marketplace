@@ -18,19 +18,19 @@ import (
 func createDummyZip() []byte {
 	var buf bytes.Buffer
 	w := zip.NewWriter(&buf)
-	
+
 	// Create the expected reearth.yml manifest file
 	f, _ := w.Create("reearth.yml")
-	f.Write([]byte(`id: reearth-plugin-tag-filter
+	_, _ = f.Write([]byte(`id: reearth-plugin-tag-filter
 name: Tag Filter Plugin
 version: "1.0.0"
 main: index.js
 `))
-	
+
 	// Create a dummy index.js file
 	f2, _ := w.Create("index.js")
-	f2.Write([]byte(`console.log("Hello from test plugin");`))
-	
+	_, _ = f2.Write([]byte(`console.log("Hello from test plugin");`))
+
 	w.Close()
 	return buf.Bytes()
 }
@@ -44,7 +44,7 @@ func TestCreatePlugin(t *testing.T) {
 
 	// Test plugin creation - the validation is done within createPlugin function
 	createPlugin(e, "https://github.com/airslice/reearth-plugin-tag-filter", uID, core)
-	
+
 	// If we reach here, the plugin was created successfully and validated
 }
 
@@ -71,7 +71,7 @@ func createPlugin(e *httpexpect.Expect, repo string, publisherID id.UserID, core
 		respBody := resp.Body().Raw()
 		panic("CreatePlugin GraphQL errors: " + respBody)
 	}
-	
+
 	// Validate the response structure and data
 	r := jsonResp.Value("data").
 		Object().
