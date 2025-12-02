@@ -14,7 +14,7 @@ func GraphqlAPI(conf GraphQLConfig) echo.HandlerFunc {
 		Resolvers: &gql.Resolver{},
 	})
 
-	srv := handler.NewDefaultServer(schema)
+	srv := handler.New(schema)
 	if conf.ComplexityLimit > 0 {
 		srv.Use(extension.FixedComplexityLimit(conf.ComplexityLimit))
 	}
