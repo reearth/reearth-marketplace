@@ -16,6 +16,9 @@ func GraphqlAPI(conf GraphQLConfig) echo.HandlerFunc {
 	})
 
 	srv := handler.New(schema)
+	// Add standard transports for GraphQL queries
+	srv.AddTransport(transport.POST{})
+	srv.AddTransport(transport.GET{})
 	// Explicitly register multipart transport for file uploads
 	srv.AddTransport(transport.MultipartForm{})
 
