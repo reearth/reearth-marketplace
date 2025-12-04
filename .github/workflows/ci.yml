@@ -53,7 +53,7 @@ jobs:
     needs:
       - ci-web
       - ci-server
-    if: ${{ !failure() }}
+    if: ${{ always() && !failure() && !cancelled() }}
     steps:
       - run: echo OK
 
