@@ -64,6 +64,7 @@ jobs:
 
   build-web:
     needs: [ci-web, build-prepare]
+    if: ${{ always() && !failure() && !cancelled() && needs.build-prepare.result == 'success' }}
     uses: ./.github/workflows/build_web.yml
     with:
       sha_short: ${{ needs.build-prepare.outputs.sha_short }}
@@ -76,7 +77,7 @@ jobs:
   build-web-post:
     # needs build-web, but also this job should be triggered even if it was skipped
     needs: [build-prepare, build-web]
-    if: ${{ !cancelled() }}
+    if: ${{ always() && !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - run: echo "OK"
@@ -85,7 +86,7 @@ jobs:
     # required to trigger this job after build-web, but even if build-web is skipped
     # TODO: Remove build-web-post from needs when we discontinue embedding front-end in the server
     needs: [ci-server, build-prepare, build-web-post]
-    if: ${{ !cancelled() }}
+    if: ${{ always() && !cancelled() && needs.build-prepare.result == 'success' }}
     #
     uses: ./.github/workflows/build_server.yml
     with:
@@ -112,6 +113,7 @@ jobs:
 
   deploy-web:
     needs: build-web
+    if: ${{ always() && !failure() && !cancelled() && needs.build-web.result == 'success' }}
     uses: ./.github/workflows/deploy_web_nightly.yml
     secrets: inherit
 
@@ -119,6 +121,6 @@ jobs:
     needs: build-server
     # due to the build_server "if" hack, this "if" is also required to trigger this job
     # TODO: Remove "if" when we discontinue embedding front-end in the server
-    if: ${{ !cancelled() }}
+    if: ${{ always() && !cancelled() && needs.build-server.result == 'success' }}
     uses: ./.github/workflows/deploy_server_nightly.yml
     secrets: inherit
