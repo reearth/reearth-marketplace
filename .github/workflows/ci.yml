@@ -48,7 +48,7 @@ jobs:
     if: needs.prepare.outputs.server == 'true' || needs.prepare.outputs.web == 'true'
     uses: ./.github/workflows/ci_server.yml
 
-  ci:
+  CI:
     runs-on: ubuntu-latest
     steps:
       - run: echo OK
