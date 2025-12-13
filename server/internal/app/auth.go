@@ -19,7 +19,7 @@ func jwtEchoMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
 			return next // No-op middleware
 		}
 	}
-	
+
 	// In debug mode, allow requests without valid JWT tokens for testing
 	strict := !cfg.Debug
 	mw, err := appx.AuthMiddleware(cfg.Config.AuthProviders(), adapter.ContextAuthInfo, strict)
