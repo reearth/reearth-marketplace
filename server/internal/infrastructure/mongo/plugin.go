@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"regexp"
+	"slices"
 	"strings"
 	"time"
 
@@ -353,7 +354,7 @@ func (r *pluginRepo) Search(ctx context.Context, user *id.UserID, param *interfa
 		ps = ps[:limit]
 	}
 	if param.Last != nil {
-		ps = lo.Reverse(ps)
+		slices.Reverse(ps)
 	}
 	if len(ps) == 0 {
 		return nil, usecasex.EmptyPageInfo(), nil
@@ -511,7 +512,7 @@ func (r *pluginRepo) List(ctx context.Context, uid id.UserID, param *interfaces.
 		ps = ps[:limit]
 	}
 	if param.Last != nil {
-		ps = lo.Reverse(ps)
+		slices.Reverse(ps)
 	}
 	if len(ps) == 0 {
 		return nil, usecasex.EmptyPageInfo(), nil
