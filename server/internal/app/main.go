@@ -61,7 +61,7 @@ func NewServer(ctx context.Context, cfg *ServerConfig) *WebServer {
 func (w *WebServer) Run() {
 	go func() {
 		err := w.appServer.Start(w.address)
-		log.Fatalln(err.Error())
+		log.Fatal(err.Error())
 	}()
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)

@@ -1,8 +1,8 @@
 FROM node:22.1-slim AS node
 WORKDIR /work
 
-RUN --mount=type=bind,source=package.json,target=package.json \
-    --mount=type=bind,source=yarn.lock,target=yarn.lock \
+RUN --mount=type=bind,source=package.json,target=package.json,rw \
+    --mount=type=bind,source=yarn.lock,target=yarn.lock,rw \
     --mount=type=cache,target=/root/.yarn,sharing=locked \
     yarn install
 
