@@ -36,6 +36,10 @@ type Plugin struct {
 
 func (*Plugin) IsNode() {}
 
+func (p *Plugin) GetID() string {
+	return p.ID
+}
+
 func (p *Plugin) Versions(ctx context.Context) ([]*Version, error) {
 	vs, err := adapter.Usecases(ctx).Plugin.Versions(ctx, p.id)
 	if err != nil {

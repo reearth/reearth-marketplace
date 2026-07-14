@@ -1,0 +1,69 @@
+name: ci-server
+on:
+  workflow_call:
+env:
+  GO_VERSION: "1.24"
+
+jobs:
+  ci-server-lint:
+    runs-on: ubuntu-latest
+    if: github.event_name != 'push' || !startsWith(github.event.head_commit.message, 'v')
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d # v2.16.1
+        with:
+          egress-policy: audit
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: set up
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: false
+      - name: Generate GraphQL code
+        run: |
+          cd server
+          rm -f internal/adapter/gql/generated.go internal/adapter/gql/gqlmodel/models_gen.go
+          GOTOOLCHAIN=go1.24.2 go run github.com/99designs/gqlgen generate
+          # Clean up generated warnings in resolver.go
+          sed -i '/^\/\/ !!! WARNING !!!/,/^\*\/$/d' internal/adapter/gql/resolver.go
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v6
+        with:
+          version: latest
+          args: --timeout=10m
+          working-directory: server
+      - name: Check for changes in generated files
+        run: |
+          git diff --exit-code
+
+  ci-server-test:
+    runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo:4.4-focal
+        ports:
+          - 27017:27017
+    steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@fe104658747b27e96e4f7e80cd0a94068e53901d # v2.16.1
+        with:
+          egress-policy: audit
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: set up
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache-dependency-path: server/go.sum
+      - name: test
+        run: go test ./... -v -race -coverprofile=coverage.txt -covermode=atomic -timeout 10m
+        env:
+          REEARTH_MARKETPLACE_DB: mongodb://localhost
+        working-directory: server
+      - name: Send coverage report
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: server
+          files: coverage.txt
