@@ -24,7 +24,7 @@ jobs:
         with:
           egress-policy: audit
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Fetch tags
         run: git fetch --prune --unshallow --tags
       - name: Get info
