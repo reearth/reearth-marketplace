@@ -34,7 +34,7 @@ jobs:
         with:
           egress-policy: audit
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - uses: actions/create-github-app-token@v1
         id: app-token
         with:
