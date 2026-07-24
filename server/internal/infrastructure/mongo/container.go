@@ -6,7 +6,7 @@ import (
 
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearthx/mongox"
-	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
 func InitRepos(ctx context.Context, c *repo.Container, mc *mongo.Client, databaseName string, useTransaction bool) error {
