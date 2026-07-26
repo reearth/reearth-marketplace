@@ -21,19 +21,25 @@ const (
 )
 
 type fileRepo struct {
+	client           *storage.Client
 	pluginBucketName string
 	assetsBucketName string
 	assetsBaseURL    string
 }
 
-func NewFile(bucketName, assetsBucketName, assetsBaseURL string) (gateway.File, error) {
+func NewFile(ctx context.Context, bucketName, assetsBucketName, assetsBaseURL string) (gateway.File, error) {
 	if bucketName == "" {
 		return nil, errors.New("bucket name is empty")
 	}
 	if assetsBucketName == "" {
 		return nil, errors.New("assets bucket name is empty")
 	}
+	client, err := storage.NewClient(ctx)
+	if err != nil {
+		return nil, err
+	}
 	return &fileRepo{
+		client:           client,
 		pluginBucketName: bucketName,
 		assetsBucketName: assetsBucketName,
 		assetsBaseURL:    assetsBaseURL,
@@ -41,11 +47,7 @@ func NewFile(bucketName, assetsBucketName, assetsBaseURL string) (gateway.File, 
 }
 
 func (f *fileRepo) UploadPlugin(ctx context.Context, vid id.VersionID, content []byte) error {
-	client, err := storage.NewClient(ctx)
-	if err != nil {
-		return err
-	}
-	bucket := client.Bucket(f.pluginBucketName)
+	bucket := f.client.Bucket(f.pluginBucketName)
 	name := path.Join(gcsPluginBasePath, vid.String(), "plugin.zip")
 	object := bucket.Object(name)
 	if err := object.Delete(ctx); err != nil && !errors.Is(err, storage.ErrObjectNotExist) {
@@ -63,11 +65,7 @@ func (f *fileRepo) UploadPlugin(ctx context.Context, vid id.VersionID, content [
 }
 
 func (f *fileRepo) DownloadPlugin(ctx context.Context, vid id.VersionID) (io.ReadCloser, error) {
-	client, err := storage.NewClient(ctx)
-	if err != nil {
-		return nil, err
-	}
-	bucket := client.Bucket(f.pluginBucketName)
+	bucket := f.client.Bucket(f.pluginBucketName)
 	name := path.Join(gcsPluginBasePath, vid.String(), "plugin.zip")
 	object := bucket.Object(name)
 	r, err := object.NewReader(ctx)
@@ -78,11 +76,6 @@ func (f *fileRepo) DownloadPlugin(ctx context.Context, vid id.VersionID) (io.Rea
 }
 
 func (f *fileRepo) UploadImage(ctx context.Context, image io.ReadSeeker) (string, error) {
-	client, err := storage.NewClient(ctx)
-	if err != nil {
-		return "", err
-	}
-
 	content, err := io.ReadAll(image) // TODO: size limit
 	if err != nil {
 		return "", err
@@ -93,7 +86,7 @@ func (f *fileRepo) UploadImage(ctx context.Context, image io.ReadSeeker) (string
 		return "", err
 	}
 
-	bucket := client.Bucket(f.assetsBucketName)
+	bucket := f.client.Bucket(f.assetsBucketName)
 
 	digest := sha256.Sum256(content)
 	hexDigest := hex.EncodeToString(digest[:])
