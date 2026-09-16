@@ -1,4 +1,4 @@
-FROM golang:1.24.2 AS build
+FROM golang:1.27.0 AS build
 ARG TAG=release
 ARG REV
 ARG VERSION

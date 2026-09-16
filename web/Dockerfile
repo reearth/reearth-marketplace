@@ -1,4 +1,4 @@
-FROM node:22.1-slim AS node
+FROM node:24.20.0-slim AS node
 WORKDIR /work
 
 RUN --mount=type=bind,source=package.json,target=package.json,rw \
