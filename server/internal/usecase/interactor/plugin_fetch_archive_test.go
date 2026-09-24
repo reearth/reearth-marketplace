@@ -10,7 +10,6 @@ import (
 	"testing"
 )
 
-// TestFetchArchive_Success confirms a normal 200 response streams through untouched.
 func TestFetchArchive_Success(t *testing.T) {
 	const body = "zip-bytes"
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -33,10 +32,6 @@ func TestFetchArchive_Success(t *testing.T) {
 	}
 }
 
-// TestFetchArchive_NonOKStatus is a regression test for REL-08: fetchFromRepo used to
-// never check the response status, so GitHub's HTML error body for a 404/451/5xx was fed
-// straight into the zip parser, producing a misleading "invalid package" error instead of
-// reporting the actual fetch failure.
 func TestFetchArchive_NonOKStatus(t *testing.T) {
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
@@ -53,15 +48,7 @@ func TestFetchArchive_NonOKStatus(t *testing.T) {
 	}
 }
 
-// TestFetchArchive_TransportErrorIsNotMasked is a regression test for REL-08: a transport
-// failure (timeout, DNS, connection refused) used to be collapsed into the generic
-// ErrInvalidPluginPackage, which told the publisher to go debug their zip file even though
-// it was never fetched at all, and hid the real network failure from anyone reading the
-// error.
 func TestFetchArchive_TransportErrorIsNotMasked(t *testing.T) {
-	// Bind a listener, then close it immediately so the port is guaranteed
-	// closed -- the connection attempt fails fast and deterministically with
-	// "connection refused", without depending on network access or timing.
 	l, err := net.Listen("tcp", "127.0.0.1:0")
 	if err != nil {
 		t.Fatalf("failed to reserve a port: %v", err)

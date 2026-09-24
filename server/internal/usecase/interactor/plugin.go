@@ -460,23 +460,13 @@ func (p *Plugin) fetchFromRepo(ctx context.Context, repo *string) (*pluginpack.P
 	return packageFromZip(body)
 }
 
-// fetchArchive issues the request and validates the response, separated out from
-// fetchFromRepo so it's testable against a local server instead of github.com.
 func fetchArchive(ctx context.Context, client *http.Client, archiveURL string) (io.ReadCloser, error) {
 	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, archiveURL, nil)
 	resp, err := client.Do(req)
 	if err != nil {
-		// A transport failure (timeout, DNS, connection refused) is not a
-		// statement about the package's contents -- collapsing it into
-		// ErrInvalidPluginPackage sends the publisher off to debug a zip file
-		// that was never actually fetched, and hides real network failures
-		// from anyone reading the error.
 		return nil, fmt.Errorf("fetch repo archive: %w", err)
 	}
 	if resp.StatusCode != http.StatusOK {
-		// A non-200 body (GitHub's HTML error page for a 404/451/5xx) is not a
-		// zip file; feeding it to packageFromZip would fail with a generic
-		// zip-parse error that's just as misleading as the case above.
 		defer resp.Body.Close()
 		return nil, fmt.Errorf("fetch repo archive: unexpected status %d", resp.StatusCode)
 	}
