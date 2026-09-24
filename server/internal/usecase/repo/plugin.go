@@ -16,6 +16,7 @@ type Plugin interface {
 	FindByVersion(ctx context.Context, id plugin.ID, version string) (*plugin.VersionedPlugin, error)
 	SaveVersion(ctx context.Context, v *plugin.Version) error
 	Save(ctx context.Context, p *plugin.Plugin) error
+	IncrementDownloads(ctx context.Context, pid plugin.ID, vid plugin.VersionID) error
 	Search(ctx context.Context, user *id.UserID, filter *interfaces.SearchPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error)
 	Like(ctx context.Context, user id.UserID, id plugin.ID) error
 	Unlike(ctx context.Context, user id.UserID, id plugin.ID) error
