@@ -34,6 +34,7 @@ func GraphqlAPI(conf GraphQLConfig) echo.HandlerFunc {
 
 		usecases := adapter.Usecases(ctx)
 		ctx = gql.AttachUsecases(ctx, usecases)
+		ctx = adapter.AttachLoaders(ctx, usecases)
 		c.SetRequest(req.WithContext(ctx))
 		srv.ServeHTTP(c.Response(), c.Request())
 		return nil

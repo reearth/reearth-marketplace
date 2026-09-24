@@ -55,7 +55,7 @@ func (p *Plugin) Liked(ctx context.Context) (bool, error) {
 }
 
 func (p *Plugin) Publisher(ctx context.Context) (Publisher, error) {
-	u, err := adapter.Usecases(ctx).User.FindByID(ctx, p.publisherID)
+	u, err := adapter.GetLoaders(ctx).User.Load(ctx, p.publisherID)()
 	if err != nil {
 		return nil, err
 	}
