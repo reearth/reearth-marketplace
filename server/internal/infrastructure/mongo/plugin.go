@@ -238,6 +238,12 @@ func (r *pluginRepo) Save(ctx context.Context, p *plugin.Plugin) error {
 	return r.pluginClient().SaveOne(ctx, pluginDoc.ID, pluginDoc)
 }
 
+// maxLikedIDsForFilter bounds the like-lookup that backs the liked-plugin search
+// filter, so its memory use and the $in clause it builds stay bounded even for
+// an account with an unusually large number of likes, instead of scaling with
+// that account's entire lifetime like count.
+var maxLikedIDsForFilter int64 = 10000
+
 func (r *pluginRepo) Search(ctx context.Context, user *id.UserID, param *interfaces.SearchPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error) {
 	var conditions []bson.M
 	conditions = append(conditions, bson.M{
@@ -272,7 +278,10 @@ func (r *pluginRepo) Search(ctx context.Context, user *id.UserID, param *interfa
 	}
 	if param.Liked != nil && user != nil {
 		var c mongox.SliceConsumer[mongodoc.PluginLikeDocument]
-		if err := r.pluginLikeClient().Find(ctx, bson.M{"userId": user.String()}, &c); err != nil {
+		likeFindOption := options.Find().
+			SetProjection(bson.M{"pluginId": 1, "_id": 0}).
+			SetLimit(maxLikedIDsForFilter)
+		if err := r.pluginLikeClient().Find(ctx, bson.M{"userId": user.String()}, &c, likeFindOption); err != nil {
 			if !errors.Is(err, rerror.ErrNotFound) && !errors.Is(err, io.EOF) {
 				return nil, nil, err
 			}

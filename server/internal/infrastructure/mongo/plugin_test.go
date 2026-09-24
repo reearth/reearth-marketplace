@@ -2,6 +2,7 @@ package mongo
 
 import (
 	"context"
+	"fmt"
 	"testing"
 	"time"
 
@@ -401,4 +402,52 @@ func TestCorePlugin_FindByID(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, plugin.New(uid).ID(pid).Active(true).Core(true).MustBuild(), pl)
 
+}
+
+// TestPluginRepo_Search_LikedFilterCapsLikeLookup is a regression test for SCA-07: the liked
+// filter loaded every like document for a user into memory with no limit or projection, so
+// memory use and the $in clause it built scaled with a user's entire lifetime like count. This
+// lowers maxLikedIDsForFilter for the duration of the test to confirm the cap is actually
+// applied by the query rather than just declared.
+func TestPluginRepo_Search_LikedFilterCapsLikeLookup(t *testing.T) {
+	original := maxLikedIDsForFilter
+	maxLikedIDsForFilter = 3
+	defer func() { maxLikedIDsForFilter = original }()
+
+	ctx := context.Background()
+	db := mongotest.Connect(t)(t)
+	r := NewPlugin(mongox.NewClientWithDatabase(db)).(*pluginRepo)
+
+	uid := id.NewUserID()
+	const likedCount = 5
+	pluginIDs := make([]any, likedCount)
+	likeDocs := make([]any, likedCount)
+	for i := 0; i < likedCount; i++ {
+		pid := fmt.Sprintf("liked-plugin-%d", i)
+		pluginIDs[i] = bson.M{
+			"id":          pid,
+			"publisherId": uid.String(),
+			"active":      true,
+			"createdAt":   time.Now().Add(time.Duration(i) * time.Second),
+		}
+		likeDocs[i] = bson.M{
+			"userId":   uid.String(),
+			"pluginId": pid,
+		}
+	}
+	_, err := r.pluginClient().Client().InsertMany(ctx, pluginIDs)
+	assert.NoError(t, err)
+	_, err = r.pluginLikeClient().Client().InsertMany(ctx, likeDocs)
+	assert.NoError(t, err)
+
+	liked := true
+	first := 100
+	_, pageInfo, err := r.Search(ctx, uid.Ref(), &interfaces.SearchPluginParam{
+		Liked: &liked,
+		First: &first,
+		Sort:  "CREATEDAT_DESC",
+	})
+	assert.NoError(t, err)
+	assert.LessOrEqual(t, pageInfo.TotalCount, int64(maxLikedIDsForFilter),
+		"the liked filter must not consider more likes than the cap allows")
 }
