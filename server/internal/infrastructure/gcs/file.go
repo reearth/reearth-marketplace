@@ -57,11 +57,6 @@ func (f *fileRepo) UploadPlugin(ctx context.Context, vid id.VersionID, content [
 	return writeAndClose(object.NewWriter(ctx), content)
 }
 
-// writeAndClose writes content and closes w, surfacing an error from either step.
-// A storage.Writer buffers writes and only reports the upload's real outcome on
-// Close -- so a caller that discards the Close error (as UploadPlugin used to)
-// can commit a database record pointing at an object that was never actually
-// written, with no error anywhere to indicate that happened.
 func writeAndClose(w io.WriteCloser, content []byte) error {
 	if _, err := w.Write(content); err != nil {
 		_ = w.Close()

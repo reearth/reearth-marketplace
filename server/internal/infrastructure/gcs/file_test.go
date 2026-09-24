@@ -5,8 +5,6 @@ import (
 	"testing"
 )
 
-// fakeWriteCloser lets tests control what Write and Close return, without needing
-// a real or fake GCS backend.
 type fakeWriteCloser struct {
 	writeErr error
 	closeErr error
@@ -45,13 +43,6 @@ func TestWriteAndClose_WriteError(t *testing.T) {
 	}
 }
 
-// TestWriteAndClose_CloseErrorIsNotDropped is a regression test for REL-05: a
-// storage.Writer buffers writes and only reports the upload's real outcome on
-// Close, but UploadPlugin used to discard the Close error entirely
-// (defer func() { _ = w.Close() }()) and unconditionally return nil. A GCS
-// failure at Close time (transient 5xx, token refresh failure, permission
-// change) would then be invisible: the caller commits a database record
-// pointing at an object that was never actually written.
 func TestWriteAndClose_CloseErrorIsNotDropped(t *testing.T) {
 	w := &fakeWriteCloser{closeErr: errors.New("close failed")}
 	err := writeAndClose(w, []byte("content"))
