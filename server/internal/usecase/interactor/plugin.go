@@ -267,6 +267,9 @@ func (p *Plugin) UpdateVersion(ctx context.Context, user *user.User, param inter
 	if err != nil {
 		return nil, err
 	}
+	if vp.Plugin().PublisherID().Compare(user.ID()) != 0 {
+		return nil, fmt.Errorf("cannot update other's plugin")
+	}
 	v := vp.Version()
 	updated := false
 	if param.Active != nil {
