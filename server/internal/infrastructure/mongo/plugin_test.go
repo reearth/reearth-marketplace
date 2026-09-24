@@ -402,3 +402,32 @@ func TestCorePlugin_FindByID(t *testing.T) {
 	assert.Equal(t, plugin.New(uid).ID(pid).Active(true).Core(true).MustBuild(), pl)
 
 }
+
+// TestPluginRepo_Init_CreatesSearchIndexes is a regression test for SCA-05: active, type,
+// tags, name, and createdAt had no supporting index, so the base "active: true" filter and
+// the default createdAt sort forced a collection scan on every search regardless of keyword.
+func TestPluginRepo_Init_CreatesSearchIndexes(t *testing.T) {
+	ctx := context.Background()
+	db := mongotest.Connect(t)(t)
+	r := NewPlugin(mongox.NewClientWithDatabase(db)).(*pluginRepo)
+
+	cur, err := r.pluginClient().Client().Indexes().List(ctx)
+	assert.NoError(t, err)
+	var indexes []bson.M
+	assert.NoError(t, cur.All(ctx, &indexes))
+
+	indexedFields := map[string]bool{}
+	for _, idx := range indexes {
+		key, ok := idx["key"].(bson.M)
+		if !ok {
+			continue
+		}
+		for field := range key {
+			indexedFields[field] = true
+		}
+	}
+
+	for _, field := range []string{"active", "type", "tags", "name", "createdAt"} {
+		assert.True(t, indexedFields[field], "expected an index on %q", field)
+	}
+}
