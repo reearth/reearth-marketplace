@@ -77,17 +77,7 @@ func (u *userRepo) FindOrCreate(ctx context.Context, authInfo repo.AuthInfo) (*u
 	if isNewUser {
 		userName, err := makeInitialUserName(ctx, authInfo)
 		if err != nil {
-			// The user document was already upserted above, so returning an error
-			// here would leave it permanently nameless: every future login for
-			// this account re-enters this branch and, for a deterministic failure
-			// (e.g. an unsafe name/email combination), fails the exact same way
-			// forever. Fall back to a random name instead, same as the
-			// duplicate-key case below -- the user can rename themselves later.
-			randomUserName, rerr := user.RandomName(rand.Reader, 8)
-			if rerr != nil {
-				return nil, fmt.Errorf("get random initial user name: %w", rerr)
-			}
-			userName = randomUserName
+			return nil, fmt.Errorf("make initial user name: %w", err)
 		}
 		userDoc.Name = userName
 		if err := u.client.SaveOne(ctx, userDoc.ID, userDoc); err != nil {

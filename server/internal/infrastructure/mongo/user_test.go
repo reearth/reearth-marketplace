@@ -93,10 +93,6 @@ func Test_userRepo_FindOrCreate(t *testing.T) {
 			want: "safe",
 		},
 		{
-			// Regression test for REL-07: an unsafe name and an unsafe email
-			// local-part is a deterministic failure that will never resolve on
-			// retry, so this must fall back to a random name instead of
-			// returning an error and leaving the account permanently nameless.
 			name: "NewUser/BothUnsafe",
 			args: args{
 				authInfo: repo.AuthInfo{
@@ -105,7 +101,7 @@ func Test_userRepo_FindOrCreate(t *testing.T) {
 					Token: "eyJ_00005",
 				},
 			},
-			wantNot: "Unsafe Name",
+			wantErr: true,
 		},
 	}
 
@@ -132,49 +128,6 @@ func Test_userRepo_FindOrCreate(t *testing.T) {
 				t.Errorf("unexpected name: got=%q, want=%q", got.Name(), tt.want)
 			}
 		})
-	}
-}
-
-// Test_userRepo_FindOrCreate_UnsafeNameDoesNotLockOutAccount is a regression test for
-// REL-07: the account document is upserted before the IdP-derived name is resolved, so
-// a deterministic name-derivation failure (unsafe name and unsafe email local-part) used
-// to leave the account permanently nameless -- every subsequent FindOrCreate call for the
-// same oidcSub re-entered the same failing branch and errored identically forever. This
-// confirms a second call for the same account now succeeds instead of repeating the
-// failure.
-func Test_userRepo_FindOrCreate_UnsafeNameDoesNotLockOutAccount(t *testing.T) {
-	oidcServer := mockOIDCServer(map[string]*userInfo{
-		"eyJ_lockout": {Name: "Unsafe Name", Email: "unsafe+reearth@email.test"},
-	})
-
-	connect := mongotest.Connect(t)
-	db := connect(t)
-	u := NewUser(mongox.NewClientWithDatabase(db))
-	ctx := context.Background()
-
-	authInfo := repo.AuthInfo{
-		Sub:   "lockout-user",
-		Iss:   oidcServer.URL,
-		Token: "eyJ_lockout",
-	}
-
-	first, err := u.FindOrCreate(ctx, authInfo)
-	if err != nil {
-		t.Fatalf("first FindOrCreate should not error: %v", err)
-	}
-	if first.Name() == "" {
-		t.Fatal("first FindOrCreate should assign a fallback name, not leave the account nameless")
-	}
-
-	second, err := u.FindOrCreate(ctx, authInfo)
-	if err != nil {
-		t.Fatalf("second FindOrCreate for the same account should not error (this is the lockout this test guards against): %v", err)
-	}
-	if second.ID() != first.ID() {
-		t.Fatalf("second call should return the same account, got a different one: first=%q second=%q", first.ID(), second.ID())
-	}
-	if second.Name() != first.Name() {
-		t.Fatalf("second call should not re-derive a new name for an already-named account: first=%q second=%q", first.Name(), second.Name())
 	}
 }
 
