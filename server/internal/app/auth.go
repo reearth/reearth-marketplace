@@ -3,13 +3,24 @@ package app
 import (
 	"fmt"
 	"net/http"
+	"time"
 
+	"github.com/hashicorp/golang-lru/v2/expirable"
 	"github.com/labstack/echo/v4"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
+	"github.com/reearth/reearth-marketplace/server/pkg/user"
 	"github.com/reearth/reearthx/appx"
 )
+
+// authUserCacheTTL bounds how long a resolved user is reused before
+// authMiddleware re-checks the account with FindOrCreate. Every authenticated
+// request otherwise costs one write-path upsert against the Mongo primary --
+// including read-only requests that never mutate anything -- so its command
+// rate scales 1:1 with total request rate instead of with actual signups.
+const authUserCacheTTL = 60 * time.Second
+const authUserCacheSize = 4096
 
 // Validate the access token and inject the user clams into ctx
 func jwtEchoMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
@@ -30,6 +41,7 @@ func jwtEchoMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
 }
 
 func authMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
+	userCache := expirable.NewLRU[string, *user.User](authUserCacheSize, nil, authUserCacheTTL)
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			req := c.Request()
@@ -37,13 +49,18 @@ func authMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
 
 			au := adapter.GetAuthInfo(ctx)
 			if au != nil && (cfg.Config.Auth_M2M.Sub == "" || au.Sub != cfg.Config.Auth_M2M.Sub) {
-				u, err := cfg.Repos.User.FindOrCreate(ctx, repo.AuthInfo{
-					Sub:   au.Sub,
-					Iss:   au.Iss,
-					Token: au.Token,
-				})
-				if err != nil {
-					return err
+				u, ok := userCache.Get(au.Sub)
+				if !ok {
+					var err error
+					u, err = cfg.Repos.User.FindOrCreate(ctx, repo.AuthInfo{
+						Sub:   au.Sub,
+						Iss:   au.Iss,
+						Token: au.Token,
+					})
+					if err != nil {
+						return err
+					}
+					userCache.Add(au.Sub, u)
 				}
 				ctx = adapter.AttachUser(ctx, u)
 			} else if cfg.Debug {
