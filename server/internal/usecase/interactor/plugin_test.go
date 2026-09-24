@@ -13,8 +13,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-// fakePluginRepo implements repo.Plugin, backing only the methods UpdateVersion needs.
-// Every other method panics if called, so an unexpected code path fails loudly.
 type fakePluginRepo struct {
 	repo.Plugin
 	vp           *plugin.VersionedPlugin
