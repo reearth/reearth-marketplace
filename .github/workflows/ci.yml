@@ -83,7 +83,11 @@ jobs:
       new_tag_short: ${{ needs.build-prepare.outputs.new_tag_short }}
       name: ${{ needs.build-prepare.outputs.name }}
       sha: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      GH_APP_PRIVATE_KEY: ${{ secrets.GH_APP_PRIVATE_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   build-web-post:
     # needs build-web, but also this job should be triggered even if it was skipped
@@ -110,7 +114,11 @@ jobs:
       new_tag_short: ${{ needs.build-prepare.outputs.new_tag_short }}
       name: ${{ needs.build-prepare.outputs.name }}
       sha: ${{ github.sha }}
-    secrets: inherit
+    secrets:
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+      GH_APP_PRIVATE_KEY: ${{ secrets.GH_APP_PRIVATE_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # TODO: build_release workflow is broken
   # TODO: Remove build-web-post from needs when we discontinue embedding front-end in the server
@@ -129,7 +137,12 @@ jobs:
   deploy-web:
     needs: build-web
     uses: ./.github/workflows/deploy_web_nightly.yml
-    secrets: inherit
+    secrets:
+      GC_SA_EMAIL: ${{ secrets.GC_SA_EMAIL }}
+      GC_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
+      WEB_IMAGE: ${{ secrets.WEB_IMAGE }}
+      WEB_IMAGE_GC: ${{ secrets.WEB_IMAGE_GC }}
+      GC_REGION: ${{ secrets.GC_REGION }}
 
   deploy-server:
     needs: build-server
@@ -137,4 +150,9 @@ jobs:
     # TODO: Remove "if" when we discontinue embedding front-end in the server
     if: ${{ !cancelled() }}
     uses: ./.github/workflows/deploy_server_nightly.yml
-    secrets: inherit
+    secrets:
+      GC_SA_EMAIL: ${{ secrets.GC_SA_EMAIL }}
+      GC_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
+      SERVER_IMAGE: ${{ secrets.SERVER_IMAGE }}
+      SERVER_IMAGE_GC: ${{ secrets.SERVER_IMAGE_GC }}
+      GC_REGION: ${{ secrets.GC_REGION }}

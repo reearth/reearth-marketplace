@@ -17,6 +17,15 @@ on:
       sha:
         type: string
         required: true
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+      GH_APP_PRIVATE_KEY:
+        required: true
+      GITHUB_TOKEN:
+        required: true
 
 jobs:
   build-web-docker:
