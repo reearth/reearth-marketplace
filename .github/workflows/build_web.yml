@@ -24,8 +24,6 @@ on:
         required: true
       GH_APP_PRIVATE_KEY:
         required: true
-      GITHUB_TOKEN:
-        required: true
 
 jobs:
   build-web-docker:
