@@ -17,6 +17,13 @@ on:
       sha:
         type: string
         required: true
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+      GH_APP_PRIVATE_KEY:
+        required: true
 
 jobs:
   build-docker-image:
