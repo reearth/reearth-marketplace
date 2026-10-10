@@ -4,7 +4,7 @@ import (
 	nhttp "net/http"
 	"strings"
 
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter/http"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
