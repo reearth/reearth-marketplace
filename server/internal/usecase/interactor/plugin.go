@@ -2,8 +2,10 @@ package interactor
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"net/url"
 	"time"
@@ -35,6 +37,31 @@ func NewPlugin(r *repo.Container, gr *gateway.Container) interfaces.Plugin {
 }
 
 var pluginPackageSizeLimit int64 = 10 * 1024 * 1024
+
+// repoFetchClient is hardened for fetching publisher-supplied repo archive URLs.
+// ResponseHeaderTimeout ensures we fail fast if a server is slow to send headers
+// (time-to-first-byte), complementing the overall Client.Timeout which covers
+// the full request lifecycle.
+var repoFetchClient = &http.Client{
+	Timeout: 30 * time.Second,
+	Transport: &http.Transport{
+		Proxy:                 http.ProxyFromEnvironment,
+		DialContext:           (&net.Dialer{Timeout: 5 * time.Second, KeepAlive: 30 * time.Second}).DialContext,
+		TLSHandshakeTimeout:   5 * time.Second,
+		ResponseHeaderTimeout: 10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+		IdleConnTimeout:       90 * time.Second,
+		MaxIdleConns:          100,
+		MaxIdleConnsPerHost:   10,
+		DisableCompression:    true,
+	},
+	CheckRedirect: func(_ *http.Request, via []*http.Request) error {
+		if len(via) >= 5 {
+			return errors.New("too many redirects")
+		}
+		return nil
+	},
+}
 
 func (p *Plugin) FindByID(ctx context.Context, id id.PluginID, user *id.UserID) (*plugin.VersionedPlugin, error) {
 	pl, err := p.pluginRepo.FindByID(ctx, id, user)
@@ -425,13 +452,25 @@ func (p *Plugin) fetchFromRepo(ctx context.Context, repo *string) (*pluginpack.P
 		return nil, err
 	}
 
-	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, ru.ArchiveURL().String(), nil)
-	resp, err := http.DefaultClient.Do(req)
+	body, err := fetchArchive(ctx, repoFetchClient, ru.ArchiveURL().String())
 	if err != nil {
-		return nil, interfaces.ErrInvalidPluginPackage
+		return nil, err
 	}
-	defer resp.Body.Close()
-	return packageFromZip(resp.Body)
+	defer body.Close()
+	return packageFromZip(body)
+}
+
+func fetchArchive(ctx context.Context, client *http.Client, archiveURL string) (io.ReadCloser, error) {
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, archiveURL, nil)
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("fetch repo archive: %w", err)
+	}
+	if resp.StatusCode != http.StatusOK {
+		defer resp.Body.Close()
+		return nil, fmt.Errorf("fetch repo archive: unexpected status %d", resp.StatusCode)
+	}
+	return resp.Body, nil
 }
 
 func packageFromZip(r io.Reader) (*pluginpack.Package, error) {

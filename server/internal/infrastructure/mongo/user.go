@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+	"time"
 
 	"github.com/reearth/reearth-marketplace/server/internal/infrastructure/mongo/mongodoc"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
@@ -24,6 +25,10 @@ import (
 type userRepo struct {
 	client *mongox.ClientCollection
 }
+
+// oidcClient bounds calls to the OIDC provider's discovery/userinfo endpoints,
+// reached from the auth middleware's first-login path.
+var oidcClient = &http.Client{Timeout: 30 * time.Second}
 
 func NewUser(client *mongox.Client) repo.User {
 	r := &userRepo{client: client.WithCollection("user")}
@@ -153,7 +158,7 @@ func resolveUserInfoEndpoint(ctx context.Context, iss string) (string, error) {
 		return "", fmt.Errorf("unsupported issuer: %w", err)
 	}
 	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, configURL, nil)
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := oidcClient.Do(req)
 	if err != nil {
 		return "", fmt.Errorf("get openid-configuration: %w", err)
 	}
@@ -178,7 +183,7 @@ type userInfo struct {
 func fetchUserInfo(ctx context.Context, userInfoEndpoint string, token string) (*userInfo, error) {
 	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, userInfoEndpoint, nil)
 	req.Header.Set("Authorization", "Bearer "+token)
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := oidcClient.Do(req)
 	if err != nil {
 		return nil, fmt.Errorf("get userinfo: %w", err)
 	}
