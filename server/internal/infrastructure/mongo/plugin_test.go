@@ -402,3 +402,27 @@ func TestCorePlugin_FindByID(t *testing.T) {
 	assert.Equal(t, plugin.New(uid).ID(pid).Active(true).Core(true).MustBuild(), pl)
 
 }
+
+func TestPluginRepo_IncrementDownloads(t *testing.T) {
+	ctx := context.Background()
+	db := mongotest.Connect(t)(t)
+	r := NewPlugin(mongox.NewClientWithDatabase(db)).(*pluginRepo)
+
+	uid := user.NewID()
+	version, err := plugin.NewPartialVersion().Version("0.0.1").Build()
+	assert.NoError(t, err)
+	pl := plugin.New(uid).NewID("test-plugin").Active(true).Downloads(5).LatestVersion(version).MustBuild()
+	vp, err := plugin.Versioned(pl).Build()
+	assert.NoError(t, err)
+	assert.NoError(t, r.Create(ctx, vp))
+
+	assert.NoError(t, r.IncrementDownloads(ctx, vp.Plugin().ID(), vp.Version().ID()))
+
+	gotPlugin, err := r.FindByID(ctx, vp.Plugin().ID(), nil)
+	assert.NoError(t, err)
+	assert.Equal(t, int64(6), gotPlugin.Downloads())
+
+	gotVersioned, err := r.FindByVersion(ctx, vp.Plugin().ID(), "0.0.1")
+	assert.NoError(t, err)
+	assert.Equal(t, int64(1), gotVersioned.Version().Downloads())
+}

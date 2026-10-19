@@ -345,38 +345,15 @@ func (p *Plugin) IncreaseDownloadCount(ctx context.Context, id id.PluginID, vers
 	return err
 }
 
-func (p *Plugin) download(ctx context.Context, vp *plugin.VersionedPlugin, onlyIncrease bool) (_ io.ReadCloser, err error) {
-	tx, err := p.transaction.Begin(ctx)
-	if err != nil {
+func (p *Plugin) download(ctx context.Context, vp *plugin.VersionedPlugin, onlyIncrease bool) (io.ReadCloser, error) {
+	if err := p.pluginRepo.IncrementDownloads(ctx, vp.Plugin().ID(), vp.Version().ID()); err != nil {
 		return nil, err
 	}
-
-	ctx = tx.Context()
-	defer func() {
-		err2 := tx.End(ctx)
-		if err == nil {
-			err = err2
-		}
-	}()
-	vp2, err := p.FindByVersion(ctx, vp.Plugin().ID(), vp.Version().Version().String())
-	if err != nil {
-		return nil, err
-	}
-	vp2.Plugin().AddDownloads(1)
-	vp2.Version().AddDownloads(1)
-
-	if err := p.pluginRepo.Save(ctx, vp2.Plugin()); err != nil {
-		return nil, err
-	}
-	if err := p.pluginRepo.SaveVersion(ctx, vp2.Version()); err != nil {
-		return nil, err
-	}
-	tx.Commit()
 	if onlyIncrease {
 		return nil, nil
 	}
 
-	b, err := p.file.DownloadPlugin(ctx, vp2.Version().ID())
+	b, err := p.file.DownloadPlugin(ctx, vp.Version().ID())
 	if err != nil {
 		return nil, err
 	}

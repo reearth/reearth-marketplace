@@ -87,6 +87,22 @@ func (r *pluginRepo) SaveVersion(ctx context.Context, v *plugin.Version) error {
 	return nil
 }
 
+func (r *pluginRepo) IncrementDownloads(ctx context.Context, pid plugin.ID, vid plugin.VersionID) error {
+	if _, err := r.pluginClient().Client().UpdateOne(ctx,
+		bson.M{"id": pid.String()},
+		bson.M{"$inc": bson.M{"downloads": 1}},
+	); err != nil {
+		return err
+	}
+	if _, err := r.pluginVersionClient().Client().UpdateOne(ctx,
+		bson.M{"id": vid.String()},
+		bson.M{"$inc": bson.M{"downloads": 1}},
+	); err != nil {
+		return err
+	}
+	return nil
+}
+
 func NewPlugin(client *mongox.Client) repo.Plugin {
 	r := &pluginRepo{client: client}
 	r.init()
