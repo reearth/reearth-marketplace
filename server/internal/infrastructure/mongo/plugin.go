@@ -293,21 +293,21 @@ func (r *pluginRepo) Search(ctx context.Context, user *id.UserID, param *interfa
 		return nil, nil, err
 	}
 	findOption := options.Find().SetSort(sort.SortOption())
-	limit := 0
-	if param.First != nil {
-		limit = *param.First
-		findOption.SetLimit(int64(limit) + 1)
-		if param.After != nil {
-			if sc, err := decodeSearchCursor(sort.Key, *param.After); err == nil {
-				conditions = append(conditions, sort.AfterCondition(sc))
-			}
-		}
-	} else if param.Last != nil {
-		limit = *param.Last
+	var limit int
+	if param.Last != nil && param.First == nil {
+		limit = clampPageSize(param.Last)
 		findOption.SetLimit(int64(limit) + 1)
 		if param.Before != nil {
 			if sc, err := decodeSearchCursor(sort.Key, *param.Before); err == nil {
 				conditions = append(conditions, sort.BeforeCondition(sc))
+			}
+		}
+	} else {
+		limit = clampPageSize(param.First)
+		findOption.SetLimit(int64(limit) + 1)
+		if param.After != nil {
+			if sc, err := decodeSearchCursor(sort.Key, *param.After); err == nil {
+				conditions = append(conditions, sort.AfterCondition(sc))
 			}
 		}
 	}
@@ -451,21 +451,21 @@ func (r *pluginRepo) List(ctx context.Context, uid id.UserID, param *interfaces.
 		return nil, nil, err
 	}
 	findOption := options.Find().SetSort(sort.SortOption())
-	limit := 0
-	if param.First != nil {
-		limit = *param.First
-		findOption.SetLimit(int64(limit) + 1)
-		if param.After != nil {
-			if sc, err := decodeSearchCursor(sort.Key, *param.After); err == nil {
-				conditions = append(conditions, sort.AfterCondition(sc))
-			}
-		}
-	} else if param.Last != nil {
-		limit = *param.Last
+	var limit int
+	if param.Last != nil && param.First == nil {
+		limit = clampPageSize(param.Last)
 		findOption.SetLimit(int64(limit) + 1)
 		if param.Before != nil {
 			if sc, err := decodeSearchCursor(sort.Key, *param.Before); err == nil {
 				conditions = append(conditions, sort.BeforeCondition(sc))
+			}
+		}
+	} else {
+		limit = clampPageSize(param.First)
+		findOption.SetLimit(int64(limit) + 1)
+		if param.After != nil {
+			if sc, err := decodeSearchCursor(sort.Key, *param.After); err == nil {
+				conditions = append(conditions, sort.AfterCondition(sc))
 			}
 		}
 	}
@@ -564,6 +564,25 @@ func (c *searchCursor) Encode() (string, error) {
 		return "", err
 	}
 	return base64.StdEncoding.EncodeToString(b), nil
+}
+
+// maxPageSize bounds how many documents a single Search/List page can request,
+// regardless of what the caller asks for. defaultPageSize applies when neither
+// first nor last is given at all, since Find with no limit set otherwise
+// returns the entire matching collection.
+const (
+	maxPageSize     = 100
+	defaultPageSize = 20
+)
+
+func clampPageSize(requested *int) int {
+	if requested == nil || *requested <= 0 {
+		return defaultPageSize
+	}
+	if *requested > maxPageSize {
+		return maxPageSize
+	}
+	return *requested
 }
 
 func toFilter(conditions []bson.M) bson.M {
