@@ -97,7 +97,7 @@ func (r *pluginRepo) init() {
 	initIndexes(
 		context.Background(),
 		r.pluginClient(),
-		[]string{"publisherId", "publishedAt", "downloads"},
+		[]string{"publisherId", "publishedAt", "downloads", "active", "type", "tags", "name", "createdAt"},
 		[]string{"id"},
 	)
 	initIndexes(
