@@ -8,6 +8,7 @@ import (
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
+	"github.com/reearth/reearthx/rerror"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
@@ -76,4 +77,27 @@ func TestLoaders_User_BatchesConcurrentLoads(t *testing.T) {
 	assert.Equal(t, u2.ID(), got[1].ID())
 	assert.Equal(t, u3.ID(), got[2].ID())
 	assert.Equal(t, u1.ID(), got[3].ID())
+}
+
+// A user missing from the FindByIDs result must come back as rerror.ErrNotFound rather than a
+// nil user with no error, which Plugin.Publisher would turn into a typed-nil Publisher.
+func TestLoaders_User_MissingUserReturnsNotFound(t *testing.T) {
+	existing, err := user.New().NewID().Build()
+	require.NoError(t, err)
+	missingID := id.NewUserID()
+
+	repo := &batchCountingUserRepo{users: map[id.UserID]*user.User{existing.ID(): existing}}
+	ctx := AttachLoaders(context.Background(), &interfaces.Container{User: repo})
+	loaders := GetLoaders(ctx)
+
+	thunkOK := loaders.User.Load(ctx, existing.ID())
+	thunkMissing := loaders.User.Load(ctx, missingID)
+
+	got, err := thunkOK()
+	assert.NoError(t, err)
+	assert.Equal(t, existing.ID(), got.ID())
+
+	gotMissing, err := thunkMissing()
+	assert.ErrorIs(t, err, rerror.ErrNotFound)
+	assert.Nil(t, gotMissing)
 }

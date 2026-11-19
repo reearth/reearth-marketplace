@@ -7,6 +7,7 @@ import (
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
+	"github.com/reearth/reearthx/rerror"
 )
 
 const contextLoaders ContextKey = "loaders"
@@ -47,7 +48,12 @@ func userBatchFn(u *interfaces.Container) dataloader.BatchFunc[id.UserID, *user.
 			}
 		}
 		for i, k := range keys {
-			results[i] = &dataloader.Result[*user.User]{Data: byID[k]}
+			us, ok := byID[k]
+			if !ok {
+				results[i] = &dataloader.Result[*user.User]{Error: rerror.ErrNotFound}
+				continue
+			}
+			results[i] = &dataloader.Result[*user.User]{Data: us}
 		}
 		return results
 	}
