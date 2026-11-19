@@ -13,6 +13,7 @@ import (
 	"github.com/h2non/filetype/matchers"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/gateway"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
+	"github.com/reearth/reearthx/log"
 )
 
 const (
@@ -21,6 +22,7 @@ const (
 )
 
 type fileRepo struct {
+	// client is shared for the lifetime of the process and intentionally never closed.
 	client           *storage.Client
 	pluginBucketName string
 	assetsBucketName string
@@ -51,21 +53,23 @@ func (f *fileRepo) UploadPlugin(ctx context.Context, vid id.VersionID, content [
 	name := path.Join(gcsPluginBasePath, vid.String(), "plugin.zip")
 	object := bucket.Object(name)
 	if err := object.Delete(ctx); err != nil && !errors.Is(err, storage.ErrObjectNotExist) {
+		log.Errorfc(ctx, "gcs: failed to delete existing plugin %s: %v", name, err)
 		return gateway.ErrFailedToUploadFile
 	}
 
-	return writeAndClose(object.NewWriter(ctx), content)
+	if err := writeAndClose(object.NewWriter(ctx), content); err != nil {
+		log.Errorfc(ctx, "gcs: failed to upload plugin %s: %v", name, err)
+		return gateway.ErrFailedToUploadFile
+	}
+	return nil
 }
 
 func writeAndClose(w io.WriteCloser, content []byte) error {
 	if _, err := w.Write(content); err != nil {
 		_ = w.Close()
-		return gateway.ErrFailedToUploadFile
+		return err
 	}
-	if err := w.Close(); err != nil {
-		return gateway.ErrFailedToUploadFile
-	}
-	return nil
+	return w.Close()
 }
 
 func (f *fileRepo) DownloadPlugin(ctx context.Context, vid id.VersionID) (io.ReadCloser, error) {
@@ -98,14 +102,12 @@ func (f *fileRepo) UploadImage(ctx context.Context, image io.ReadSeeker) (string
 
 	object := bucket.Object(name)
 	if err := object.Delete(ctx); err != nil && !errors.Is(err, storage.ErrObjectNotExist) {
+		log.Errorfc(ctx, "gcs: failed to delete existing image %s: %v", name, err)
 		return "", gateway.ErrFailedToUploadFile
 	}
 
-	w := object.NewWriter(ctx)
-	if _, err := w.Write(content); err != nil {
-		return "", gateway.ErrFailedToUploadFile
-	}
-	if err := w.Close(); err != nil {
+	if err := writeAndClose(object.NewWriter(ctx), content); err != nil {
+		log.Errorfc(ctx, "gcs: failed to upload image %s: %v", name, err)
 		return "", gateway.ErrFailedToUploadFile
 	}
 	return name, nil
