@@ -2,7 +2,7 @@ name: ci-server
 on:
   workflow_call:
 env:
-  GO_VERSION: "1.24"
+  GO_VERSION: "1.27.2"
 
 jobs:
   ci-server-lint:
@@ -24,7 +24,7 @@ jobs:
         run: |
           cd server
           rm -f internal/adapter/gql/generated.go internal/adapter/gql/gqlmodel/models_gen.go
-          GOTOOLCHAIN=go1.24.2 go run github.com/99designs/gqlgen generate
+          GOTOOLCHAIN=go1.27.2 go run github.com/99designs/gqlgen generate
           # Clean up generated warnings in resolver.go
           sed -i '/^\/\/ !!! WARNING !!!/,/^\*\/$/d' internal/adapter/gql/resolver.go
       - name: golangci-lint
