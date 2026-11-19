@@ -2,6 +2,7 @@ package mongo
 
 import (
 	"context"
+	"fmt"
 	"testing"
 	"time"
 
@@ -401,4 +402,86 @@ func TestCorePlugin_FindByID(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, plugin.New(uid).ID(pid).Active(true).Core(true).MustBuild(), pl)
 
+}
+
+func TestClampPageSize(t *testing.T) {
+	first := 5
+	oversized := 100000
+	zero := 0
+	negative := -1
+
+	got, err := clampPageSize(nil)
+	assert.NoError(t, err)
+	assert.Equal(t, defaultPageSize, got)
+
+	got, err = clampPageSize(&zero)
+	assert.NoError(t, err)
+	assert.Equal(t, 0, got)
+
+	_, err = clampPageSize(&negative)
+	assert.ErrorIs(t, err, interfaces.ErrInvalidPageSize)
+
+	got, err = clampPageSize(&first)
+	assert.NoError(t, err)
+	assert.Equal(t, 5, got)
+
+	got, err = clampPageSize(&oversized)
+	assert.NoError(t, err)
+	assert.Equal(t, maxPageSize, got)
+}
+
+func seedActivePlugins(t *testing.T, ctx context.Context, db *mongox.ClientCollection, uid id.UserID, count int) {
+	t.Helper()
+	docs := make([]any, count)
+	for i := 0; i < count; i++ {
+		docs[i] = bson.M{
+			"id":          fmt.Sprintf("test-plugin-%d", i),
+			"publisherId": uid.String(),
+			"active":      true,
+			"createdAt":   time.Now().Add(time.Duration(i) * time.Second),
+		}
+	}
+	_, err := db.Client().InsertMany(ctx, docs)
+	assert.NoError(t, err)
+}
+
+// TestPluginRepo_Search_CapsPageSize is a regression test for SCA-02: first/last flowed
+// straight into SetLimit with no maximum, and requesting neither at all left the query with
+// no limit clause whatsoever, returning the entire matching collection.
+func TestPluginRepo_Search_CapsPageSize(t *testing.T) {
+	ctx := context.Background()
+	db := mongotest.Connect(t)(t)
+	r := NewPlugin(mongox.NewClientWithDatabase(db)).(*pluginRepo)
+
+	uid := id.NewUserID()
+	seedActivePlugins(t, ctx, r.pluginClient(), uid, maxPageSize+20)
+
+	t.Run("oversized first is capped", func(t *testing.T) {
+		oversized := 100000
+		ps, _, err := r.Search(ctx, nil, &interfaces.SearchPluginParam{First: &oversized, Sort: "CREATEDAT_DESC"})
+		assert.NoError(t, err)
+		assert.LessOrEqual(t, len(ps), maxPageSize)
+	})
+
+	t.Run("no first or last still returns a bounded page, not the whole collection", func(t *testing.T) {
+		ps, pageInfo, err := r.Search(ctx, nil, &interfaces.SearchPluginParam{Sort: "CREATEDAT_DESC"})
+		assert.NoError(t, err)
+		assert.Equal(t, defaultPageSize, len(ps))
+		assert.True(t, pageInfo.HasNextPage, "a truncated default page must report that more results exist")
+	})
+
+	t.Run("first 0 returns an empty page", func(t *testing.T) {
+		zero := 0
+		ps, _, err := r.Search(ctx, nil, &interfaces.SearchPluginParam{First: &zero, Sort: "CREATEDAT_DESC"})
+		assert.NoError(t, err)
+		assert.Empty(t, ps)
+	})
+
+	t.Run("negative first or last is rejected", func(t *testing.T) {
+		negative := -5
+		_, _, err := r.Search(ctx, nil, &interfaces.SearchPluginParam{First: &negative, Sort: "CREATEDAT_DESC"})
+		assert.ErrorIs(t, err, interfaces.ErrInvalidPageSize)
+		_, _, err = r.Search(ctx, nil, &interfaces.SearchPluginParam{Last: &negative, Sort: "CREATEDAT_DESC"})
+		assert.ErrorIs(t, err, interfaces.ErrInvalidPageSize)
+	})
 }
