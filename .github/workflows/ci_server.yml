@@ -66,7 +66,7 @@ jobs:
           REEARTH_MARKETPLACE_DB: mongodb://localhost
         working-directory: server
       - name: Send coverage report
-        uses: codecov/codecov-action@0fb7174895f61a3b6b78fc075e0cd60383518dac # v5
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           flags: server
