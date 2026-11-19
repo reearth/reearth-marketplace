@@ -7,6 +7,7 @@ import (
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
+	"github.com/reearth/reearthx/rerror"
 	"golang.org/x/text/language"
 )
 
@@ -51,6 +52,9 @@ func (i *User) FindByID(ctx context.Context, uid id.UserID) (*user.User, error) 
 	us, err := i.userRepo.FindByIDs(ctx, id.UserIDList{uid})
 	if err != nil {
 		return nil, err
+	}
+	if len(us) == 0 {
+		return nil, rerror.ErrNotFound
 	}
 	return us[0], nil
 }
