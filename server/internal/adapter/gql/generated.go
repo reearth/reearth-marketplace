@@ -1067,6 +1067,7 @@ interface Publisher {
   displayName: String
   description: String
   plugins(
+    # Page size defaults to 20 when neither first nor last is set, is capped at 100, and must not be negative.
     first: Int
     last: Int
     before: Cursor
@@ -1081,6 +1082,7 @@ type User implements Node & Publisher {
   displayName: String
   description: String
   plugins(
+    # Page size defaults to 20 when neither first nor last is set, is capped at 100, and must not be negative.
     first: Int
     last: Int
     before: Cursor
@@ -1101,6 +1103,7 @@ type Organization implements Node & Publisher {
   # Whether to display to users.
   active: Boolean!
   plugins(
+    # Page size defaults to 20 when neither first nor last is set, is capped at 100, and must not be negative.
     first: Int
     last: Int
     before: Cursor
@@ -1172,6 +1175,7 @@ type Me implements Publisher {
   tel: String # Pending
   publishable: Boolean! # True once the developer profile has been filled
   plugins(
+    # Page size defaults to 20 when neither first nor last is set, is capped at 100, and must not be negative.
     first: Int
     last: Int
     before: Cursor
@@ -1212,6 +1216,7 @@ enum PluginSort {
 }
 
 input PluginsInput {
+  # Page size defaults to 20 when neither first nor last is set, is capped at 100, and must not be negative.
   first: Int
   last: Int
   before: Cursor
