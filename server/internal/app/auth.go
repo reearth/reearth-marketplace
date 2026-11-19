@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
@@ -19,7 +19,7 @@ func jwtEchoMiddleware(cfg *ServerConfig) echo.MiddlewareFunc {
 			return next // No-op middleware
 		}
 	}
-	
+
 	// In debug mode, allow requests without valid JWT tokens for testing
 	strict := !cfg.Debug
 	mw, err := appx.AuthMiddleware(cfg.Config.AuthProviders(), adapter.ContextAuthInfo, strict)
