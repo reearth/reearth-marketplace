@@ -13,7 +13,7 @@ COPY internal/ /app/internal/
 
 RUN CGO_ENABLED=0 go build -tags "${TAG}" "-ldflags=-X main.version=${VERSION} -s -w -buildid=" -trimpath ./cmd/reearth-marketplace
 
-FROM debian:buster
+FROM debian:trixie
 
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=build /app/reearth-marketplace /app/reearth-marketplace
