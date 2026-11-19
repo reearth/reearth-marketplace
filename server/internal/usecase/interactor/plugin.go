@@ -2,8 +2,10 @@ package interactor
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
+	"net"
 	"net/http"
 	"net/url"
 	"time"
@@ -16,6 +18,7 @@ import (
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin/pluginpack"
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin/repourl"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
+	"github.com/reearth/reearthx/log"
 	"github.com/reearth/reearthx/usecasex"
 	"github.com/reearth/reearthx/util"
 )
@@ -35,6 +38,39 @@ func NewPlugin(r *repo.Container, gr *gateway.Container) interfaces.Plugin {
 }
 
 var pluginPackageSizeLimit int64 = 10 * 1024 * 1024
+
+// repoFetchClient is hardened for fetching publisher-supplied repo archive URLs.
+// ResponseHeaderTimeout ensures we fail fast if a server is slow to send headers
+// (time-to-first-byte), complementing the overall Client.Timeout which covers
+// the full request lifecycle.
+var repoFetchClient = &http.Client{
+	Timeout: 30 * time.Second,
+	Transport: &http.Transport{
+		Proxy:                 http.ProxyFromEnvironment,
+		DialContext:           (&net.Dialer{Timeout: 5 * time.Second, KeepAlive: 30 * time.Second}).DialContext,
+		TLSHandshakeTimeout:   5 * time.Second,
+		ResponseHeaderTimeout: 10 * time.Second,
+		ExpectContinueTimeout: 1 * time.Second,
+		IdleConnTimeout:       90 * time.Second,
+		MaxIdleConns:          100,
+		MaxIdleConnsPerHost:   10,
+		DisableCompression:    true,
+	},
+	CheckRedirect: checkRepoRedirect,
+}
+
+// GitHub archive URLs redirect from github.com to codeload.github.com.
+var repoFetchAllowedHosts = map[string]bool{"github.com": true, "codeload.github.com": true}
+
+func checkRepoRedirect(req *http.Request, via []*http.Request) error {
+	if len(via) >= 5 {
+		return errors.New("too many redirects")
+	}
+	if req.URL.Scheme != "https" || !repoFetchAllowedHosts[req.URL.Hostname()] {
+		return fmt.Errorf("redirect to disallowed host %q", req.URL.Host)
+	}
+	return nil
+}
 
 func (p *Plugin) FindByID(ctx context.Context, id id.PluginID, user *id.UserID) (*plugin.VersionedPlugin, error) {
 	pl, err := p.pluginRepo.FindByID(ctx, id, user)
@@ -109,6 +145,27 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 		return nil, interfaces.ErrOperationDenied
 	}
 
+	// Check ownership before uploading so a non-owner can't write images to GCS.
+	// The check inside the transaction below remains the authoritative one.
+	if len(param.Images) > 0 {
+		pl, err := p.pluginRepo.FindByID(ctx, param.PluginID, param.Publisher.IDRef())
+		if err != nil {
+			return nil, err
+		}
+		if pl.PublisherID().Compare(param.Publisher.ID()) != 0 {
+			return nil, fmt.Errorf("cannot update other's plugin")
+		}
+	}
+
+	var imgNames []string
+	for _, img := range param.Images {
+		imageName, err := p.file.UploadImage(ctx, img)
+		if err != nil {
+			return nil, err
+		}
+		imgNames = append(imgNames, imageName)
+	}
+
 	tx, err := p.transaction.Begin(ctx)
 	if err != nil {
 		return nil, err
@@ -145,15 +202,7 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 		updated = true
 	}
 
-	if len(param.Images) > 0 {
-		var imgNames []string
-		for _, img := range param.Images {
-			imageName, err := p.file.UploadImage(ctx, img)
-			if err != nil {
-				return nil, err
-			}
-			imgNames = append(imgNames, imageName)
-		}
+	if len(imgNames) > 0 {
 		pl.SetImages(imgNames)
 		updated = true
 	}
@@ -267,6 +316,9 @@ func (p *Plugin) UpdateVersion(ctx context.Context, user *user.User, param inter
 	if err != nil {
 		return nil, err
 	}
+	if vp.Plugin().PublisherID().Compare(user.ID()) != 0 {
+		return nil, fmt.Errorf("cannot update other's plugin")
+	}
 	v := vp.Version()
 	updated := false
 	if param.Active != nil {
@@ -370,6 +422,10 @@ func (p *Plugin) create(ctx context.Context, publisher *user.User, pkg *pluginpa
 		return nil, err
 	}
 
+	if err := p.file.UploadPlugin(ctx, vp.Version().ID(), pkg.Content()); err != nil {
+		return nil, err
+	}
+
 	tx, err := p.transaction.Begin(ctx)
 	if err != nil {
 		return nil, err
@@ -383,9 +439,6 @@ func (p *Plugin) create(ctx context.Context, publisher *user.User, pkg *pluginpa
 		}
 	}()
 	if err := p.pluginRepo.Create(ctx, vp); err != nil {
-		return nil, err
-	}
-	if err := p.file.UploadPlugin(ctx, vp.Version().ID(), pkg.Content()); err != nil {
 		return nil, err
 	}
 	tx.Commit()
@@ -402,13 +455,30 @@ func (p *Plugin) fetchFromRepo(ctx context.Context, repo *string) (*pluginpack.P
 		return nil, err
 	}
 
-	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, ru.ArchiveURL().String(), nil)
-	resp, err := http.DefaultClient.Do(req)
+	body, err := fetchArchive(ctx, repoFetchClient, ru.ArchiveURL().String())
 	if err != nil {
-		return nil, interfaces.ErrInvalidPluginPackage
+		return nil, err
 	}
-	defer resp.Body.Close()
-	return packageFromZip(resp.Body)
+	defer func() { _ = body.Close() }()
+	return packageFromZip(body)
+}
+
+func fetchArchive(ctx context.Context, client *http.Client, archiveURL string) (io.ReadCloser, error) {
+	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, archiveURL, nil)
+	resp, err := client.Do(req)
+	if err != nil {
+		log.Warnfc(ctx, "plugin: fetch repo archive %s: %v", archiveURL, err)
+		return nil, interfaces.ErrFailedToFetchRepo
+	}
+	if resp.StatusCode != http.StatusOK {
+		_ = resp.Body.Close()
+		log.Warnfc(ctx, "plugin: fetch repo archive %s: unexpected status %d", archiveURL, resp.StatusCode)
+		if resp.StatusCode == http.StatusNotFound {
+			return nil, interfaces.ErrRepoNotFound
+		}
+		return nil, interfaces.ErrFailedToFetchRepo
+	}
+	return resp.Body, nil
 }
 
 func packageFromZip(r io.Reader) (*pluginpack.Package, error) {

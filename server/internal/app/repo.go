@@ -33,7 +33,7 @@ func initReposAndGateways(ctx context.Context, conf *Config, debug bool) (*repo.
 	}
 
 	// File (GCS)
-	fileRepo, err := gcs.NewFile(conf.GCS.Bucket, conf.GCS.AssetsBucket, conf.GCS.AssetsBaseURL)
+	fileRepo, err := gcs.NewFile(ctx, conf.GCS.Bucket, conf.GCS.AssetsBucket, conf.GCS.AssetsBaseURL)
 	if err != nil {
 		log.Fatalf("file: init error: %v", err)
 	}
