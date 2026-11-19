@@ -17,6 +17,7 @@ import (
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearth-marketplace/server/pkg/id"
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin"
+	"github.com/reearth/reearthx/log"
 	"github.com/reearth/reearthx/mongox"
 	"github.com/reearth/reearthx/rerror"
 	"github.com/reearth/reearthx/usecasex"
@@ -241,7 +242,10 @@ func (r *pluginRepo) Save(ctx context.Context, p *plugin.Plugin) error {
 // maxLikedIDsForFilter bounds the like-lookup that backs the liked-plugin search
 // filter, so its memory use and the $in clause it builds stay bounded even for
 // an account with an unusually large number of likes, instead of scaling with
-// that account's entire lifetime like count.
+// that account's entire lifetime like count. Past the cap only the newest likes
+// are kept, so the filter silently drops the oldest ones. Likes are unique per
+// user and plugin, so the cap can only be reached once the catalog itself has
+// more plugins than this.
 var maxLikedIDsForFilter int64 = 10000
 
 func (r *pluginRepo) Search(ctx context.Context, user *id.UserID, param *interfaces.SearchPluginParam) ([]*plugin.VersionedPlugin, *usecasex.PageInfo, error) {
@@ -280,11 +284,15 @@ func (r *pluginRepo) Search(ctx context.Context, user *id.UserID, param *interfa
 		var c mongox.SliceConsumer[mongodoc.PluginLikeDocument]
 		likeFindOption := options.Find().
 			SetProjection(bson.M{"pluginId": 1, "_id": 0}).
+			SetSort(bson.D{{Key: "_id", Value: -1}}).
 			SetLimit(maxLikedIDsForFilter)
 		if err := r.pluginLikeClient().Find(ctx, bson.M{"userId": user.String()}, &c, likeFindOption); err != nil {
 			if !errors.Is(err, rerror.ErrNotFound) && !errors.Is(err, io.EOF) {
 				return nil, nil, err
 			}
+		}
+		if int64(len(c.Result)) >= maxLikedIDsForFilter {
+			log.Warnfc(ctx, "mongo: liked filter for user %s hit the cap of %d likes; older likes are excluded", user.String(), maxLikedIDsForFilter)
 		}
 		likedPluginIDs := lo.Map(c.Result, func(x mongodoc.PluginLikeDocument, _ int) string { return x.PluginID })
 		conditions = append(conditions, bson.M{

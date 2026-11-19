@@ -14,6 +14,7 @@ import (
 	"github.com/reearth/reearthx/mongox"
 	"github.com/reearth/reearthx/mongox/mongotest"
 	"github.com/reearth/reearthx/rerror"
+	"github.com/samber/lo"
 	"github.com/stretchr/testify/assert"
 	"go.mongodb.org/mongo-driver/bson"
 )
@@ -442,7 +443,7 @@ func TestPluginRepo_Search_LikedFilterCapsLikeLookup(t *testing.T) {
 
 	liked := true
 	first := 100
-	_, pageInfo, err := r.Search(ctx, uid.Ref(), &interfaces.SearchPluginParam{
+	ps, pageInfo, err := r.Search(ctx, uid.Ref(), &interfaces.SearchPluginParam{
 		Liked: &liked,
 		First: &first,
 		Sort:  "CREATEDAT_DESC",
@@ -450,4 +451,9 @@ func TestPluginRepo_Search_LikedFilterCapsLikeLookup(t *testing.T) {
 	assert.NoError(t, err)
 	assert.LessOrEqual(t, pageInfo.TotalCount, int64(maxLikedIDsForFilter),
 		"the liked filter must not consider more likes than the cap allows")
+
+	// The likes were inserted in order, so the newest three are liked-plugin-2..4.
+	gotIDs := lo.Map(ps, func(p *plugin.VersionedPlugin, _ int) string { return p.Plugin().ID().String() })
+	assert.Equal(t, []string{"liked-plugin-4", "liked-plugin-3", "liked-plugin-2"}, gotIDs,
+		"truncation must keep the newest likes, not an arbitrary subset")
 }
