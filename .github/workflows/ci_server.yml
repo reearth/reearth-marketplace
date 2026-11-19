@@ -2,7 +2,7 @@ name: ci-server
 on:
   workflow_call:
 env:
-  GO_VERSION: "1.24"
+  GO_VERSION: "1.27.2"
 
 jobs:
   ci-server-lint:
@@ -15,6 +15,10 @@ jobs:
           egress-policy: audit
       - name: checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - name: Fetch base branch
+        run: git fetch origin main
       - name: set up
         uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
         with:
@@ -24,14 +28,14 @@ jobs:
         run: |
           cd server
           rm -f internal/adapter/gql/generated.go internal/adapter/gql/gqlmodel/models_gen.go
-          GOTOOLCHAIN=go1.24.2 go run github.com/99designs/gqlgen generate
+          GOTOOLCHAIN=go1.27.2 go run github.com/99designs/gqlgen generate
           # Clean up generated warnings in resolver.go
           sed -i '/^\/\/ !!! WARNING !!!/,/^\*\/$/d' internal/adapter/gql/resolver.go
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@55c2c1448f86e01eaae002a5a3a9624417608d84 # v6
+        uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
         with:
-          version: latest
-          args: --timeout=10m
+          version: v2.14.0
+          args: --new-from-rev=origin/main --timeout=10m
           working-directory: server
       - name: Check for changes in generated files
         run: |

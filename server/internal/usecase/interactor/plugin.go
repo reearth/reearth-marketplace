@@ -145,6 +145,27 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 		return nil, interfaces.ErrOperationDenied
 	}
 
+	// Check ownership before uploading so a non-owner can't write images to GCS.
+	// The check inside the transaction below remains the authoritative one.
+	if len(param.Images) > 0 {
+		pl, err := p.pluginRepo.FindByID(ctx, param.PluginID, param.Publisher.IDRef())
+		if err != nil {
+			return nil, err
+		}
+		if pl.PublisherID().Compare(param.Publisher.ID()) != 0 {
+			return nil, fmt.Errorf("cannot update other's plugin")
+		}
+	}
+
+	var imgNames []string
+	for _, img := range param.Images {
+		imageName, err := p.file.UploadImage(ctx, img)
+		if err != nil {
+			return nil, err
+		}
+		imgNames = append(imgNames, imageName)
+	}
+
 	tx, err := p.transaction.Begin(ctx)
 	if err != nil {
 		return nil, err
@@ -181,15 +202,7 @@ func (p *Plugin) Update(ctx context.Context, param interfaces.UpdatePluginParam)
 		updated = true
 	}
 
-	if len(param.Images) > 0 {
-		var imgNames []string
-		for _, img := range param.Images {
-			imageName, err := p.file.UploadImage(ctx, img)
-			if err != nil {
-				return nil, err
-			}
-			imgNames = append(imgNames, imageName)
-		}
+	if len(imgNames) > 0 {
 		pl.SetImages(imgNames)
 		updated = true
 	}
@@ -302,6 +315,9 @@ func (p *Plugin) UpdateVersion(ctx context.Context, user *user.User, param inter
 	vp, err := p.pluginRepo.FindByVersion(ctx, param.PluginID, param.Version)
 	if err != nil {
 		return nil, err
+	}
+	if vp.Plugin().PublisherID().Compare(user.ID()) != 0 {
+		return nil, fmt.Errorf("cannot update other's plugin")
 	}
 	v := vp.Version()
 	updated := false
@@ -429,6 +445,10 @@ func (p *Plugin) create(ctx context.Context, publisher *user.User, pkg *pluginpa
 		return nil, err
 	}
 
+	if err := p.file.UploadPlugin(ctx, vp.Version().ID(), pkg.Content()); err != nil {
+		return nil, err
+	}
+
 	tx, err := p.transaction.Begin(ctx)
 	if err != nil {
 		return nil, err
@@ -442,9 +462,6 @@ func (p *Plugin) create(ctx context.Context, publisher *user.User, pkg *pluginpa
 		}
 	}()
 	if err := p.pluginRepo.Create(ctx, vp); err != nil {
-		return nil, err
-	}
-	if err := p.file.UploadPlugin(ctx, vp.Version().ID(), pkg.Content()); err != nil {
 		return nil, err
 	}
 	tx.Commit()
