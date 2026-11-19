@@ -5,13 +5,19 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"strings"
+	"sync"
 	"testing"
 
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/repo"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
 	"github.com/reearth/reearthx/mongox"
 	"github.com/reearth/reearthx/mongox/mongotest"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/event"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 func Test_userRepo_FindOrCreate(t *testing.T) {
@@ -128,6 +134,72 @@ func Test_userRepo_FindOrCreate(t *testing.T) {
 				t.Errorf("unexpected name: got=%q, want=%q", got.Name(), tt.want)
 			}
 		})
+	}
+}
+
+func Test_userRepo_FindOrCreate_ExistingUserDoesNotWrite(t *testing.T) {
+	connect := mongotest.Connect(t)
+	db := connect(t)
+	ctx := context.Background()
+
+	existing, _ := user.New().
+		NewID().
+		Name("used_name").
+		Auth(user.AuthFromOIDCSub("000001")).
+		Build()
+	if err := NewUser(mongox.NewClientWithDatabase(db)).Save(ctx, existing); err != nil {
+		t.Fatal("load init data: ", err)
+	}
+
+	// build a repo on a separate client that records every command it sends
+	var mu sync.Mutex
+	var commands []string
+	monitored, err := mongo.Connect(ctx, options.Client().
+		ApplyURI(os.Getenv(mongotest.Env)).
+		SetMonitor(&event.CommandMonitor{
+			Started: func(_ context.Context, e *event.CommandStartedEvent) {
+				mu.Lock()
+				defer mu.Unlock()
+				commands = append(commands, e.CommandName)
+			},
+		}))
+	if err != nil {
+		t.Fatal("connect: ", err)
+	}
+	t.Cleanup(func() { _ = monitored.Disconnect(ctx) })
+	u := NewUser(mongox.NewClientWithDatabase(monitored.Database(db.Name())))
+
+	mu.Lock()
+	commands = nil
+	mu.Unlock()
+
+	// the issuer is unreachable, so any userinfo lookup would fail
+	got, err := u.FindOrCreate(ctx, repo.AuthInfo{
+		Sub:   "000001",
+		Iss:   "http://127.0.0.1:1",
+		Token: "eyJ_00001",
+	})
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if got.ID() != existing.ID() || got.Name() != "used_name" {
+		t.Errorf("unexpected user: got=%v/%q", got.ID(), got.Name())
+	}
+
+	mu.Lock()
+	for _, c := range commands {
+		if c == "findAndModify" || c == "update" || c == "insert" || c == "delete" {
+			t.Errorf("unexpected write command: %s (all: %v)", c, commands)
+		}
+	}
+	mu.Unlock()
+
+	n, err := db.Collection("user").CountDocuments(ctx, bson.M{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if n != 1 {
+		t.Errorf("unexpected document count: got=%d, want=1", n)
 	}
 }
 

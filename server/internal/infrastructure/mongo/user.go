@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -49,6 +50,19 @@ func (u *userRepo) init() {
 
 func (u *userRepo) FindOrCreate(ctx context.Context, authInfo repo.AuthInfo) (*user.User, error) {
 	oidcSub := authInfo.Sub
+	// authMiddleware calls this on every request. The find below is a plain read;
+	// the upsert further down is a write that must go to the primary, so only
+	// reach it for users that do not exist yet or still have no name.
+	var existing mongodoc.UserDocument
+	err := u.client.Client().FindOne(ctx, bson.M{"oidcSub": oidcSub}).Decode(&existing)
+	switch {
+	case err == nil:
+		if existing.Name != "" {
+			return existing.Model()
+		}
+	case !errors.Is(err, mongo.ErrNoDocuments):
+		return nil, fmt.Errorf("find user: %w", err)
+	}
 	newUser, err := user.New().
 		NewID().
 		Auth(user.AuthFromOIDCSub(oidcSub)).
