@@ -18,6 +18,7 @@ import (
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin/pluginpack"
 	"github.com/reearth/reearth-marketplace/server/pkg/plugin/repourl"
 	"github.com/reearth/reearth-marketplace/server/pkg/user"
+	"github.com/reearth/reearthx/log"
 	"github.com/reearth/reearthx/usecasex"
 	"github.com/reearth/reearthx/util"
 )
@@ -55,12 +56,20 @@ var repoFetchClient = &http.Client{
 		MaxIdleConnsPerHost:   10,
 		DisableCompression:    true,
 	},
-	CheckRedirect: func(_ *http.Request, via []*http.Request) error {
-		if len(via) >= 5 {
-			return errors.New("too many redirects")
-		}
-		return nil
-	},
+	CheckRedirect: checkRepoRedirect,
+}
+
+// GitHub archive URLs redirect from github.com to codeload.github.com.
+var repoFetchAllowedHosts = map[string]bool{"github.com": true, "codeload.github.com": true}
+
+func checkRepoRedirect(req *http.Request, via []*http.Request) error {
+	if len(via) >= 5 {
+		return errors.New("too many redirects")
+	}
+	if req.URL.Scheme != "https" || !repoFetchAllowedHosts[req.URL.Hostname()] {
+		return fmt.Errorf("redirect to disallowed host %q", req.URL.Host)
+	}
+	return nil
 }
 
 func (p *Plugin) FindByID(ctx context.Context, id id.PluginID, user *id.UserID) (*plugin.VersionedPlugin, error) {
@@ -456,7 +465,7 @@ func (p *Plugin) fetchFromRepo(ctx context.Context, repo *string) (*pluginpack.P
 	if err != nil {
 		return nil, err
 	}
-	defer body.Close()
+	defer func() { _ = body.Close() }()
 	return packageFromZip(body)
 }
 
@@ -464,11 +473,16 @@ func fetchArchive(ctx context.Context, client *http.Client, archiveURL string) (
 	req, _ := http.NewRequestWithContext(ctx, http.MethodGet, archiveURL, nil)
 	resp, err := client.Do(req)
 	if err != nil {
-		return nil, fmt.Errorf("fetch repo archive: %w", err)
+		log.Warnfc(ctx, "plugin: fetch repo archive %s: %v", archiveURL, err)
+		return nil, interfaces.ErrFailedToFetchRepo
 	}
 	if resp.StatusCode != http.StatusOK {
-		defer resp.Body.Close()
-		return nil, fmt.Errorf("fetch repo archive: unexpected status %d", resp.StatusCode)
+		_ = resp.Body.Close()
+		log.Warnfc(ctx, "plugin: fetch repo archive %s: unexpected status %d", archiveURL, resp.StatusCode)
+		if resp.StatusCode == http.StatusNotFound {
+			return nil, interfaces.ErrRepoNotFound
+		}
+		return nil, interfaces.ErrFailedToFetchRepo
 	}
 	return resp.Body, nil
 }

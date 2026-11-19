@@ -2,12 +2,15 @@ package interactor
 
 import (
 	"context"
+	"errors"
 	"io"
 	"net"
 	"net/http"
 	"net/http/httptest"
-	"strings"
+	"net/url"
 	"testing"
+
+	"github.com/reearth/reearth-marketplace/server/internal/usecase/interfaces"
 )
 
 func TestFetchArchive_Success(t *testing.T) {
@@ -21,7 +24,7 @@ func TestFetchArchive_Success(t *testing.T) {
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	defer rc.Close()
+	defer func() { _ = rc.Close() }()
 
 	got, err := io.ReadAll(rc)
 	if err != nil {
@@ -33,18 +36,24 @@ func TestFetchArchive_Success(t *testing.T) {
 }
 
 func TestFetchArchive_NonOKStatus(t *testing.T) {
-	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusNotFound)
-		_, _ = w.Write([]byte("<html>not found</html>"))
-	}))
-	defer srv.Close()
-
-	_, err := fetchArchive(context.Background(), srv.Client(), srv.URL)
-	if err == nil {
-		t.Fatal("expected an error for a non-200 status, got nil")
+	tests := []struct {
+		status int
+		want   error
+	}{
+		{http.StatusNotFound, interfaces.ErrRepoNotFound},
+		{http.StatusInternalServerError, interfaces.ErrFailedToFetchRepo},
 	}
-	if !strings.Contains(err.Error(), "404") {
-		t.Errorf("error = %q, want it to mention the status code", err.Error())
+	for _, tt := range tests {
+		srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.WriteHeader(tt.status)
+			_, _ = w.Write([]byte("<html>error</html>"))
+		}))
+
+		_, err := fetchArchive(context.Background(), srv.Client(), srv.URL)
+		srv.Close()
+		if !errors.Is(err, tt.want) {
+			t.Errorf("status %d: error = %v, want %v", tt.status, err, tt.want)
+		}
 	}
 }
 
@@ -54,13 +63,41 @@ func TestFetchArchive_TransportErrorIsNotMasked(t *testing.T) {
 		t.Fatalf("failed to reserve a port: %v", err)
 	}
 	addr := l.Addr().String()
-	l.Close()
+	_ = l.Close()
 
 	_, err = fetchArchive(context.Background(), http.DefaultClient, "http://"+addr+"/archive.zip")
-	if err == nil {
-		t.Fatal("expected a transport error, got nil")
+	if !errors.Is(err, interfaces.ErrFailedToFetchRepo) {
+		t.Fatalf("error = %v, want %v", err, interfaces.ErrFailedToFetchRepo)
 	}
-	if strings.Contains(err.Error(), "invalid plugin package") {
-		t.Errorf("error = %q, a transport failure must not be reported as an invalid package", err.Error())
+	if errors.Is(err, interfaces.ErrInvalidPluginPackage) {
+		t.Errorf("a transport failure must not be reported as an invalid package")
+	}
+}
+
+func TestCheckRepoRedirect(t *testing.T) {
+	tests := []struct {
+		target  string
+		allowed bool
+	}{
+		{"https://codeload.github.com/owner/repo/zip/refs/heads/main", true},
+		{"https://github.com/owner/repo/archive/refs/heads/main.zip", true},
+		{"http://codeload.github.com/owner/repo/zip/refs/heads/main", false},
+		{"https://example.com/archive.zip", false},
+		{"https://169.254.169.254/computeMetadata/v1/", false},
+	}
+	for _, tt := range tests {
+		u, err := url.Parse(tt.target)
+		if err != nil {
+			t.Fatal(err)
+		}
+		err = checkRepoRedirect(&http.Request{URL: u}, []*http.Request{{}})
+		if (err == nil) != tt.allowed {
+			t.Errorf("%s: allowed = %v, want %v (err: %v)", tt.target, err == nil, tt.allowed, err)
+		}
+	}
+
+	u, _ := url.Parse("https://codeload.github.com/owner/repo/zip/main")
+	if err := checkRepoRedirect(&http.Request{URL: u}, make([]*http.Request, 5)); err == nil {
+		t.Error("expected an error after 5 redirects")
 	}
 }
