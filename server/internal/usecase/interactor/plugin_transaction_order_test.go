@@ -4,6 +4,7 @@ import (
 	"context"
 	"io"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/gateway"
@@ -152,7 +153,11 @@ func TestPlugin_Update_RejectsNonOwnerWithoutSaving(t *testing.T) {
 	pl := plugin.New(owner.ID()).NewID("some-plugin").MustBuild()
 
 	tx := &orderTrackingTransaction{}
-	fileGateway := &orderTrackingFileGateway{tx: tx}
+	uploadCalls := 0
+	fileGateway := &orderTrackingFileGateway{
+		uploadCalledWith: func(bool) { uploadCalls++ },
+		tx:               tx,
+	}
 	saveCalls := 0
 	pluginRepo := &orderTrackingPluginRepo{
 		pl:             pl,
@@ -168,7 +173,10 @@ func TestPlugin_Update_RejectsNonOwnerWithoutSaving(t *testing.T) {
 	_, err = p.Update(context.Background(), interfaces.UpdatePluginParam{
 		Publisher: attacker,
 		PluginID:  pl.ID(),
+		Images:    []io.ReadSeeker{strings.NewReader("image")},
 	})
 	require.Error(t, err)
+	assert.Equal(t, 0, uploadCalls, "a non-owner must not trigger any GCS upload")
+	assert.False(t, tx.began, "a non-owner must be rejected before the transaction opens")
 	assert.Equal(t, 0, saveCalls)
 }
