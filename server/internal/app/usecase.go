@@ -3,7 +3,7 @@ package app
 import (
 	"context"
 
-	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v5"
 	"github.com/reearth/reearth-marketplace/server/internal/adapter"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/gateway"
 	"github.com/reearth/reearth-marketplace/server/internal/usecase/interactor"
