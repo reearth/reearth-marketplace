@@ -426,3 +426,28 @@ func TestPluginRepo_IncrementDownloads(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, int64(1), gotVersioned.Version().Downloads())
 }
+
+func TestPluginRepo_IncrementDownloads_NotFound(t *testing.T) {
+	ctx := context.Background()
+	db := mongotest.Connect(t)(t)
+	r := NewPlugin(mongox.NewClientWithDatabase(db)).(*pluginRepo)
+
+	uid := user.NewID()
+	version, err := plugin.NewPartialVersion().Version("0.0.1").Build()
+	assert.NoError(t, err)
+	pl := plugin.New(uid).NewID("test-plugin").Active(true).Downloads(5).LatestVersion(version).MustBuild()
+	vp, err := plugin.Versioned(pl).Build()
+	assert.NoError(t, err)
+	assert.NoError(t, r.Create(ctx, vp))
+
+	// a missing version returns not found and leaves the plugin counter untouched
+	missingVID, err := id.NewVersionID(vp.Plugin().ID(), "9.9.9")
+	assert.NoError(t, err)
+	assert.ErrorIs(t, r.IncrementDownloads(ctx, vp.Plugin().ID(), missingVID), rerror.ErrNotFound)
+	got, err := r.FindByID(ctx, vp.Plugin().ID(), nil)
+	assert.NoError(t, err)
+	assert.Equal(t, int64(5), got.Downloads())
+
+	// a missing plugin returns not found
+	assert.ErrorIs(t, r.IncrementDownloads(ctx, id.MustPluginID("missing-plugin"), vp.Version().ID()), rerror.ErrNotFound)
+}

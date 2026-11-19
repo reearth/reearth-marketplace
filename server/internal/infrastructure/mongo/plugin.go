@@ -87,18 +87,32 @@ func (r *pluginRepo) SaveVersion(ctx context.Context, v *plugin.Version) error {
 	return nil
 }
 
+// IncrementDownloads bumps the version and plugin download counters with two
+// single-document $inc updates. They are deliberately not wrapped in a
+// transaction, since concurrent $inc on the same document inside transactions
+// raises WriteConflict. If the second update fails, the two totals can differ
+// by one. The version is updated first so a missing version fails before the
+// plugin counter changes.
 func (r *pluginRepo) IncrementDownloads(ctx context.Context, pid plugin.ID, vid plugin.VersionID) error {
-	if _, err := r.pluginClient().Client().UpdateOne(ctx,
-		bson.M{"id": pid.String()},
-		bson.M{"$inc": bson.M{"downloads": 1}},
-	); err != nil {
-		return err
-	}
-	if _, err := r.pluginVersionClient().Client().UpdateOne(ctx,
+	res, err := r.pluginVersionClient().Client().UpdateOne(ctx,
 		bson.M{"id": vid.String()},
 		bson.M{"$inc": bson.M{"downloads": 1}},
-	); err != nil {
+	)
+	if err != nil {
 		return err
+	}
+	if res.MatchedCount == 0 {
+		return rerror.ErrNotFound
+	}
+	res, err = r.pluginClient().Client().UpdateOne(ctx,
+		bson.M{"id": pid.String()},
+		bson.M{"$inc": bson.M{"downloads": 1}},
+	)
+	if err != nil {
+		return err
+	}
+	if res.MatchedCount == 0 {
+		return rerror.ErrNotFound
 	}
 	return nil
 }
