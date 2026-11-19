@@ -9,6 +9,7 @@ require (
 	github.com/99designs/gqlgen v0.17.73
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/gavv/httpexpect/v2 v2.16.0
+	github.com/graph-gophers/dataloader/v7 v7.1.0
 	github.com/h2non/filetype v1.1.3
 	github.com/joho/godotenv v1.5.1
 	github.com/kelseyhightower/envconfig v1.4.0
