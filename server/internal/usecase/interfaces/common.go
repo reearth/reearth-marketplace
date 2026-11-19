@@ -9,3 +9,5 @@ type Container struct {
 }
 
 var ErrOperationDenied = errors.New("Operation denied")
+
+var ErrInvalidPageSize = errors.New("first and last must not be negative")
