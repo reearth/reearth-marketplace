@@ -59,7 +59,7 @@ jobs:
       - name: Pack
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release'
         run: mv dist reearth-marketplace-web && tar -zcvf reearth-marketplace-web.tar.gz reearth-marketplace-web
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/release'
         with:
           name: reearth-marketplace-web
