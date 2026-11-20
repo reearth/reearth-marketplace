@@ -88,6 +88,21 @@ func LoadConfig() (*Config, error) {
 	return &c, nil
 }
 
+const redacted = "[REDACTED]"
+
+// Print returns a human-readable dump of the config for logging.
+// github.com/yudai/pp does not honor struct tags, so secret fields
+// must be redacted here on a copy before printing.
 func (c *Config) Print() string {
-	return pp.Sprint(c)
+	cc := *c
+	cc.DB = redact(cc.DB)
+	cc.Auth_M2M.Secret = redact(cc.Auth_M2M.Secret)
+	return pp.Sprint(cc)
+}
+
+func redact(s string) string {
+	if s == "" {
+		return ""
+	}
+	return redacted
 }
