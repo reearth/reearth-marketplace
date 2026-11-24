@@ -14,6 +14,8 @@ import (
 var (
 	ErrPluginAlreadyRegistered = errors.New("plugin already registered")
 	ErrInvalidPluginPackage    = errors.New("invalid plugin package")
+	ErrRepoNotFound            = errors.New("repository or ref not found")
+	ErrFailedToFetchRepo       = errors.New("failed to fetch repository")
 )
 
 type Plugin interface {
