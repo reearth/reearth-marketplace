@@ -63,7 +63,7 @@
     "typescript": "5.5.4",
     "vite": "2.9.9",
     "vite-plugin-css-injected-by-js": "2.0.4",
-    "vitest": "0.14.2"
+    "vitest": "3.2.6"
   },
   "dependencies": {
     "@ant-design/compatible": "5.1.1",
