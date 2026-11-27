@@ -20,7 +20,7 @@ require (
 	github.com/stretchr/testify v1.10.0
 	github.com/vektah/gqlparser/v2 v2.5.27
 	github.com/yudai/pp v2.0.1+incompatible
-	go.mongodb.org/mongo-driver v1.17.3
+	go.mongodb.org/mongo-driver v1.17.7
 	golang.org/x/text v0.43.0
 	gopkg.in/yaml.v3 v3.0.1
 )
